@@ -1,0 +1,29 @@
+---
+const path = Astro.url.pathname;
+const isPosts = path.startsWith("/posts");
+---
+
+<header class="max-w-2xl w-full mx-auto px-6 pt-10 pb-14">
+  <div class="flex items-baseline justify-between gap-6">
+    <a href="/" class="text-base font-medium text-ink no-underline">
+      Herman Chan
+    </a>
+    <nav class="flex gap-5 text-sm">
+      <a
+        href="/posts/"
+        class:list={[
+          "no-underline",
+          isPosts ? "text-ink" : "text-ink-muted hover:text-ink",
+        ]}
+      >
+        Posts
+      </a>
+      <a
+        href="/#projects"
+        class="no-underline text-ink-muted hover:text-ink"
+      >
+        Projects
+      </a>
+    </nav>
+  </div>
+</header>

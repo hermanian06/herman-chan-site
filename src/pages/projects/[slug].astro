@@ -1,0 +1,59 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import PostCard from "../../components/PostCard.astro";
+import { getCollection, render } from "astro:content";
+import type { GetStaticPaths } from "astro";
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const projects = await getCollection("projects");
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+};
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+
+const projectPosts = (
+  await getCollection("posts", ({ data }) => !data.draft)
+)
+  .filter((p) => p.data.project === project.id)
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+---
+
+<Layout title={project.data.title} description={project.data.blurb}>
+  <article>
+    <h1 class="text-2xl font-medium text-ink leading-tight mb-2">
+      {project.data.title}
+    </h1>
+    <p class="text-sm text-ink-muted mb-8">{project.data.blurb}</p>
+    <div class="prose prose-base max-w-none">
+      <Content />
+    </div>
+  </article>
+
+  {
+    projectPosts.length > 0 && (
+      <section class="mt-16">
+        <h2 class="text-xs font-medium uppercase tracking-widest text-ink-faint mb-1">
+          Posts about this
+        </h2>
+        <div>
+          {projectPosts.map((post) => (
+            <PostCard
+              href={`/posts/${post.id}/`}
+              title={post.data.title}
+              pubDate={post.data.pubDate}
+              description={post.data.description}
+            />
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <div class="mt-16 pt-8 border-t border-rule text-sm">
+    <a href="/" class="text-ink-muted no-underline hover:text-ink">← Home</a>
+  </div>
+</Layout>

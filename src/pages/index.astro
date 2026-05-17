@@ -1,0 +1,77 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import PostCard from "../components/PostCard.astro";
+import { getCollection, getEntry, render } from "astro:content";
+
+const allPosts = (await getCollection("posts", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
+);
+
+const allProjects = (await getCollection("projects")).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+const aboutPost = await getEntry("posts", "what-this-site-is");
+const aboutRender = aboutPost ? await render(aboutPost) : null;
+const AboutContent = aboutRender?.Content;
+
+const recentPosts = allPosts
+  .filter((p) => p.id !== "what-this-site-is")
+  .slice(0, 3);
+---
+
+<Layout>
+  <article class="prose prose-base max-w-none">
+    {AboutContent && <AboutContent />}
+  </article>
+
+  <section id="projects" class="mt-20 scroll-mt-8">
+    <h2
+      class="text-xs font-medium uppercase tracking-widest text-ink-faint mb-1"
+    >
+      Projects
+    </h2>
+    <div>
+      {
+        allProjects.map((p) => (
+          <ProjectCard
+            href={`/projects/${p.id}/`}
+            title={p.data.title}
+            blurb={p.data.blurb}
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  {
+    recentPosts.length > 0 && (
+      <section class="mt-20">
+        <div class="flex items-baseline justify-between mb-1">
+          <h2 class="text-xs font-medium uppercase tracking-widest text-ink-faint">
+            Recent posts
+          </h2>
+          {allPosts.length > 4 && (
+            <a
+              href="/posts/"
+              class="text-sm text-ink-muted no-underline hover:text-ink"
+            >
+              Archive →
+            </a>
+          )}
+        </div>
+        <div>
+          {recentPosts.map((post) => (
+            <PostCard
+              href={`/posts/${post.id}/`}
+              title={post.data.title}
+              pubDate={post.data.pubDate}
+              description={post.data.description}
+            />
+          ))}
+        </div>
+      </section>
+    )
+  }
+</Layout>
