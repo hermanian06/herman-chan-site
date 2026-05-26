@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>What I learned wiring an MCP server to Supabase — Herman Chan</title>
+<link rel="stylesheet" href="shared.css" />
+<style>
+  /* ---------- post page specific ---------- */
+  .post {
+    padding: clamp(40px, 7vw, 80px) 0 0;
+  }
+
+  /* article header — generous, editorial */
+  .post-head {
+    max-width: 800px;
+    margin: 0 auto var(--s-7);
+    padding: 0 var(--gutter);
+    text-align: left;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: var(--s-6);
+  }
+  .post-head__rail {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: var(--s-5);
+  }
+  .post-head__rail .accent { color: var(--accent); }
+  .post-head__rail .sep { color: var(--rule); }
+  .post-head__rail a { color: var(--muted); border-bottom: 1px solid transparent; }
+  .post-head__rail a:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
+  .post-head__title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(36px, 5.6vw, 56px);
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+    margin: 0 0 var(--s-5);
+    text-wrap: balance;
+  }
+  .post-head__dek {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(19px, 2vw, 22px);
+    line-height: 1.45;
+    color: var(--muted);
+    max-width: 56ch;
+    margin: 0;
+  }
+  .post-head__byline {
+    margin-top: var(--s-6);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .post-head__byline .author { color: var(--fg-soft); }
+
+  /* layout: body + left rail (chapter nav) + right rail (marginalia) */
+  .post-grid {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr) 220px;
+    gap: clamp(24px, 4vw, 56px);
+    align-items: start;
+  }
+
+  .post-toc {
+    position: sticky;
+    top: var(--s-5);
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-top: 1px solid var(--rule);
+    padding-top: var(--s-4);
+  }
+  .post-toc h4 {
+    margin: 0 0 var(--s-3);
+    color: var(--muted);
+    font-weight: 500;
+    font-size: var(--t-12);
+  }
+  .post-toc ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: toc;
+    display: grid;
+    gap: 8px;
+  }
+  .post-toc li { counter-increment: toc; }
+  .post-toc a {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 8px;
+    color: var(--fg-soft);
+    line-height: 1.4;
+  }
+  .post-toc a::before {
+    content: counter(toc, decimal-leading-zero);
+    color: var(--muted);
+  }
+  .post-toc a:hover { color: var(--accent); text-decoration: none; }
+  .post-toc a.is-current { color: var(--accent); }
+  .post-toc a.is-current::before { color: var(--accent); }
+
+  .post-body {
+    font-family: var(--serif);
+    font-size: 19px;
+    line-height: 1.65;
+    color: var(--fg-soft);
+    max-width: 64ch;
+    margin: 0 auto;
+  }
+  .post-body > * + * { margin-top: var(--s-5); }
+  .post-body p { margin: 0; text-wrap: pretty; }
+  .post-body p.lede {
+    font-size: 22px;
+    line-height: 1.5;
+    color: var(--fg);
+  }
+  .post-body p.lede::first-letter {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 4.2em;
+    float: left;
+    line-height: 0.88;
+    padding: 4px 10px 0 0;
+    margin-top: 4px;
+    color: var(--accent);
+  }
+  .post-body h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 28px;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: var(--fg);
+    margin-top: var(--s-7) !important;
+    position: relative;
+  }
+  .post-body h2 .h-num {
+    font-family: var(--mono);
+    font-size: var(--t-13);
+    color: var(--accent);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    margin-right: var(--s-3);
+  }
+  .post-body h3 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 20px;
+    color: var(--fg);
+    margin-top: var(--s-6) !important;
+    margin-bottom: 0;
+  }
+  .post-body strong { color: var(--fg); font-weight: 600; }
+  .post-body em { font-style: italic; }
+  .post-body a {
+    color: var(--accent);
+    border-bottom: 1px solid var(--accent-soft);
+  }
+  .post-body a:hover { border-color: var(--accent); text-decoration: none; }
+
+  .post-body ul, .post-body ol {
+    padding-left: var(--s-5);
+    margin: 0;
+    display: grid;
+    gap: var(--s-3);
+  }
+  .post-body li::marker {
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 0.85em;
+  }
+
+  /* pull quote */
+  .pull {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 300;
+    font-size: 26px;
+    line-height: 1.35;
+    color: var(--fg);
+    border-left: 2px solid var(--accent);
+    padding: var(--s-2) 0 var(--s-2) var(--s-5);
+    margin: var(--s-6) 0 !important;
+    max-width: 50ch;
+  }
+  .pull cite {
+    display: block;
+    margin-top: var(--s-3);
+    font-style: normal;
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  /* code blocks — quiet, single tint, mono, no syntax colors */
+  .post-body pre {
+    background: var(--code-bg);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    padding: var(--s-4) var(--s-5);
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--fg);
+    margin: var(--s-6) 0 !important;
+  }
+  .post-body pre .c { color: var(--muted); font-style: italic; }
+  .post-body pre .k { color: var(--accent); }
+  .post-body pre .s { color: var(--fg-soft); }
+  .post-body code {
+    font-family: var(--mono);
+    font-size: 0.88em;
+    background: var(--code-bg);
+    padding: 1px 6px;
+    border: 1px solid var(--rule-soft);
+    color: var(--fg);
+    border-radius: 2px;
+  }
+  .post-body pre code { background: transparent; border: 0; padding: 0; font-size: inherit; }
+
+  .codeblock-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin: var(--s-6) 0 calc(var(--s-2) * -1) !important;
+  }
+
+  /* tables */
+  .post-body table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--sans);
+    font-size: var(--t-15);
+    margin: var(--s-6) 0 !important;
+  }
+  .post-body th, .post-body td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .post-body th {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    border-bottom: 1px solid var(--rule);
+  }
+  .post-body td.num { text-align: right; }
+
+  /* marginalia */
+  .marginalia {
+    position: sticky;
+    top: var(--s-5);
+    display: grid;
+    gap: var(--s-5);
+    font-family: var(--sans);
+    font-size: var(--t-13);
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .sidenote {
+    border-top: 1px solid var(--rule);
+    padding-top: var(--s-3);
+  }
+  .sidenote__num {
+    font-family: var(--mono);
+    color: var(--accent);
+    font-size: var(--t-12);
+    letter-spacing: 0.04em;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  /* end of article */
+  .post-end {
+    max-width: 64ch;
+    margin: var(--s-9) auto 0;
+    padding: var(--s-6) 0 0;
+    border-top: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .post-end .ornament {
+    color: var(--accent);
+    font-family: var(--serif);
+    font-style: italic;
+    letter-spacing: 0;
+    text-transform: none;
+    font-size: 18px;
+  }
+
+  /* further reading strip */
+  .further {
+    max-width: var(--max);
+    margin: var(--s-9) auto 0;
+    padding: 0 var(--gutter);
+  }
+  .further-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .further-list li {
+    display: grid;
+    grid-template-columns: 48px 1fr auto;
+    gap: var(--s-4);
+    padding: var(--s-4) 0;
+    border-bottom: 1px solid var(--rule-soft);
+    align-items: baseline;
+  }
+  .further-list .n {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    color: var(--muted);
+  }
+  .further-list .t {
+    font-family: var(--serif);
+    font-size: var(--t-19);
+    color: var(--fg);
+    font-weight: 500;
+  }
+  .further-list .t a { color: inherit; }
+  .further-list .t a:hover { color: var(--accent); text-decoration: none; }
+  .further-list .d {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+
+  @media (max-width: 1080px) {
+    .post-grid { grid-template-columns: 1fr; }
+    .post-toc { position: static; max-width: 64ch; margin: 0 auto var(--s-5); }
+    .marginalia { position: static; max-width: 64ch; margin: var(--s-6) auto 0; grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .marginalia { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body data-screen-label="Post">
+
+<div class="meta-strip">
+  <div class="meta-strip__inner">
+    <span class="meta-strip__pair"><span class="meta-strip__dot"></span><b>Currently</b>&nbsp;Underwriting BFR in Phoenix &amp; Atlanta</span>
+    <span class="meta-strip__pair"><b>Loc</b>&nbsp;Los Angeles, CA</span>
+    <span class="meta-strip__spacer"></span>
+    <span class="meta-strip__pair"><b>Updated</b>&nbsp;<span class="num">2026-05-18</span></span>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a href="home.html" class="brand">
+      <span class="brand__mark">Herman&nbsp;Chan<span class="glyph">·</span></span>
+      <span class="brand__sub">Acquisitions &amp; AI tooling</span>
+    </a>
+    <nav class="nav" aria-label="Primary">
+      <a href="home.html">Index</a>
+      <a href="post.html" aria-current="page">Writing</a>
+      <a href="project.html">Projects</a>
+      <a href="#">Now</a>
+      <a href="#">RSS</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <article class="post">
+
+    <header class="post-head">
+      <div class="post-head__rail">
+        <span class="accent">N° 006</span>
+        <span class="sep">/</span>
+        <span><a href="home.html">Writing</a></span>
+        <span class="sep">/</span>
+        <span>AI · MCP</span>
+        <span class="sep">/</span>
+        <span class="num">12 May 2026</span>
+        <span class="sep">/</span>
+        <span class="num">9 min read</span>
+      </div>
+      <h1 class="post-head__title">What I learned wiring an MCP server to Supabase</h1>
+      <p class="post-head__dek">A weekend spent connecting Claude to a live build-for-rent deal database via the Model Context Protocol. Tool design, auth, and the moment it started catching things I&rsquo;d missed in the underwriting memo.</p>
+      <div class="post-head__byline">
+        <span class="author">By Herman Chan</span>
+        <span>Filed under <a href="#" style="color:inherit;border-bottom:1px solid var(--rule);">AI&nbsp;Tooling</a></span>
+      </div>
+    </header>
+
+    <div class="post-grid">
+
+      <!-- left: chapter nav -->
+      <aside class="post-toc" aria-label="In this post">
+        <h4>Contents</h4>
+        <ol>
+          <li><a href="#why" class="is-current">The setup</a></li>
+          <li><a href="#schema">What MCP actually gives you</a></li>
+          <li><a href="#auth">Auth without a service in the middle</a></li>
+          <li><a href="#tools">Designing the five tools</a></li>
+          <li><a href="#caught">The moment it caught something</a></li>
+          <li><a href="#next">What I&rsquo;m doing next</a></li>
+        </ol>
+      </aside>
+
+      <!-- body -->
+      <div class="post-body">
+        <p class="lede">For the last year, the most useful thing I do at work is move data between a spreadsheet and a person. A broker emails a deck, I extract the unit mix into our model, run the comps, write a one-page memo, send it back upstream. The model is the same every time. The work is the joining.</p>
+
+        <p>So I spent a Saturday in May wiring our underwriting database into Claude through a Model Context Protocol server, mostly to see whether the joining would still feel like work afterward. Short answer: less of it does, and the parts that remain are the parts I actually wanted to be doing.</p>
+
+        <p>This post is a working log, not a tutorial. I&rsquo;m going to skip the &ldquo;what is MCP&rdquo; preamble — <a href="#">Anthropic&rsquo;s docs</a> cover it better than I will — and write about the five decisions that mattered, in the order they came up.</p>
+
+        <h2 id="why"><span class="h-num">§ 01</span>The setup</h2>
+
+        <p>The database is a Supabase Postgres instance with about forty tables. Three of them matter for underwriting: <code>deals</code>, <code>comps</code>, and <code>permits</code>. The rest are operational furniture — user accounts, audit logs, attachments. I wanted Claude to see the first three. I wanted it to <em>not</em> see the rest, ever, by construction rather than by trust.</p>
+
+        <p>My constraint was: a teammate should be able to install the MCP server locally, point Claude Desktop at it, and start asking questions about deals they have permission to see — without me handing them an API key or running anything on their behalf.</p>
+
+        <div class="codeblock-meta">
+          <span>file · server.py</span>
+          <span>python 3.12</span>
+        </div>
+<pre><code><span class="c"># the smallest thing that worked end-to-end</span>
+<span class="k">from</span> mcp.server.fastmcp <span class="k">import</span> FastMCP
+<span class="k">from</span> haven.db <span class="k">import</span> session_for_user
+
+app = FastMCP(<span class="s">"haven-deals"</span>)
+
+<span class="k">@app</span>.tool()
+<span class="k">def</span> get_deal(deal_id: <span class="k">str</span>, *, user: <span class="k">str</span>) -&gt; <span class="k">dict</span>:
+    <span class="s">"""Fetch a single deal with unit mix, rents, and the latest comp set."""</span>
+    <span class="k">with</span> session_for_user(user) <span class="k">as</span> s:
+        <span class="k">return</span> s.deals.get(deal_id).as_context()
+
+<span class="k">if</span> __name__ == <span class="s">"__main__"</span>:
+    app.run()</code></pre>
+
+        <p>That &ldquo;<code>session_for_user</code>&rdquo; line is doing all the work of the auth section below. We&rsquo;ll come back to it.</p>
+
+        <h2 id="schema"><span class="h-num">§ 02</span>What MCP actually gives you</h2>
+
+        <p>The Model Context Protocol is a small contract: a server exposes <strong>tools</strong> (callable functions), <strong>resources</strong> (readable documents), and <strong>prompts</strong> (templated starting points). The client — in my case Claude Desktop — calls them on the user&rsquo;s behalf, surfaces the results, and lets the model reason over them.</p>
+
+        <p>The thing the docs don&rsquo;t emphasize enough: <em>your tool definitions are the prompt.</em> Their names, parameter shapes, and docstrings are what the model uses to decide what to call. If you ship a tool called <code>query_database(sql)</code>, you are functionally giving the model a SQL REPL and a vague nudge. If you ship <code>find_comps_within(zip, radius_mi, bed_count)</code> you have done most of the design work.</p>
+
+        <blockquote class="pull">
+          The schema you expose to the model <em>is</em> the schema of the conversation. The model will not be more careful than your function signatures invite it to be.
+          <cite>— working note, sat afternoon</cite>
+        </blockquote>
+
+        <h2 id="auth"><span class="h-num">§ 03</span>Auth without a service in the middle</h2>
+
+        <p>The auth model I landed on is unglamorous: the MCP server reads a user&rsquo;s short-lived Supabase JWT from <code>~/.haven/credentials</code>, refreshes it lazily, and uses it to open a connection that inherits row-level security from Postgres. No service role keys, no proxy, no &ldquo;trust the LLM not to mention table X.&rdquo;</p>
+
+        <p>What this buys me:</p>
+
+        <ul>
+          <li>Tool calls run as <em>the user</em>, not as the server.</li>
+          <li>The model literally cannot read deals the user can&rsquo;t see — RLS rejects the query.</li>
+          <li>An audit trail lands in our existing logs, unchanged, alongside the queries a human would have run by hand.</li>
+        </ul>
+
+        <p>The cost is one piece of installation friction: a teammate runs <code>haven login</code> once. That seems fair.</p>
+
+        <h2 id="tools"><span class="h-num">§ 04</span>Designing the five tools</h2>
+
+        <p>I ended up with a deliberately small surface. Each tool was named for the question a human would ask, not the table it reads from.</p>
+
+        <table>
+          <thead>
+            <tr><th>Tool</th><th>Reads</th><th>Returns</th><th class="num">Avg ms</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>get_deal</code></td><td><code>deals</code>, <code>unit_mix</code></td><td>Single deal w/ unit detail</td><td class="num">142</td></tr>
+            <tr><td><code>find_comps</code></td><td><code>comps</code></td><td>Up to 12 nearby comps</td><td class="num">310</td></tr>
+            <tr><td><code>recent_permits</code></td><td><code>permits</code></td><td>Permits in radius, last 90d</td><td class="num">88</td></tr>
+            <tr><td><code>compare_to_buybox</code></td><td><code>deals</code>, <code>buybox</code></td><td>Pass/fail per criterion</td><td class="num">61</td></tr>
+            <tr><td><code>draft_memo_section</code></td><td>—</td><td>Markdown for one memo section</td><td class="num">2,140</td></tr>
+          </tbody>
+        </table>
+
+        <p>The last one is the only tool that <em>writes</em> anything. It writes a draft into a scratch table tied to the user, never into the canonical deal record. Reversibility is the cheapest form of safety.</p>
+
+        <h2 id="caught"><span class="h-num">§ 05</span>The moment it caught something</h2>
+
+        <p>On the second day, I asked Claude to underwrite a 184-unit BFR community outside Tucson that I&rsquo;d already memo&rsquo;d the previous week. I wanted to see if it would arrive at a number near mine.</p>
+
+        <p>It did — within 30 basis points on yield-on-cost. But then, unprompted, it noted that two of the three permit comparables I&rsquo;d cited had been amended in March to a lower density, which would tighten our per-unit basis assumption by about $3,400. I&rsquo;d read those permits in February. I hadn&rsquo;t re-checked them.</p>
+
+        <p>Was the model being clever? Not really. It called <code>recent_permits</code>, saw the amendment dates, and noticed they were after the date in my memo footer. A junior analyst with the same instructions would have caught the same thing. The point isn&rsquo;t that the model is smart; it&rsquo;s that the joining cost dropped to zero.</p>
+
+        <h2 id="next"><span class="h-num">§ 06</span>What I&rsquo;m doing next</h2>
+
+        <p>Three things, in order:</p>
+
+        <ol>
+          <li>Adding a <code>flag_for_human</code> tool so the model has somewhere to put things it isn&rsquo;t sure about — instead of guessing or quietly omitting them.</li>
+          <li>Logging every tool call through <a href="project.html">llm_obs</a> so I can see, after a month, which tools are pulling weight and which are dead code.</li>
+          <li>Writing the &ldquo;<a href="#">how to install this if you&rsquo;re on our team</a>&rdquo; doc, which is going to be the difference between a weekend experiment and a thing two other people use.</li>
+        </ol>
+
+        <p>If you&rsquo;re building something similar — particularly the auth-pass-through piece — I&rsquo;d love to compare notes. <a href="mailto:hello@hermanchanai.com">Email&rsquo;s on the homepage</a>.</p>
+      </div>
+
+      <!-- right: marginalia -->
+      <aside class="marginalia" aria-label="Marginalia">
+        <div class="sidenote">
+          <span class="sidenote__num">N.B. 01</span>
+          The Anthropic docs are the right starting place; I&rsquo;m skipping the protocol explainer on purpose.
+        </div>
+        <div class="sidenote">
+          <span class="sidenote__num">N.B. 02</span>
+          &ldquo;The schema is the prompt&rdquo; is the one thing I&rsquo;d tattoo on someone before they wrote their first tool.
+        </div>
+        <div class="sidenote">
+          <span class="sidenote__num">N.B. 03</span>
+          Row-level security is the unglamorous adult in the room — let Postgres do the access control, not your prompt.
+        </div>
+        <div class="sidenote">
+          <span class="sidenote__num">N.B. 04</span>
+          Latencies are p50 on a Railway hobby instance with one warm worker; YMMV.
+        </div>
+      </aside>
+
+    </div>
+
+    <div class="post-end">
+      <span>End · <span class="num">~1,840</span> words</span>
+      <span class="ornament">⁂</span>
+      <span>Filed 12 May 2026</span>
+    </div>
+  </article>
+
+  <!-- further reading -->
+  <section class="further">
+    <div class="section-title">
+      <span class="section-title__hash">§</span>
+      <span class="section-title__label">Continue reading</span>
+      <span class="section-title__hint"><a href="home.html" style="color:inherit;border-bottom:1px solid var(--rule);">All posts →</a></span>
+    </div>
+    <ol class="further-list">
+      <li>
+        <span class="n num">005</span>
+        <span class="t"><a href="#">Underwriting BFR deals with Haiku</a></span>
+        <span class="d">28 Apr 2026 · AI · CRE</span>
+      </li>
+      <li>
+        <span class="n num">004</span>
+        <span class="t"><a href="#">A pragmatic taxonomy of LLM &ldquo;observability&rdquo;</a></span>
+        <span class="d">09 Apr 2026 · AI · Tooling</span>
+      </li>
+      <li>
+        <span class="n num">003</span>
+        <span class="t"><a href="#">Reading a county permit feed for fun and pipeline</a></span>
+        <span class="d">22 Mar 2026 · CRE · Pipeline</span>
+      </li>
+    </ol>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div>
+      <h4>Elsewhere</h4>
+      <ul>
+        <li><span>GitHub</span><span class="k">@hermanchan</span></li>
+        <li><span>LinkedIn</span><span class="k">/in/hermanchan</span></li>
+        <li><span>Email</span><span class="k">hello@…</span></li>
+        <li><span>RSS</span><span class="k">/rss.xml</span></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Reading recently</h4>
+      <ul>
+        <li><span>Designing Data-Intensive Apps</span><span class="k">Kleppmann</span></li>
+        <li><span>The Great Demographic Reversal</span><span class="k">Goodhart</span></li>
+        <li><span>Anthropic — Constitutional AI</span><span class="k">paper</span></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Colophon</h4>
+      <ul>
+        <li><span>Type</span><span class="k">Source Serif 4</span></li>
+        <li><span>UI</span><span class="k">IBM Plex Sans</span></li>
+        <li><span>Mono</span><span class="k">JetBrains Mono</span></li>
+        <li><span>Built with</span><span class="k">Astro · plain CSS</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="site-footer__bottom">
+    <span>© <span class="num">2024–2026</span> Herman Chan · CC&nbsp;BY 4.0</span>
+    <span>hermanchanai.com</span>
+  </div>
+</footer>
+
+</body>
+</html>

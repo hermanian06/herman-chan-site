@@ -1,33 +1,89 @@
 ---
 interface Props {
   href: string;
+  num: number;
   title: string;
-  pubDate: Date;
   description?: string;
+  pubDate: Date;
+  tag?: string;
+  tagClass?: "ai" | "cre" | "notes";
 }
 
-const { href, title, pubDate, description } = Astro.props;
+const { href, num, title, description, pubDate, tag, tagClass } = Astro.props;
 
-const dateFmt = pubDate.toLocaleDateString("en-US", {
-  year: "numeric",
-  month: "short",
-  day: "numeric",
-});
+const numStr = String(num).padStart(3, "0");
+/* UTC accessors: frontmatter date "2026-05-22" parses to UTC midnight;
+   local-time accessors would shift the calendar day west of UTC. */
+const y = pubDate.getUTCFullYear();
+const m = String(pubDate.getUTCMonth() + 1).padStart(2, "0");
+const d = String(pubDate.getUTCDate()).padStart(2, "0");
+const dateOut = `${y} · ${m} · ${d}`;
+const tagClassName = tag && tagClass ? `tag tag--${tagClass}` : tag ? "tag" : "";
 ---
 
-<a href={href} class="group block py-5 border-b border-rule no-underline">
-  <time
-    datetime={pubDate.toISOString()}
-    class="text-xs uppercase tracking-wide text-ink-faint"
-  >
-    {dateFmt}
-  </time>
-  <h3 class="text-base font-medium mt-1 text-ink group-hover:underline decoration-1 underline-offset-2">
-    {title}
-  </h3>
-  {
-    description && (
-      <p class="text-sm text-ink-muted mt-1">{description}</p>
-    )
+<li class="post-row">
+  <div class="post-row__num">{numStr}</div>
+  <div>
+    <h3 class="post-row__title"><a href={href}>{title}</a></h3>
+    {description && <p class="post-row__dek">{description}</p>}
+  </div>
+  <div class="post-row__tag">{tag && <span class={tagClassName}>{tag}</span>}</div>
+  <div class="post-row__date num">{dateOut}</div>
+</li>
+
+<style>
+  .post-row {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 7fr) minmax(0, 2fr) 88px;
+    gap: var(--s-4);
+    padding: var(--s-5) 0;
+    border-bottom: 1px solid var(--rule-soft);
+    align-items: baseline;
+    transition: background 120ms ease;
   }
-</a>
+  .post-row:hover { background: var(--accent-soft); }
+  .post-row__num {
+    font-family: var(--mono);
+    font-size: var(--t-13);
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+  }
+  .post-row__title {
+    font-family: var(--serif);
+    font-size: var(--t-22);
+    line-height: 1.25;
+    font-weight: 500;
+    color: var(--fg);
+    margin: 0 0 6px;
+    letter-spacing: -0.01em;
+  }
+  .post-row__title a { color: inherit; }
+  .post-row__title a:hover { color: var(--accent); text-decoration: none; }
+  .post-row__dek {
+    font-family: var(--serif);
+    font-size: var(--t-15);
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.5;
+    max-width: 60ch;
+  }
+  .post-row__tag { text-align: left; }
+  .post-row__date {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    color: var(--muted);
+    text-align: right;
+    letter-spacing: 0.02em;
+  }
+
+  @media (max-width: 860px) {
+    .post-row { grid-template-columns: 36px 1fr; gap: var(--s-3); }
+    .post-row__tag,
+    .post-row__date {
+      grid-column: 2 / -1;
+      text-align: left;
+      padding-top: 6px;
+    }
+  }
+</style>

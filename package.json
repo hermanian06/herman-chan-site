@@ -13,9 +13,6 @@
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.18",
-    "@tailwindcss/typography": "^0.5.19",
-    "@tailwindcss/vite": "^4.3.0",
-    "astro": "^6.3.3",
-    "tailwindcss": "^4.3.0"
+    "astro": "^6.3.3"
   }
 }

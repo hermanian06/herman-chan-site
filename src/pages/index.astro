@@ -1,77 +1,247 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import ProjectCard from "../components/ProjectCard.astro";
 import PostCard from "../components/PostCard.astro";
-import { getCollection, getEntry, render } from "astro:content";
+import ProjectCard from "../components/ProjectCard.astro";
+import { getCollection } from "astro:content";
 
 const allPosts = (await getCollection("posts", ({ data }) => !data.draft)).sort(
-  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
+  (a, b) => a.data.pubDate.getTime() - b.data.pubDate.getTime(),
 );
+/* Posts are numbered chronologically from oldest — first post is N° 001. */
+const numberedPosts = allPosts.map((post, idx) => ({ post, num: idx + 1 }));
+const recentPosts = [...numberedPosts]
+  .sort((a, b) => b.post.data.pubDate.getTime() - a.post.data.pubDate.getTime())
+  .slice(0, 6);
 
 const allProjects = (await getCollection("projects")).sort(
   (a, b) => a.data.order - b.data.order,
 );
-
-const aboutPost = await getEntry("posts", "what-this-site-is");
-const aboutRender = aboutPost ? await render(aboutPost) : null;
-const AboutContent = aboutRender?.Content;
-
-const recentPosts = allPosts
-  .filter((p) => p.id !== "what-this-site-is")
-  .slice(0, 3);
 ---
 
 <Layout>
-  <article class="prose prose-base max-w-none">
-    {AboutContent && <AboutContent />}
-  </article>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero__grid">
+      <div>
+        <span class="kicker">N° 001 &nbsp;/&nbsp; Index</span>
+        <h1 class="hero__title">
+          I <em>build LLM tools</em> — for my own real-estate underwriting work.
+        </h1>
+        <p class="hero__lede">
+          I work in acquisitions at Haven Realty Capital, underwriting SFR and build-for-rent across the Sunbelt. The unusual part: I scope the problem, prompt-engineer the workflows, and direct Claude through the build of the AI tooling we use internally — Claude Code skills, MCP servers, agent workflows. A one-page deal summary that used to take two hours now takes fifteen minutes.
+        </p>
+      </div>
 
-  <section id="projects" class="mt-20 scroll-mt-8">
-    <h2
-      class="text-xs font-medium uppercase tracking-widest text-ink-faint mb-1"
-    >
-      Projects
-    </h2>
-    <div>
-      {
-        allProjects.map((p) => (
+      <aside class="hero__aside" aria-label="At a glance">
+        <dl>
+          <dt>Role</dt><dd>Acquisitions + AI tooling, Haven Realty Capital</dd>
+          <dt>Focus</dt><dd>Claude · MCP · agentic workflows · SFR + BFR underwriting</dd>
+          <dt>Stack</dt><dd>Python · Anthropic API · Supabase · Railway</dd>
+          <dt>Writing</dt><dd>Builder notes, shipping as ideas land</dd>
+          <dt>Contact</dt><dd><a href="https://www.linkedin.com/in/hermanchanai/">LinkedIn</a> · <a href="https://github.com/hermanian06">GitHub</a></dd>
+        </dl>
+      </aside>
+
+      <div class="colophon">
+        <span>§ Established <span class="num">2026</span></span>
+        <span class="line"></span>
+        <span>Set in Source Serif &amp; JetBrains Mono</span>
+        <span class="line"></span>
+        <span>Hand-built, no analytics</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- WRITING -->
+  {recentPosts.length > 0 && (
+    <section class="section">
+      <div class="wrap">
+        <div class="section-title">
+          <span class="section-title__hash">§ 02</span>
+          <span class="section-title__label">Writing</span>
+          <span class="section-title__hint">
+            Builder notes on the AI tools I run on real deals
+            {allPosts.length > 6 && (
+              <> · <a href="/posts/">View all {allPosts.length} →</a></>
+            )}
+          </span>
+        </div>
+
+        <ol class="posts">
+          {recentPosts.map(({ post, num }) => (
+            <PostCard
+              href={`/posts/${post.id}/`}
+              num={num}
+              title={post.data.title}
+              description={post.data.description}
+              pubDate={post.data.pubDate}
+              tag={post.data.tag}
+              tagClass={post.data.tagClass}
+            />
+          ))}
+        </ol>
+      </div>
+    </section>
+  )}
+
+  <!-- PROJECTS -->
+  <section id="projects" class="section">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="section-title__hash">§ 03</span>
+        <span class="section-title__label">Projects</span>
+        <span class="section-title__hint">Internal tools shipped to teammates</span>
+      </div>
+
+      <div class="projects">
+        {allProjects.map((p) => (
           <ProjectCard
             href={`/projects/${p.id}/`}
             title={p.data.title}
             blurb={p.data.blurb}
+            category={p.data.category}
+            status={p.data.status}
+            statusClass={p.data.statusClass}
+            stack={p.data.stack}
+            since={p.data.since}
           />
-        ))
-      }
+        ))}
+      </div>
+
+      <div class="endplate">
+        <span>End of index · <span class="num">{allProjects.length}</span> projects</span>
+        <span><a href="/rss.xml">Subscribe via RSS →</a></span>
+      </div>
     </div>
   </section>
-
-  {
-    recentPosts.length > 0 && (
-      <section class="mt-20">
-        <div class="flex items-baseline justify-between mb-1">
-          <h2 class="text-xs font-medium uppercase tracking-widest text-ink-faint">
-            Recent posts
-          </h2>
-          {allPosts.length > 4 && (
-            <a
-              href="/posts/"
-              class="text-sm text-ink-muted no-underline hover:text-ink"
-            >
-              Archive →
-            </a>
-          )}
-        </div>
-        <div>
-          {recentPosts.map((post) => (
-            <PostCard
-              href={`/posts/${post.id}/`}
-              title={post.data.title}
-              pubDate={post.data.pubDate}
-              description={post.data.description}
-            />
-          ))}
-        </div>
-      </section>
-    )
-  }
 </Layout>
+
+<style>
+  .hero {
+    padding: clamp(48px, 9vw, 96px) 0 clamp(40px, 7vw, 72px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(32px, 6vw, 80px);
+    align-items: end;
+  }
+  .hero__title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(40px, 7.2vw, 72px);
+    line-height: 1.02;
+    letter-spacing: -0.022em;
+    margin: var(--s-3) 0 var(--s-5);
+    text-wrap: balance;
+    color: var(--fg);
+  }
+  .hero__title em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent);
+  }
+  .hero__lede {
+    font-family: var(--serif);
+    font-size: clamp(17px, 1.6vw, 19px);
+    line-height: 1.55;
+    color: var(--fg-soft);
+    max-width: 52ch;
+    margin: 0;
+  }
+  .hero__aside {
+    border-left: 1px solid var(--rule);
+    padding-left: var(--s-5);
+    font-family: var(--sans);
+    font-size: var(--t-14);
+    color: var(--fg-soft);
+    display: grid;
+    gap: var(--s-3);
+    align-self: end;
+  }
+  .hero__aside dl {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    row-gap: 6px;
+    column-gap: var(--s-3);
+  }
+  .hero__aside dt {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .hero__aside dd { margin: 0; color: var(--fg-soft); }
+  .hero__aside dd a { color: var(--fg); border-bottom: 1px solid var(--rule); }
+  .hero__aside dd a:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .colophon {
+    grid-column: 1 / -1;
+    margin-top: var(--s-7);
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-4);
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .colophon .line { flex: 1; height: 1px; background: var(--rule); }
+
+  .section { padding: clamp(48px, 7vw, 80px) 0 0; }
+
+  /* Per-row + per-card styles live in PostCard.astro and ProjectCard.astro
+     respectively — Astro scopes <style> blocks to their own file's DOM. */
+  .posts {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--rule-soft);
+  }
+
+  .projects {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--rule-soft);
+    border: 1px solid var(--rule-soft);
+  }
+
+  .endplate {
+    margin-top: var(--s-7);
+    padding: var(--s-5) 0;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .endplate a { color: var(--fg-soft); border-bottom: 1px solid var(--rule); }
+  .endplate a:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    text-decoration: none;
+  }
+
+  @media (max-width: 860px) {
+    .hero__grid { grid-template-columns: 1fr; gap: var(--s-6); }
+    .hero__aside {
+      border-left: 0;
+      border-top: 1px solid var(--rule);
+      padding: var(--s-5) 0 0;
+    }
+    .projects { grid-template-columns: 1fr; }
+  }
+</style>

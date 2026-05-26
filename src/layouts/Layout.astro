@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import MetaStrip from "../components/MetaStrip.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 
@@ -37,9 +38,10 @@ const fullTitle = title && title !== siteTitle ? `${title} — ${siteTitle}` : s
     <meta name="twitter:card" content="summary" />
     <title>{fullTitle}</title>
   </head>
-  <body class="min-h-screen flex flex-col">
+  <body>
+    <MetaStrip />
     <Header />
-    <main class="flex-1 max-w-2xl w-full mx-auto px-6">
+    <main>
       <slot />
     </main>
     <Footer />

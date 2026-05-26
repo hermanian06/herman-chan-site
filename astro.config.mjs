@@ -1,13 +1,8 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 
-import tailwindcss from '@tailwindcss/vite';
-
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://herman-chan-site.netlify.app',
+  site: 'https://hermanchanai.com',
   trailingSlash: 'always',
-  vite: {
-    plugins: [tailwindcss()],
-  },
 });

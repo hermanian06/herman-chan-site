@@ -1,29 +1,24 @@
 ---
 const path = Astro.url.pathname;
-const isPosts = path.startsWith("/posts");
+const current = (href: string) => {
+  if (href === "/") return path === "/";
+  return path === href || path.startsWith(href);
+};
 ---
 
-<header class="max-w-2xl w-full mx-auto px-6 pt-10 pb-14">
-  <div class="flex items-baseline justify-between gap-6">
-    <a href="/" class="text-base font-medium text-ink no-underline">
-      Herman Chan
+<header class="site-header">
+  <div class="site-header__inner">
+    <a href="/" class="brand" aria-label="Herman Chan, home">
+      <span class="brand__mark">
+        Herman&nbsp;Chan<span class="glyph">·</span>
+      </span>
+      <span class="brand__sub">Acquisitions &amp; AI tooling</span>
     </a>
-    <nav class="flex gap-5 text-sm">
-      <a
-        href="/posts/"
-        class:list={[
-          "no-underline",
-          isPosts ? "text-ink" : "text-ink-muted hover:text-ink",
-        ]}
-      >
-        Posts
-      </a>
-      <a
-        href="/#projects"
-        class="no-underline text-ink-muted hover:text-ink"
-      >
-        Projects
-      </a>
+    <nav class="nav" aria-label="Primary">
+      <a href="/" aria-current={current("/") ? "page" : undefined}>Index</a>
+      <a href="/posts/" aria-current={current("/posts/") ? "page" : undefined}>Writing</a>
+      <a href="/projects/" aria-current={current("/projects/") ? "page" : undefined}>Projects</a>
+      <a href="/rss.xml" title="RSS feed">RSS</a>
     </nav>
   </div>
 </header>

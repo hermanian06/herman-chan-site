@@ -1,7 +1,7 @@
 ---
 title: MCP server for the off-market deal pipeline
 blurb: A Model Context Protocol server fronting the deal pipeline as a small set of read-only tools that Claude can call from claude.ai.
-order: 2.5
+order: 3
 status: In production
 statusClass: live
 role: Sole builder & operator

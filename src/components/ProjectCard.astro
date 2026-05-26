@@ -3,14 +3,116 @@ interface Props {
   href: string;
   title: string;
   blurb: string;
+  category?: string;
+  status?: string;
+  statusClass?: "live" | "beta" | "idle";
+  stack?: string[];
+  since?: string | number;
 }
 
-const { href, title, blurb } = Astro.props;
+const { href, title, blurb, category, status, statusClass, stack, since } = Astro.props;
+
+const statusName = statusClass ? `project-card__status ${statusClass}` : "project-card__status";
+const stackTrimmed = (stack ?? []).slice(0, 3);
 ---
 
-<a href={href} class="group block py-6 border-b border-rule no-underline">
-  <h3 class="text-base font-medium text-ink group-hover:underline decoration-1 underline-offset-2">
-    {title}
-  </h3>
-  <p class="text-sm text-ink-muted mt-1.5 leading-relaxed">{blurb}</p>
-</a>
+<article class="project-card">
+  <div class="project-card__head">
+    {category ? (
+      <span class="project-card__category">{category}</span>
+    ) : (
+      <span class="project-card__category">&nbsp;</span>
+    )}
+    {status && (
+      <span class={statusName}>
+        <span class="dot"></span>{status}
+      </span>
+    )}
+  </div>
+  <h3 class="project-card__title"><a href={href}>{title}</a></h3>
+  <p class="project-card__desc">{blurb}</p>
+  <div class="project-card__meta">
+    {stackTrimmed.map((s, i) => (
+      <>
+        {i > 0 && <span class="project-card__sep" aria-hidden="true">·</span>}
+        <span class="project-card__stack-item"><b>{s}</b></span>
+      </>
+    ))}
+    {since && <span class="project-card__since">since <span class="num">{since}</span></span>}
+  </div>
+</article>
+
+<style>
+  .project-card {
+    background: var(--bg);
+    padding: var(--s-6);
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    gap: var(--s-4);
+    transition: background 120ms ease;
+  }
+  .project-card:hover { background: var(--bg-alt); }
+  .project-card__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .project-card__category { color: var(--muted); font-weight: 500; }
+  .project-card__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .project-card__status .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--muted-2);
+  }
+  .project-card__status.live .dot { background: #2c7a3a; }
+  .project-card__status.beta .dot { background: var(--accent); }
+  .project-card__title {
+    font-family: var(--serif);
+    font-size: var(--t-26);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0;
+    color: var(--fg);
+  }
+  .project-card__title a { color: inherit; }
+  .project-card__title a:hover { color: var(--accent); text-decoration: none; }
+  .project-card__desc {
+    font-family: var(--serif);
+    font-size: var(--t-15);
+    line-height: 1.5;
+    color: var(--fg-soft);
+    margin: 0;
+    max-width: 50ch;
+  }
+  .project-card__meta {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-3);
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    padding-top: var(--s-3);
+    border-top: 1px dashed var(--rule);
+    flex-wrap: wrap;
+  }
+  .project-card__stack-item b {
+    color: var(--fg-soft);
+    font-weight: 500;
+  }
+  .project-card__sep {
+    color: var(--rule);
+    user-select: none;
+  }
+  .project-card__since { margin-left: auto; }
+</style>

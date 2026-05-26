@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Design tokens — Herman Chan reskin</title>
+<link rel="stylesheet" href="shared.css" />
+<style>
+  .tokens-head {
+    padding: clamp(48px, 8vw, 96px) 0 clamp(32px, 5vw, 56px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .tokens-head h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(40px, 6vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: var(--s-4) 0 var(--s-4);
+    text-wrap: balance;
+  }
+  .tokens-head h1 em { font-style: italic; color: var(--accent); font-weight: 400; }
+  .tokens-head p {
+    font-family: var(--serif);
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--muted);
+    max-width: 60ch;
+    margin: 0;
+  }
+
+  .tok-section {
+    padding: clamp(48px, 7vw, 80px) 0 0;
+  }
+
+  /* color swatches */
+  .colors {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--rule-soft);
+    border: 1px solid var(--rule-soft);
+  }
+  .swatch {
+    background: var(--bg);
+    padding: var(--s-4);
+    display: grid;
+    gap: var(--s-3);
+    min-height: 200px;
+    grid-template-rows: 1fr auto;
+  }
+  .swatch__chip {
+    border: 1px solid var(--rule-soft);
+  }
+  .swatch__meta {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    color: var(--muted);
+    display: grid;
+    gap: 4px;
+  }
+  .swatch__name {
+    font-family: var(--mono);
+    font-size: var(--t-13);
+    color: var(--fg);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .swatch__hex { color: var(--fg-soft); letter-spacing: 0.02em; }
+  .swatch__role { color: var(--muted); text-transform: none; letter-spacing: 0; line-height: 1.4; }
+
+  /* type specimens */
+  .specimens { display: grid; gap: 1px; background: var(--rule-soft); border: 1px solid var(--rule-soft); }
+  .specimen {
+    background: var(--bg);
+    padding: var(--s-5);
+    display: grid;
+    grid-template-columns: 200px 1fr 220px;
+    gap: var(--s-5);
+    align-items: baseline;
+  }
+  .specimen__name {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .specimen__name b { display: block; color: var(--accent); font-weight: 500; margin-bottom: 4px; }
+  .specimen__sample { color: var(--fg); }
+  .specimen__attrs {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    color: var(--muted);
+    display: grid;
+    gap: 2px;
+    text-align: right;
+  }
+
+  .spc-display { font-family: var(--serif); font-size: 52px; line-height: 1.05; font-weight: 400; letter-spacing: -0.022em; }
+  .spc-h1      { font-family: var(--serif); font-size: 40px; line-height: 1.1; font-weight: 500; letter-spacing: -0.02em; }
+  .spc-h2      { font-family: var(--serif); font-size: 28px; line-height: 1.2; font-weight: 500; }
+  .spc-h3      { font-family: var(--serif); font-size: 22px; line-height: 1.25; font-weight: 600; }
+  .spc-lede    { font-family: var(--serif); font-size: 22px; line-height: 1.45; font-style: italic; font-weight: 300; color: var(--muted); }
+  .spc-body    { font-family: var(--serif); font-size: 19px; line-height: 1.65; }
+  .spc-small   { font-family: var(--serif); font-size: 15px; line-height: 1.5; color: var(--fg-soft); }
+  .spc-ui      { font-family: var(--sans); font-size: 14px; line-height: 1.4; }
+  .spc-meta    { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+  .spc-mono    { font-family: var(--mono); font-size: 14px; line-height: 1.55; color: var(--fg); }
+
+  /* spacing scale */
+  .spacing {
+    display: grid;
+    gap: var(--s-3);
+    font-family: var(--mono);
+    font-size: var(--t-13);
+    color: var(--muted);
+  }
+  .spacing__row {
+    display: grid;
+    grid-template-columns: 96px 96px 1fr;
+    gap: var(--s-4);
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .spacing__name { color: var(--accent); }
+  .spacing__val  { color: var(--fg); }
+  .spacing__bar  { height: 16px; background: var(--accent); opacity: 0.7; }
+
+  /* component anatomy panels */
+  .anatomy {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--s-5);
+  }
+  .ana-card {
+    border: 1px solid var(--rule);
+    background: var(--bg);
+    padding: var(--s-5);
+    display: grid;
+    gap: var(--s-4);
+  }
+  .ana-card h3 {
+    font-family: var(--serif);
+    font-size: var(--t-22);
+    font-weight: 500;
+    margin: 0;
+    color: var(--fg);
+  }
+  .ana-card .lbl {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+  }
+  .ana-card ul {
+    margin: 0;
+    padding-left: 18px;
+    font-family: var(--sans);
+    font-size: var(--t-14);
+    color: var(--fg-soft);
+    display: grid;
+    gap: 6px;
+    line-height: 1.5;
+  }
+  .ana-card ul code {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: var(--code-bg);
+    padding: 1px 6px;
+    border: 1px solid var(--rule-soft);
+    border-radius: 2px;
+    color: var(--fg);
+  }
+
+  /* custom-css block */
+  .custom-css {
+    background: var(--code-bg);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    padding: var(--s-5);
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--fg);
+    white-space: pre;
+    overflow-x: auto;
+  }
+  .custom-css .c { color: var(--muted); font-style: italic; }
+  .custom-css .k { color: var(--accent); }
+
+  @media (max-width: 900px) {
+    .colors { grid-template-columns: repeat(2, 1fr); }
+    .specimen { grid-template-columns: 1fr; gap: var(--s-3); }
+    .specimen__attrs { text-align: left; }
+    .anatomy { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body data-screen-label="Tokens">
+
+<div class="meta-strip">
+  <div class="meta-strip__inner">
+    <span class="meta-strip__pair"><span class="meta-strip__dot"></span><b>Currently</b>&nbsp;Underwriting BFR in Phoenix &amp; Atlanta</span>
+    <span class="meta-strip__pair"><b>Loc</b>&nbsp;Los Angeles, CA</span>
+    <span class="meta-strip__spacer"></span>
+    <span class="meta-strip__pair"><b>Doc</b>&nbsp;Design tokens · v 1.0</span>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a href="home.html" class="brand">
+      <span class="brand__mark">Herman&nbsp;Chan<span class="glyph">·</span></span>
+      <span class="brand__sub">Acquisitions &amp; AI tooling</span>
+    </a>
+    <nav class="nav" aria-label="Primary">
+      <a href="home.html">Index</a>
+      <a href="post.html">Writing</a>
+      <a href="project.html">Projects</a>
+      <a href="#">Now</a>
+      <a href="#">RSS</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="tokens-head">
+    <div class="wrap">
+      <span class="kicker">Handoff · for engineer rebuild</span>
+      <h1>Design <em>tokens</em> &amp; component anatomy</h1>
+      <p>Everything an engineer needs to rebuild the reskin in Astro + plain CSS, in one page. Hex values, type scale, spacing scale, and the few small bits of custom CSS worth preserving.</p>
+    </div>
+  </section>
+
+  <!-- COLORS -->
+  <section class="tok-section">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="section-title__hash">§ 01</span>
+        <span class="section-title__label">Color palette</span>
+        <span class="section-title__hint">Warm ivory paper · ink · single ink-blue accent</span>
+      </div>
+
+      <div class="colors">
+        <div class="swatch">
+          <div class="swatch__chip" style="background:#f6f2e8;"></div>
+          <div class="swatch__meta">
+            <span class="swatch__name">bg</span>
+            <span class="swatch__hex">#F6F2E8</span>
+            <span class="swatch__role">Page background. Warm ivory.</span>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__chip" style="background:#ece5d3;"></div>
+          <div class="swatch__meta">
+            <span class="swatch__name">bg-alt</span>
+            <span class="swatch__hex">#ECE5D3</span>
+            <span class="swatch__role">Code blocks, spec-sheet headers, hover.</span>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__chip" style="background:#e5dcc4;"></div>
+          <div class="swatch__meta">
+            <span class="swatch__name">bg-deep</span>
+            <span class="swatch__hex">#E5DCC4</span>
+            <span class="swatch__role">Optional banded sections.</span>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__chip" style="background:#d5cbb6;"></div>
+          <div class="swatch__meta">
+            <span class="swatch__name">rule</span>
+            <span class="swatch__hex">#D5CBB6</span>
+            <span class="swatch__role">Hairlines, dividers, table borders.</span>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__chip" style="background:#e3dcc9;"></div>
+          <div class="swatch__meta">
+            <span class="swatch__name">rule-soft</span>
+            <span class="swatch__hex">#E3DCC9</span>
+            <span class="swatch__role">Row dividers in lists.</span>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__chip" style="background:#948a7c;"></div>
+          <div class="swatch__meta">
+            <span class="swatch__name">muted-2</span>
+            <span class="swatch__hex">#948A7C</span>
+            <span class="swatch__role">Tertiary text, disabled.</span>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__chip" style="background:#6e655a;"></div>
+          <div class="swatch__meta">
+            <span class="swatch__name">muted</span>
+            <span class="swatch__hex">#6E655A</span>
+            <span class="swatch__role">Secondary text, meta, captions. 4.7:1 on bg.</span>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__chip" style="background:#2c2924;"></div>
+          <div class="swatch__meta">
+            <span class="swatch__name">fg-soft</span>
+            <span class="swatch__hex">#2C2924</span>
+            <span class="swatch__role">Body copy. 11.9:1 on bg.</span>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__chip" style="background:#161412;"></div>
+          <div class="swatch__meta">
+            <span class="swatch__name">fg</span>
+            <span class="swatch__hex">#161412</span>
+            <span class="swatch__role">Headlines, primary text. 15.3:1 on bg.</span>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__chip" style="background:#1c3d6e;"></div>
+          <div class="swatch__meta">
+            <span class="swatch__name">accent</span>
+            <span class="swatch__hex">#1C3D6E</span>
+            <span class="swatch__role">Links, italic glyph, accent rules. 9.7:1 on bg.</span>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__chip" style="background:#14304f;"></div>
+          <div class="swatch__meta">
+            <span class="swatch__name">accent-ink</span>
+            <span class="swatch__hex">#14304F</span>
+            <span class="swatch__role">Hover &amp; pressed for accent.</span>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__chip" style="background:rgba(28,61,110,0.08); border:1px dashed var(--rule);"></div>
+          <div class="swatch__meta">
+            <span class="swatch__name">accent-soft</span>
+            <span class="swatch__hex">rgba(28,61,110,.08)</span>
+            <span class="swatch__role">Row hover, underline base.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TYPE -->
+  <section class="tok-section">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="section-title__hash">§ 02</span>
+        <span class="section-title__label">Type scale</span>
+        <span class="section-title__hint">Source Serif 4 · IBM Plex Sans · JetBrains Mono · all Google Fonts</span>
+      </div>
+
+      <div class="specimens">
+        <div class="specimen">
+          <div class="specimen__name"><b>display</b>Hero, page title</div>
+          <div class="specimen__sample spc-display">Hg 72&nbsp;/&nbsp;48</div>
+          <div class="specimen__attrs">
+            <span>Source Serif 4</span>
+            <span>72/52px · 1.05</span>
+            <span>weight 400 · tracking −0.022em</span>
+          </div>
+        </div>
+        <div class="specimen">
+          <div class="specimen__name"><b>h1</b>Article title</div>
+          <div class="specimen__sample spc-h1">Hg The work of joining</div>
+          <div class="specimen__attrs">
+            <span>Source Serif 4</span>
+            <span>40px · 1.1</span>
+            <span>weight 500 · tracking −0.02em</span>
+          </div>
+        </div>
+        <div class="specimen">
+          <div class="specimen__name"><b>h2</b>Section</div>
+          <div class="specimen__sample spc-h2">§ 03 Designing the five tools</div>
+          <div class="specimen__attrs">
+            <span>Source Serif 4</span>
+            <span>28px · 1.2</span>
+            <span>weight 500</span>
+          </div>
+        </div>
+        <div class="specimen">
+          <div class="specimen__name"><b>h3</b>Sub-heading</div>
+          <div class="specimen__sample spc-h3">Hg Reversibility is cheap</div>
+          <div class="specimen__attrs">
+            <span>Source Serif 4</span>
+            <span>22px · 1.25</span>
+            <span>weight 600</span>
+          </div>
+        </div>
+        <div class="specimen">
+          <div class="specimen__name"><b>lede</b>Article dek</div>
+          <div class="specimen__sample spc-lede">Italic · used for deks &amp; pull quotes.</div>
+          <div class="specimen__attrs">
+            <span>Source Serif 4 italic</span>
+            <span>22px · 1.45</span>
+            <span>weight 300</span>
+          </div>
+        </div>
+        <div class="specimen">
+          <div class="specimen__name"><b>body</b>Long-form prose</div>
+          <div class="specimen__sample spc-body">The schema you expose to the model <em>is</em> the schema of the conversation. Measure ~64ch.</div>
+          <div class="specimen__attrs">
+            <span>Source Serif 4</span>
+            <span>19px · 1.65</span>
+            <span>weight 400</span>
+          </div>
+        </div>
+        <div class="specimen">
+          <div class="specimen__name"><b>small</b>Cards, secondary prose</div>
+          <div class="specimen__sample spc-small">Card description copy, list deks, footnotes.</div>
+          <div class="specimen__attrs">
+            <span>Source Serif 4</span>
+            <span>15px · 1.5</span>
+            <span>weight 400</span>
+          </div>
+        </div>
+        <div class="specimen">
+          <div class="specimen__name"><b>ui</b>Forms, footer, sidenotes</div>
+          <div class="specimen__sample spc-ui">IBM Plex Sans, used sparingly for UI text.</div>
+          <div class="specimen__attrs">
+            <span>IBM Plex Sans</span>
+            <span>14px · 1.4</span>
+            <span>weight 400/500</span>
+          </div>
+        </div>
+        <div class="specimen">
+          <div class="specimen__name"><b>meta</b>Kickers, nav, tags</div>
+          <div class="specimen__sample spc-meta">§ 04 / DESIGNING THE FIVE TOOLS</div>
+          <div class="specimen__attrs">
+            <span>JetBrains Mono</span>
+            <span>12px · 1.0</span>
+            <span>weight 500 · uppercase · +0.10em</span>
+          </div>
+        </div>
+        <div class="specimen">
+          <div class="specimen__name"><b>mono</b>Code, numerals</div>
+          <div class="specimen__sample spc-mono">2026-05-12&nbsp;&nbsp;app.run() &nbsp; v0.4.1</div>
+          <div class="specimen__attrs">
+            <span>JetBrains Mono</span>
+            <span>13–15px · 1.55</span>
+            <span>tabular nums</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPACING -->
+  <section class="tok-section">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="section-title__hash">§ 03</span>
+        <span class="section-title__label">Spacing scale</span>
+        <span class="section-title__hint">4px base · use only these · no half-values</span>
+      </div>
+
+      <div class="spacing">
+        <div class="spacing__row"><span class="spacing__name">--s-1</span><span class="spacing__val">4 px</span><span class="spacing__bar" style="width:4px;"></span></div>
+        <div class="spacing__row"><span class="spacing__name">--s-2</span><span class="spacing__val">8 px</span><span class="spacing__bar" style="width:8px;"></span></div>
+        <div class="spacing__row"><span class="spacing__name">--s-3</span><span class="spacing__val">12 px</span><span class="spacing__bar" style="width:12px;"></span></div>
+        <div class="spacing__row"><span class="spacing__name">--s-4</span><span class="spacing__val">16 px</span><span class="spacing__bar" style="width:16px;"></span></div>
+        <div class="spacing__row"><span class="spacing__name">--s-5</span><span class="spacing__val">24 px</span><span class="spacing__bar" style="width:24px;"></span></div>
+        <div class="spacing__row"><span class="spacing__name">--s-6</span><span class="spacing__val">32 px</span><span class="spacing__bar" style="width:32px;"></span></div>
+        <div class="spacing__row"><span class="spacing__name">--s-7</span><span class="spacing__val">48 px</span><span class="spacing__bar" style="width:48px;"></span></div>
+        <div class="spacing__row"><span class="spacing__name">--s-8</span><span class="spacing__val">64 px</span><span class="spacing__bar" style="width:64px;"></span></div>
+        <div class="spacing__row"><span class="spacing__name">--s-9</span><span class="spacing__val">96 px</span><span class="spacing__bar" style="width:96px;"></span></div>
+        <div class="spacing__row"><span class="spacing__name">--s-10</span><span class="spacing__val">128 px</span><span class="spacing__bar" style="width:128px;"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPONENTS -->
+  <section class="tok-section">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="section-title__hash">§ 04</span>
+        <span class="section-title__label">Component anatomy</span>
+        <span class="section-title__hint">The three components that recur everywhere</span>
+      </div>
+
+      <div class="anatomy">
+        <div class="ana-card">
+          <span class="lbl">Header</span>
+          <h3>Brand + nav</h3>
+          <ul>
+            <li>Persistent <code>.meta-strip</code> above the header: mono 12px, dot+accent on left, updated date on right. Hairline below.</li>
+            <li>Brand: serif <code>600/22px</code> wordmark + italic <code>·</code> glyph in accent, with <code>brand__sub</code> mono caption.</li>
+            <li>Nav: JetBrains Mono <code>13px</code>, uppercase, <code>+0.04em</code>. Current page gets a 1px accent underline.</li>
+            <li>1px <code>--rule</code> bottom border; same gutter as content (<code>clamp(20px, 4vw, 48px)</code>).</li>
+          </ul>
+        </div>
+
+        <div class="ana-card">
+          <span class="lbl">Post / project row · card</span>
+          <h3>The numbered row</h3>
+          <ul>
+            <li>Grid: <code>48px (num) | 1fr (title+dek) | tag | 88px (date)</code>. Hover tints row with <code>--accent-soft</code>.</li>
+            <li>Index: mono 13px, tabular nums, muted. Always 3-digit (<code>001</code>, <code>P/01</code>).</li>
+            <li>Title: Source Serif 22px / weight 500 / <code>-0.01em</code>. Link inherits color; hover → accent.</li>
+            <li>Dek: serif 15px / muted / max <code>60ch</code>. Date is mono 12px tabular, right-aligned.</li>
+            <li>Project cards inherit the same idiom but render in a 2-col gutter-as-rule grid.</li>
+          </ul>
+        </div>
+
+        <div class="ana-card">
+          <span class="lbl">Footer</span>
+          <h3>3-column colophon</h3>
+          <ul>
+            <li>3 equal columns: Elsewhere, Reading recently, Colophon. Each header is mono 12px uppercase muted.</li>
+            <li>List items use a <code>name / k</code> pattern (label + tabular mono key) — same visual as the dl on the homepage hero.</li>
+            <li>Bottom strip: mono 12px, copyright left, domain right, separated by a soft hairline.</li>
+            <li>Stacks to a single column under 760px; preserve the <code>name/k</code> alignment.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CUSTOM CSS -->
+  <section class="tok-section">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="section-title__hash">§ 05</span>
+        <span class="section-title__label">Custom CSS worth preserving</span>
+        <span class="section-title__hint">Tiny details that hold the whole look together</span>
+      </div>
+
+<pre class="custom-css"><span class="c">/* selection — accent ink on cream, never default blue */</span>
+<span class="k">::selection</span> { background: #1c3d6e; color: #f6f2e8; }
+
+<span class="c">/* focus ring — accent, generous offset, soft radius */</span>
+<span class="k">:focus-visible</span> {
+  outline: 2px solid #1c3d6e;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+<span class="c">/* tabular numerals everywhere we list a number */</span>
+.num, time, td.num, .post-row__date, .changelog .v, .stat__num {
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+}
+
+<span class="c">/* drop cap on first paragraph of a post */</span>
+.post-body p.lede::first-letter {
+  font-family: "Source Serif 4", serif;
+  font-weight: 500;
+  font-size: 4.2em;
+  float: left;
+  line-height: 0.88;
+  padding: 4px 10px 0 0;
+  margin-top: 4px;
+  color: #1c3d6e;
+}
+
+<span class="c">/* faint paper grain — body bg, two radial tints */</span>
+body {
+  background:
+    radial-gradient(circle at 12% 18%, rgba(28,61,110,0.015) 0, transparent 60%),
+    radial-gradient(circle at 88% 82%, rgba(28,61,110,0.018) 0, transparent 55%),
+    #f6f2e8;
+}
+
+<span class="c">/* italic glyph in brand mark — the one decorative beat */</span>
+.brand__mark .glyph {
+  font-family: "Source Serif 4", serif;
+  font-style: italic;
+  font-weight: 400;
+  color: #1c3d6e;
+}
+
+<span class="c">/* enable Source Serif's stylistic set + oldstyle figures in prose */</span>
+html { font-feature-settings: "ss01", "onum", "kern"; }
+
+<span class="c">/* prefer-color-scheme: dark — not designed yet, see § Future */</span>
+</pre>
+    </div>
+  </section>
+
+  <!-- NOTES -->
+  <section class="tok-section" style="padding-bottom: var(--s-7);">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="section-title__hash">§ 06</span>
+        <span class="section-title__label">Implementation notes</span>
+        <span class="section-title__hint">For the rebuilding engineer</span>
+      </div>
+
+      <div class="anatomy">
+        <div class="ana-card">
+          <span class="lbl">Accessibility</span>
+          <h3>Contrast &amp; focus</h3>
+          <ul>
+            <li>All body/headline pairs against <code>--bg</code> exceed WCAG AAA (<code>11–15:1</code>).</li>
+            <li>Muted text (<code>#6E655A</code>) is AA at body sizes; never use it below 14px.</li>
+            <li>Focus ring is a real visible outline, not a box-shadow hack. Don&rsquo;t remove on click.</li>
+            <li>Nav current-page indicator is both color <em>and</em> underline (don&rsquo;t collapse to color alone).</li>
+          </ul>
+        </div>
+        <div class="ana-card">
+          <span class="lbl">Responsiveness</span>
+          <h3>Three breakpoints, no more</h3>
+          <ul>
+            <li><code>1080px</code> — post body collapses marginalia + toc into stacked rails.</li>
+            <li><code>860px</code> — homepage hero stacks; post-rows collapse meta under title.</li>
+            <li><code>560px</code> — stat strip stacks vertically; spec sheet labels narrow to 80px.</li>
+            <li>Otherwise: gutter and type scale are <code>clamp()</code>-driven and fluid.</li>
+          </ul>
+        </div>
+        <div class="ana-card">
+          <span class="lbl">Performance</span>
+          <h3>What to keep simple</h3>
+          <ul>
+            <li>Only the 3 font families. Don&rsquo;t add a fourth without a reason.</li>
+            <li>No JS required for any layout. Hovers + focus are CSS-only.</li>
+            <li>Subset Source Serif to Latin if shipping self-hosted (the optical-size axis is what we&rsquo;re paying for, keep it).</li>
+            <li>No animations beyond <code>color/background 120ms ease</code> on links and rows.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div>
+      <h4>Pages in this mockup</h4>
+      <ul>
+        <li><a href="home.html">Home / Index</a><span class="k">home.html</span></li>
+        <li><a href="post.html">Post detail</a><span class="k">post.html</span></li>
+        <li><a href="project.html">Project detail</a><span class="k">project.html</span></li>
+        <li><a href="tokens.html">Design tokens</a><span class="k">tokens.html</span></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Type</h4>
+      <ul>
+        <li><span>Display &amp; body</span><span class="k">Source Serif 4</span></li>
+        <li><span>UI</span><span class="k">IBM Plex Sans</span></li>
+        <li><span>Mono &amp; numerals</span><span class="k">JetBrains Mono</span></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Reskin meta</h4>
+      <ul>
+        <li><span>For</span><span class="k">hermanchanai.com</span></li>
+        <li><span>Built on</span><span class="k">Astro · plain CSS</span></li>
+        <li><span>Tokens version</span><span class="k">v 1.0</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="site-footer__bottom">
+    <span>© <span class="num">2026</span> Herman Chan · reskin mockups</span>
+    <span>hermanchanai.com</span>
+  </div>
+</footer>
+
+</body>
+</html>

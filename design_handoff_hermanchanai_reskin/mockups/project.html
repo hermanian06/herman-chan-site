@@ -1,0 +1,717 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>County Permit Pipeline — Herman Chan</title>
+<link rel="stylesheet" href="shared.css" />
+<style>
+  /* ---------- project page specific ---------- */
+
+  /* full-width header w/ dossier feel */
+  .proj-head {
+    border-bottom: 1px solid var(--rule);
+    padding: clamp(40px, 7vw, 80px) 0 clamp(32px, 5vw, 56px);
+    background: var(--bg);
+  }
+  .proj-head__rail {
+    display: flex;
+    gap: var(--s-3);
+    align-items: center;
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: var(--s-5);
+  }
+  .proj-head__rail .accent { color: var(--accent); }
+  .proj-head__rail .sep { color: var(--rule); }
+  .proj-head__rail a { color: var(--muted); }
+  .proj-head__rail a:hover { color: var(--accent); }
+
+  .proj-head__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+    gap: clamp(32px, 5vw, 64px);
+    align-items: start;
+  }
+  .proj-head__title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(40px, 6.4vw, 72px);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    margin: 0 0 var(--s-4);
+    text-wrap: balance;
+  }
+  .proj-head__title em { font-style: italic; color: var(--accent); font-weight: 400; }
+  .proj-head__dek {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(19px, 2vw, 22px);
+    line-height: 1.45;
+    color: var(--muted);
+    max-width: 52ch;
+    margin: 0;
+  }
+
+  /* spec sheet — right column tabular */
+  .specs {
+    border: 1px solid var(--rule);
+    background: var(--bg);
+  }
+  .specs__hd {
+    padding: var(--s-3) var(--s-4);
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg-alt);
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+  }
+  .specs__hd .id { color: var(--accent); font-weight: 500; }
+  .specs dl {
+    margin: 0;
+    padding: var(--s-4) var(--s-4) var(--s-3);
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    row-gap: 10px;
+    column-gap: var(--s-4);
+    font-family: var(--sans);
+    font-size: var(--t-14);
+  }
+  .specs dt {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    align-self: center;
+  }
+  .specs dd { margin: 0; color: var(--fg); }
+  .specs dd .pill {
+    display: inline-block;
+    padding: 2px 8px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    color: var(--fg-soft);
+    background: var(--bg-alt);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+  }
+  .specs dd .pill--accent {
+    color: var(--accent);
+    border-color: var(--accent-soft);
+    background: var(--accent-soft);
+  }
+  .specs__cta {
+    border-top: 1px solid var(--rule);
+    padding: var(--s-4);
+    display: grid;
+    gap: 8px;
+  }
+  .specs__cta a {
+    font-family: var(--mono);
+    font-size: var(--t-13);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--fg);
+    padding: 6px 0;
+    border-bottom: 1px dashed var(--rule);
+  }
+  .specs__cta a:last-child { border-bottom: 0; }
+  .specs__cta a:hover { color: var(--accent); text-decoration: none; }
+  .specs__cta a::after { content: "→"; color: var(--muted); }
+  .specs__cta a:hover::after { color: var(--accent); }
+
+  /* numbered stats strip */
+  .stats {
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg);
+  }
+  .stats__inner {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .stat {
+    padding: var(--s-5) var(--s-4);
+    border-right: 1px solid var(--rule-soft);
+  }
+  .stat:last-child { border-right: 0; }
+  .stat__num {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(34px, 4vw, 44px);
+    line-height: 1;
+    color: var(--fg);
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat__num small {
+    font-size: 0.45em;
+    color: var(--muted);
+    margin-left: 4px;
+    letter-spacing: 0;
+  }
+  .stat__label {
+    margin-top: 10px;
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+
+  /* body layout */
+  .proj-body {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: clamp(48px, 7vw, 80px) var(--gutter) 0;
+    display: grid;
+    grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+    gap: clamp(40px, 6vw, 80px);
+    align-items: start;
+  }
+
+  .prose {
+    font-family: var(--serif);
+    font-size: 19px;
+    line-height: 1.65;
+    color: var(--fg-soft);
+    max-width: 64ch;
+  }
+  .prose > * + * { margin-top: var(--s-5); }
+  .prose p { margin: 0; text-wrap: pretty; }
+  .prose h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 28px;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: var(--fg);
+    margin-top: var(--s-7) !important;
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-3);
+  }
+  .prose h2 .h-num {
+    font-family: var(--mono);
+    font-size: var(--t-13);
+    color: var(--accent);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .prose strong { color: var(--fg); }
+  .prose ul, .prose ol { padding-left: var(--s-5); margin: 0; display: grid; gap: var(--s-3); }
+  .prose li::marker { color: var(--muted); font-family: var(--mono); font-size: 0.85em; }
+  .prose a { color: var(--accent); border-bottom: 1px solid var(--accent-soft); }
+  .prose a:hover { border-color: var(--accent); text-decoration: none; }
+  .prose code {
+    font-family: var(--mono);
+    font-size: 0.88em;
+    background: var(--code-bg);
+    padding: 1px 6px;
+    border: 1px solid var(--rule-soft);
+    color: var(--fg);
+    border-radius: 2px;
+  }
+
+  /* diagram placeholder — typographic, no svg art */
+  .diagram {
+    margin: var(--s-6) 0 !important;
+    padding: var(--s-5);
+    border: 1px solid var(--rule);
+    background: var(--bg);
+    font-family: var(--mono);
+    font-size: var(--t-13);
+    line-height: 1.5;
+    color: var(--fg-soft);
+    position: relative;
+  }
+  .diagram__cap {
+    position: absolute;
+    top: -10px; left: var(--s-4);
+    background: var(--bg);
+    padding: 0 8px;
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .diagram__cap b { color: var(--accent); font-weight: 500; }
+  .diagram pre {
+    margin: 0;
+    color: var(--fg);
+    font-size: var(--t-13);
+    line-height: 1.65;
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  /* timeline */
+  .timeline {
+    list-style: none;
+    margin: var(--s-5) 0 0 !important;
+    padding: 0;
+    border-left: 1px solid var(--rule);
+  }
+  .timeline li {
+    padding: 0 0 var(--s-4) var(--s-5);
+    margin-left: 4px;
+    position: relative;
+  }
+  .timeline li::before {
+    content: "";
+    position: absolute;
+    left: -4px; top: 8px;
+    width: 7px; height: 7px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+  .timeline .when {
+    display: block;
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+  .timeline .what {
+    font-family: var(--serif);
+    font-size: var(--t-17);
+    color: var(--fg);
+    line-height: 1.45;
+  }
+
+  /* right rail / changelog */
+  .rail {
+    position: sticky;
+    top: var(--s-5);
+    display: grid;
+    gap: var(--s-6);
+  }
+  .rail-block h4 {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    font-weight: 500;
+    margin: 0 0 var(--s-3);
+    padding-bottom: var(--s-2);
+    border-bottom: 1px solid var(--rule);
+  }
+  .changelog {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--s-3);
+    font-family: var(--sans);
+    font-size: var(--t-13);
+    color: var(--fg-soft);
+    line-height: 1.45;
+  }
+  .changelog li { display: grid; grid-template-columns: 72px 1fr; gap: var(--s-3); }
+  .changelog .v {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    color: var(--accent);
+    letter-spacing: 0.04em;
+  }
+  .changelog .v small { display: block; color: var(--muted); }
+
+  .related {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--s-3);
+  }
+  .related li a {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: var(--s-3);
+    padding: var(--s-3) 0;
+    border-bottom: 1px solid var(--rule-soft);
+    color: var(--fg);
+    font-family: var(--serif);
+    font-size: var(--t-15);
+    line-height: 1.35;
+  }
+  .related li a:hover { color: var(--accent); text-decoration: none; }
+  .related li a .n {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    color: var(--muted);
+  }
+
+  /* next/prev */
+  .pager {
+    max-width: var(--max);
+    margin: var(--s-9) auto 0;
+    padding: 0 var(--gutter);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-5);
+    border-top: 1px solid var(--rule);
+    padding-top: var(--s-5);
+  }
+  .pager a {
+    display: grid;
+    gap: 6px;
+    padding: var(--s-4) 0;
+    color: var(--fg);
+  }
+  .pager a:hover { color: var(--accent); text-decoration: none; }
+  .pager a:last-child { text-align: right; }
+  .pager .pager__label {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .pager .pager__title {
+    font-family: var(--serif);
+    font-size: var(--t-22);
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  @media (max-width: 1000px) {
+    .proj-head__grid { grid-template-columns: 1fr; }
+    .stats__inner { grid-template-columns: repeat(2, 1fr); }
+    .stats .stat:nth-child(2) { border-right: 0; }
+    .proj-body { grid-template-columns: 1fr; }
+    .rail { position: static; margin-top: var(--s-6); }
+  }
+  @media (max-width: 560px) {
+    .stats__inner { grid-template-columns: 1fr; }
+    .stat { border-right: 0; border-bottom: 1px solid var(--rule-soft); }
+    .stat:last-child { border-bottom: 0; }
+    .specs dl { grid-template-columns: 80px 1fr; }
+  }
+</style>
+</head>
+<body data-screen-label="Project">
+
+<div class="meta-strip">
+  <div class="meta-strip__inner">
+    <span class="meta-strip__pair"><span class="meta-strip__dot"></span><b>Currently</b>&nbsp;Underwriting BFR in Phoenix &amp; Atlanta</span>
+    <span class="meta-strip__pair"><b>Loc</b>&nbsp;Los Angeles, CA</span>
+    <span class="meta-strip__spacer"></span>
+    <span class="meta-strip__pair"><b>Updated</b>&nbsp;<span class="num">2026-05-18</span></span>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a href="home.html" class="brand">
+      <span class="brand__mark">Herman&nbsp;Chan<span class="glyph">·</span></span>
+      <span class="brand__sub">Acquisitions &amp; AI tooling</span>
+    </a>
+    <nav class="nav" aria-label="Primary">
+      <a href="home.html">Index</a>
+      <a href="post.html">Writing</a>
+      <a href="project.html" aria-current="page">Projects</a>
+      <a href="#">Now</a>
+      <a href="#">RSS</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- HEAD -->
+  <section class="proj-head">
+    <div class="wrap">
+      <div class="proj-head__rail">
+        <span class="accent">P / 01</span>
+        <span class="sep">/</span>
+        <span><a href="home.html">Projects</a></span>
+        <span class="sep">/</span>
+        <span>Internal tool</span>
+        <span class="sep">/</span>
+        <span>Pipeline · data ingest</span>
+      </div>
+
+      <div class="proj-head__grid">
+        <div>
+          <h1 class="proj-head__title">County Permit <em>Pipeline</em></h1>
+          <p class="proj-head__dek">
+            A nightly ingest of building-permit data across eleven Sunbelt
+            counties, normalized into a single schema and pushed into the
+            acquisitions team&rsquo;s dashboard the next morning at 6am.
+          </p>
+        </div>
+
+        <aside class="specs" aria-label="Project specifications">
+          <div class="specs__hd">
+            <span>Project sheet</span>
+            <span class="id">P / 01 · v 2.3</span>
+          </div>
+          <dl>
+            <dt>Role</dt>      <dd>Sole builder &amp; operator</dd>
+            <dt>For</dt>       <dd>Haven Realty Capital, Acquisitions</dd>
+            <dt>Built</dt>     <dd>Sep&nbsp;<span class="num">2024</span> &rarr; ongoing</dd>
+            <dt>Status</dt>    <dd>
+              <span class="pill pill--accent">In production · 18&nbsp;mo</span>
+            </dd>
+            <dt>Stack</dt>     <dd>
+              <span class="pill">Python 3.12</span>
+              <span class="pill">Apps Script</span>
+              <span class="pill">Supabase</span>
+              <span class="pill">PostGIS</span>
+              <span class="pill">Railway</span>
+            </dd>
+            <dt>Sources</dt>   <dd>
+              <span class="pill">Maricopa</span><span class="pill">Pinal</span><span class="pill">Fulton</span><span class="pill">Cobb</span><span class="pill">Travis</span><span class="pill">+6</span>
+            </dd>
+            <dt>Users</dt>     <dd><span class="num">9</span> on acquisitions team</dd>
+          </dl>
+          <div class="specs__cta">
+            <a href="#">Read the write-up</a>
+            <a href="#">Architecture diagram</a>
+            <a href="#">Repository · internal</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats" aria-label="By the numbers">
+    <div class="stats__inner">
+      <div class="stat">
+        <div class="stat__num">11<small>counties</small></div>
+        <div class="stat__label">Permit feeds normalized</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num">~14k<small>/wk</small></div>
+        <div class="stat__label">New records ingested</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num">~6<small>hrs</small></div>
+        <div class="stat__label">Filing → dashboard latency</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num">$0.42<small>/day</small></div>
+        <div class="stat__label">All-in infra cost</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BODY -->
+  <section class="proj-body">
+
+    <div class="prose">
+      <h2><span class="h-num">§ 01</span>The problem</h2>
+      <p>
+        Acquisitions teams in build-for-rent run on permit data. A new
+        single-family subdivision permit in a target market is the
+        cleanest leading signal you get — six to eighteen months before
+        the homes are competing with us. The catch is that every county
+        publishes the data differently, on a different cadence, in a
+        different format. Half of them think a weekly CSV emailed to a
+        list is acceptable distribution. (It is not.)
+      </p>
+      <p>
+        Before this project, our team checked three to four county sites
+        manually per week. The signal was real; the work was tedious; the
+        coverage was uneven.
+      </p>
+
+      <h2><span class="h-num">§ 02</span>The shape of the thing</h2>
+      <p>
+        One Python service, scheduled hourly on Railway, with eleven
+        county-specific adapters that all return rows shaped like a
+        common <code>PermitRecord</code>. Records land in Supabase Postgres
+        with PostGIS, get geocoded against parcel boundaries we already
+        had, and get tagged against our acquisition buy-box. Apps Script
+        fans out a 6am digest into the team&rsquo;s shared Google Sheet so
+        nothing changes about how they actually work.
+      </p>
+
+      <div class="diagram">
+        <span class="diagram__cap">Fig. <b>01</b> · Architecture, in monospace</span>
+<pre>┌──────────────┐   ┌──────────────┐   ┌──────────────┐
+│ 11 county    │──▶│  adapters/   │──▶│   Postgres   │
+│ feeds (mixed)│   │  *.py        │   │  + PostGIS   │
+└──────────────┘   └──────────────┘   └──────┬───────┘
+                                              │
+                          ┌───────────────────┴─────────────────┐
+                          ▼                                     ▼
+                  ┌──────────────┐                     ┌──────────────┐
+                  │ Apps Script  │                     │  Dashboard   │
+                  │ 6am digest   │                     │  (internal)  │
+                  └──────────────┘                     └──────────────┘</pre>
+      </div>
+
+      <h2><span class="h-num">§ 03</span>Three decisions that mattered</h2>
+      <ol>
+        <li>
+          <strong>One adapter per county, not a clever framework.</strong>
+          I tried to factor out a base class twice. Both times a county
+          changed its export format inside a month and I had to undo it.
+          The boring solution — eleven 80-line files that share nothing
+          but a return type — has paid for itself every quarter.
+        </li>
+        <li>
+          <strong>Geocode against our parcel layer, not Google.</strong>
+          The records arrive with addresses, but addresses lie. Joining
+          to parcels we already trust means a downstream user can click a
+          row and immediately see the polygon. This single change
+          eliminated the &ldquo;is this the same lot?&rdquo; question that used
+          to start every acquisitions meeting.
+        </li>
+        <li>
+          <strong>Stay inside the spreadsheet.</strong> The team lives in
+          Google Sheets. A dashboard nobody opens is worse than a stale
+          tab they already have open. The digest is just a sheet, written
+          to by Apps Script, with hyperlinks back into the dashboard for
+          the cases where someone wants more.
+        </li>
+      </ol>
+
+      <h2><span class="h-num">§ 04</span>What it has done</h2>
+      <p>
+        Eighteen months in, the pipeline has surfaced four sites we
+        bought, two we passed on early enough to save the underwriting
+        effort, and exactly one weekend where the Maricopa feed went down
+        and I got to learn how the team feels when it isn&rsquo;t there.
+        That third number is the one that told me to write the alerting.
+      </p>
+
+      <h2><span class="h-num">§ 05</span>Timeline</h2>
+      <ol class="timeline">
+        <li>
+          <span class="when">Sep <span class="num">2024</span> · v 0.1</span>
+          <div class="what">First adapter (Maricopa). Hand-run from my laptop, results pasted into Slack.</div>
+        </li>
+        <li>
+          <span class="when">Nov <span class="num">2024</span> · v 1.0</span>
+          <div class="what">Three counties. Moved to Railway, nightly schedule, results in Postgres.</div>
+        </li>
+        <li>
+          <span class="when">Feb <span class="num">2025</span> · v 1.4</span>
+          <div class="what">PostGIS join against parcels. The &ldquo;same lot?&rdquo; question retired.</div>
+        </li>
+        <li>
+          <span class="when">Jun <span class="num">2025</span> · v 2.0</span>
+          <div class="what">Eleven counties. Apps Script digest. Adopted by the full acquisitions team.</div>
+        </li>
+        <li>
+          <span class="when">May <span class="num">2026</span> · v 2.3</span>
+          <div class="what">Pager on adapter failure. Permit-amendment diffing for re-tagged records.</div>
+        </li>
+      </ol>
+
+      <h2><span class="h-num">§ 06</span>What I&rsquo;d do differently</h2>
+      <p>
+        I would start with the parcel join, not bolt it on in v&nbsp;1.4. I
+        would write the alerting on day one, even if there is nothing to
+        alert on yet. And I would resist the very strong urge to build a
+        proper web UI for a tool whose users are perfectly happy in a
+        Google Sheet.
+      </p>
+    </div>
+
+    <!-- right rail -->
+    <aside class="rail" aria-label="Project changelog and related">
+      <div class="rail-block">
+        <h4>Changelog</h4>
+        <ul class="changelog">
+          <li><span class="v">v 2.3<small>2026-05-04</small></span><span>Permit-amendment diffing; pager on adapter failure.</span></li>
+          <li><span class="v">v 2.2<small>2026-02-11</small></span><span>Added Pinal &amp; Chatham counties. Retry-with-backoff on the FTP sources.</span></li>
+          <li><span class="v">v 2.1<small>2025-11-22</small></span><span>Buy-box tagging moved out of the digest into the ingest step.</span></li>
+          <li><span class="v">v 2.0<small>2025-06-08</small></span><span>Eleven counties live. Apps Script digest to shared sheet.</span></li>
+          <li><span class="v">v 1.4<small>2025-02-19</small></span><span>PostGIS parcel join replaces address-based dedup.</span></li>
+        </ul>
+      </div>
+
+      <div class="rail-block">
+        <h4>Related writing</h4>
+        <ul class="related">
+          <li><a href="post.html"><span class="n num">003</span>Reading a county permit feed for fun and pipeline</a></li>
+          <li><a href="post.html"><span class="n num">005</span>Underwriting BFR deals with Haiku</a></li>
+          <li><a href="post.html"><span class="n num">004</span>A pragmatic taxonomy of LLM observability</a></li>
+        </ul>
+      </div>
+
+      <div class="rail-block">
+        <h4>Other projects</h4>
+        <ul class="related">
+          <li><a href="#"><span class="n">P/02</span>Haven AI Agent Suite</a></li>
+          <li><a href="#"><span class="n">P/03</span>llm_obs</a></li>
+          <li><a href="#"><span class="n">P/04</span>MCP server: redfin-comps</a></li>
+        </ul>
+      </div>
+    </aside>
+  </section>
+
+  <!-- pager -->
+  <nav class="pager" aria-label="Adjacent projects">
+    <a href="#">
+      <span class="pager__label">← Previous · P / 04</span>
+      <span class="pager__title">MCP server: redfin-comps</span>
+    </a>
+    <a href="#">
+      <span class="pager__label">Next · P / 02 →</span>
+      <span class="pager__title">Haven AI Agent Suite</span>
+    </a>
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div>
+      <h4>Elsewhere</h4>
+      <ul>
+        <li><span>GitHub</span><span class="k">@hermanchan</span></li>
+        <li><span>LinkedIn</span><span class="k">/in/hermanchan</span></li>
+        <li><span>Email</span><span class="k">hello@…</span></li>
+        <li><span>RSS</span><span class="k">/rss.xml</span></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Reading recently</h4>
+      <ul>
+        <li><span>Designing Data-Intensive Apps</span><span class="k">Kleppmann</span></li>
+        <li><span>The Great Demographic Reversal</span><span class="k">Goodhart</span></li>
+        <li><span>Anthropic — Constitutional AI</span><span class="k">paper</span></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Colophon</h4>
+      <ul>
+        <li><span>Type</span><span class="k">Source Serif 4</span></li>
+        <li><span>UI</span><span class="k">IBM Plex Sans</span></li>
+        <li><span>Mono</span><span class="k">JetBrains Mono</span></li>
+        <li><span>Built with</span><span class="k">Astro · plain CSS</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="site-footer__bottom">
+    <span>© <span class="num">2024–2026</span> Herman Chan · CC&nbsp;BY 4.0</span>
+    <span>hermanchanai.com</span>
+  </div>
+</footer>
+
+</body>
+</html>

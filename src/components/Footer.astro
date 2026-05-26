@@ -2,17 +2,28 @@
 const year = new Date().getFullYear();
 ---
 
-<footer class="max-w-2xl w-full mx-auto px-6 pt-20 pb-12 mt-16 border-t border-rule">
-  <div class="flex flex-wrap items-baseline justify-between gap-6 text-sm text-ink-muted">
-    <span>&copy; {year} Herman Chan</span>
-    <div class="flex gap-5">
-      <a href="/rss.xml" class="no-underline hover:text-ink">RSS</a>
-      <a
-        href="https://www.linkedin.com/in/hermanchanai/"
-        class="no-underline hover:text-ink"
-        rel="me"
-        >LinkedIn</a
-      >
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div>
+      <h4>Elsewhere</h4>
+      <ul>
+        <li><a href="https://github.com/hermanian06"><span>GitHub</span><span class="k">@hermanian06</span></a></li>
+        <li><a href="https://www.linkedin.com/in/hermanchanai/"><span>LinkedIn</span><span class="k">/in/hermanchanai</span></a></li>
+        <li><a href="/rss.xml"><span>RSS</span><span class="k">/rss.xml</span></a></li>
+      </ul>
     </div>
+    <div>
+      <h4>Colophon</h4>
+      <ul>
+        <li><span>Type</span><span class="k">Source Serif 4</span></li>
+        <li><span>UI</span><span class="k">IBM Plex Sans</span></li>
+        <li><span>Mono</span><span class="k">JetBrains Mono</span></li>
+        <li><span>Built with</span><span class="k">Astro · plain CSS</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="site-footer__bottom">
+    <span>© <span class="num">2024&ndash;{year}</span> Herman Chan · CC BY 4.0</span>
+    <span>hermanchanai.com</span>
   </div>
 </footer>

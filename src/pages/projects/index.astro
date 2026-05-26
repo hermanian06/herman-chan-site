@@ -1,0 +1,79 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import { getCollection } from "astro:content";
+
+const allProjects = (await getCollection("projects")).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+---
+
+<Layout
+  title="Projects"
+  description="Internal AI tools I've scoped, prompt-engineered, and shipped."
+>
+  <section class="projects-index">
+    <div class="wrap">
+      <header class="projects-head">
+        <span class="kicker">§ · Projects</span>
+        <h1 class="projects-head__title">Internal AI tools I've scoped, prompt-engineered, and shipped.</h1>
+        <p class="projects-head__lede">
+          Each is in production for me or my team. The split is the same across all of them: deterministic Python where it has to be, Claude where judgment lives.
+        </p>
+      </header>
+
+      <div class="projects">
+        {allProjects.map((p) => (
+          <ProjectCard
+            href={`/projects/${p.id}/`}
+            title={p.data.title}
+            blurb={p.data.blurb}
+            category={p.data.category}
+            status={p.data.status}
+            statusClass={p.data.statusClass}
+            stack={p.data.stack}
+            since={p.data.since}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .projects-index { padding: clamp(48px, 7vw, 80px) 0 0; }
+  .projects-head {
+    max-width: 640px;
+    margin: 0 0 var(--s-7);
+  }
+  .projects-head .kicker { display: block; margin-bottom: var(--s-3); }
+  .projects-head__title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(32px, 4.4vw, 44px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0 0 var(--s-4);
+    color: var(--fg);
+  }
+  .projects-head__lede {
+    font-family: var(--serif);
+    font-size: var(--t-19);
+    line-height: 1.55;
+    color: var(--fg-soft);
+    margin: 0;
+    max-width: 52ch;
+  }
+
+  .projects {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--rule-soft);
+    border: 1px solid var(--rule-soft);
+  }
+
+  @media (max-width: 860px) {
+    .projects { grid-template-columns: 1fr; }
+  }
+</style>

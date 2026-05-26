@@ -3,29 +3,78 @@ import Layout from "../../layouts/Layout.astro";
 import PostCard from "../../components/PostCard.astro";
 import { getCollection } from "astro:content";
 
-const posts = (await getCollection("posts", ({ data }) => !data.draft)).sort(
-  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
+const allPosts = (await getCollection("posts", ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.pubDate.getTime() - b.data.pubDate.getTime(),
+);
+/* Number from oldest = 001, then display newest-first. */
+const numbered = allPosts.map((post, idx) => ({ post, num: idx + 1 }));
+const display = [...numbered].sort(
+  (a, b) => b.post.data.pubDate.getTime() - a.post.data.pubDate.getTime(),
 );
 ---
 
 <Layout
-  title="Posts"
+  title="Writing"
   description="Builder notes on the AI tools I run on real deals."
 >
-  <h1 class="text-2xl font-medium text-ink mb-1">Posts</h1>
-  <p class="text-sm text-ink-muted mb-10">
-    Builder notes on the AI tools I run on real deals.
-  </p>
-  <div>
-    {
-      posts.map((post) => (
-        <PostCard
-          href={`/posts/${post.id}/`}
-          title={post.data.title}
-          pubDate={post.data.pubDate}
-          description={post.data.description}
-        />
-      ))
-    }
-  </div>
+  <section class="writing">
+    <div class="wrap">
+      <header class="writing-head">
+        <span class="kicker">§ · Writing</span>
+        <h1 class="writing-head__title">Builder notes on the AI tools I run on real deals.</h1>
+        <p class="writing-head__lede">
+          One idea per post. Architecture decisions, things I tried first and abandoned, what I'd do differently.
+        </p>
+      </header>
+
+      <ol class="posts">
+        {display.map(({ post, num }) => (
+          <PostCard
+            href={`/posts/${post.id}/`}
+            num={num}
+            title={post.data.title}
+            description={post.data.description}
+            pubDate={post.data.pubDate}
+            tag={post.data.tag}
+            tagClass={post.data.tagClass}
+          />
+        ))}
+      </ol>
+    </div>
+  </section>
 </Layout>
+
+<style>
+  .writing { padding: clamp(48px, 7vw, 80px) 0 0; }
+  .writing-head {
+    max-width: 640px;
+    margin: 0 0 var(--s-7);
+  }
+  .writing-head .kicker { display: block; margin-bottom: var(--s-3); }
+  .writing-head__title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(32px, 4.4vw, 44px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0 0 var(--s-4);
+    color: var(--fg);
+  }
+  .writing-head__lede {
+    font-family: var(--serif);
+    font-size: var(--t-19);
+    line-height: 1.55;
+    color: var(--fg-soft);
+    margin: 0;
+    max-width: 52ch;
+  }
+
+  /* Per-row styles live in PostCard.astro — Astro scopes <style> blocks
+     to their own file's DOM. */
+  .posts {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--rule-soft);
+  }
+</style>

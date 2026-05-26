@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Herman Chan — acquisitions & AI tooling</title>
+<link rel="stylesheet" href="shared.css" />
+<style>
+  /* ---------- home page specific ---------- */
+  .hero {
+    padding: clamp(48px, 9vw, 96px) 0 clamp(40px, 7vw, 72px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(32px, 6vw, 80px);
+    align-items: end;
+  }
+  .hero__title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(40px, 7.2vw, 72px);
+    line-height: 1.02;
+    letter-spacing: -0.022em;
+    margin: 0 0 var(--s-5);
+    text-wrap: balance;
+    color: var(--fg);
+  }
+  .hero__title em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent);
+  }
+  .hero__lede {
+    font-family: var(--serif);
+    font-size: clamp(17px, 1.6vw, 19px);
+    line-height: 1.55;
+    color: var(--fg-soft);
+    max-width: 52ch;
+  }
+  .hero__aside {
+    border-left: 1px solid var(--rule);
+    padding-left: var(--s-5);
+    font-family: var(--sans);
+    font-size: var(--t-14);
+    color: var(--fg-soft);
+    display: grid;
+    gap: var(--s-3);
+    align-self: end;
+  }
+  .hero__aside dl {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    row-gap: 6px;
+    column-gap: var(--s-3);
+  }
+  .hero__aside dt {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .hero__aside dd { margin: 0; color: var(--fg-soft); }
+  .hero__aside dd a { color: var(--fg); border-bottom: 1px solid var(--rule); }
+  .hero__aside dd a:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+
+  .colophon {
+    grid-column: 1 / -1;
+    margin-top: var(--s-7);
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-4);
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .colophon .line { flex: 1; height: 1px; background: var(--rule); }
+
+  /* posts index — tabular */
+  .section { padding: clamp(48px, 7vw, 80px) 0 0; }
+
+  .posts {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--rule-soft);
+  }
+  .post-row {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 7fr) minmax(0, 2fr) 88px;
+    gap: var(--s-4);
+    padding: var(--s-5) 0;
+    border-bottom: 1px solid var(--rule-soft);
+    align-items: baseline;
+    transition: background 120ms ease;
+  }
+  .post-row:hover { background: var(--accent-soft); }
+  .post-row__num {
+    font-family: var(--mono);
+    font-size: var(--t-13);
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+  }
+  .post-row__title {
+    font-family: var(--serif);
+    font-size: var(--t-22);
+    line-height: 1.25;
+    font-weight: 500;
+    color: var(--fg);
+    margin: 0 0 6px;
+    letter-spacing: -0.01em;
+  }
+  .post-row__title a { color: inherit; }
+  .post-row__title a:hover { color: var(--accent); text-decoration: none; }
+  .post-row__dek {
+    font-family: var(--serif);
+    font-size: var(--t-15);
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.5;
+    max-width: 60ch;
+  }
+  .post-row__tag { text-align: left; }
+  .post-row__date {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    color: var(--muted);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+  }
+
+  /* projects */
+  .projects {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--rule-soft);
+    border: 1px solid var(--rule-soft);
+  }
+  .project-card {
+    background: var(--bg);
+    padding: var(--s-6);
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    gap: var(--s-4);
+    transition: background 120ms ease;
+    position: relative;
+  }
+  .project-card:hover { background: var(--bg-alt); }
+  .project-card__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .project-card__id { color: var(--accent); font-weight: 500; }
+  .project-card__status {
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .project-card__status .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--muted-2);
+  }
+  .project-card__status.live .dot { background: #2c7a3a; }
+  .project-card__status.beta .dot { background: var(--accent); }
+  .project-card__title {
+    font-family: var(--serif);
+    font-size: var(--t-26);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0;
+    color: var(--fg);
+  }
+  .project-card__title a { color: inherit; }
+  .project-card__title a:hover { color: var(--accent); text-decoration: none; }
+  .project-card__desc {
+    font-family: var(--serif);
+    font-size: var(--t-15);
+    line-height: 1.5;
+    color: var(--fg-soft);
+    margin: 0;
+    max-width: 50ch;
+  }
+  .project-card__meta {
+    display: flex;
+    gap: var(--s-4);
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    padding-top: var(--s-3);
+    border-top: 1px dashed var(--rule);
+  }
+  .project-card__meta span b {
+    color: var(--fg-soft);
+    font-weight: 500;
+  }
+
+  .endplate {
+    margin-top: var(--s-7);
+    padding: var(--s-5) 0;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .endplate a { color: var(--fg-soft); border-bottom: 1px solid var(--rule); }
+  .endplate a:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
+
+  @media (max-width: 860px) {
+    .hero__grid { grid-template-columns: 1fr; gap: var(--s-6); }
+    .hero__aside { border-left: 0; border-top: 1px solid var(--rule); padding: var(--s-5) 0 0; }
+    .post-row { grid-template-columns: 36px 1fr; gap: var(--s-3); }
+    .post-row__tag, .post-row__date {
+      grid-column: 2 / -1;
+      text-align: left;
+      padding-top: 6px;
+    }
+    .post-row__date { color: var(--muted); }
+    .projects { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body data-screen-label="Home">
+
+<!-- persistent meta strip -->
+<div class="meta-strip">
+  <div class="meta-strip__inner">
+    <span class="meta-strip__pair"><span class="meta-strip__dot"></span><b>Currently</b>&nbsp;Underwriting BFR in Phoenix &amp; Atlanta</span>
+    <span class="meta-strip__pair"><b>Loc</b>&nbsp;Los Angeles, CA</span>
+    <span class="meta-strip__spacer"></span>
+    <span class="meta-strip__pair"><b>Updated</b>&nbsp;<span class="num">2026-05-18</span></span>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a href="home.html" class="brand" aria-label="Herman Chan, home">
+      <span class="brand__mark">Herman&nbsp;Chan<span class="glyph">·</span></span>
+      <span class="brand__sub">Acquisitions &amp; AI tooling</span>
+    </a>
+    <nav class="nav" aria-label="Primary">
+      <a href="home.html" aria-current="page">Index</a>
+      <a href="post.html">Writing</a>
+      <a href="project.html">Projects</a>
+      <a href="#">Now</a>
+      <a href="#" title="RSS feed">RSS</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero__grid">
+      <div>
+        <span class="kicker">N° 001 &nbsp;/&nbsp; Index</span>
+        <h1 class="hero__title">
+          Acquisitions analyst by day, <em>building tools</em> for the
+          rest of it.
+        </h1>
+        <p class="hero__lede">
+          I underwrite build-for-rent communities across the Sunbelt at
+          Haven Realty Capital. After hours I write Python, ship internal
+          tools on the Anthropic API, and document what I learn here so my
+          future self stops re-solving the same problems.
+        </p>
+      </div>
+
+      <aside class="hero__aside" aria-label="At a glance">
+        <dl>
+          <dt>Role</dt><dd>Acquisitions, Haven Realty Capital</dd>
+          <dt>Focus</dt><dd>SFR &amp; build-for-rent · Sunbelt</dd>
+          <dt>Stack</dt><dd>Python · Anthropic API · Supabase · Railway</dd>
+          <dt>Writing</dt><dd>~2&nbsp;posts/month, no schedule</dd>
+          <dt>Contact</dt><dd><a href="mailto:hello@hermanchanai.com">hello@hermanchanai.com</a></dd>
+        </dl>
+      </aside>
+
+      <div class="colophon">
+        <span>§ Established <span class="num">2024</span></span>
+        <span class="line"></span>
+        <span>Set in Source Serif &amp; JetBrains Mono</span>
+        <span class="line"></span>
+        <span>Hand-built, no analytics</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- WRITING -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="section-title__hash">§ 02</span>
+        <span class="section-title__label">Writing</span>
+        <span class="section-title__hint">Notes on AI tooling &amp; real-estate workflows · <a href="#" style="color:inherit;border-bottom:1px solid var(--rule);">View all 24 →</a></span>
+      </div>
+
+      <ol class="posts">
+        <li class="post-row">
+          <div class="post-row__num">006</div>
+          <div>
+            <h3 class="post-row__title"><a href="post.html">What I learned wiring an MCP server to Supabase</a></h3>
+            <p class="post-row__dek">A weekend spent connecting Claude to a live BFR-deal database via the Model Context Protocol. Tool design, auth, and the moment it started catching things I'd missed.</p>
+          </div>
+          <div class="post-row__tag"><span class="tag tag--ai">AI · MCP</span></div>
+          <div class="post-row__date num">2026 · 05 · 12</div>
+        </li>
+
+        <li class="post-row">
+          <div class="post-row__num">005</div>
+          <div>
+            <h3 class="post-row__title"><a href="post.html">Underwriting BFR deals with Haiku</a></h3>
+            <p class="post-row__dek">Replacing a 14-tab spreadsheet with a 200-line prompt and a structured output schema. What broke, what surprised me, and where humans still beat the model.</p>
+          </div>
+          <div class="post-row__tag"><span class="tag tag--ai">AI · CRE</span></div>
+          <div class="post-row__date num">2026 · 04 · 28</div>
+        </li>
+
+        <li class="post-row">
+          <div class="post-row__num">004</div>
+          <div>
+            <h3 class="post-row__title"><a href="post.html">A pragmatic taxonomy of LLM "observability"</a></h3>
+            <p class="post-row__dek">Telemetry, evals, and tracing all get called "obs." They aren't the same thing. A small framework I've been using to decide what to instrument first.</p>
+          </div>
+          <div class="post-row__tag"><span class="tag tag--ai">AI · Tooling</span></div>
+          <div class="post-row__date num">2026 · 04 · 09</div>
+        </li>
+
+        <li class="post-row">
+          <div class="post-row__num">003</div>
+          <div>
+            <h3 class="post-row__title"><a href="post.html">Reading a county permit feed for fun and pipeline</a></h3>
+            <p class="post-row__dek">How a nightly Apps Script job and a Maricopa County FTP dump turned into the most-used dashboard on our acquisitions team.</p>
+          </div>
+          <div class="post-row__tag"><span class="tag tag--cre">CRE · Pipeline</span></div>
+          <div class="post-row__date num">2026 · 03 · 22</div>
+        </li>
+
+        <li class="post-row">
+          <div class="post-row__num">002</div>
+          <div>
+            <h3 class="post-row__title"><a href="post.html">Notes on hiring a Forward Deployed Engineer (from the other side)</a></h3>
+            <p class="post-row__dek">I've been the customer half a dozen times. What separates a good FDE engagement from a vendor relationship, in plain language.</p>
+          </div>
+          <div class="post-row__tag"><span class="tag tag--notes">Notes</span></div>
+          <div class="post-row__date num">2026 · 02 · 14</div>
+        </li>
+
+        <li class="post-row">
+          <div class="post-row__num">001</div>
+          <div>
+            <h3 class="post-row__title"><a href="post.html">Why I started writing in public, finally</a></h3>
+            <p class="post-row__dek">A short note on the gap between "I learned something" and "I wrote it down," and a small commitment to closing it.</p>
+          </div>
+          <div class="post-row__tag"><span class="tag tag--notes">Meta</span></div>
+          <div class="post-row__date num">2026 · 01 · 06</div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="section-title__hash">§ 03</span>
+        <span class="section-title__label">Projects</span>
+        <span class="section-title__hint">Internal tools, side experiments, things shipped to teammates</span>
+      </div>
+
+      <div class="projects">
+        <article class="project-card">
+          <div class="project-card__head">
+            <span class="project-card__id">P / 01</span>
+            <span class="project-card__status live"><span class="dot"></span>In production</span>
+          </div>
+          <h3 class="project-card__title"><a href="project.html">County Permit Pipeline</a></h3>
+          <p class="project-card__desc">Nightly ingest of building-permit data across 11 Sunbelt counties, normalized, geocoded, and pushed into the Haven acquisitions dashboard. Surfaces new BFR-eligible parcels within ~6 hours of filing.</p>
+          <div class="project-card__meta">
+            <span><b>Python</b></span>
+            <span><b>Apps Script</b></span>
+            <span><b>Supabase</b></span>
+            <span style="margin-left:auto;">since <span class="num">2024</span></span>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-card__head">
+            <span class="project-card__id">P / 02</span>
+            <span class="project-card__status live"><span class="dot"></span>In production</span>
+          </div>
+          <h3 class="project-card__title"><a href="project.html">Haven AI Agent Suite</a></h3>
+          <p class="project-card__desc">Three internal Claude agents — one drafts LOIs from underwriting memos, one summarizes inbound broker decks against our buy-box, one writes the weekly pipeline update. Built on Anthropic API, Railway-hosted.</p>
+          <div class="project-card__meta">
+            <span><b>Anthropic API</b></span>
+            <span><b>Railway</b></span>
+            <span><b>FastAPI</b></span>
+            <span style="margin-left:auto;">since <span class="num">2025</span></span>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-card__head">
+            <span class="project-card__id">P / 03</span>
+            <span class="project-card__status beta"><span class="dot"></span>Beta · open source</span>
+          </div>
+          <h3 class="project-card__title"><a href="project.html">llm_obs</a></h3>
+          <p class="project-card__desc">A small Python decorator that captures prompt, response, tokens, latency, and a stable eval-tag for every Claude call — into Postgres, with a one-page dashboard. The thing I wanted before any vendor existed.</p>
+          <div class="project-card__meta">
+            <span><b>Python</b></span>
+            <span><b>SQLModel</b></span>
+            <span><b>Open source</b></span>
+            <span style="margin-left:auto;">v<span class="num">0.4.1</span></span>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-card__head">
+            <span class="project-card__id">P / 04</span>
+            <span class="project-card__status beta"><span class="dot"></span>Experiment</span>
+          </div>
+          <h3 class="project-card__title"><a href="project.html">MCP server: redfin-comps</a></h3>
+          <p class="project-card__desc">A Model Context Protocol server that gives Claude read access to a curated set of comparable-sales tables. Lets the model do first-pass underwriting in a conversation, with citations back to source.</p>
+          <div class="project-card__meta">
+            <span><b>MCP</b></span>
+            <span><b>Python</b></span>
+            <span><b>SQLite</b></span>
+            <span style="margin-left:auto;">v<span class="num">0.2</span></span>
+          </div>
+        </article>
+      </div>
+
+      <div class="endplate">
+        <span>End of index · <span class="num">10</span> entries</span>
+        <span><a href="#">Subscribe via RSS →</a></span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div>
+      <h4>Elsewhere</h4>
+      <ul>
+        <li><span>GitHub</span><span class="k">@hermanchan</span></li>
+        <li><span>LinkedIn</span><span class="k">/in/hermanchan</span></li>
+        <li><span>Email</span><span class="k">hello@…</span></li>
+        <li><span>RSS</span><span class="k">/rss.xml</span></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Reading recently</h4>
+      <ul>
+        <li><span>Designing Data-Intensive Apps</span><span class="k">Kleppmann</span></li>
+        <li><span>The Great Demographic Reversal</span><span class="k">Goodhart</span></li>
+        <li><span>Anthropic — Constitutional AI</span><span class="k">paper</span></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Colophon</h4>
+      <ul>
+        <li><span>Type</span><span class="k">Source Serif 4</span></li>
+        <li><span>UI</span><span class="k">IBM Plex Sans</span></li>
+        <li><span>Mono</span><span class="k">JetBrains Mono</span></li>
+        <li><span>Built with</span><span class="k">Astro · plain CSS</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="site-footer__bottom">
+    <span>© <span class="num">2024–2026</span> Herman Chan · CC&nbsp;BY 4.0</span>
+    <span>hermanchanai.com</span>
+  </div>
+</footer>
+
+</body>
+</html>
