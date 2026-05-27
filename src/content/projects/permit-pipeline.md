@@ -1,7 +1,7 @@
 ---
 title: Off-market deal pipeline
-blurb: Automated public-records monitoring with LLM classification, surfacing daily leads for off-market deal flow.
-order: 2
+blurb: An automated public-records monitoring pipeline for off-market supply intel. Weekly Railway cron scrapes filings across eight Sunbelt MSAs, classifies them with an LLM, dedupes, and surfaces qualifying projects to a dashboard and an auto-refreshed Sheet.
+order: 5
 status: In production
 statusClass: live
 role: Sole builder & operator

@@ -1,7 +1,7 @@
 ---
 title: Claude Code skills suite
-blurb: Markdown-defined skills plus Python tools that compress repetitive underwriting tasks into a single repeatable workflow.
-order: 1
+blurb: Five skills I run on most deals — 1-page summary, financial model, rent comps, rent roll, T-12. Each is a Markdown spec plus a folder of Python tools; Claude orchestrates, Python does the deterministic work. The OM-to-1-pager went from ~2 hours to ~15 minutes.
+order: 3
 status: In production
 statusClass: live
 role: Sole builder & operator

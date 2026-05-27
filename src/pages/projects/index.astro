@@ -3,7 +3,7 @@ import Layout from "../../layouts/Layout.astro";
 import ProjectCard from "../../components/ProjectCard.astro";
 import { getCollection } from "astro:content";
 
-const allProjects = (await getCollection("projects")).sort(
+const allProjects = (await getCollection("projects", ({ data }) => !data.draft)).sort(
   (a, b) => a.data.order - b.data.order,
 );
 ---
@@ -18,7 +18,7 @@ const allProjects = (await getCollection("projects")).sort(
         <span class="kicker">§ · Projects</span>
         <h1 class="projects-head__title">Internal AI tools I've scoped, prompt-engineered, and shipped.</h1>
         <p class="projects-head__lede">
-          Each is in production for me or my team. The split is the same across all of them: deterministic Python where it has to be, Claude where judgment lives.
+          Most are in production for me or my team; a couple are next on the build list. The split is the same across all of them: deterministic Python where it has to be, Claude where judgment lives.
         </p>
       </header>
 

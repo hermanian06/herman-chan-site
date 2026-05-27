@@ -20,6 +20,7 @@ const projects = defineCollection({
     title: z.string(),
     blurb: z.string(),
     order: z.number().default(99),
+    draft: z.boolean().default(false),
     /* Optional spec-sheet fields (project detail page). */
     status: z.string().optional(),
     statusClass: z.enum(['live', 'beta', 'idle']).optional(),

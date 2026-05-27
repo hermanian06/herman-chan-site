@@ -1,7 +1,8 @@
 ---
 title: MCP server for our document store
 blurb: A Model Context Protocol server that lets Claude search and read our document store as if it were a filesystem.
-order: 5
+order: 99
+draft: true
 status: Beta · internal
 statusClass: beta
 role: Sole builder & operator
