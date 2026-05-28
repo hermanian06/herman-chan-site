@@ -1,7 +1,7 @@
 ---
 title: Evaluation framework
 blurb: A labeled gold-standard set plus scoring scripts I use to catch regressions before merging prompt or model changes. Primary subject is the document-extraction step inside my supply pipeline — the highest-volume call to a language model in my stack.
-order: 4
+order: 5
 status: Coming soon
 statusClass: idle
 role: Sole builder & operator

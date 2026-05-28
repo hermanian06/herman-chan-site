@@ -1,7 +1,7 @@
 ---
 title: Off-market and supply pipeline
 blurb: An automated pipeline that watches public records across eight Sunbelt metros for two signals — new rental-housing supply heading into the market, and off-market deals that haven't hit commercial datasets yet. Each new filing gets classified by a language model into a structured schema and surfaced to a dashboard.
-order: 5
+order: 3
 status: In production
 statusClass: live
 role: Sole builder & operator

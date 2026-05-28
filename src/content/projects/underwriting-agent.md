@@ -1,7 +1,7 @@
 ---
 title: Underwriting agent
 blurb: An orchestration agent that takes a deal from broker email to a finished analysis pack. When a deal lands in my inbox, the agent gathers the source files into a fresh folder, runs the underlying analysis skills in the right order, and drafts a one-paragraph summary back to me.
-order: 1
+order: 2
 status: Coming soon
 statusClass: idle
 role: Sole builder & operator

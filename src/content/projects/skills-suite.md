@@ -1,7 +1,7 @@
 ---
 title: Claude Code skills suite
 blurb: Five skills I run on most deals — a one-page deal summary from the broker's pitch document, an underwriting financial model, rent benchmarks against comparable nearby properties, a unit-by-unit rent-roll summary, and categorization of the trailing twelve-month income statement. Each is a Markdown spec plus a folder of Python tools; Claude orchestrates, Python does the deterministic work. The deal-summary skill went from ~2 hours of manual work to ~15 minutes.
-order: 3
+order: 1
 status: In production
 statusClass: live
 role: Sole builder & operator
