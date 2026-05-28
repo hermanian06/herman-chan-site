@@ -44,6 +44,7 @@ const stackTrimmed = (stack ?? []).slice(0, 3);
 
 <style>
   .project-card {
+    position: relative;
     background: var(--bg);
     padding: var(--s-6);
     display: grid;
@@ -52,6 +53,14 @@ const stackTrimmed = (stack ?? []).slice(0, 3);
     transition: background 120ms ease;
   }
   .project-card:hover { background: var(--bg-alt); }
+  /* Make the entire card clickable: the title's anchor stretches to cover
+     it via an overlay pseudo-element. Other interactive children would
+     need z-index: 1, but project cards don't have any today. */
+  .project-card__title a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
   .project-card__head {
     display: flex;
     justify-content: space-between;
