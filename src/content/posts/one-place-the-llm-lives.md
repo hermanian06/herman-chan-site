@@ -7,7 +7,7 @@ tag: AI
 tagClass: ai
 ---
 
-I monitor public-records sources across several Sunbelt markets to catch BFR pipeline signals weeks before they show up in commercial datasets. The pipeline has dozens of Python tools and exactly one LLM call per document.
+I monitor public-records sources across several Sunbelt markets to catch new build-to-rent housing supply weeks before it shows up in commercial datasets. The pipeline has dozens of Python tools and exactly one language-model call per document.
 
 That one call is where the model lives. Everything else — pagination, session navigation, UPSERTs, dedup, rule-based classification, dashboard rendering — is deterministic Python. The LLM sits at the single step where structure-from-unstructured is genuinely hard: a free-text scanned form, with handwritten overrides, alias parentheticals, and dates in any of four formats, becoming roughly thirty schema-typed fields.
 

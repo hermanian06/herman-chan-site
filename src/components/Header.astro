@@ -16,8 +16,8 @@ const current = (href: string) => {
     </a>
     <nav class="nav" aria-label="Primary">
       <a href="/" aria-current={current("/") ? "page" : undefined}>Index</a>
-      <a href="/posts/" aria-current={current("/posts/") ? "page" : undefined}>Writing</a>
       <a href="/projects/" aria-current={current("/projects/") ? "page" : undefined}>Projects</a>
+      <a href="/posts/" aria-current={current("/posts/") ? "page" : undefined}>Writing</a>
       <a href="/rss.xml" title="RSS feed">RSS</a>
     </nav>
   </div>

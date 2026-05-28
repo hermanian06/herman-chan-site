@@ -42,12 +42,31 @@ const allProjects = (await getCollection("projects", ({ data }) => !data.draft))
         </dl>
       </aside>
 
-      <div class="colophon">
-        <span>§ Established <span class="num">2026</span></span>
-        <span class="line"></span>
-        <span>Set in Source Serif &amp; JetBrains Mono</span>
-        <span class="line"></span>
-        <span>Hand-built, no analytics</span>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="section">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="section-title__hash">§ 02</span>
+        <span class="section-title__label">Projects</span>
+        <span class="section-title__hint">Internal tools shipped to teammates</span>
+      </div>
+
+      <div class="projects">
+        {allProjects.map((p) => (
+          <ProjectCard
+            href={`/projects/${p.id}/`}
+            title={p.data.title}
+            blurb={p.data.blurb}
+            category={p.data.category}
+            status={p.data.status}
+            statusClass={p.data.statusClass}
+            stack={p.data.stack}
+            since={p.data.since}
+          />
+        ))}
       </div>
     </div>
   </section>
@@ -57,7 +76,7 @@ const allProjects = (await getCollection("projects", ({ data }) => !data.draft))
     <section class="section">
       <div class="wrap">
         <div class="section-title">
-          <span class="section-title__hash">§ 02</span>
+          <span class="section-title__hash">§ 03</span>
           <span class="section-title__label">Writing</span>
           <span class="section-title__hint">
             Builder notes on the AI tools I run on real deals
@@ -80,40 +99,14 @@ const allProjects = (await getCollection("projects", ({ data }) => !data.draft))
             />
           ))}
         </ol>
+
+        <div class="endplate">
+          <span>End of index</span>
+          <span><a href="/rss.xml">Subscribe via RSS →</a></span>
+        </div>
       </div>
     </section>
   )}
-
-  <!-- PROJECTS -->
-  <section id="projects" class="section">
-    <div class="wrap">
-      <div class="section-title">
-        <span class="section-title__hash">§ 03</span>
-        <span class="section-title__label">Projects</span>
-        <span class="section-title__hint">Internal tools shipped to teammates</span>
-      </div>
-
-      <div class="projects">
-        {allProjects.map((p) => (
-          <ProjectCard
-            href={`/projects/${p.id}/`}
-            title={p.data.title}
-            blurb={p.data.blurb}
-            category={p.data.category}
-            status={p.data.status}
-            statusClass={p.data.statusClass}
-            stack={p.data.stack}
-            since={p.data.since}
-          />
-        ))}
-      </div>
-
-      <div class="endplate">
-        <span>End of index · <span class="num">{allProjects.length}</span> projects</span>
-        <span><a href="/rss.xml">Subscribe via RSS →</a></span>
-      </div>
-    </div>
-  </section>
 </Layout>
 
 <style>
