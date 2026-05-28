@@ -1,6 +1,6 @@
 ---
-title: MCP server for the off-market deal pipeline
-blurb: A read-only MCP server fronting the deal pipeline as nine tools for Claude. My team logs into claude.ai, asks things like "what's been filed in this submarket in the last 30 days" in plain English, and the server queries Postgres and returns a clean answer.
+title: MCP server for the off-market and supply pipeline
+blurb: A read-only Model Context Protocol server fronting the supply pipeline as nine tools for Claude. My team logs into claude.ai, asks something like "what's been filed in this part of town in the last 30 days" in plain English, and the server queries the underlying database and returns a clean answer.
 order: 2
 status: In production
 statusClass: live
@@ -15,7 +15,7 @@ stack:
   - Railway
 ---
 
-A Model Context Protocol server fronting the off-market deal pipeline as a small set of read-only tools — find recent filings, look up a subdivision, check builder activity. My team logs into claude.ai, asks in plain English, and the server queries Postgres and returns a clean answer.
+A Model Context Protocol server fronting the off-market and supply pipeline as a small set of read-only tools — find recent filings, look up a subdivision, check builder activity. My team logs into claude.ai, asks in plain English, and the server queries Postgres and returns a clean answer.
 
 More coming soon.
 
