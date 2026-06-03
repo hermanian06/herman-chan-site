@@ -24,6 +24,8 @@ const projects = defineCollection({
     /* Optional spec-sheet fields (project detail page). */
     status: z.string().optional(),
     statusClass: z.enum(['live', 'beta', 'idle']).optional(),
+    /* When true, "Related writing" renders as an ordered series (oldest→newest, numbered). */
+    seriesPosts: z.boolean().default(false),
     role: z.string().optional(),
     for: z.string().optional(),
     built: z.string().optional(),

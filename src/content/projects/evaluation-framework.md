@@ -4,6 +4,7 @@ blurb: A labeled gold-standard set plus scoring scripts to catch regressions bef
 order: 5
 status: In production
 statusClass: live
+seriesPosts: true
 role: Sole builder & operator
 for: My language-model stack — extractors, classifiers, retrievers
 since: 2026

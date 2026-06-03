@@ -26,11 +26,16 @@ const statusName = project.data.statusClass
   ? `pill pill--${project.data.statusClass}`
   : "pill pill--accent";
 
+const isSeries = project.data.seriesPosts === true;
 const projectPosts = (
   await getCollection("posts", ({ data }) => !data.draft)
 )
   .filter((p) => p.data.project === project.id)
-  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+  .sort((a, b) =>
+    isSeries
+      ? a.data.pubDate.getTime() - b.data.pubDate.getTime() // reading order: oldest first
+      : b.data.pubDate.getTime() - a.data.pubDate.getTime(), // newest first
+  );
 ---
 
 <Layout title={project.data.title} description={project.data.blurb}>
@@ -145,12 +150,12 @@ const projectPosts = (
 
         {projectPosts.length > 0 && (
           <div class="rail-block">
-            <h4>Related writing</h4>
+            <h4>{isSeries ? "Read in order" : "Related writing"}</h4>
             <ul class="related">
-              {projectPosts.map((p) => (
+              {projectPosts.map((p, i) => (
                 <li>
                   <a href={`/posts/${p.id}/`}>
-                    <span class="n num">→</span>
+                    <span class="n num" aria-hidden="true">{isSeries ? String(i + 1).padStart(2, "0") : "→"}</span>
                     <span>{p.data.title}</span>
                   </a>
                 </li>
