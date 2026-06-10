@@ -7,14 +7,12 @@ tag: AI
 tagClass: ai
 ---
 
-I monitor public-records sources across several Sunbelt markets to catch new build-to-rent housing supply weeks before it shows up in commercial datasets. The pipeline has dozens of Python tools and exactly one language-model call per document.
+I monitor public-records sources across several Sunbelt markets to catch new build-to-rent supply weeks before it shows up in the commercial datasets. The pipeline behind that is dozens of small Python tools, and in the whole thing there is exactly one language-model call per document.
 
-That one call is where the model lives. Everything else — pagination, session navigation, UPSERTs, dedup, rule-based classification, dashboard rendering — is deterministic Python. The LLM sits at the single step where structure-from-unstructured is genuinely hard: a free-text scanned form, with handwritten overrides, alias parentheticals, and dates in any of four formats, becoming roughly thirty schema-typed fields.
+Everything else is ordinary code. Fetching pages, logging in, saving and de-duplicating records, applying the classification rules, drawing the dashboard — none of that needs a model, so none of it gets one. The model is saved for the one step where plain code genuinely can't cope: turning a scanned government form, with free text and handwritten corrections and dates in four different formats, into thirty clean database fields.
 
-This isn't aesthetic. The math forces it. If each step in a chain is 90% reliable, five steps compound to ~59%. Pushing as much of the pipeline as possible into deterministic code keeps the probabilistic layer focused on the one job it's actually best at. A regex can normalize a county name. Only a model can pull a properly-cased LLC out of a flat-rendered scan labeled "Owner (Permittee)" with handwritten margin notes.
+I didn't start with that philosophy. I got there through the math. If every step in a chain is 90% reliable, five chained steps land you around 59%. A model is the least reliable step you can add, so you want as few of them as possible, doing only the work nothing else can do. A few lines of code can normalize a county name correctly every single time. No code can reliably pull the right LLC name out of a flattened scan with notes in the margin — that's the model's job, and it's the only job it gets.
 
-The common failure mode I see in AI portfolios is the inverse: throw it all at the model. Let it handle pagination *and* field extraction *and* validation *and* downstream classification, then watch error rates compound. It's faster to demo and slower to trust.
+The tempting version is the opposite. Hand the model everything — let it browse, extract, validate, classify — because that demos great on day one. Then the errors compound, and you spend week three trying to figure out which of five model steps is the one lying to you.
 
-The real design decision in any LLM-augmented pipeline isn't "what model" or "what prompt." It's the boundary — which steps stay deterministic, and which step gets the model. For me, that boundary lives at PDF-to-schema. The pipeline became reliable the day I stopped trying to extend the model's footprint upstream into navigation or downstream into business logic.
-
-Identifying that single step is where the engineering judgment goes. The model itself is the easy part.
+So the question I actually sweat isn't which model or what prompt. It's where the boundary sits: what stays code, and what one thing the model does. Getting that line right mattered more than anything else in the build.
