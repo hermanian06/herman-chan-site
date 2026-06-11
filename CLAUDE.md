@@ -87,6 +87,12 @@ If `project:` matches, the post appears on that project page under "Posts about 
   - **Closer:** tie back to the business outcome.
 - **Title is specific.** *"Why I split the underwriting agent into two prompts"* ✓ — *"AI in BFR"* ✗
 - **"I built / I learned"** — never "Haven does / our team uses." Builder voice, not company voice.
+- **Human voice, not essay-polish (site-wide tone pass, 2026-06-10 — Herman's call).** Five rules, applied to all 7 live posts; hold every new post to them:
+  1. **No engraved aphorism closers.** End plain and personal ("two deals processed a month apart now come out looking identical"), not on a maxim ("The model itself is the easy part.").
+  2. **No listicle scaffolding** ("The first was **drift**. The second was…") — write through in prose.
+  3. **Break perfect parallelism.** Three identically-shaped sentences in a row reads machine-made; fold or vary them.
+  4. **Jargon at Herman's level** (the persona is "I direct the build, Claude writes the code"): translate code literals and insider terms to plain words — `temperature=0` → "runs are pinned so the model answers the same way every time"; `LEAST(NULL,2000)` → describe the behavior. **Keep the hard numbers** (82.8%, 76%, 1.9%) — they're the interview evidence.
+  5. **Allow first-person texture** ("Honestly, 76% stung a little", "Which, in hindsight, is obvious", "The other failure was mine") — and go easy on em-dashes.
 
 Canonical example: [`src/content/posts/rent-comps-t12-skills.md`](src/content/posts/rent-comps-t12-skills.md).
 
