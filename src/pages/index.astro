@@ -9,9 +9,11 @@ const allPosts = (await getCollection("posts", ({ data }) => !data.draft)).sort(
 );
 /* Posts are numbered chronologically from oldest — first post is N° 001. */
 const numberedPosts = allPosts.map((post, idx) => ({ post, num: idx + 1 }));
+/* RULE (Herman, 2026-06-10): § 03 Writing lists EVERY published post, newest
+   first — never cap or slice this list. A published post must always be
+   visible on the landing index. */
 const recentPosts = [...numberedPosts]
-  .sort((a, b) => b.post.data.pubDate.getTime() - a.post.data.pubDate.getTime())
-  .slice(0, 6);
+  .sort((a, b) => b.post.data.pubDate.getTime() - a.post.data.pubDate.getTime());
 
 const allProjects = (await getCollection("projects", ({ data }) => !data.draft)).sort(
   (a, b) => a.data.order - b.data.order,
@@ -79,10 +81,7 @@ const allProjects = (await getCollection("projects", ({ data }) => !data.draft))
           <span class="section-title__hash">§ 03</span>
           <span class="section-title__label">Writing</span>
           <span class="section-title__hint">
-            Builder notes on the AI tools I run on real deals
-            {allPosts.length > 6 && (
-              <> · <a href="/posts/">View all {allPosts.length} →</a></>
-            )}
+            Builder notes on the AI tools I run on real deals · all {allPosts.length} posts
           </span>
         </div>
 

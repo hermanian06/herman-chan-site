@@ -65,6 +65,10 @@ Source code with a build step belongs in git. Drafts and plans without a build s
 
 Schema is enforced by [`src/content.config.ts`](src/content.config.ts) (Zod via Astro content collections). A bad field fails the build — check frontmatter first when `npm run build` errors.
 
+### RULE — every published post shows in § 03 Writing (Herman, 2026-06-10)
+
+The landing page's **§ 03 Writing** section lists **ALL published posts, newest first — never cap, slice, or curate it** (`src/pages/index.astro` renders the full collection; the old `.slice(0, 6)` silently dropped older posts as new ones landed). When adding a post, verify it appears on the landing index before calling the publish done. If the list ever gets long enough to genuinely need a cap, that's Herman's call — don't reintroduce one unilaterally.
+
 ### Valid `project:` slugs
 Must match an existing file in `src/content/projects/`:
 - `skills-suite`
