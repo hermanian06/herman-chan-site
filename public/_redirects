@@ -1,0 +1,5 @@
+# Redirect the old hermanchanai.com domain to the primary hermanchan.ai
+https://hermanchanai.com/*       https://hermanchan.ai/:splat   301!
+https://www.hermanchanai.com/*   https://hermanchan.ai/:splat   301!
+http://hermanchanai.com/*        https://hermanchan.ai/:splat   301!
+http://www.hermanchanai.com/*    https://hermanchan.ai/:splat   301!
