@@ -70,12 +70,15 @@ Schema is enforced by [`src/content.config.ts`](src/content.config.ts) (Zod via 
 The landing page's **§ 03 Writing** section lists **ALL published posts, newest first — never cap, slice, or curate it** (`src/pages/index.astro` renders the full collection; the old `.slice(0, 6)` silently dropped older posts as new ones landed). When adding a post, verify it appears on the landing index before calling the publish done. If the list ever gets long enough to genuinely need a cap, that's Herman's call — don't reintroduce one unilaterally.
 
 ### Valid `project:` slugs
-Must match an existing file in `src/content/projects/`:
+Must match an existing file in `src/content/projects/` (list refreshed 2026-07-30 — the old list had drifted):
 - `skills-suite`
+- `underwriting-agent`
 - `permit-pipeline`
 - `permit-pipeline-mcp`
-- `agent-suite`
-- `egnyte-mcp`
+- `evaluation-framework`
+- `deal-document-search`
+- `multi-model-build-chain`
+- `egnyte-mcp` (draft)
 
 If `project:` matches, the post appears on that project page under "Posts about this." Otherwise archive only.
 
