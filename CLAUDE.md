@@ -2,6 +2,9 @@
 
 Inherits from global `CLAUDE.md`. Read this before editing anything in this repo.
 
+**Session history → [`CHANGELOG.md`](CHANGELOG.md)** (newest first — read the top 1–3 to
+resume). This file carries rules and architecture only; closeout never appends entries here.
+
 ---
 
 ## The two locations (the "Option A" split, decided 2026-05-25)

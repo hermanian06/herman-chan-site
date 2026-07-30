@@ -18,11 +18,12 @@ not now. This file is dev-facing only; not rendered on the site.
   surprised you — where your mental model was wrong, or the user did
   something unexpected.
 
-- [ ] **Thicken the Writing section.** Current: 2 posts, both filed May 2026.
-  Reads as a portfolio sprint. Either back-date posts with the dates they
-  were actually written, or add 2–3 more — ideally on the MCP server and the
-  multi-agent workflow. "Builder notes, shipping as ideas land" in the hero
-  aside needs to be backed by actual cadence.
+- [x] **Thicken the Writing section.** ~~Current: 2 posts, both filed May 2026.~~
+  **Closed 2026-07-30** — 16 posts now, May 2026 through Aug 2026, including a
+  four-post arc on the multi-agent build workflow (008–011). The multi-model
+  build chain also became project 7, so the "multi-agent workflow" half of this
+  item landed as both a project page and its post series. Cadence is real:
+  roughly weekly through May–June, then a nine-post run at ~3-day spacing.
 
 - [ ] **Real email in the footer.** Email row was removed from the Elsewhere
   list along with the "What I'm reading" section drop (2026-05-23). Add back
