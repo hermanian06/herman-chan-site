@@ -19,10 +19,13 @@ Publishing moved off Windows on 2026-07-30. **Commit and push only from the Mac 
 `/Users/hermanchan/code/herman-chan-site`.** Node 24.18.0 there clears Astro 6's `>=22.12` floor.
 
 Unlike Herman's Drive-synced repos, this one has a **real `.git`**, so the old Windows working
-copy still accepts commits and the two clones can silently diverge. That copy is therefore
-retired in place and renamed to
-`C:\Users\herma\Claude AI Local\_STALE_AI and SFR website` — nothing was deleted, and nothing
-in it needed importing (all 46 non-regenerable files were already git-tracked and pushed).
+copy still accepts commits and the two clones can silently diverge. Nothing in it needed
+importing — all 46 non-regenerable files were already git-tracked and pushed.
+
+**Open manual step (must be done on the Windows machine):** rename
+`C:\Users\herma\Claude AI Local\AI and SFR website`
+→ `C:\Users\herma\Claude AI Local\_STALE_AI and SFR website`.
+Rename only — delete nothing. Until that happens, the divergence risk above is still live.
 
 ### Cross-machine sync = git, not Drive
 
