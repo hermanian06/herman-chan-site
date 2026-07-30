@@ -8,10 +8,21 @@ Inherits from global `CLAUDE.md`. Read this before editing anything in this repo
 
 | Path | What lives here |
 |---|---|
-| **`C:\Users\herma\Claude AI Local\AI and SFR website\`** (this repo) | The live Astro source. Builds, deploys, gets committed to git. |
-| **`C:\Users\herma\My Drive\Claude AI\AI + SFR website\`** (Drive) | Drafts, brand/voice docs, LinkedIn revisions, planning. Never built. |
+| **`~/code/herman-chan-site/`** on the **Mac** (this repo) | The live Astro source. Builds, deploys, gets committed to git. |
+| **`~/My Drive/Claude AI/AI + SFR website/`** (Drive, both machines) | Drafts, brand/voice docs, LinkedIn revisions, planning. Never built. |
 
-The Drive folder has its own [`CLAUDE.md`](file:///C:/Users/herma/My%20Drive/Claude%20AI/AI%20+%20SFR%20website/CLAUDE.md) — same info, mirrored for whichever folder you start a session in.
+The Drive folder has its own `CLAUDE.md` — same info, mirrored for whichever folder you start a session in.
+
+### The Mac is the only machine that publishes (2026-07-30)
+
+Publishing moved off Windows on 2026-07-30. **Commit and push only from the Mac clone at
+`/Users/hermanchan/code/herman-chan-site`.** Node 24.18.0 there clears Astro 6's `>=22.12` floor.
+
+Unlike Herman's Drive-synced repos, this one has a **real `.git`**, so the old Windows working
+copy still accepts commits and the two clones can silently diverge. That copy is therefore
+retired in place and renamed to
+`C:\Users\herma\Claude AI Local\_STALE_AI and SFR website` — nothing was deleted, and nothing
+in it needed importing (all 46 non-regenerable files were already git-tracked and pushed).
 
 ### Cross-machine sync = git, not Drive
 
@@ -20,9 +31,13 @@ Remote: **`https://github.com/hermanian06/herman-chan-site.git`** on `main`. To 
 ```sh
 git clone https://github.com/hermanian06/herman-chan-site.git
 cd herman-chan-site
-npm install
+npm ci        # NOT npm install — installs the exact tree pinned in package-lock.json
 npm run dev
 ```
+
+**Never copy `node_modules/` between machines.** Rollup and esbuild ship per-OS/per-arch native
+binaries, so a Windows x64 tree fails on Apple Silicon. `npm ci` rebuilds it from the committed
+lockfile — that is the only supported path.
 
 **Do not** try to put this repo under Drive sync.
 
