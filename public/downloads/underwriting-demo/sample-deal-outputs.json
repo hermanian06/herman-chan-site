@@ -3170,6 +3170,7 @@
     "loan_amount": null,
     "transfer_tax": {
       "applies": false,
+      "amount_status": "zero_by_law",
       "rate_label": "No real-estate transfer tax",
       "amount": 0.0,
       "citation": "Tex. Const. art. VIII, sec. 29 (added 2015)",
@@ -3178,6 +3179,7 @@
     },
     "mortgage_tax": {
       "applies": false,
+      "amount_status": "zero_by_law",
       "rate_label": "No mortgage tax",
       "amount": 0.0,
       "citation": "No imposing statute; Tex. Loc. Gov't Code ch. 118",
