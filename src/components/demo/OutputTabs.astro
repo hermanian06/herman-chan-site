@@ -2,10 +2,12 @@
 /**
  * Tab chrome for the sample-output previews.
  *
- * Vanilla JS, no framework. Every panel ships in the HTML, so the content is there
- * whether or not the script runs — the script only hides the panels that are not
- * current. Deep-linkable via the hash, which matters because these panels are the
- * thing a reader will want to send someone.
+ * Vanilla JS, no framework. Every panel ships in the HTML *and stays visible* in the
+ * server-rendered markup, so with scripting off or broken all of the content is still
+ * reachable — the tab bar just does nothing. An inline script collapses the panels to
+ * the current one during parse (before paint, so no flash); the deferred module below
+ * only adds the click and keyboard handling. Deep-linkable via the hash, which matters
+ * because these panels are the thing a reader will want to send someone.
  */
 interface Tab {
   id: string;
@@ -34,7 +36,7 @@ for (const tab of tabs) {
       <div class="ot__group">
         <span class="ot__grouplabel">{group.name}</span>
         <div class="ot__groupbtns">
-          {group.tabs.map((tab, i) => (
+          {group.tabs.map((tab) => (
             <button
               type="button"
               role="tab"
@@ -42,7 +44,7 @@ for (const tab of tabs) {
               id={`tab-${tab.id}`}
               data-tab={tab.id}
               aria-controls={`panel-${tab.id}`}
-              aria-selected={groups[0].tabs[0].id === tab.id ? "true" : "false"}
+              aria-selected="false"
             >
               {tab.label}
             </button>
@@ -52,19 +54,52 @@ for (const tab of tabs) {
     ))}
   </div>
 
-  {tabs.map((tab, i) => (
+  {tabs.map((tab) => (
     <section
       class="ot__panel"
       id={`panel-${tab.id}`}
       role="tabpanel"
       aria-labelledby={`tab-${tab.id}`}
       data-panel={tab.id}
-      hidden={i !== 0}
     >
       <div set:html={tab.html} />
     </section>
   ))}
 </div>
+
+{/*
+  Nothing is hidden in the server-rendered HTML: with scripting off or broken, all
+  eleven panels stay readable and the tab bar is simply decorative. This inline script
+  runs during parse, immediately after the panels exist, so it collapses them to the
+  current one before the browser paints — no flash, and no dependency on the deferred
+  module below having loaded.
+*/}
+<script is:inline>
+  (function () {
+    var roots = document.querySelectorAll("[data-output-tabs]");
+    for (var r = 0; r < roots.length; r++) {
+      var root = roots[r];
+      var buttons = root.querySelectorAll("[data-tab]");
+      var panels = root.querySelectorAll("[data-panel]");
+      if (!buttons.length || !panels.length) continue;
+      var wanted = location.hash.replace(/^#output-/, "");
+      var current = buttons[0].getAttribute("data-tab");
+      for (var b = 0; b < buttons.length; b++) {
+        if (buttons[b].getAttribute("data-tab") === wanted) current = wanted;
+      }
+      for (var p = 0; p < panels.length; p++) {
+        panels[p].hidden = panels[p].getAttribute("data-panel") !== current;
+      }
+      for (var t = 0; t < buttons.length; t++) {
+        buttons[t].setAttribute(
+          "aria-selected",
+          buttons[t].getAttribute("data-tab") === current ? "true" : "false",
+        );
+      }
+      root.setAttribute("data-tabs-ready", "");
+    }
+  })();
+</script>
 
 <script>
   document.querySelectorAll<HTMLElement>("[data-output-tabs]").forEach((root) => {
