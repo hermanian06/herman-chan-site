@@ -2,12 +2,13 @@
 /**
  * Tab chrome for the sample-output previews.
  *
- * Vanilla JS, no framework. Every panel ships in the HTML *and stays visible* in the
- * server-rendered markup, so with scripting off or broken all of the content is still
- * reachable — the tab bar just does nothing. An inline script collapses the panels to
- * the current one during parse (before paint, so no flash); the deferred module below
- * only adds the click and keyboard handling. Deep-linkable via the hash, which matters
- * because these panels are the thing a reader will want to send someone.
+ * Vanilla JS, no framework, one inline script. Every panel ships in the HTML *and stays
+ * visible* in the server-rendered markup, so with scripting off, blocked, or broken all
+ * of the content is still reachable — the tab bar just does nothing. The script installs
+ * the click and keyboard handlers first and collapses the panels only afterwards, during
+ * parse, so there is no flash and no state in which panels are hidden with nothing able
+ * to reveal them. Deep-linkable via the hash, which matters because these panels are the
+ * thing a reader will want to send someone.
  */
 interface Tab {
   id: string;
@@ -68,81 +69,84 @@ for (const tab of tabs) {
 </div>
 
 {/*
-  Nothing is hidden in the server-rendered HTML: with scripting off or broken, all
-  eleven panels stay readable and the tab bar is simply decorative. This inline script
-  runs during parse, immediately after the panels exist, so it collapses them to the
-  current one before the browser paints — no flash, and no dependency on the deferred
-  module below having loaded.
+  Progressive enhancement, in one script and in one order that matters.
+
+  Nothing is hidden in the server-rendered HTML, so with scripting off, blocked, or
+  broken all eleven panels stay readable and the tab bar is simply decorative.
+
+  Handlers are installed FIRST and the panels are collapsed only after that succeeds.
+  Splitting the two — an inline initializer that hides, plus a module that wires the
+  clicks — reintroduced the bug it was meant to fix: if the module failed to execute,
+  ten panels were already hidden with nothing able to reveal them. A single inline
+  script (no module, no bundling, no dependency on module support) cannot end up in
+  that state, and the try/catch leaves everything visible if anything throws.
 */}
 <script is:inline>
   (function () {
     var roots = document.querySelectorAll("[data-output-tabs]");
     for (var r = 0; r < roots.length; r++) {
       var root = roots[r];
-      var buttons = root.querySelectorAll("[data-tab]");
-      var panels = root.querySelectorAll("[data-panel]");
-      if (!buttons.length || !panels.length) continue;
-      var wanted = location.hash.replace(/^#output-/, "");
-      var current = buttons[0].getAttribute("data-tab");
-      for (var b = 0; b < buttons.length; b++) {
-        if (buttons[b].getAttribute("data-tab") === wanted) current = wanted;
+      try {
+        var buttons = root.querySelectorAll("[data-tab]");
+        var panels = root.querySelectorAll("[data-panel]");
+        if (!buttons.length || !panels.length) continue;
+
+        var show = (function (buttons, panels) {
+          return function (id, pushHash) {
+            var known = false;
+            for (var i = 0; i < buttons.length; i++) {
+              if (buttons[i].getAttribute("data-tab") === id) known = true;
+            }
+            if (!known) return;
+            for (var b = 0; b < buttons.length; b++) {
+              buttons[b].setAttribute(
+                "aria-selected",
+                buttons[b].getAttribute("data-tab") === id ? "true" : "false"
+              );
+            }
+            for (var p = 0; p < panels.length; p++) {
+              panels[p].hidden = panels[p].getAttribute("data-panel") !== id;
+            }
+            if (pushHash && history.replaceState) {
+              history.replaceState(null, "", "#output-" + id);
+            }
+          };
+        })(buttons, panels);
+
+        var ARROWS = ["ArrowRight", "ArrowLeft", "Home", "End"];
+        for (var t = 0; t < buttons.length; t++) {
+          (function (button, index) {
+            button.addEventListener("click", function () {
+              show(button.getAttribute("data-tab"), true);
+            });
+            button.addEventListener("keydown", function (event) {
+              if (ARROWS.indexOf(event.key) === -1) return;
+              event.preventDefault();
+              var next;
+              if (event.key === "Home") next = 0;
+              else if (event.key === "End") next = buttons.length - 1;
+              else if (event.key === "ArrowRight") next = (index + 1) % buttons.length;
+              else next = (index - 1 + buttons.length) % buttons.length;
+              buttons[next].focus();
+              show(buttons[next].getAttribute("data-tab"), true);
+            });
+          })(buttons[t], t);
+        }
+
+        // Handlers are live from here on, so it is now safe to collapse the panels.
+        var wanted = location.hash.replace(/^#output-/, "");
+        var current = buttons[0].getAttribute("data-tab");
+        for (var w = 0; w < buttons.length; w++) {
+          if (buttons[w].getAttribute("data-tab") === wanted) current = wanted;
+        }
+        show(current, false);
+        root.setAttribute("data-tabs-ready", "");
+      } catch (err) {
+        // Leave every panel visible: unstyled and untabbed beats unreachable.
+        root.removeAttribute("data-tabs-ready");
       }
-      for (var p = 0; p < panels.length; p++) {
-        panels[p].hidden = panels[p].getAttribute("data-panel") !== current;
-      }
-      for (var t = 0; t < buttons.length; t++) {
-        buttons[t].setAttribute(
-          "aria-selected",
-          buttons[t].getAttribute("data-tab") === current ? "true" : "false",
-        );
-      }
-      root.setAttribute("data-tabs-ready", "");
     }
   })();
-</script>
-
-<script>
-  document.querySelectorAll<HTMLElement>("[data-output-tabs]").forEach((root) => {
-    const buttons = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-tab]"));
-    const panels = Array.from(root.querySelectorAll<HTMLElement>("[data-panel]"));
-
-    const show = (id: string, pushHash: boolean) => {
-      const known = buttons.some((b) => b.dataset.tab === id);
-      if (!known) return;
-      buttons.forEach((b) =>
-        b.setAttribute("aria-selected", b.dataset.tab === id ? "true" : "false"),
-      );
-      panels.forEach((p) => {
-        p.hidden = p.dataset.panel !== id;
-      });
-      if (pushHash && history.replaceState) {
-        history.replaceState(null, "", `#output-${id}`);
-      }
-    };
-
-    buttons.forEach((button) => {
-      button.addEventListener("click", () => show(button.dataset.tab!, true));
-      button.addEventListener("keydown", (event) => {
-        const keys = ["ArrowRight", "ArrowLeft", "Home", "End"];
-        if (!keys.includes(event.key)) return;
-        event.preventDefault();
-        const i = buttons.indexOf(button);
-        const next =
-          event.key === "Home"
-            ? 0
-            : event.key === "End"
-              ? buttons.length - 1
-              : event.key === "ArrowRight"
-                ? (i + 1) % buttons.length
-                : (i - 1 + buttons.length) % buttons.length;
-        buttons[next].focus();
-        show(buttons[next].dataset.tab!, true);
-      });
-    });
-
-    const fromHash = location.hash.replace(/^#output-/, "");
-    if (fromHash) show(fromHash, false);
-  });
 </script>
 
 <style>
