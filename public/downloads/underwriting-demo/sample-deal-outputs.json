@@ -65,6 +65,12 @@
     "assessment_ratio": 1.0,
     "tax_divisor": 100,
     "tax_exemption": 0,
+    "tax_parcel_id": "SYN-000-00-000",
+    "tax_area_code": "SYN-0000",
+    "tax_basis_label": "Assessed value (synthetic)",
+    "tax_basis_note": "Synthetic basis. On a real deal this row states what the basis IS in that state and whether it resets on sale.",
+    "tax_billed_amount": 494040,
+    "tax_billed_year": 2025,
     "school_elementary_name": "Example Creek Elementary",
     "school_elementary_rating": 7,
     "school_middle_name": "Example Ridge Middle",
@@ -3156,5 +3162,329 @@
       "5 mi": 41200
     },
     "absent_reason": null
+  },
+  "closing_costs": {
+    "state": "TX",
+    "price": 38700000,
+    "loan_amount": null,
+    "transfer_tax": {
+      "applies": false,
+      "rate_label": "No real-estate transfer tax",
+      "amount": 0.0,
+      "citation": "Tex. Const. art. VIII, sec. 29 (added 2015)",
+      "as_of": "2026-09-01",
+      "caveat": "The bar is on enacting a transfer tax after 2016-01-01; Texas had none, so the rate is zero. The same section expressly permits a tax on title insurance, and Texas title premiums are state-promulgated and material — a zero here does not mean a cheap closing."
+    },
+    "mortgage_tax": {
+      "applies": false,
+      "rate_label": "No mortgage tax",
+      "amount": 0.0,
+      "citation": "No imposing statute; Tex. Loc. Gov't Code ch. 118",
+      "as_of": "2026-09-01",
+      "caveat": "Proven by absence of an imposing statute rather than by an affirmative constitutional bar, which is a weaker form of proof than Arizona's. Recording is a flat per-page schedule."
+    },
+    "note": "Transfer tax is computed on the purchase price; any mortgage or recording tax is computed on the loan amount where one is stated, and on the price otherwise. Rates are verified against a primary authority and carry the citation and the date confirmed; a state absent from the table reports as not asserted rather than as zero."
+  },
+  "provenance": {
+    "summary.deal_name": {
+      "source_doc": "Synthetic offering memorandum",
+      "locator": "p.1",
+      "method": "read",
+      "quote": "Fixture Park"
+    },
+    "summary.street_address": {
+      "source_doc": "Synthetic offering memorandum",
+      "locator": "p.4",
+      "method": "read",
+      "quote": "1400 Example Parkway"
+    },
+    "summary.city": {
+      "source_doc": "Synthetic offering memorandum",
+      "locator": "p.4",
+      "method": "read"
+    },
+    "summary.state": {
+      "source_doc": "Synthetic offering memorandum",
+      "locator": "p.4",
+      "method": "read"
+    },
+    "summary.zip": {
+      "source_doc": "Synthetic offering memorandum",
+      "locator": "p.4",
+      "method": "read"
+    },
+    "summary.county": {
+      "source_doc": "Synthetic offering memorandum",
+      "locator": "p.4",
+      "method": "read"
+    },
+    "summary.product_type": {
+      "source_doc": "Synthetic offering memorandum",
+      "locator": "p.6",
+      "method": "read"
+    },
+    "summary.structure": {
+      "source_doc": "Synthetic offering memorandum",
+      "locator": "p.6",
+      "method": "read",
+      "quote": "Three-story garden, surface parked"
+    },
+    "summary.year_built": {
+      "source_doc": "Synthetic offering memorandum",
+      "locator": "p.6",
+      "method": "read"
+    },
+    "summary.product_detail": {
+      "source_doc": "Synthetic offering memorandum",
+      "locator": "p.7",
+      "method": "read"
+    },
+    "summary.construction_status": {
+      "source_doc": "Synthetic offering memorandum",
+      "locator": "p.6",
+      "method": "read"
+    },
+    "summary.delivery_date": {
+      "source_doc": "Synthetic offering memorandum",
+      "locator": "p.6",
+      "method": "read"
+    },
+    "summary.seller_entity": {
+      "source_doc": "Synthetic offering memorandum",
+      "locator": "p.2",
+      "method": "read"
+    },
+    "summary.deal_status": {
+      "source_doc": "Synthetic offering memorandum",
+      "locator": "p.2",
+      "method": "read"
+    },
+    "summary.msa": {
+      "source_doc": "Derived by the pipeline",
+      "locator": "—",
+      "method": "derived",
+      "inputs": [
+        "summary.city",
+        "summary.state"
+      ],
+      "note": "Metro assigned from the city/state pair."
+    },
+    "summary.listing_brokerage": {
+      "source_doc": "Derived by the pipeline",
+      "locator": "—",
+      "method": "derived",
+      "inputs": [
+        "summary.seller_entity"
+      ],
+      "note": "Generic label; no firm or individual is named in a published file."
+    },
+    "summary.unit_count": {
+      "source_doc": "Synthetic rent roll export",
+      "locator": "Rent Roll!A:A",
+      "method": "derived",
+      "inputs": [
+        "rent_roll.units"
+      ],
+      "note": "Distinct unit identifiers on the roll."
+    },
+    "summary.pricing_guidance": {
+      "source_doc": "Supplied by the operator",
+      "locator": "—",
+      "method": "read",
+      "note": "Illustrative figure supplied directly; not a quote or an offer."
+    },
+    "pricing.price_per_unit": {
+      "source_doc": "Supplied by the operator",
+      "locator": "—",
+      "method": "read",
+      "note": "Illustrative. Inside the band a per-unit sale price occupies."
+    },
+    "pricing.unit_count": {
+      "source_doc": "Synthetic rent roll export",
+      "locator": "Rent Roll!A:A",
+      "method": "derived",
+      "inputs": [
+        "summary.unit_count"
+      ]
+    },
+    "summary.in_place_rent_avg": {
+      "source_doc": "Derived by the pipeline",
+      "locator": "Unit Mix Summary!H",
+      "method": "computed",
+      "inputs": [
+        "rent_roll.units"
+      ],
+      "note": "Occupied units, weighted."
+    },
+    "summary.market_rent_for_model": {
+      "source_doc": "Derived by the pipeline",
+      "locator": "Unit Mix Summary!K",
+      "method": "computed",
+      "inputs": [
+        "rent_roll.units"
+      ],
+      "note": "New-lease average where a plan has new leases in the window, else in-place. Never a blend."
+    },
+    "summary.fair_market_value": {
+      "source_doc": "Supplied by the operator",
+      "locator": "—",
+      "method": "read",
+      "note": "Operator's own estimate."
+    },
+    "summary.tax_rate_as_billed": {
+      "source_doc": "Synthetic county tax record",
+      "locator": "Rate table, synthetic district",
+      "method": "read"
+    },
+    "summary.assessed_value_basis": {
+      "source_doc": "Synthetic county tax record",
+      "locator": "Valuation notice",
+      "method": "read"
+    },
+    "summary.assessment_ratio": {
+      "source_doc": "Synthetic county tax record",
+      "locator": "Rate table",
+      "method": "read"
+    },
+    "summary.tax_divisor": {
+      "source_doc": "Synthetic county tax record",
+      "locator": "Rate table",
+      "method": "read"
+    },
+    "summary.tax_exemption": {
+      "source_doc": "Synthetic county tax record",
+      "locator": "Valuation notice",
+      "method": "read"
+    },
+    "summary.tax_parcel_id": {
+      "source_doc": "Synthetic county tax record",
+      "locator": "Parcel record",
+      "method": "read"
+    },
+    "summary.tax_area_code": {
+      "source_doc": "Synthetic county tax record",
+      "locator": "Rate table",
+      "method": "read"
+    },
+    "summary.tax_billed_amount": {
+      "source_doc": "Synthetic county tax record",
+      "locator": "Tax bill",
+      "method": "read"
+    },
+    "summary.tax_billed_year": {
+      "source_doc": "Synthetic county tax record",
+      "locator": "Tax bill",
+      "method": "read"
+    },
+    "summary.tax_basis_label": {
+      "source_doc": "Synthetic county tax record",
+      "locator": "Valuation notice",
+      "method": "read"
+    },
+    "summary.tax_basis_note": {
+      "source_doc": "Synthetic county tax record",
+      "locator": "Valuation notice",
+      "method": "read"
+    },
+    "summary.school_elementary_name": {
+      "source_doc": "Synthetic public data extract",
+      "locator": "School attendance lookup",
+      "method": "read"
+    },
+    "summary.school_middle_name": {
+      "source_doc": "Synthetic public data extract",
+      "locator": "School attendance lookup",
+      "method": "read"
+    },
+    "summary.school_high_name": {
+      "source_doc": "Synthetic public data extract",
+      "locator": "School attendance lookup",
+      "method": "read"
+    },
+    "t12.month_labels": {
+      "source_doc": "Synthetic trailing-twelve income statement",
+      "locator": "T-12!C8:N8",
+      "method": "read",
+      "note": "Twelve consecutive month-end columns; direction detected from the labels."
+    },
+    "t12.units": {
+      "source_doc": "Synthetic rent roll export",
+      "locator": "—",
+      "method": "derived",
+      "inputs": [
+        "summary.unit_count"
+      ]
+    },
+    "t12.source_subtotals": {
+      "source_doc": "Synthetic trailing-twelve income statement",
+      "locator": "T-12!O",
+      "method": "read",
+      "note": "The statement's own printed subtotals, kept for the cross-tie."
+    },
+    "rent_roll.as_of": {
+      "source_doc": "Synthetic rent roll export",
+      "locator": "Rent Roll!A2",
+      "method": "read"
+    },
+    "rent_roll.lookback_months": {
+      "source_doc": "Supplied by the operator",
+      "locator": "—",
+      "method": "read",
+      "note": "Analysis knob."
+    },
+    "rent_roll.new_tenant_tolerance_days": {
+      "source_doc": "Supplied by the operator",
+      "locator": "—",
+      "method": "read",
+      "note": "Analysis knob."
+    },
+    "rent_roll.units": {
+      "source_doc": "Synthetic rent roll export",
+      "locator": "Rent Roll!A4:K183",
+      "method": "read",
+      "note": "Unit identifiers only; the source's resident-name column is never read."
+    },
+    "comps.rows": {
+      "source_doc": "Synthetic weekly rent scrape",
+      "locator": "—",
+      "method": "read",
+      "note": "Own weekly scrape; asking and net effective stated separately."
+    },
+    "demand.rings": {
+      "source_doc": "Synthetic public data extract",
+      "locator": "—",
+      "method": "read",
+      "note": "Ring demographics."
+    },
+    "supply.rings": {
+      "source_doc": "Synthetic public data extract",
+      "locator": "—",
+      "method": "read",
+      "note": "Permit and entitlement records."
+    },
+    "trade_out.rows": {
+      "source_doc": "Synthetic lease trade-out report",
+      "locator": "—",
+      "method": "read",
+      "note": "Cohort averages."
+    },
+    "closing_costs.transfer_tax.amount": {
+      "source_doc": "Vendored state rate table",
+      "locator": "closing_costs.py",
+      "method": "computed",
+      "inputs": [
+        "pricing.price_per_unit",
+        "summary.state"
+      ]
+    },
+    "closing_costs.mortgage_tax.amount": {
+      "source_doc": "Vendored state rate table",
+      "locator": "closing_costs.py",
+      "method": "computed",
+      "inputs": [
+        "pricing.price_per_unit",
+        "summary.state"
+      ]
+    }
   }
 }
