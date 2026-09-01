@@ -3029,7 +3029,8 @@
         "source": "own weekly scrape"
       }
     ],
-    "absent_reason": null
+    "absent_reason": null,
+    "coverage_note": "Synthetic coverage statement. On a real deal this is measured from the operator's own scrape by tools/comp_coverage_probe.py, using the scraper's own status taxonomy rather than an assumed one."
   },
   "demand": {
     "rings": [
