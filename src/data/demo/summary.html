@@ -1,0 +1,60 @@
+<style>
+.op-wrap { font-family: var(--sans, sans-serif); color: var(--fg, #111); }
+.op-wrap h3 {
+  font-family: var(--serif, Georgia, serif); font-weight: 500;
+  font-size: var(--t-22, 22px); letter-spacing: -0.01em;
+  margin: 0 0 var(--s-2, 8px); color: var(--fg, #111);
+}
+.op-note {
+  font-family: var(--serif, Georgia, serif); font-size: var(--t-15, 15px);
+  line-height: 1.5; color: var(--muted, #666); margin: 0 0 var(--s-5, 24px);
+  max-width: 62ch;
+}
+.op-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 0 var(--s-5, 24px); }
+.op-table { border-collapse: collapse; width: 100%; min-width: max-content; font-size: var(--t-13, 13px); }
+.op-table th, .op-table td {
+  padding: 6px 12px; text-align: left; white-space: nowrap;
+  border-bottom: 1px solid var(--rule-soft, #e6e6e6);
+}
+.op-table thead th {
+  font-family: var(--mono, monospace); font-size: var(--t-12, 12px);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--muted, #666); font-weight: 500;
+  border-bottom: 1px solid var(--rule, #ccc); background: var(--bg-alt, #f2f2f2);
+  position: sticky; top: 0;
+}
+.op-table td.op-num, .op-table th.op-num { text-align: right; font-family: var(--mono, monospace); font-variant-numeric: tabular-nums; }
+.op-table tr.op-total td { font-weight: 600; background: var(--bg-alt, #f2f2f2); border-bottom: 1px solid var(--rule, #ccc); }
+.op-table tr.op-sub td { background: var(--bg-alt, #f6f6f6); font-weight: 600; }
+.op-table td.op-wrapcell { white-space: normal; min-width: 26ch; max-width: 46ch; }
+.op-card { display: grid; gap: 0; margin: 0 0 var(--s-5, 24px); }
+.op-sec {
+  font-family: var(--mono, monospace); font-size: var(--t-12, 12px);
+  text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted, #666);
+  padding: var(--s-4, 16px) 0 var(--s-2, 8px); border-bottom: 1px solid var(--rule, #ccc);
+}
+.op-row { display: grid; grid-template-columns: minmax(11rem, 15rem) 1fr; gap: var(--s-4, 16px);
+  padding: 7px 0; border-bottom: 1px solid var(--rule-soft, #eee); align-items: baseline; }
+.op-row dt { font-family: var(--mono, monospace); font-size: var(--t-12, 12px); color: var(--muted, #666); }
+.op-row dd { margin: 0; font-size: var(--t-15, 15px); }
+.op-row dd .op-prov { display: block; font-size: var(--t-12, 12px); color: var(--muted-2, #999); margin-top: 3px; }
+.op-chip {
+  display: inline-block; font-family: var(--mono, monospace); font-size: 10px;
+  text-transform: uppercase; letter-spacing: 0.07em; padding: 1px 6px;
+  border: 1px solid var(--rule, #ccc); border-radius: 2px;
+  color: var(--muted, #666); margin-left: 6px; vertical-align: 1px; white-space: nowrap;
+}
+.op-flag { color: var(--accent, #14304f); font-weight: 600; }
+.op-ok { color: var(--muted, #666); }
+.op-missing { font-family: var(--mono, monospace); font-size: var(--t-12, 12px); color: var(--accent, #14304f); }
+.op-empty { border: 1px dashed var(--rule, #ccc); padding: var(--s-5, 24px);
+  font-family: var(--serif, Georgia, serif); color: var(--muted, #666); max-width: 62ch; }
+@media (max-width: 640px) {
+  .op-row { grid-template-columns: 1fr; gap: 2px; }
+}
+</style>
+<div class="op-wrap">
+<h3>Deal summary</h3>
+<p class="op-note">One card, built from the deal's own documents. Where a value could not be established it reads <span class="op-missing">MISSING</span> rather than a plausible guess — a visible hole is cheaper than a wrong number that survives into a model.</p>
+<dl class="op-card"><div class="op-sec">Identification</div><div class="op-row"><dt>Deal name</dt><dd>Fixture Park</dd></div><div class="op-row"><dt>Address</dt><dd>1400 Example Parkway, Sample City, TX 75000<span class="op-prov">Street address read from the synthetic marketing package; city/state/ZIP confirmed against the same document.</span></dd></div><div class="op-row"><dt>County</dt><dd>Example County</dd></div><div class="op-row"><dt>Market</dt><dd>Sample City MSA</dd></div><div class="op-sec">Property</div><div class="op-row"><dt>Product type</dt><dd>MF</dd></div><div class="op-row"><dt>Structure</dt><dd>Three-story garden, surface parked</dd></div><div class="op-row"><dt>Units</dt><dd>180</dd></div><div class="op-row"><dt>Year built</dt><dd>2019</dd></div><div class="op-row"><dt>Status</dt><dd>Stabilized<span class="op-prov">Delivered 2019; fully stabilized since 2021</span></dd></div><div class="op-row"><dt>Detail</dt><dd>180 units across six plans: 62 one-bedroom (720–795 SF), 78 two-bedroom (1,050–1,140 SF), 26 three-bedroom flats (1,380 SF), 14 three-bedroom townhomes (1,620 SF). Washer/dryer in unit; detached garages on 24 units.</dd></div><div class="op-sec">Parties</div><div class="op-row"><dt>Seller</dt><dd>Sample City Residential Holdings LLC</dd></div><div class="op-row"><dt>Listing brokerage</dt><dd>Listing brokerage</dd></div><div class="op-row"><dt>Deal status</dt><dd>On the market</dd></div><div class="op-sec">Pricing</div><div class="op-row"><dt>Guidance</dt><dd>$215,000 per unit (illustrative)<span class="op-chip">illustrative</span><span class="op-prov">Every price and cap rate below is illustrative. The per-unit price is a round number chosen to sit inside the band a real per-unit sale price occupies; it is not a quote, an offer, or a broker&#x27;s guidance.</span></dd></div><div class="op-row"><dt>Price per unit</dt><dd>$215,000<span class="op-chip">illustrative</span></dd></div><div class="op-row"><dt>Total price</dt><dd>$38,700,000<span class="op-chip">illustrative</span></dd></div><div class="op-row"><dt>T-12 NOI</dt><dd>$2,126,462<span class="op-prov">From the T-12 rollup.</span></dd></div><div class="op-row"><dt>T-12 cap rate</dt><dd>5.49%<span class="op-chip">illustrative</span></dd></div><div class="op-row"><dt>T-3 cap rate</dt><dd>5.63%<span class="op-chip">illustrative</span><span class="op-prov">Trailing three months annualized.</span></dd></div><div class="op-sec">Rents</div><div class="op-row"><dt>In-place (avg)</dt><dd>$1,795</dd></div><div class="op-row"><dt>Market rent for model</dt><dd>$1,835<span class="op-prov">New-lease average where a plan has new leases in the window, otherwise in-place. Never a blend of new and renewal.</span></dd></div><div class="op-row"><dt>Fair market value</dt><dd>$39,600,000</dd></div><div class="op-sec">Taxes</div><div class="op-row"><dt>Rate as billed</dt><dd>2.148<span class="op-prov">Rate as billed, 2.148 per $100 of assessed value, read from the synthetic county bill for the 2025 tax year.</span></dd></div><div class="op-row"><dt>Assessed value basis</dt><dd>$23,000,000</dd></div><div class="op-row"><dt>Assessment ratio</dt><dd>100%</dd></div><div class="op-row"><dt>Computed annual tax</dt><dd>$494,040</dd></div><div class="op-row"><dt>Computed tax per unit</dt><dd>$2,745</dd></div><div class="op-sec">Schools</div><div class="op-row"><dt>Elementary</dt><dd>Example Creek Elementary<span class="op-prov">rating 7</span></dd></div><div class="op-row"><dt>Middle</dt><dd>Example Ridge Middle<span class="op-prov">rating 6</span></dd></div><div class="op-row"><dt>High</dt><dd>Sample City High<span class="op-prov">rating 7</span></dd></div><div class="op-sec">Notes</div><div class="op-row"><dt>Notes</dt><dd>Synthetic deal built to exercise the output formats. Pricing is illustrative and no licensed data source was used. Comps come only from an operator&#x27;s own weekly rent scrape.</dd></div><div class="op-sec">Excluded by design</div><div class="op-row"><dt>Not used</dt><dd>Third-party licensed rent-comp feeds; Subscription market-data providers; Any employer-owned deal data or template</dd></div></dl>
+</div>

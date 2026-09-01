@@ -1,0 +1,67 @@
+<style>
+.op-wrap { font-family: var(--sans, sans-serif); color: var(--fg, #111); }
+.op-wrap h3 {
+  font-family: var(--serif, Georgia, serif); font-weight: 500;
+  font-size: var(--t-22, 22px); letter-spacing: -0.01em;
+  margin: 0 0 var(--s-2, 8px); color: var(--fg, #111);
+}
+.op-note {
+  font-family: var(--serif, Georgia, serif); font-size: var(--t-15, 15px);
+  line-height: 1.5; color: var(--muted, #666); margin: 0 0 var(--s-5, 24px);
+  max-width: 62ch;
+}
+.op-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 0 var(--s-5, 24px); }
+.op-table { border-collapse: collapse; width: 100%; min-width: max-content; font-size: var(--t-13, 13px); }
+.op-table th, .op-table td {
+  padding: 6px 12px; text-align: left; white-space: nowrap;
+  border-bottom: 1px solid var(--rule-soft, #e6e6e6);
+}
+.op-table thead th {
+  font-family: var(--mono, monospace); font-size: var(--t-12, 12px);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--muted, #666); font-weight: 500;
+  border-bottom: 1px solid var(--rule, #ccc); background: var(--bg-alt, #f2f2f2);
+  position: sticky; top: 0;
+}
+.op-table td.op-num, .op-table th.op-num { text-align: right; font-family: var(--mono, monospace); font-variant-numeric: tabular-nums; }
+.op-table tr.op-total td { font-weight: 600; background: var(--bg-alt, #f2f2f2); border-bottom: 1px solid var(--rule, #ccc); }
+.op-table tr.op-sub td { background: var(--bg-alt, #f6f6f6); font-weight: 600; }
+.op-table td.op-wrapcell { white-space: normal; min-width: 26ch; max-width: 46ch; }
+.op-card { display: grid; gap: 0; margin: 0 0 var(--s-5, 24px); }
+.op-sec {
+  font-family: var(--mono, monospace); font-size: var(--t-12, 12px);
+  text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted, #666);
+  padding: var(--s-4, 16px) 0 var(--s-2, 8px); border-bottom: 1px solid var(--rule, #ccc);
+}
+.op-row { display: grid; grid-template-columns: minmax(11rem, 15rem) 1fr; gap: var(--s-4, 16px);
+  padding: 7px 0; border-bottom: 1px solid var(--rule-soft, #eee); align-items: baseline; }
+.op-row dt { font-family: var(--mono, monospace); font-size: var(--t-12, 12px); color: var(--muted, #666); }
+.op-row dd { margin: 0; font-size: var(--t-15, 15px); }
+.op-row dd .op-prov { display: block; font-size: var(--t-12, 12px); color: var(--muted-2, #999); margin-top: 3px; }
+.op-chip {
+  display: inline-block; font-family: var(--mono, monospace); font-size: 10px;
+  text-transform: uppercase; letter-spacing: 0.07em; padding: 1px 6px;
+  border: 1px solid var(--rule, #ccc); border-radius: 2px;
+  color: var(--muted, #666); margin-left: 6px; vertical-align: 1px; white-space: nowrap;
+}
+.op-flag { color: var(--accent, #14304f); font-weight: 600; }
+.op-ok { color: var(--muted, #666); }
+.op-missing { font-family: var(--mono, monospace); font-size: var(--t-12, 12px); color: var(--accent, #14304f); }
+.op-empty { border: 1px dashed var(--rule, #ccc); padding: var(--s-5, 24px);
+  font-family: var(--serif, Georgia, serif); color: var(--muted, #666); max-width: 62ch; }
+@media (max-width: 640px) {
+  .op-row { grid-template-columns: 1fr; gap: 2px; }
+}
+</style>
+<div class="op-wrap">
+<h3>P&amp;L summary</h3>
+<p class="op-note">The rollup. Two rules do the work: gross scheduled rent is whatever the statement printed, or gross potential rent plus gain/(loss) to lease where it printed nothing; and total revenue sums from gross scheduled rent down — never from gross potential rent, which would count loss-to-lease twice.</p>
+<div class="op-scroll"><table class="op-table"><thead><tr><th>Line item</th><th class="op-num">T-12</th><th class="op-num">T-3 annualized</th><th class="op-num">Per unit</th><th class="op-num">% of revenue</th></tr></thead><tbody><tr><td>Gross Potential Rent</td><td class="op-num">$3,905,933</td><td class="op-num">$3,998,559</td><td class="op-num">$21,700</td><td class="op-num">102.4%</td></tr><tr><td>Gain/(Loss) to Lease</td><td class="op-num">($81,965)</td><td class="op-num">($83,617)</td><td class="op-num">($455)</td><td class="op-num">-2.1%</td></tr><tr class="op-total"><td>Gross Scheduled Rent</td><td class="op-num">$3,823,968</td><td class="op-num">$3,914,942</td><td class="op-num">$21,244</td><td class="op-num">100.2%</td></tr><tr><td>Vacancy</td><td class="op-num">($226,329)</td><td class="op-num">($231,379)</td><td class="op-num">($1,257)</td><td class="op-num">-5.9%</td></tr><tr><td>Concessions</td><td class="op-num">($42,947)</td><td class="op-num">($43,761)</td><td class="op-num">($239)</td><td class="op-num">-1.1%</td></tr><tr><td>Non-Revenue Units</td><td class="op-num">($15,624)</td><td class="op-num">($15,980)</td><td class="op-num">($87)</td><td class="op-num">-0.4%</td></tr><tr><td>Delinquency</td><td class="op-num">($27,333)</td><td class="op-num">($27,892)</td><td class="op-num">($152)</td><td class="op-num">-0.7%</td></tr><tr><td>Utility Reimbursements</td><td class="op-num">$171,264</td><td class="op-num">$174,667</td><td class="op-num">$951</td><td class="op-num">4.5%</td></tr><tr><td>Other Income</td><td class="op-num">$131,905</td><td class="op-num">$134,484</td><td class="op-num">$733</td><td class="op-num">3.5%</td></tr><tr><td>Revenue Adjustments</td><td class="op-num">$0</td><td class="op-num">$0</td><td class="op-num">$0</td><td class="op-num">0.0%</td></tr><tr class="op-total"><td>Total Revenue</td><td class="op-num">$3,814,904</td><td class="op-num">$3,905,081</td><td class="op-num">$21,194</td><td class="op-num">100.0%</td></tr><tr><td>G&amp;A</td><td class="op-num">$63,421</td><td class="op-num">$64,780</td><td class="op-num">$352</td><td class="op-num">1.7%</td></tr><tr><td>Leasing and Marketing</td><td class="op-num">$48,846</td><td class="op-num">$49,996</td><td class="op-num">$271</td><td class="op-num">1.3%</td></tr><tr><td>Payroll</td><td class="op-num">$256,245</td><td class="op-num">$263,087</td><td class="op-num">$1,424</td><td class="op-num">6.7%</td></tr><tr><td>Insurance</td><td class="op-num">$140,191</td><td class="op-num">$142,330</td><td class="op-num">$779</td><td class="op-num">3.7%</td></tr><tr><td>Property Taxes</td><td class="op-num">$503,392</td><td class="op-num">$515,642</td><td class="op-num">$2,797</td><td class="op-num">13.2%</td></tr><tr><td>Legal and Professional</td><td class="op-num">$23,210</td><td class="op-num">$23,698</td><td class="op-num">$129</td><td class="op-num">0.6%</td></tr><tr><td>Management Fee</td><td class="op-num">$132,819</td><td class="op-num">$135,766</td><td class="op-num">$738</td><td class="op-num">3.5%</td></tr><tr><td>Landscaping</td><td class="op-num">$41,618</td><td class="op-num">$42,592</td><td class="op-num">$231</td><td class="op-num">1.1%</td></tr><tr><td>Repairs and Maintenance</td><td class="op-num">$135,544</td><td class="op-num">$138,042</td><td class="op-num">$753</td><td class="op-num">3.6%</td></tr><tr><td>Unit Turns</td><td class="op-num">$68,236</td><td class="op-num">$70,292</td><td class="op-num">$379</td><td class="op-num">1.8%</td></tr><tr><td>Utilities</td><td class="op-num">$263,952</td><td class="op-num">$268,979</td><td class="op-num">$1,466</td><td class="op-num">6.9%</td></tr><tr><td>Expense Adjustments</td><td class="op-num">$10,968</td><td class="op-num">$11,178</td><td class="op-num">$61</td><td class="op-num">0.3%</td></tr><tr class="op-total"><td>Total Operating Expenses</td><td class="op-num">$1,688,442</td><td class="op-num">$1,726,380</td><td class="op-num">$9,380</td><td class="op-num">44.3%</td></tr><tr class="op-total"><td>Net Operating Income</td><td class="op-num">$2,126,462</td><td class="op-num">$2,178,700</td><td class="op-num">$11,814</td><td class="op-num">55.7%</td></tr></tbody></table></div>
+<p class="op-note">Gross scheduled rent basis: gross potential rent + gain/(loss) to lease.</p>
+<h3>Other Income — top 4 plus rest</h3>
+<div class="op-scroll"><table class="op-table"><thead><tr><th>Line item</th><th class="op-num">T-12</th><th class="op-num">T-3 annualized</th></tr></thead><tbody><tr><td>Pet Rent</td><td class="op-num">$47,600</td><td class="op-num">$48,450</td></tr><tr><td>Parking</td><td class="op-num">$37,851</td><td class="op-num">$38,530</td></tr><tr><td>Late Fees</td><td class="op-num">$17,687</td><td class="op-num">$18,099</td></tr><tr><td>Application Fees</td><td class="op-num">$14,384</td><td class="op-num">$14,703</td></tr><tr><td>All other other income (2 lines)</td><td class="op-num">$14,382</td><td class="op-num">$14,703</td></tr><tr class="op-total"><td>Total other income</td><td class="op-num">$131,905</td><td class="op-num">$134,484</td></tr></tbody></table></div>
+<h3>Utility Reimbursements — top 4 plus rest</h3>
+<div class="op-scroll"><table class="op-table"><thead><tr><th>Line item</th><th class="op-num">T-12</th><th class="op-num">T-3 annualized</th></tr></thead><tbody><tr><td>RUBS — Water/Sewer</td><td class="op-num">$119,632</td><td class="op-num">$121,916</td></tr><tr><td>RUBS — Trash</td><td class="op-num">$51,632</td><td class="op-num">$52,752</td></tr><tr><td>All other utility reimbursements (0 lines)</td><td class="op-num">$0</td><td class="op-num">$0</td></tr><tr class="op-total"><td>Total utility reimbursements</td><td class="op-num">$171,264</td><td class="op-num">$174,667</td></tr></tbody></table></div>
+<h3>Utilities — top 4 plus rest</h3>
+<div class="op-scroll"><table class="op-table"><thead><tr><th>Line item</th><th class="op-num">T-12</th><th class="op-num">T-3 annualized</th></tr></thead><tbody><tr><td>Utilities — Water/Sewer</td><td class="op-num">$114,813</td><td class="op-num">$117,280</td></tr><tr><td>Utilities — Electric (common)</td><td class="op-num">$51,339</td><td class="op-num">$51,864</td></tr><tr><td>Utilities — Trash</td><td class="op-num">$50,156</td><td class="op-num">$51,142</td></tr><tr><td>Utilities — Gas</td><td class="op-num">$28,111</td><td class="op-num">$28,710</td></tr><tr><td>All other utilities (1 lines)</td><td class="op-num">$19,533</td><td class="op-num">$19,984</td></tr><tr class="op-total"><td>Total utilities</td><td class="op-num">$263,952</td><td class="op-num">$268,979</td></tr></tbody></table></div>
+</div>

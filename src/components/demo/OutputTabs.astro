@@ -1,0 +1,158 @@
+---
+/**
+ * Tab chrome for the sample-output previews.
+ *
+ * Vanilla JS, no framework. Every panel ships in the HTML, so the content is there
+ * whether or not the script runs — the script only hides the panels that are not
+ * current. Deep-linkable via the hash, which matters because these panels are the
+ * thing a reader will want to send someone.
+ */
+interface Tab {
+  id: string;
+  label: string;
+  group: string;
+  html: string;
+}
+
+interface Props {
+  tabs: Tab[];
+}
+
+const { tabs } = Astro.props;
+
+const groups: { name: string; tabs: Tab[] }[] = [];
+for (const tab of tabs) {
+  const last = groups[groups.length - 1];
+  if (last && last.name === tab.group) last.tabs.push(tab);
+  else groups.push({ name: tab.group, tabs: [tab] });
+}
+---
+
+<div class="ot" data-output-tabs>
+  <div class="ot__bar" role="tablist" aria-label="Sample outputs">
+    {groups.map((group) => (
+      <div class="ot__group">
+        <span class="ot__grouplabel">{group.name}</span>
+        <div class="ot__groupbtns">
+          {group.tabs.map((tab, i) => (
+            <button
+              type="button"
+              role="tab"
+              class="ot__tab"
+              id={`tab-${tab.id}`}
+              data-tab={tab.id}
+              aria-controls={`panel-${tab.id}`}
+              aria-selected={groups[0].tabs[0].id === tab.id ? "true" : "false"}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+
+  {tabs.map((tab, i) => (
+    <section
+      class="ot__panel"
+      id={`panel-${tab.id}`}
+      role="tabpanel"
+      aria-labelledby={`tab-${tab.id}`}
+      data-panel={tab.id}
+      hidden={i !== 0}
+    >
+      <div set:html={tab.html} />
+    </section>
+  ))}
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-output-tabs]").forEach((root) => {
+    const buttons = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-tab]"));
+    const panels = Array.from(root.querySelectorAll<HTMLElement>("[data-panel]"));
+
+    const show = (id: string, pushHash: boolean) => {
+      const known = buttons.some((b) => b.dataset.tab === id);
+      if (!known) return;
+      buttons.forEach((b) =>
+        b.setAttribute("aria-selected", b.dataset.tab === id ? "true" : "false"),
+      );
+      panels.forEach((p) => {
+        p.hidden = p.dataset.panel !== id;
+      });
+      if (pushHash && history.replaceState) {
+        history.replaceState(null, "", `#output-${id}`);
+      }
+    };
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => show(button.dataset.tab!, true));
+      button.addEventListener("keydown", (event) => {
+        const keys = ["ArrowRight", "ArrowLeft", "Home", "End"];
+        if (!keys.includes(event.key)) return;
+        event.preventDefault();
+        const i = buttons.indexOf(button);
+        const next =
+          event.key === "Home"
+            ? 0
+            : event.key === "End"
+              ? buttons.length - 1
+              : event.key === "ArrowRight"
+                ? (i + 1) % buttons.length
+                : (i - 1 + buttons.length) % buttons.length;
+        buttons[next].focus();
+        show(buttons[next].dataset.tab!, true);
+      });
+    });
+
+    const fromHash = location.hash.replace(/^#output-/, "");
+    if (fromHash) show(fromHash, false);
+  });
+</script>
+
+<style>
+  .ot { margin: var(--s-6) 0 0; }
+
+  .ot__bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-5);
+    padding: 0 0 var(--s-4);
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: var(--s-5);
+  }
+  .ot__group { display: flex; flex-direction: column; gap: 6px; }
+  .ot__grouplabel {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted-2);
+  }
+  .ot__groupbtns { display: flex; flex-wrap: wrap; gap: 4px; }
+
+  .ot__tab {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    letter-spacing: 0.03em;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid var(--rule-soft);
+    border-radius: 2px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
+  }
+  .ot__tab:hover { color: var(--fg); border-color: var(--rule); }
+  .ot__tab[aria-selected="true"] {
+    color: var(--bg);
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .ot__panel[hidden] { display: none; }
+
+  @media (max-width: 640px) {
+    .ot__bar { gap: var(--s-4); }
+  }
+</style>

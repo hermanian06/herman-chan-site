@@ -25,7 +25,7 @@ const allProjects = (await getCollection("projects", ({ data }) => !data.draft))
       <div class="projects">
         {allProjects.map((p) => (
           <ProjectCard
-            href={`/projects/${p.id}/`}
+            href={p.data.href ?? `/projects/${p.id}/`}
             title={p.data.title}
             blurb={p.data.blurb}
             category={p.data.category}

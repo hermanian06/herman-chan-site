@@ -1,0 +1,275 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import OutputTabs from "../../../components/demo/OutputTabs.astro";
+
+import summaryHtml from "../../../data/demo/summary.html?raw";
+import compsHtml from "../../../data/demo/comps.html?raw";
+import demandHtml from "../../../data/demo/demand.html?raw";
+import supplyHtml from "../../../data/demo/supply.html?raw";
+import t12DataHtml from "../../../data/demo/t12-data.html?raw";
+import t12PnlHtml from "../../../data/demo/t12-pnl.html?raw";
+import t12ChecksHtml from "../../../data/demo/t12-checks-pricing.html?raw";
+import rentRollHtml from "../../../data/demo/rent-roll.html?raw";
+import unitMixHtml from "../../../data/demo/unit-mix.html?raw";
+import tradeOutHtml from "../../../data/demo/trade-out.html?raw";
+import manifestHtml from "../../../data/demo/manifest.html?raw";
+
+const TOOLKIT = "AI Underwriting Pipeline — Sample Outputs";
+
+const tabs = [
+  { id: "summary", label: "Deal summary", group: "Deal summary", html: summaryHtml },
+  { id: "comps", label: "Rent comps", group: "Deal summary", html: compsHtml },
+  { id: "demand", label: "Demand", group: "Deal summary", html: demandHtml },
+  { id: "supply", label: "Supply", group: "Deal summary", html: supplyHtml },
+  { id: "t12-data", label: "Monthly data", group: "T-12 analysis", html: t12DataHtml },
+  { id: "t12-pnl", label: "P&L summary", group: "T-12 analysis", html: t12PnlHtml },
+  { id: "t12-checks", label: "Checks & pricing", group: "T-12 analysis", html: t12ChecksHtml },
+  { id: "rent-roll", label: "Rent roll", group: "Rent roll analysis", html: rentRollHtml },
+  { id: "unit-mix", label: "Unit mix", group: "Rent roll analysis", html: unitMixHtml },
+  { id: "trade-out", label: "Trade-out", group: "Rent roll analysis", html: tradeOutHtml },
+  { id: "manifest", label: "Field manifest", group: "Model-ready outputs", html: manifestHtml },
+];
+
+const downloads = [
+  {
+    file: "sample-deal-summary.xlsx",
+    name: "Deal summary",
+    note: "Summary card, rent comps, demand and supply by ring.",
+  },
+  {
+    file: "sample-t12-analysis.xlsx",
+    name: "T-12 analysis",
+    note: "Monthly data, P&L rollup, cross-tie checks and pricing ladders.",
+  },
+  {
+    file: "sample-rent-roll-analysis.xlsx",
+    name: "Rent roll analysis",
+    note: "Per-unit roll, unit mix with market rent for model, lease trade-out.",
+  },
+  {
+    file: "sample-model-ready-outputs.xlsx",
+    name: "Model-ready outputs",
+    note: "All 157 fields, with the model input each one fills.",
+  },
+  {
+    file: "sample-deal-outputs.json",
+    name: "Interchange JSON",
+    note: "The single structured file every output above is generated from.",
+  },
+];
+
+const base = "/downloads/underwriting-demo";
+---
+
+<Layout
+  title="AI underwriting pipeline — sample outputs"
+  description="What my underwriting pipeline actually produces from a deal's raw documents: a deal summary, a T-12 analysis, a rent-roll analysis, and a manifest of every field it hands to your model."
+>
+  <section class="demo">
+    <div class="wrap">
+      <header class="demo__head">
+        <span class="kicker">§ · Demo</span>
+        <h1 class="demo__title">{TOOLKIT}</h1>
+        <p class="demo__lede">
+          Give the pipeline a deal's raw documents — the marketing package, the
+          trailing-twelve income statement, the rent roll — and this is what comes back.
+          Four workbooks, previewed below and downloadable, built from one structured
+          interchange file.
+        </p>
+      </header>
+
+      <div class="demo__prose">
+        <p>
+          The fourth output is the argument for the other three. I don't build financial
+          models. Every shop already has one, it took years to earn its committee's trust,
+          and nobody wants a stranger's spreadsheet. What they want is the two days of
+          extraction that happen before the model gets touched: categorising a
+          twelve-month income statement into a consistent profit-and-loss layout, rolling
+          a rent roll up by floor plan, finding the billed tax rate, pulling the comps.
+          So the fourth workbook is a manifest — every value the pipeline extracts, and
+          which input in <em>your</em> model it belongs in.
+        </p>
+        <p>
+          A few choices in here are load-bearing, and they are the ones I would want to be
+          asked about. Total revenue sums from gross scheduled rent down, never from gross
+          potential rent, because the second one counts loss-to-lease twice. Market rent
+          for model is the new-lease average where a plan has new leases in the window and
+          the in-place average otherwise — never a blend of the two, because a blended
+          "recently leased" rent is a renewal average wearing a new-lease label and it
+          understates trade-out on every deal it touches. Comp rents are stated as asking
+          <em>and</em> net effective on every row, because a concession-blind comp set is
+          the most common way a rent assumption goes wrong. Where a value could not be
+          established the cell says <code>MISSING</code>, because a visible hole is
+          cheaper than a plausible wrong number that survives into a model.
+        </p>
+        <p>
+          Formulas stay live in the workbooks — the profit-and-loss rows are
+          <code>SUMIF</code>s over the data tab, not pasted totals — so anyone reviewing
+          the output can audit the arithmetic instead of trusting it. The exception is the
+          window-dependent columns on the unit mix, which are written as values on purpose:
+          they are measured from the roll's as-of date, and a formula would quietly
+          re-window itself the day someone reopened the file.
+        </p>
+      </div>
+
+      <OutputTabs tabs={tabs} />
+
+      <section class="demo__downloads" aria-labelledby="downloads-title">
+        <h2 id="downloads-title" class="demo__h2">Download the workbooks</h2>
+        <ul class="dl">
+          {downloads.map((d) => (
+            <li class="dl__item">
+              <a class="dl__link" href={`${base}/${d.file}`} download>{d.name}</a>
+              <span class="dl__note">{d.note}</span>
+              <span class="dl__file">{d.file}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <aside class="demo__disclaimer">
+        <h2 class="demo__h2">What this sample is, and is not</h2>
+        <ul>
+          <li>
+            <strong>The deal is synthetic.</strong> Every figure here was fabricated to
+            exercise the formats — including the awkward cases: a floor plan with no new
+            leases, a date the source gave as text, an income line the statement never
+            subtotalled. No real property is described.
+          </li>
+          <li>
+            <strong>Pricing is illustrative.</strong> Every price and cap rate carries an
+            <em>illustrative</em> marker. Nothing here is a quote, an offer, or anyone's
+            guidance.
+          </li>
+          <li>
+            <strong>No licensed data.</strong> Comps come only from my own weekly rent
+            scrape. Subscription and licensed sources are excluded by design, which is why
+            a field one of them would have filled reads <code>MISSING</code> rather than
+            being quietly sourced elsewhere.
+          </li>
+          <li>
+            <strong>The formats are rebuilt generics.</strong> These layouts are my own,
+            written from scratch for this demo. They are not any employer's template, and
+            no employer template was copied, opened, or measured to produce them. What
+            carries over is ordinary commercial-real-estate practice: which fields exist,
+            what a trailing-twelve category list contains, what a per-plan rent summary
+            has to show.
+          </li>
+          <li>
+            <strong>No tenant data.</strong> The rent roll carries unit identifiers only.
+            There is no tenant-name column in the schema, so there is nothing for a
+            redaction step to miss.
+          </li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .demo { padding: clamp(48px, 7vw, 80px) 0 var(--s-9); }
+
+  .demo__head { max-width: 680px; margin: 0 0 var(--s-7); }
+  .demo__head .kicker { display: block; margin-bottom: var(--s-3); }
+  .demo__title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(30px, 4.2vw, 44px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0 0 var(--s-4);
+    color: var(--fg);
+  }
+  .demo__lede {
+    font-family: var(--serif);
+    font-size: var(--t-19);
+    line-height: 1.55;
+    color: var(--fg-soft);
+    margin: 0;
+    max-width: 54ch;
+  }
+
+  .demo__prose { max-width: var(--measure); margin: 0 0 var(--s-7); }
+  .demo__prose p {
+    font-family: var(--serif);
+    font-size: var(--t-17);
+    line-height: 1.6;
+    color: var(--fg-soft);
+    margin: 0 0 var(--s-4);
+  }
+  .demo__prose code,
+  .demo__disclaimer code {
+    font-family: var(--mono);
+    font-size: 0.86em;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 2px;
+  }
+
+  .demo__h2 {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+    color: var(--muted);
+    margin: 0 0 var(--s-4);
+  }
+
+  .demo__downloads { margin: var(--s-8) 0 0; }
+  .dl {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .dl__item {
+    display: grid;
+    grid-template-columns: minmax(12rem, 16rem) 1fr auto;
+    gap: var(--s-4);
+    align-items: baseline;
+    padding: var(--s-3) 0;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .dl__link {
+    font-family: var(--serif);
+    font-size: var(--t-17);
+    color: var(--accent);
+  }
+  .dl__note {
+    font-family: var(--serif);
+    font-size: var(--t-15);
+    color: var(--muted);
+  }
+  .dl__file {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    color: var(--muted-2);
+    white-space: nowrap;
+  }
+
+  .demo__disclaimer {
+    margin: var(--s-8) 0 0;
+    padding: var(--s-6);
+    background: var(--bg-alt);
+    max-width: 72ch;
+  }
+  .demo__disclaimer ul {
+    margin: 0;
+    padding-left: 1.1em;
+  }
+  .demo__disclaimer li {
+    font-family: var(--serif);
+    font-size: var(--t-15);
+    line-height: 1.55;
+    color: var(--fg-soft);
+    margin: 0 0 var(--s-3);
+  }
+  .demo__disclaimer li:last-child { margin-bottom: 0; }
+  .demo__disclaimer strong { color: var(--fg); }
+
+  @media (max-width: 720px) {
+    .dl__item { grid-template-columns: 1fr; gap: 2px; }
+    .demo__disclaimer { padding: var(--s-5); }
+  }
+</style>

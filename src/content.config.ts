@@ -21,6 +21,9 @@ const projects = defineCollection({
     blurb: z.string(),
     order: z.number().default(99),
     draft: z.boolean().default(false),
+    /* When set, the card links here instead of to /projects/<id>/, and no detail
+       page is generated for the entry (see src/pages/projects/[slug].astro). */
+    href: z.string().optional(),
     /* Optional spec-sheet fields (project detail page). */
     status: z.string().optional(),
     statusClass: z.enum(['live', 'beta', 'idle']).optional(),
