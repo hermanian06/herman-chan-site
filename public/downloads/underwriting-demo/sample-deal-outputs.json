@@ -3183,7 +3183,7 @@
       "as_of": "2026-09-01",
       "caveat": "Proven by absence of an imposing statute rather than by an affirmative constitutional bar, which is a weaker form of proof than Arizona's. Recording is a flat per-page schedule."
     },
-    "note": "Transfer tax is computed on the purchase price; any mortgage or recording tax is computed on the loan amount where one is stated, and on the price otherwise. Rates are verified against a primary authority and carry the citation and the date confirmed; a state absent from the table reports as not asserted rather than as zero."
+    "note": "Transfer tax is computed on the purchase price. A mortgage or recording tax is computed on the LOAN AMOUNT, and is reported as not asserted when no loan is stated — never inferred from the price, which would assume 100% leverage. Rates are verified against a primary authority and carry the citation and the date confirmed; a state absent from the table reports as not asserted rather than as zero."
   },
   "provenance": {
     "summary.deal_name": {
@@ -3309,16 +3309,16 @@
     },
     "summary.in_place_rent_avg": {
       "source_doc": "Derived by the pipeline",
-      "locator": "Unit Mix Summary!H",
+      "locator": "Unit Mix Summary!E",
       "method": "computed",
       "inputs": [
         "rent_roll.units"
       ],
-      "note": "Occupied units, weighted."
+      "note": "Occupied units, straight off the roll."
     },
     "summary.market_rent_for_model": {
       "source_doc": "Derived by the pipeline",
-      "locator": "Unit Mix Summary!K",
+      "locator": "Unit Mix Summary!H",
       "method": "computed",
       "inputs": [
         "rent_roll.units"
@@ -3470,21 +3470,25 @@
     },
     "closing_costs.transfer_tax.amount": {
       "source_doc": "Vendored state rate table",
-      "locator": "closing_costs.py",
+      "locator": "closing_costs.TRANSFER_TAX",
       "method": "computed",
       "inputs": [
         "pricing.price_per_unit",
-        "summary.state"
-      ]
+        "pricing.unit_count",
+        "summary.state",
+        "closing_costs.price"
+      ],
+      "note": "Rate applied to price_per_unit x unit_count. Per-unit statutes round the consideration up."
     },
     "closing_costs.mortgage_tax.amount": {
       "source_doc": "Vendored state rate table",
-      "locator": "closing_costs.py",
+      "locator": "closing_costs.MORTGAGE_TAX",
       "method": "computed",
       "inputs": [
-        "pricing.price_per_unit",
+        "closing_costs.loan_amount",
         "summary.state"
-      ]
+      ],
+      "note": "Computed on the LOAN, never on the price. With no loan amount the line is reported as not asserted rather than inferred at 100% leverage."
     }
   }
 }

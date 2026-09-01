@@ -50,8 +50,11 @@
 .op-bar { display: grid; grid-template-columns: 7rem 1fr 5.5rem; gap: 8px; align-items: center;
   margin: 0 0 5px; font-size: var(--t-12, 12px); }
 .op-bar__label { font-family: var(--mono, monospace); color: var(--muted, #666); }
-.op-bar__track { background: var(--bg-alt, #eee); height: 14px; position: relative; }
-.op-bar__fill { background: var(--accent, #14304f); height: 100%; }
+.op-bar__track { background: var(--bg-alt, #eee); height: 14px; position: relative;
+  display: grid; grid-auto-rows: 1fr; }
+.op-bar__track--multi { height: auto; background: transparent; gap: 1px; }
+.op-bar__sub { background: var(--bg-alt, #eee); height: 8px; }
+.op-bar__fill { background: var(--accent, #14304f); height: 100%; display: block; }
 .op-bar__fill--alt { background: var(--muted-2, #999); }
 .op-bar__fill--soft { background: var(--rule, #ccc); }
 .op-bar__val { font-family: var(--mono, monospace); text-align: right; color: var(--fg, #111);
