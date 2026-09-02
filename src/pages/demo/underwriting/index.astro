@@ -4,6 +4,7 @@ import OutputTabs from "../../../components/demo/OutputTabs.astro";
 
 import summaryHtml from "../../../data/demo/summary.html?raw";
 import compsHtml from "../../../data/demo/comps.html?raw";
+import propertyTaxHtml from "../../../data/demo/property-tax.html?raw";
 import demandHtml from "../../../data/demo/demand.html?raw";
 import supplyHtml from "../../../data/demo/supply.html?raw";
 import t12DataHtml from "../../../data/demo/t12-data.html?raw";
@@ -12,6 +13,7 @@ import t12ChecksHtml from "../../../data/demo/t12-checks-pricing.html?raw";
 import rentRollHtml from "../../../data/demo/rent-roll.html?raw";
 import unitMixHtml from "../../../data/demo/unit-mix.html?raw";
 import tradeOutHtml from "../../../data/demo/trade-out.html?raw";
+import notesHtml from "../../../data/demo/notes.html?raw";
 import manifestHtml from "../../../data/demo/manifest.html?raw";
 import auditTrailHtml from "../../../data/demo/audit-trail.html?raw";
 
@@ -20,6 +22,7 @@ const TOOLKIT = "AI Underwriting Pipeline — Sample Outputs";
 const tabs = [
   { id: "summary", label: "Deal summary", group: "Deal summary", html: summaryHtml },
   { id: "comps", label: "Rent comps", group: "Deal summary", html: compsHtml },
+  { id: "property-tax", label: "Property tax", group: "Deal summary", html: propertyTaxHtml },
   { id: "demand", label: "Demand", group: "Deal summary", html: demandHtml },
   { id: "supply", label: "Supply", group: "Deal summary", html: supplyHtml },
   { id: "t12-data", label: "Monthly data", group: "T-12 analysis", html: t12DataHtml },
@@ -30,6 +33,7 @@ const tabs = [
   { id: "trade-out", label: "Trade-out", group: "Rent roll analysis", html: tradeOutHtml },
   { id: "manifest", label: "Field manifest", group: "Model-ready outputs", html: manifestHtml },
   { id: "audit-trail", label: "Audit trail", group: "Model-ready outputs", html: auditTrailHtml },
+  { id: "notes", label: "Notes & disclosures", group: "Model-ready outputs", html: notesHtml },
 ];
 
 const downloads = [
