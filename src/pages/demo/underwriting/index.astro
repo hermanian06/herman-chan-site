@@ -1,6 +1,7 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import OutputTabs from "../../../components/demo/OutputTabs.astro";
+import { DEMO_TABS } from "../../../data/demo/tabs";
 
 import summaryHtml from "../../../data/demo/summary.html?raw";
 import compsHtml from "../../../data/demo/comps.html?raw";
@@ -19,22 +20,26 @@ import auditTrailHtml from "../../../data/demo/audit-trail.html?raw";
 
 const TOOLKIT = "AI Underwriting Pipeline — Sample Outputs";
 
-const tabs = [
-  { id: "summary", label: "Deal summary", group: "Deal summary", html: summaryHtml },
-  { id: "comps", label: "Rent comps", group: "Deal summary", html: compsHtml },
-  { id: "property-tax", label: "Property tax", group: "Deal summary", html: propertyTaxHtml },
-  { id: "demand", label: "Demand", group: "Deal summary", html: demandHtml },
-  { id: "supply", label: "Supply", group: "Deal summary", html: supplyHtml },
-  { id: "t12-data", label: "Monthly data", group: "T-12 analysis", html: t12DataHtml },
-  { id: "t12-pnl", label: "P&L summary", group: "T-12 analysis", html: t12PnlHtml },
-  { id: "t12-checks", label: "Checks & pricing", group: "T-12 analysis", html: t12ChecksHtml },
-  { id: "rent-roll", label: "Rent roll", group: "Rent roll analysis", html: rentRollHtml },
-  { id: "unit-mix", label: "Unit mix", group: "Rent roll analysis", html: unitMixHtml },
-  { id: "trade-out", label: "Trade-out", group: "Rent roll analysis", html: tradeOutHtml },
-  { id: "manifest", label: "Field manifest", group: "Model-ready outputs", html: manifestHtml },
-  { id: "audit-trail", label: "Audit trail", group: "Model-ready outputs", html: auditTrailHtml },
-  { id: "notes", label: "Notes & disclosures", group: "Model-ready outputs", html: notesHtml },
-];
+/* Ids, labels, groups and order come from the shared list, so this page and the upload
+   page can never drift apart; all this page adds is the baked preview for each id. */
+const panelHtml: Record<string, string> = {
+  summary: summaryHtml,
+  comps: compsHtml,
+  "property-tax": propertyTaxHtml,
+  demand: demandHtml,
+  supply: supplyHtml,
+  "t12-data": t12DataHtml,
+  "t12-pnl": t12PnlHtml,
+  "t12-checks": t12ChecksHtml,
+  "rent-roll": rentRollHtml,
+  "unit-mix": unitMixHtml,
+  "trade-out": tradeOutHtml,
+  manifest: manifestHtml,
+  "audit-trail": auditTrailHtml,
+  notes: notesHtml,
+};
+
+const tabs = DEMO_TABS.map((tab) => ({ ...tab, html: panelHtml[tab.id] }));
 
 const downloads = [
   {

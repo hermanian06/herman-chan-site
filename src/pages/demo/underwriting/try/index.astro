@@ -2,31 +2,17 @@
 import Layout from "../../../../layouts/Layout.astro";
 import OutputTabs from "../../../../components/demo/OutputTabs.astro";
 import UploadForm from "../../../../components/demo/UploadForm.astro";
+import { DEMO_TABS } from "../../../../data/demo/tabs";
 
 const TOOLKIT = "AI Underwriting Pipeline — Sample Outputs";
 
-/* The same fourteen ids, labels and groups the sample page renders, because the API
-   fills these panels by id. The sample page holds the other copy of this list — if a
-   tab is ever added, both move together. */
+/* Ids, labels, groups and order come from the shared list — the same one the sample page
+   renders — because the API fills these panels by id. Nothing is baked in here; every
+   panel ships as a placeholder and is replaced from previews[tab_id] when a run finishes. */
 const PLACEHOLDER =
   '<p class="uf-ph">Run the sample deal or upload a deal to fill this tab.</p>';
 
-const tabs = [
-  { id: "summary", label: "Deal summary", group: "Deal summary" },
-  { id: "comps", label: "Rent comps", group: "Deal summary" },
-  { id: "property-tax", label: "Property tax", group: "Deal summary" },
-  { id: "demand", label: "Demand", group: "Deal summary" },
-  { id: "supply", label: "Supply", group: "Deal summary" },
-  { id: "t12-data", label: "Monthly data", group: "T-12 analysis" },
-  { id: "t12-pnl", label: "P&L summary", group: "T-12 analysis" },
-  { id: "t12-checks", label: "Checks & pricing", group: "T-12 analysis" },
-  { id: "rent-roll", label: "Rent roll", group: "Rent roll analysis" },
-  { id: "unit-mix", label: "Unit mix", group: "Rent roll analysis" },
-  { id: "trade-out", label: "Trade-out", group: "Rent roll analysis" },
-  { id: "manifest", label: "Field manifest", group: "Model-ready outputs" },
-  { id: "audit-trail", label: "Audit trail", group: "Model-ready outputs" },
-  { id: "notes", label: "Notes & disclosures", group: "Model-ready outputs" },
-].map((tab) => ({ ...tab, html: PLACEHOLDER }));
+const tabs = DEMO_TABS.map((tab) => ({ ...tab, html: PLACEHOLDER }));
 ---
 
 <Layout
