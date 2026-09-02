@@ -1,0 +1,91 @@
+<style>
+.op-wrap { font-family: var(--sans, sans-serif); color: var(--fg, #111); }
+.op-wrap h3 {
+  font-family: var(--serif, Georgia, serif); font-weight: 500;
+  font-size: var(--t-22, 22px); letter-spacing: -0.01em;
+  margin: 0 0 var(--s-2, 8px); color: var(--fg, #111);
+}
+.op-note {
+  font-family: var(--serif, Georgia, serif); font-size: var(--t-15, 15px);
+  line-height: 1.5; color: var(--muted, #666); margin: 0 0 var(--s-5, 24px);
+  max-width: 62ch;
+}
+.op-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 0 var(--s-5, 24px); }
+.op-table { border-collapse: collapse; width: 100%; min-width: max-content; font-size: var(--t-13, 13px); }
+.op-table th, .op-table td {
+  padding: 6px 12px; text-align: left; white-space: nowrap;
+  border-bottom: 1px solid var(--rule-soft, #e6e6e6);
+}
+.op-table thead th {
+  font-family: var(--mono, monospace); font-size: var(--t-12, 12px);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--muted, #666); font-weight: 500;
+  border-bottom: 1px solid var(--rule, #ccc); background: var(--bg-alt, #f2f2f2);
+  position: sticky; top: 0;
+}
+.op-table td.op-num, .op-table th.op-num { text-align: right; font-family: var(--mono, monospace); font-variant-numeric: tabular-nums; }
+.op-table tr.op-total td { font-weight: 600; background: var(--bg-alt, #f2f2f2); border-bottom: 1px solid var(--rule, #ccc); }
+.op-table tr.op-sub td { background: var(--bg-alt, #f6f6f6); font-weight: 600; }
+.op-table td.op-wrapcell { white-space: normal; min-width: 26ch; max-width: 46ch; }
+.op-card { display: grid; gap: 0; margin: 0 0 var(--s-5, 24px); }
+.op-sec {
+  font-family: var(--mono, monospace); font-size: var(--t-12, 12px);
+  text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted, #666);
+  padding: var(--s-4, 16px) 0 var(--s-2, 8px); border-bottom: 1px solid var(--rule, #ccc);
+}
+.op-row { display: grid; grid-template-columns: minmax(11rem, 15rem) 1fr; gap: var(--s-4, 16px);
+  padding: 7px 0; border-bottom: 1px solid var(--rule-soft, #eee); align-items: baseline; }
+.op-row dt { font-family: var(--mono, monospace); font-size: var(--t-12, 12px); color: var(--muted, #666); }
+.op-row dd { margin: 0; font-size: var(--t-15, 15px); }
+.op-row dd .op-prov { display: block; font-size: var(--t-12, 12px); color: var(--muted-2, #999); margin-top: 3px; }
+.op-row dd .op-src { display: block; font-size: var(--t-11, 11px); color: var(--muted-2, #999); margin-top: 2px; opacity: .8; font-style: italic; }
+td .op-src { display: block; font-size: var(--t-11, 11px); color: var(--muted-2, #999); margin-top: 2px; opacity: .8; font-style: italic; }
+.op-chip {
+  display: inline-block; font-family: var(--mono, monospace); font-size: 10px;
+  text-transform: uppercase; letter-spacing: 0.07em; padding: 1px 6px;
+  border: 1px solid var(--rule, #ccc); border-radius: 2px;
+  color: var(--muted, #666); margin-left: 6px; vertical-align: 1px; white-space: nowrap;
+}
+.op-flag { color: var(--accent, #14304f); font-weight: 600; }
+.op-ok { color: var(--muted, #666); }
+.op-missing { font-family: var(--mono, monospace); font-size: var(--t-12, 12px); color: var(--accent, #14304f); }
+.op-bar { display: grid; grid-template-columns: 7rem 1fr 5.5rem; gap: 8px; align-items: center;
+  margin: 0 0 5px; font-size: var(--t-12, 12px); }
+.op-bar__label { font-family: var(--mono, monospace); color: var(--muted, #666); }
+.op-bar__track { background: var(--bg-alt, #eee); height: 14px; position: relative;
+  display: grid; grid-auto-rows: 1fr; }
+.op-bar__track--multi { height: auto; background: transparent; gap: 1px; }
+.op-bar__sub { background: var(--bg-alt, #eee); height: 8px; }
+.op-bar__fill { background: var(--accent, #14304f); height: 100%; display: block; }
+.op-bar__fill--alt { background: var(--muted-2, #999); }
+.op-bar__fill--soft { background: var(--rule, #ccc); }
+.op-bar__val { font-family: var(--mono, monospace); text-align: right; color: var(--fg, #111);
+  font-variant-numeric: tabular-nums; }
+.op-legend { display: flex; gap: var(--s-4, 16px); flex-wrap: wrap; margin: 0 0 var(--s-3, 12px);
+  font-family: var(--mono, monospace); font-size: 10px; color: var(--muted, #666);
+  text-transform: uppercase; letter-spacing: .07em; }
+.op-legend i { display: inline-block; width: 10px; height: 10px; margin-right: 5px;
+  vertical-align: -1px; }
+.op-empty { border: 1px dashed var(--rule, #ccc); padding: var(--s-5, 24px);
+  font-family: var(--serif, Georgia, serif); color: var(--muted, #666); max-width: 62ch; }
+@media (max-width: 640px) {
+  .op-row { grid-template-columns: 1fr; gap: 2px; }
+}
+</style>
+<div class="op-wrap">
+<h3>Notes and disclosures</h3>
+<p class="op-note">Every output here is the result of decisions someone made. These are those decisions — including the ones that make the numbers look worse.</p>
+<h3>Pricing is illustrative</h3><p class="op-note">Applies to: Deal Summary — Pricing</p><p>Every price, per-unit figure and cap rate in this set is illustrative. The per-unit price is a round number chosen to sit inside the band a real per-unit sale price occupies, so the cap-rate arithmetic is realistic. It is not a quote, an offer, a broker&#x27;s guidance, or a valuation. Cap rates move inversely with the price, so read them as a demonstration of the mechanics rather than a view on the asset.</p>
+<h3>Licensed data is excluded by design, not by omission</h3><p class="op-note">Applies to: Rent Comps</p><p>No subscription or licensed market-data feed appears anywhere in this set. Comps come only from an operator&#x27;s own weekly scrape of public leasing pages. That is a deliberate constraint, not a gap: licensed data cannot travel outside the licence, so a portfolio piece built on it could not be shown at all. The cost is coverage, and the coverage is measured and stated rather than assumed.</p>
+<h3>Comp radius is set by measured coverage</h3><p class="op-note">Applies to: Rent Comps</p><p>Three miles, because that is the ring where the operator&#x27;s own scrape actually holds live rents for enough communities to say something. A wider ring would add distance without adding evidence — it trades real rents for guesses. The coverage sentence on the comp block is measured by a probe against the scraper&#x27;s own status values, never written by hand.</p>
+<h3>Comps are matched on vintage, and it changes the answer</h3><p class="op-note">Applies to: Rent Comps — tiers</p><p>The detailed tiers hold only communities within ten years of the subject&#x27;s year built. This is not cosmetic. On this deal the flat comp set — every nearby community with rents — averaged a 1981 asset against product built 1994 to 2026 and read the subject as roughly 9% BELOW market. Restricted to same-vintage comps the subject is about 1.5% ABOVE market. The first number was measuring the age gap, not the market. Whenever a comp set is wide enough to include newer product, the spread it reports is partly a renovation and amenity story wearing a rent label.</p>
+<h3>Year built comes from a free-text note, where it exists at all</h3><p class="op-note">Applies to: Rent Comps — tiers</p><p>The rent tracker has no year-built column. Where a vintage appears here it was parsed out of a free-text note on the community record, and every row carries that as its source. A community with no such note keeps its place in the comp set on distance and product, shows a dash for the year, and the tier header says how many rows the vintage filter could not be applied to. Inventing a year would fabricate the evidence the filter runs on; dropping the community would hide the closest comps for want of a field the source never had.</p>
+<h3>Market rent is never a blend of new and renewal</h3><p class="op-note">Applies to: Rent Roll — Summary</p><p>Market rent for the model is the new-lease average where a plan has new leases inside the lookback window, and in-place rent where it does not. It is never the average of new and renewal leases together. A blended figure reads as market rent and is not one: renewals are priced off the existing rent, so blending them in drags the number toward where rents used to be and understates the gap the underwriting is trying to measure. On this deal that rule produces a market rent BELOW in-place, which is the correct and uncomfortable answer for an asset whose in-place rents sit above what the market is currently signing.</p>
+<h3>Estimated values are not published as facts</h3><p class="op-note">Applies to: throughout</p><p>Where a figure is derived rather than read, the audit trail says so and names the inputs. Where a figure is unknown, the cell shows a visible hole rather than a plausible-looking number. A blank that reads as a zero is the most expensive kind of missing data, because nothing downstream flags it.</p>
+<h3>The lease trade-out report was available and deliberately not used</h3><p class="op-note">Applies to: Lease Trade-Out</p><p>Where a trade-out block appears with no rows, that is because the source report was not used, not because the data does not exist. Trade-out is derived from the rent roll&#x27;s own lease dates and rents instead, so every figure in this set traces back to one of three raw sources. An output whose provenance forks across more documents than it needs is harder to audit for no analytical gain.</p>
+<h3>Supply coverage is an area of ongoing work</h3><p class="op-note">Applies to: Supply</p><p>The supply section is real and unmodified — the rings, stages and unit counts come from a public permit and entitlement pipeline, and the zeros in the tight rings are genuine rather than missing. Coverage of that pipeline is an area of ongoing work: a ring showing no active supply means nothing was matched in the sources covered so far, which is a weaker statement than nothing being built. This section will be expanded; read it as a floor on competing supply, not a census of it.</p>
+<h3>Checks degrade to NOT CHECKED rather than passing quietly</h3><p class="op-note">Applies to: Error Checks &amp; Pricing</p><p>Every cross-tie on the checks tab reports OK, FAIL, or NOT CHECKED. A check missing one of its inputs reports NOT CHECKED and claims no difference — it never reports OK. A green result that only means &#x27;this check could not run&#x27; is worse than a red one, because it buys confidence it has not earned.</p>
+<h3>This deal does not exist</h3><p class="op-note">Applies to: throughout</p><p>Fixture Park is fabricated end to end — the property, the operating statement, the rent roll, the comps and the demographics. It exists to exercise every edge the writers handle, so some of its figures are deliberately awkward: a plan with no priced units, a comp community with no published year, a revenue line the source statement never subtotalled.</p>
+<h3>The 1-mile demographic ring overstates levels</h3><p class="op-note">Applies to: Demand</p><p>The 1-mile column overstates levels. Ring membership is decided by each census block group&#x27;s internal point and then the whole block group is counted, so at 1 mile a single large block group can sit mostly outside the ring and still be counted whole. Measured against a commercial source, 1-mile population reads roughly 2.3x and households roughly 1.9x too high; the 3-, 5- and 10-mile columns do not have this problem. Read the 1-mile column for mix and shares, which are ratios and survive the overcount, and read levels off the 3-mile column.</p>
+<h3>The rent readback checks transcription, not column choice</h3><p class="op-note">Applies to: Error Checks &amp; Pricing</p><p>Ten units are sampled and their normalized in-place rent is compared against the raw cell it came from, which catches a coercion or transcription error. It cannot catch the wrong rent column having been chosen, because both sides read the same column. The sample is seeded from the roll&#x27;s as-of date, so the same roll always checks the same units.</p>
+</div>
