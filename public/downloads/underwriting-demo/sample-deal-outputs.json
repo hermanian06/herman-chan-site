@@ -54,7 +54,7 @@
       {
         "topic": "Comps are matched on vintage",
         "applies_to": "Rent Comps — tiers",
-        "note": "The detailed tiers hold only communities within ten years of the subject's year built. This is not cosmetic. Whenever a comp set is wide enough to include materially newer product, part of the spread it reports is a renovation and amenity story wearing a rent label — and the wider the vintage range, the more of it is. Where this output set has measured the difference on its own subject, the figures appear in the note below rather than here."
+        "note": "The detailed tiers hold only communities within ten years of the subject's year built. Widening that range changes which communities are in the set, and a set that includes materially newer product will generally report a different rent — how much, and in which direction, is a property of the particular submarket and date, not a rule. Where this output set has measured the difference between two otherwise-identical comp sets on its own subject, the figures appear in the note below."
       },
       {
         "topic": "Year built comes from a free-text note, where it exists at all",
@@ -89,7 +89,7 @@
       {
         "topic": "What vintage-matching changed on this deal",
         "applies_to": "Rent Comps — tiers",
-        "note": "This subject was built 2019. Its rent sits 3.8% above a comp set restricted to +/-10 years of that (11 communities, vintages 2009 to 2029). Run the SAME selection with the vintage test switched off and nothing else changed — same product test, same tracker exclusions, same radius, same closest-11 cap, same rent rules, same mix weighting — and 1 communities swap in (vintages now 1998 to 2029), putting the same rent 6.3% below the comp set instead. Both figures are weighted by this property's own unit mix and computed over the same bed counts (100% of its units), so the 10.1 point difference is the vintage effect and not a mixture of criteria. A comp set wide enough to include much newer product reports part of a renovation and amenity story as if it were rent."
+        "note": "This subject was built 2019. Two comp sets were selected by identical criteria — same candidate pool, same product test, same tracker exclusions, same radius, same closest-11 cap, same rent rules, same mix weighting — differing only in whether the +/-10-year vintage test was applied. Set A, vintage test ON: 11 communities, vintages 2009 to 2029; this subject's rent reads 3.8% above it. Set B, vintage test OFF: 1 of those communities are replaced (vintages 1998 to 2029); the same rent reads 6.3% below it. Both figures are weighted by this property's own unit mix and computed over the same bed counts (100% of its units), so the two sets differ by 10.1 points. Direction: the newer communities nearby rent above this subject's own vintage cohort. Both sets are listed on the Rent Comps section — this is a measurement of these two sets on this date, not an estimate of what vintage is worth in this market."
       },
       {
         "topic": "This deal does not exist",
