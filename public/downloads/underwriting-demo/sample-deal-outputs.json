@@ -89,7 +89,7 @@
       {
         "topic": "What vintage-matching changed on this deal",
         "applies_to": "Rent Comps — tiers",
-        "note": "This subject was built 2019. Against comps within +/-10 years of that — 11 communities, vintages 2009 to 2029 — its rent sits 3.8% above the comp set. Against every community in the radius with quoted rent, 14 of them spanning 1998 to 2029, the same rent sits 6.3% below the comp set. Both figures weight the comp side by this property's own unit mix, so the only difference between them is which communities are included: the 10.1% gap is the vintage spread, not the market. A comp set wide enough to include much newer product reports part of a renovation and amenity story as if it were rent."
+        "note": "This subject was built 2019. Its rent sits 3.8% above a comp set restricted to +/-10 years of that (11 communities, vintages 2009 to 2029). Run the SAME selection with the vintage test switched off and nothing else changed — same product test, same tracker exclusions, same radius, same closest-11 cap, same rent rules, same mix weighting — and 1 communities swap in (vintages now 1998 to 2029), putting the same rent 6.3% below the comp set instead. Both figures are weighted by this property's own unit mix and computed over the same bed counts (100% of its units), so the 10.1 point difference is the vintage effect and not a mixture of criteria. A comp set wide enough to include much newer product reports part of a renovation and amenity story as if it were rent."
       },
       {
         "topic": "This deal does not exist",
@@ -3805,31 +3805,45 @@
       }
     ],
     "unrestricted": {
-      "communities": 14,
-      "rows": 28,
+      "communities": 12,
+      "rows": 24,
       "by_bed": [
         {
           "beds": 1.0,
-          "communities": 14,
-          "rows": 14,
+          "communities": 12,
+          "rows": 12,
           "avg_asking": 1625.8,
           "avg_net_effective": 1611.02
         },
         {
           "beds": 2.0,
-          "communities": 14,
-          "rows": 14,
+          "communities": 12,
+          "rows": 12,
           "avg_asking": 2027.3,
           "avg_net_effective": 2008.87
         },
         {
           "beds": 3.0,
-          "communities": 14,
-          "rows": 14,
+          "communities": 12,
+          "rows": 12,
           "avg_asking": 2417.8,
           "avg_net_effective": 2395.82
         }
       ],
+      "varied": "vintage",
+      "held_fixed": [
+        "candidate pool",
+        "product test",
+        "tracker comp exclusions",
+        "radius",
+        "closest-20 cap",
+        "per-community rent rules",
+        "mix weighting"
+      ],
+      "swapped_in": [
+        "Stonecrest Lofts"
+      ],
+      "swapped_out": [],
       "year_min": 1998,
       "year_max": 2029,
       "note": "Synthetic pre-tiering population: every community in the radius with quoted rent, no product or vintage filter. On a real deal this is measured at selection time, because the nearby tier publishes no rents."
