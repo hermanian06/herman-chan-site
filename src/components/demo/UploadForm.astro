@@ -148,20 +148,26 @@ import {
       failed: "That run failed.",
     };
 
+    /* One sentence per status the contract can emit, used ONLY when the envelope carries
+       no message of its own. The point is that no visitor ever reads
+       "The demo returned an error (411)" — every code the server can answer with has prose
+       waiting for it, and the generic line below is left as a backstop for a status nobody
+       planned. Where the server does send a message, that message wins. */
     var STATUS_FALLBACK = {
       400: "The demo could not accept that request.",
       401: "This run needs an access code.",
       403: "That link is no longer valid.",
       404: "That run is gone — its files have already been deleted.",
+      408: "That upload took too long to arrive. Try again on a steadier connection.",
       410: "That run has expired.",
+      411: "That upload did not say how large it was, so the demo could not check it against the limits.",
       413: "Those files are larger than the demo accepts.",
-      /* 415 has two causes now: a file whose magic bytes are not an accepted type, and a
-         POST whose body is not a form at all. The server names which in its envelope, and
-         that message wins; this line only shows when there is no readable body, so it has
-         to be true of both. */
+      /* 415 has two causes: a file whose magic bytes are not an accepted type, and a POST
+         whose body is not a form at all. This line has to be true of both. */
       415: "That upload was not in a format the demo accepts.",
       422: "One of those files could not be read.",
-      429: "You have reached the demo's per-visitor limit for today.",
+      /* Per-visitor limits run on an hourly AND a daily window, so this cannot say "today". */
+      429: "You have reached the demo's per-visitor limit. Try again later.",
       503: "The demo is not accepting runs right now — try again later.",
     };
 
