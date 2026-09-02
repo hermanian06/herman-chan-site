@@ -1,0 +1,977 @@
+---
+/**
+ * Upload form for the underwriting demo.
+ *
+ * Speaks the demo API contract:
+ *   GET  /api/meta          caps, accepted types, whether the demo is accepting runs
+ *   POST /api/runs          multipart upload            -> 202 {run_id, status_url, ...}
+ *   POST /api/runs/sample   no files, no checkbox       -> 202 same shape
+ *   GET  /api/runs/{id}     poll until done | failed
+ * Errors arrive as {error:{code,message}} and are shown as that sentence, never as JSON.
+ *
+ * Two things this component expects the PAGE to provide, because the results land in
+ * markup the page owns:
+ *   - one `[data-panel="<tab id>"]` section per tab (OutputTabs renders exactly these)
+ *   - a `[data-uf-downloads]` list and a `[data-uf-expiry]` line beside it
+ *
+ * Progressive enhancement follows OutputTabs' reasoning: the form ships hidden and is
+ * revealed only after every handler is wired, so there is never a visible control that
+ * does nothing. With scripting off — or if this script throws — the "needs JavaScript"
+ * line is what stays on screen.
+ *
+ * The style block is `is:global` on purpose: half of this UI (file rows, download rows,
+ * the empty-tab line) is created at run time, and Astro's scoped attribute is only
+ * stamped on markup it rendered. Every selector is namespaced under `.uf`.
+ */
+import {
+  API_BASE_LOCAL,
+  API_BASE_PRODUCTION,
+  TURNSTILE_SITE_KEY,
+} from "../../data/demo/config";
+---
+
+<section class="uf" data-upload-form aria-labelledby="uf-title">
+  <h2 id="uf-title" class="uf__h2">Run it on a deal</h2>
+
+  <p class="uf__nojs" data-uf-nojs>
+    This demo needs JavaScript — the page sends your files to a small API and polls it
+    while the pipeline runs.
+  </p>
+
+  <div class="uf__body" data-uf-body hidden>
+    <div class="uf__sample">
+      <button type="button" class="uf__btn uf__btn--primary" data-uf-sample>
+        Use the sample deal
+      </button>
+      <p class="uf__samplenote">
+        No files, no checkbox. Runs the pipeline on a synthetic deal and fills every tab
+        below — the fastest way to see what comes back.
+      </p>
+    </div>
+
+    <p class="uf__or"><span>or run it on your own deal</span></p>
+
+    <form class="uf__form" data-uf-form novalidate>
+      <div class="uf__drop" data-uf-drop>
+        <p class="uf__dropline">
+          Drop files here, or
+          <label class="uf__choose" for="uf-input">choose files</label>
+        </p>
+        <input
+          id="uf-input"
+          class="uf__input"
+          type="file"
+          multiple
+          accept=".pdf,.docx,.doc,.xlsx,.xls,.csv"
+          data-uf-input
+          aria-describedby="uf-limits"
+        />
+        <p class="uf__hint" id="uf-limits" data-uf-limits></p>
+      </div>
+
+      <ul class="uf__files" data-uf-files aria-label="Chosen files" hidden></ul>
+
+      <div class="uf__field">
+        <label class="uf__label" for="uf-notes">
+          Anything the pipeline should know (optional)
+        </label>
+        <textarea
+          id="uf-notes"
+          class="uf__notes"
+          rows="3"
+          maxlength="2000"
+          data-uf-notes
+          placeholder="e.g. the rent roll is as of the 1st, the T-12 runs through June."
+        ></textarea>
+        <p class="uf__counter" data-uf-counter></p>
+      </div>
+
+      <div class="uf__turnstile" data-uf-turnstile hidden></div>
+
+      <label class="uf__consent">
+        <input type="checkbox" required data-uf-consent />
+        <span>I have the right to share these files. Files are deleted within an hour; nothing is stored or used for training.</span>
+      </label>
+
+      <button type="submit" class="uf__btn" data-uf-submit>Run the pipeline</button>
+    </form>
+
+    <p class="uf__status" data-uf-status role="status" hidden></p>
+    <p class="uf__error" data-uf-error role="alert" hidden></p>
+  </div>
+</section>
+
+<script
+  define:vars={{ API_BASE_PRODUCTION, API_BASE_LOCAL, TURNSTILE_SITE_KEY }}
+>
+  (function () {
+    var root = document.querySelector("[data-upload-form]");
+    if (!root) return;
+
+    var LOCAL_HOSTS = ["localhost", "127.0.0.1"];
+    var BASE =
+      LOCAL_HOSTS.indexOf(location.hostname) === -1
+        ? API_BASE_PRODUCTION
+        : API_BASE_LOCAL;
+
+    /* The multipart field name the files are posted under. The contract writes it as
+       `files[]`, which is the usual notation for "one repeated field named files". */
+    var FILES_FIELD = "files";
+
+    var POLL_MS = 2000;
+    var GIVE_UP_MS = 150000;
+
+    /* Used until GET /api/meta answers, and kept if it never does. */
+    var caps = {
+      max_files: 5,
+      max_file_mb: 25,
+      max_total_mb: 40,
+      max_notes_chars: 2000,
+      accepted_extensions: [".pdf", ".docx", ".doc", ".xlsx", ".xls", ".csv"],
+      retention_minutes: 60,
+      accepting: true,
+      message: null,
+    };
+
+    var STAGE = {
+      received: "Received.",
+      parsing: "Reading the documents…",
+      extracting: "Pulling the fields out…",
+      generating: "Building the workbooks…",
+      done: "Done.",
+      failed: "That run failed.",
+    };
+
+    var STATUS_FALLBACK = {
+      400: "The demo could not accept that request.",
+      401: "This run needs an access code.",
+      403: "That link is no longer valid.",
+      404: "That run is gone — its files have already been deleted.",
+      410: "That run has expired.",
+      413: "Those files are larger than the demo accepts.",
+      415: "One of those files is a type the demo does not accept.",
+      422: "One of those files could not be read.",
+      429: "You have reached the demo's per-visitor limit for today.",
+      503: "The demo is not accepting runs right now — try again later.",
+    };
+
+    var NETWORK_MESSAGE =
+      "Could not reach the demo API. It may be offline or waking up — try again in a minute.";
+
+    try {
+      var body = root.querySelector("[data-uf-body]");
+      var nojs = root.querySelector("[data-uf-nojs]");
+      var form = root.querySelector("[data-uf-form]");
+      var drop = root.querySelector("[data-uf-drop]");
+      var input = root.querySelector("[data-uf-input]");
+      var limitsEl = root.querySelector("[data-uf-limits]");
+      var filesEl = root.querySelector("[data-uf-files]");
+      var notesEl = root.querySelector("[data-uf-notes]");
+      var counterEl = root.querySelector("[data-uf-counter]");
+      var consentEl = root.querySelector("[data-uf-consent]");
+      var submitEl = root.querySelector("[data-uf-submit]");
+      var sampleEl = root.querySelector("[data-uf-sample]");
+      var turnstileEl = root.querySelector("[data-uf-turnstile]");
+      var statusEl = root.querySelector("[data-uf-status]");
+      var errorEl = root.querySelector("[data-uf-error]");
+
+      /* The results markup (OutputTabs' panels, the downloads list, the expiry line)
+         is parsed AFTER this script, which runs inline during parse. Resolve those
+         nodes when a run finishes, never at init — at init they are all still null. */
+
+      if (!body || !form || !input || !submitEl || !sampleEl) return;
+
+      var chosen = [];
+      var running = false;
+      var lastRunWasSample = false;
+
+      /* ---------- small helpers ---------- */
+
+      function setStatus(text) {
+        statusEl.textContent = text || "";
+        statusEl.hidden = !text;
+      }
+
+      function setError(text) {
+        errorEl.textContent = text || "";
+        errorEl.hidden = !text;
+      }
+
+      function formatSize(bytes) {
+        if (bytes >= 1048576) return (bytes / 1048576).toFixed(1) + " MB";
+        return Math.max(1, Math.round(bytes / 1024)) + " KB";
+      }
+
+      function extensionOf(name) {
+        var dot = name.lastIndexOf(".");
+        return dot === -1 ? "" : name.slice(dot).toLowerCase();
+      }
+
+      function limitsText() {
+        return (
+          caps.accepted_extensions.join("  ") +
+          " — up to " +
+          caps.max_files +
+          " files, " +
+          caps.max_file_mb +
+          " MB each, " +
+          caps.max_total_mb +
+          " MB total. Deleted after " +
+          caps.retention_minutes +
+          " minutes."
+        );
+      }
+
+      function totalBytes() {
+        var sum = 0;
+        for (var i = 0; i < chosen.length; i++) sum += chosen[i].size;
+        return sum;
+      }
+
+      function setBusy(state) {
+        running = state;
+        submitEl.disabled = state;
+        sampleEl.disabled = state;
+      }
+
+      /* ---------- the file list ---------- */
+
+      function renderFiles() {
+        while (filesEl.firstChild) filesEl.removeChild(filesEl.firstChild);
+        filesEl.hidden = chosen.length === 0;
+
+        for (var i = 0; i < chosen.length; i++) {
+          (function (file, index) {
+            var li = document.createElement("li");
+            li.className = "uf__file";
+
+            var name = document.createElement("span");
+            name.className = "uf__filename";
+            name.textContent = file.name;
+
+            var size = document.createElement("span");
+            size.className = "uf__filesize";
+            size.textContent = formatSize(file.size);
+
+            var remove = document.createElement("button");
+            remove.type = "button";
+            remove.className = "uf__remove";
+            remove.textContent = "Remove";
+            remove.setAttribute("aria-label", "Remove " + file.name);
+            remove.addEventListener("click", function () {
+              chosen.splice(index, 1);
+              renderFiles();
+              setError("");
+            });
+
+            li.appendChild(name);
+            li.appendChild(size);
+            li.appendChild(remove);
+            filesEl.appendChild(li);
+          })(chosen[i], i);
+        }
+      }
+
+      /* Client-side caps, mirrored from /api/meta. Refusals happen here, before any
+         request exists — the point of the check is that nothing is sent. */
+      function addFiles(list) {
+        var refusals = [];
+        var maxFileBytes = caps.max_file_mb * 1048576;
+        var maxTotalBytes = caps.max_total_mb * 1048576;
+
+        for (var i = 0; i < list.length; i++) {
+          var file = list[i];
+
+          if (chosen.length >= caps.max_files) {
+            refusals.push(
+              "This demo takes at most " +
+                caps.max_files +
+                " files, so " +
+                file.name +
+                " was not added."
+            );
+            continue;
+          }
+          if (caps.accepted_extensions.indexOf(extensionOf(file.name)) === -1) {
+            refusals.push(
+              file.name +
+                " is not a type the demo accepts (" +
+                caps.accepted_extensions.join(" ") +
+                ")."
+            );
+            continue;
+          }
+          if (file.size > maxFileBytes) {
+            refusals.push(
+              file.name +
+                " is " +
+                formatSize(file.size) +
+                ", over the " +
+                caps.max_file_mb +
+                " MB limit for one file."
+            );
+            continue;
+          }
+          if (totalBytes() + file.size > maxTotalBytes) {
+            refusals.push(
+              "Adding " +
+                file.name +
+                " would put the upload over " +
+                caps.max_total_mb +
+                " MB in total."
+            );
+            continue;
+          }
+          chosen.push(file);
+        }
+
+        renderFiles();
+        setError(refusals.join(" "));
+      }
+
+      /* ---------- notes counter ---------- */
+
+      function renderCounter() {
+        counterEl.textContent =
+          notesEl.value.length.toLocaleString() +
+          " / " +
+          caps.max_notes_chars.toLocaleString();
+      }
+
+      /* ---------- responses ---------- */
+
+      function readBody(res) {
+        return res.text().then(function (text) {
+          if (!text) return null;
+          try {
+            return JSON.parse(text);
+          } catch (err) {
+            return null;
+          }
+        });
+      }
+
+      function messageFor(res, payload) {
+        if (
+          payload &&
+          payload.error &&
+          typeof payload.error.message === "string" &&
+          payload.error.message
+        ) {
+          return payload.error.message;
+        }
+        return (
+          STATUS_FALLBACK[res.status] ||
+          "The demo returned an error (" + res.status + ")."
+        );
+      }
+
+      /* The API states expiry as a Unix timestamp in SECONDS. Passing that straight to
+         `new Date()` reads it as milliseconds and lands in 1970, so normalise here and
+         still accept milliseconds or an ISO string if the contract ever changes. */
+      function parseWhen(value) {
+        var ms = null;
+        if (typeof value === "number" && isFinite(value)) {
+          ms = value < 1e12 ? value * 1000 : value;
+        } else if (typeof value === "string" && value) {
+          var n = Number(value);
+          if (value.trim() !== "" && !isNaN(n)) ms = n < 1e12 ? n * 1000 : n;
+          else ms = new Date(value).getTime();
+        }
+        if (ms === null || isNaN(ms)) return null;
+        var when = new Date(ms);
+        return isNaN(when.getTime()) ? null : when;
+      }
+
+      function absolute(url) {
+        if (typeof url !== "string" || !url) return null;
+        if (/^https?:\/\//i.test(url)) return url;
+        if (url.charAt(0) === "/") return BASE + url;
+        return null;
+      }
+
+      /* ---------- results ---------- */
+
+      function fillPanels(previews) {
+        var panels = document.querySelectorAll("[data-panel]");
+        for (var i = 0; i < panels.length; i++) {
+          var panel = panels[i];
+          var id = panel.getAttribute("data-panel");
+          var host = panel.firstElementChild || panel;
+          var html =
+            previews && typeof previews[id] === "string" ? previews[id] : null;
+
+          if (html) {
+            host.innerHTML = html;
+          } else {
+            while (host.firstChild) host.removeChild(host.firstChild);
+            var note = document.createElement("p");
+            note.className = "uf-ph";
+            note.textContent = "This run did not produce that tab.";
+            host.appendChild(note);
+          }
+        }
+      }
+
+      function fillDownloads(downloads, expiresAt) {
+        var downloadsEl = document.querySelector("[data-uf-downloads]");
+        var expiryEl = document.querySelector("[data-uf-expiry]");
+        var noDownloadsEl = document.querySelector("[data-uf-nodownloads]");
+        if (!downloadsEl) return;
+        while (downloadsEl.firstChild) downloadsEl.removeChild(downloadsEl.firstChild);
+
+        var list = downloads || [];
+        var stamp = expiresAt;
+        var rendered = 0;
+
+        for (var i = 0; i < list.length; i++) {
+          var item = list[i];
+          var href = absolute(item && item.url);
+          if (!href) continue;
+          if (!stamp && item.expires_at) stamp = item.expires_at;
+
+          var li = document.createElement("li");
+          li.className = "uf-dl__item";
+
+          var link = document.createElement("a");
+          link.className = "uf-dl__link";
+          link.href = href;
+          link.rel = "noopener";
+          link.textContent = item.label || item.name || "Download";
+
+          li.appendChild(link);
+          downloadsEl.appendChild(li);
+          rendered += 1;
+        }
+
+        if (noDownloadsEl) noDownloadsEl.hidden = rendered > 0;
+
+        if (expiryEl) {
+          var when = parseWhen(stamp);
+          if (when) {
+            expiryEl.textContent =
+              "Links expire at " +
+              when.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) +
+              ".";
+            expiryEl.hidden = false;
+          } else {
+            expiryEl.hidden = true;
+          }
+        }
+      }
+
+      function documentsLine(documents) {
+        if (!documents || !documents.length) return "";
+        var parts = [];
+        for (var i = 0; i < documents.length; i++) {
+          var d = documents[i];
+          if (!d || !d.filename) continue;
+          parts.push(d.filename + " → " + (d.role || "unclassified"));
+        }
+        return parts.length ? " Read as: " + parts.join(", ") + "." : "";
+      }
+
+      /* ---------- the run ---------- */
+
+      function poll(runId, statusUrl, startedAt) {
+        var url = absolute(statusUrl) || BASE + "/api/runs/" + encodeURIComponent(runId);
+
+        fetch(url, { method: "GET" })
+          .then(function (res) {
+            return readBody(res).then(function (payload) {
+              if (!res.ok) {
+                setBusy(false);
+                setStatus("");
+                setError(messageFor(res, payload));
+                return;
+              }
+              if (!payload) {
+                setBusy(false);
+                setStatus("");
+                setError("The demo returned a response this page could not read.");
+                return;
+              }
+
+              var state = payload.status;
+
+              if (state === "done") {
+                setBusy(false);
+                fillPanels(payload.previews);
+                fillDownloads(payload.downloads, payload.expires_at);
+                setStatus(
+                  "Done — the tabs below are filled." +
+                    (lastRunWasSample ? "" : documentsLine(payload.documents))
+                );
+                setError("");
+                return;
+              }
+
+              if (state === "failed") {
+                setBusy(false);
+                setStatus("");
+                setError(
+                  (payload.error && payload.error.message) ||
+                    "That run failed, and the demo did not say why."
+                );
+                return;
+              }
+
+              if (Date.now() - startedAt > GIVE_UP_MS) {
+                setBusy(false);
+                setStatus("");
+                setError(
+                  "The run is still going after two and a half minutes, which is longer than this page waits. Try again, or run the sample deal."
+                );
+                return;
+              }
+
+              setStatus(payload.stage_label || STAGE[state] || "Working…");
+              setTimeout(function () {
+                poll(runId, statusUrl, startedAt);
+              }, POLL_MS);
+            });
+          })
+          .catch(function () {
+            setBusy(false);
+            setStatus("");
+            setError(NETWORK_MESSAGE);
+          });
+      }
+
+      function startRun(path, payload, isSample) {
+        lastRunWasSample = !!isSample;
+        setBusy(true);
+        setError("");
+        setStatus("Sending…");
+
+        fetch(BASE + path, { method: "POST", body: payload })
+          .then(function (res) {
+            return readBody(res).then(function (data) {
+              if (!res.ok || !data || !data.run_id) {
+                setBusy(false);
+                setStatus("");
+                setError(
+                  res.ok
+                    ? "The demo accepted the request but did not return a run."
+                    : messageFor(res, data)
+                );
+                return;
+              }
+              setStatus("Received.");
+              poll(data.run_id, data.status_url, Date.now());
+            });
+          })
+          .catch(function () {
+            setBusy(false);
+            setStatus("");
+            setError(NETWORK_MESSAGE);
+          });
+      }
+
+      function turnstileToken() {
+        var field = document.querySelector('[name="cf-turnstile-response"]');
+        return field && field.value ? field.value : "";
+      }
+
+      /* ---------- wiring ---------- */
+
+      input.addEventListener("change", function () {
+        if (input.files && input.files.length) addFiles(input.files);
+        input.value = "";
+      });
+
+      ["dragenter", "dragover"].forEach(function (name) {
+        drop.addEventListener(name, function (event) {
+          event.preventDefault();
+          drop.setAttribute("data-over", "");
+        });
+      });
+      ["dragleave", "dragend"].forEach(function (name) {
+        drop.addEventListener(name, function () {
+          drop.removeAttribute("data-over");
+        });
+      });
+      drop.addEventListener("drop", function (event) {
+        event.preventDefault();
+        drop.removeAttribute("data-over");
+        if (event.dataTransfer && event.dataTransfer.files.length) {
+          addFiles(event.dataTransfer.files);
+        }
+      });
+
+      notesEl.addEventListener("input", renderCounter);
+
+      sampleEl.addEventListener("click", function () {
+        if (running) return;
+        var payload = new FormData();
+        payload.append("turnstile_token", turnstileToken());
+        startRun("/api/runs/sample", payload, true);
+      });
+
+      /* `novalidate` is on the form so every refusal reads in the page's own voice
+         rather than as a browser bubble; the checkbox keeps `required` for semantics. */
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        if (running) return;
+
+        if (!chosen.length) {
+          setError("Choose at least one file, or run the sample deal.");
+          return;
+        }
+        if (!consentEl.checked) {
+          setError("Tick the box above before uploading.");
+          return;
+        }
+        if (notesEl.value.length > caps.max_notes_chars) {
+          setError("The notes box takes " + caps.max_notes_chars + " characters.");
+          return;
+        }
+
+        var payload = new FormData();
+        for (var i = 0; i < chosen.length; i++) {
+          payload.append(FILES_FIELD, chosen[i], chosen[i].name);
+        }
+        payload.append("notes", notesEl.value);
+        payload.append("turnstile_token", turnstileToken());
+        startRun("/api/runs", payload, false);
+      });
+
+      /* Turnstile renders only when a site key exists. With none, the widget slot stays
+         hidden and `turnstile_token` goes up as an empty string. */
+      if (TURNSTILE_SITE_KEY) {
+        var widget = document.createElement("div");
+        widget.className = "cf-turnstile";
+        widget.setAttribute("data-sitekey", TURNSTILE_SITE_KEY);
+        turnstileEl.appendChild(widget);
+        turnstileEl.hidden = false;
+
+        var api = document.createElement("script");
+        api.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+        api.async = true;
+        api.defer = true;
+        document.head.appendChild(api);
+      }
+
+      limitsEl.textContent = limitsText();
+      renderCounter();
+
+      /* Handlers are live, so it is now safe to show the form and retire the notice. */
+      nojs.hidden = true;
+      body.hidden = false;
+
+      /* Caps come from the server when it answers; the fallback above stands if it
+         does not, so a dead API costs the page nothing but its own error line. */
+      fetch(BASE + "/api/meta", { method: "GET" })
+        .then(function (res) {
+          return res.ok ? res.json() : null;
+        })
+        .then(function (meta) {
+          if (!meta) return;
+          var keys = [
+            "max_files",
+            "max_file_mb",
+            "max_total_mb",
+            "max_notes_chars",
+            "retention_minutes",
+          ];
+          for (var k = 0; k < keys.length; k++) {
+            if (typeof meta[keys[k]] === "number") caps[keys[k]] = meta[keys[k]];
+          }
+          if (meta.accepted_extensions && meta.accepted_extensions.length) {
+            caps.accepted_extensions = meta.accepted_extensions;
+            input.setAttribute("accept", caps.accepted_extensions.join(","));
+          }
+          notesEl.setAttribute("maxlength", String(caps.max_notes_chars));
+          limitsEl.textContent = limitsText();
+          renderCounter();
+
+          if (meta.accepting === false) {
+            setBusy(true);
+            setStatus(
+              meta.message || "The demo is paused right now — try again later."
+            );
+          }
+        })
+        .catch(function () {
+          /* Offline or not deployed yet: the hardcoded caps already stand. */
+        });
+    } catch (err) {
+      /* Leave the "needs JavaScript" line in place: an honest notice beats a dead form. */
+    }
+  })();
+</script>
+
+<style is:global>
+  .uf {
+    /* The one colour the site's palette does not carry: a refusal has to read as a
+       refusal, and every global token here is ink, paper or the ink-blue accent. */
+    --uf-error: #7a2318;
+
+    margin: var(--s-7) 0 0;
+    padding: var(--s-6);
+    background: var(--bg-alt);
+    max-width: 72ch;
+  }
+
+  .uf__h2 {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+    color: var(--muted);
+    margin: 0 0 var(--s-4);
+  }
+
+  .uf [hidden] { display: none !important; }
+
+  .uf__nojs,
+  .uf__samplenote,
+  .uf__hint,
+  .uf__status,
+  .uf__error {
+    font-family: var(--serif);
+    font-size: var(--t-15);
+    line-height: 1.5;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  /* ---- the sample path, the loud one ---- */
+  .uf__sample {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--s-4);
+  }
+  .uf__samplenote { flex: 1 1 22ch; max-width: 44ch; }
+
+  .uf__btn {
+    font-family: var(--mono);
+    font-size: var(--t-13);
+    letter-spacing: 0.04em;
+    color: var(--fg);
+    background: transparent;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 9px 16px;
+    cursor: pointer;
+    transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
+  }
+  .uf__btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+  .uf__btn:disabled { opacity: 0.5; cursor: default; }
+
+  .uf__btn--primary {
+    color: var(--bg);
+    background: var(--accent);
+    border-color: var(--accent);
+    font-size: var(--t-14);
+    padding: 12px 22px;
+  }
+  .uf__btn--primary:hover:not(:disabled) {
+    background: var(--accent-ink);
+    border-color: var(--accent-ink);
+    color: var(--bg);
+  }
+
+  /* ---- divider ---- */
+  .uf__or {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    margin: var(--s-6) 0;
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted-2);
+  }
+  .uf__or::before,
+  .uf__or::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  /* ---- drop zone ---- */
+  .uf__drop {
+    border: 1px dashed var(--rule);
+    border-radius: 2px;
+    background: var(--bg);
+    padding: var(--s-6) var(--s-5);
+    text-align: center;
+  }
+  .uf__drop[data-over] { border-color: var(--accent); background: var(--accent-soft); }
+  .uf__drop:focus-within { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  .uf__dropline {
+    font-family: var(--serif);
+    font-size: var(--t-17);
+    color: var(--fg-soft);
+    margin: 0 0 var(--s-2);
+  }
+  .uf__choose {
+    color: var(--accent);
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* Off-screen but focusable, so the keyboard reaches the picker and the dashed box
+     shows the focus ring for it. `display:none` would take it out of the tab order. */
+  .uf__input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .uf__hint {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    color: var(--muted-2);
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+  }
+
+  /* ---- chosen files ---- */
+  .uf__files {
+    list-style: none;
+    margin: var(--s-4) 0 0;
+    padding: 0;
+    border-top: 1px solid var(--rule-soft);
+  }
+  .uf__file {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-3);
+    padding: var(--s-2) 0;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .uf__filename {
+    font-family: var(--serif);
+    font-size: var(--t-15);
+    color: var(--fg-soft);
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .uf__filesize {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    color: var(--muted-2);
+    white-space: nowrap;
+  }
+  .uf__remove {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    color: var(--muted);
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--rule);
+    padding: 0 0 1px;
+    cursor: pointer;
+  }
+  .uf__remove:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ---- notes ---- */
+  .uf__field { margin: var(--s-5) 0 0; }
+  .uf__label {
+    display: block;
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin: 0 0 var(--s-2);
+  }
+  .uf__notes {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    font-family: var(--serif);
+    font-size: var(--t-15);
+    line-height: 1.5;
+    color: var(--fg);
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: var(--s-3);
+    resize: vertical;
+  }
+  .uf__counter {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    color: var(--muted-2);
+    text-align: right;
+    margin: var(--s-1) 0 0;
+  }
+
+  .uf__turnstile { margin: var(--s-5) 0 0; }
+
+  /* ---- consent + submit ---- */
+  .uf__consent {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-3);
+    margin: var(--s-5) 0 0;
+    font-family: var(--serif);
+    font-size: var(--t-15);
+    line-height: 1.5;
+    color: var(--fg-soft);
+    cursor: pointer;
+  }
+  .uf__consent input { margin: 4px 0 0; flex: none; }
+
+  .uf__form > .uf__btn { margin: var(--s-5) 0 0; }
+
+  .uf__status,
+  .uf__error { margin: var(--s-5) 0 0; }
+  .uf__status { color: var(--fg-soft); }
+  .uf__error {
+    color: var(--uf-error);
+    border-left: 2px solid var(--uf-error);
+    padding-left: var(--s-3);
+  }
+
+  /* Placeholder line inside a tab panel, server-rendered and JS-rendered alike. */
+  .uf-ph {
+    font-family: var(--serif);
+    font-size: var(--t-15);
+    color: var(--muted);
+    margin: 0;
+    padding: var(--s-5) 0;
+  }
+
+  /* ---- downloads produced by a run ---- */
+  .uf-dl {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .uf-dl__item {
+    padding: var(--s-3) 0;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .uf-dl__item:first-child { border-top: 1px solid var(--rule); }
+  .uf-dl__link {
+    font-family: var(--serif);
+    font-size: var(--t-17);
+    color: var(--accent);
+    overflow-wrap: anywhere;
+  }
+
+  @media (max-width: 720px) {
+    .uf { padding: var(--s-5); }
+    .uf__sample { gap: var(--s-3); }
+    .uf__btn--primary { width: 100%; }
+    .uf__file { flex-wrap: wrap; gap: var(--s-2); }
+  }
+</style>

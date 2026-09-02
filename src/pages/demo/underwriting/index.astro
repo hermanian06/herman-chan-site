@@ -133,6 +133,14 @@ const base = "/downloads/underwriting-demo";
         </ul>
       </section>
 
+      <aside class="demo__callout">
+        <p>
+          <a href="/demo/underwriting/try/">Try it with your own deal</a> — upload a
+          marketing package, a trailing-twelve income statement and a rent roll, and the
+          pipeline returns these same four workbooks for your deal.
+        </p>
+      </aside>
+
       <aside class="demo__disclaimer">
         <h2 class="demo__h2">What this sample is, and is not</h2>
         <ul>
@@ -254,6 +262,21 @@ const base = "/downloads/underwriting-demo";
     white-space: nowrap;
   }
 
+  .demo__callout {
+    margin: var(--s-7) 0 0;
+    padding: var(--s-5) var(--s-6);
+    border-left: 2px solid var(--accent);
+    background: var(--accent-soft);
+    max-width: 72ch;
+  }
+  .demo__callout p {
+    font-family: var(--serif);
+    font-size: var(--t-17);
+    line-height: 1.55;
+    color: var(--fg-soft);
+    margin: 0;
+  }
+
   .demo__disclaimer {
     margin: var(--s-8) 0 0;
     padding: var(--s-6);
@@ -277,5 +300,6 @@ const base = "/downloads/underwriting-demo";
   @media (max-width: 720px) {
     .dl__item { grid-template-columns: 1fr; gap: 2px; }
     .demo__disclaimer { padding: var(--s-5); }
+    .demo__callout { padding: var(--s-4) var(--s-5); }
   }
 </style>

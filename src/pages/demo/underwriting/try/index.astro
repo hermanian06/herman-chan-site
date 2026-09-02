@@ -1,0 +1,164 @@
+---
+import Layout from "../../../../layouts/Layout.astro";
+import OutputTabs from "../../../../components/demo/OutputTabs.astro";
+import UploadForm from "../../../../components/demo/UploadForm.astro";
+
+const TOOLKIT = "AI Underwriting Pipeline — Sample Outputs";
+
+/* The same fourteen ids, labels and groups the sample page renders, because the API
+   fills these panels by id. The sample page holds the other copy of this list — if a
+   tab is ever added, both move together. */
+const PLACEHOLDER =
+  '<p class="uf-ph">Run the sample deal or upload a deal to fill this tab.</p>';
+
+const tabs = [
+  { id: "summary", label: "Deal summary", group: "Deal summary" },
+  { id: "comps", label: "Rent comps", group: "Deal summary" },
+  { id: "property-tax", label: "Property tax", group: "Deal summary" },
+  { id: "demand", label: "Demand", group: "Deal summary" },
+  { id: "supply", label: "Supply", group: "Deal summary" },
+  { id: "t12-data", label: "Monthly data", group: "T-12 analysis" },
+  { id: "t12-pnl", label: "P&L summary", group: "T-12 analysis" },
+  { id: "t12-checks", label: "Checks & pricing", group: "T-12 analysis" },
+  { id: "rent-roll", label: "Rent roll", group: "Rent roll analysis" },
+  { id: "unit-mix", label: "Unit mix", group: "Rent roll analysis" },
+  { id: "trade-out", label: "Trade-out", group: "Rent roll analysis" },
+  { id: "manifest", label: "Field manifest", group: "Model-ready outputs" },
+  { id: "audit-trail", label: "Audit trail", group: "Model-ready outputs" },
+  { id: "notes", label: "Notes & disclosures", group: "Model-ready outputs" },
+].map((tab) => ({ ...tab, html: PLACEHOLDER }));
+---
+
+<Layout
+  title="AI underwriting pipeline — try it on your own deal"
+  description="Upload a marketing package, a trailing-twelve income statement and a rent roll, and get back a deal summary, a categorised T-12, a rent-roll analysis, and a manifest of every field the pipeline hands your model."
+>
+  <section class="demo">
+    <div class="wrap">
+      <header class="demo__head">
+        <span class="kicker">§ · Demo</span>
+        <h1 class="demo__title">{TOOLKIT}</h1>
+        <p class="demo__sub">Try it on your own deal</p>
+        <p class="demo__lede">
+          Upload a deal's raw documents — the marketing package or OM, the
+          trailing-twelve income statement, the rent roll, in whatever shape they came
+          out of the property-management system — and the pipeline hands back the same
+          four workbooks the sample page shows. If you would rather not upload anything,
+          the sample deal is one click away.
+        </p>
+        <p class="demo__back">
+          <a href="/demo/underwriting/">See the sample outputs first</a>
+        </p>
+      </header>
+
+      <div class="demo__prose">
+        <p>
+          The pipeline works out what each file is before it reads it, so the file names
+          do not matter and neither does which system exported them. What comes back is
+          a deal summary with comps, demand and supply; a trailing-twelve categorised
+          into a consistent profit-and-loss layout; a rent roll rolled up by floor plan
+          with lease trade-out; and a manifest of every field it extracted next to the
+          model input each one fills.
+        </p>
+        <p>
+          Where a value could not be established the cell says <code>MISSING</code>
+          rather than a plausible number, which is the point of the whole exercise — a
+          visible hole is cheaper than a wrong figure that survives into a model. The
+          caps below are real: this runs on one small server, files are deleted within
+          the hour, and nothing is kept or used for training.
+        </p>
+      </div>
+
+      <UploadForm />
+
+      <OutputTabs tabs={tabs} />
+
+      <section class="demo__downloads" aria-labelledby="downloads-title">
+        <h2 id="downloads-title" class="demo__h2">Workbooks from this run</h2>
+        <p class="demo__dlempty" data-uf-nodownloads>
+          Nothing yet. The workbooks appear here when a run finishes.
+        </p>
+        <ul class="uf-dl" data-uf-downloads></ul>
+        <p class="demo__expiry" data-uf-expiry hidden></p>
+      </section>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .demo { padding: clamp(48px, 7vw, 80px) 0 var(--s-9); }
+
+  .demo__head { max-width: 680px; margin: 0 0 var(--s-7); }
+  .demo__head .kicker { display: block; margin-bottom: var(--s-3); }
+  .demo__title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(30px, 4.2vw, 44px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0 0 var(--s-2);
+    color: var(--fg);
+  }
+  .demo__sub {
+    font-family: var(--mono);
+    font-size: var(--t-13);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin: 0 0 var(--s-4);
+  }
+  .demo__lede {
+    font-family: var(--serif);
+    font-size: var(--t-19);
+    line-height: 1.55;
+    color: var(--fg-soft);
+    margin: 0;
+    max-width: 54ch;
+  }
+  .demo__back {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    margin: var(--s-4) 0 0;
+  }
+
+  .demo__prose { max-width: var(--measure); margin: 0 0 var(--s-7); }
+  .demo__prose p {
+    font-family: var(--serif);
+    font-size: var(--t-17);
+    line-height: 1.6;
+    color: var(--fg-soft);
+    margin: 0 0 var(--s-4);
+  }
+  .demo__prose code {
+    font-family: var(--mono);
+    font-size: 0.86em;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 2px;
+  }
+
+  .demo__h2 {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+    color: var(--muted);
+    margin: 0 0 var(--s-4);
+  }
+
+  .demo__downloads { margin: var(--s-8) 0 0; }
+  .demo__dlempty,
+  .demo__expiry {
+    font-family: var(--serif);
+    font-size: var(--t-15);
+    color: var(--muted);
+    margin: 0;
+  }
+  .demo__expiry {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    color: var(--muted-2);
+    margin: var(--s-3) 0 0;
+  }
+</style>
