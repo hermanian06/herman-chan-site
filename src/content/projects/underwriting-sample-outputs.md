@@ -1,6 +1,6 @@
 ---
 title: AI underwriting pipeline — sample outputs
-blurb: A live demo of what the pipeline actually produces from a deal's raw documents — a deal summary with comps, demand and supply; a categorised trailing-twelve analysis; a rent-roll rollup with lease trade-out; and a manifest of all 157 fields it hands to your model. Previewable in the browser, downloadable as workbooks, built on a synthetic deal with illustrative pricing.
+blurb: A live demo of what the pipeline actually produces from a deal's raw documents — a deal summary with comps, demand and supply; a categorised trailing-twelve analysis; a rent-roll rollup with lease trade-out; and a manifest of every field it extracts, with the model input each one fills. Previewable in the browser, downloadable as workbooks, built on a synthetic deal with illustrative pricing.
 href: /demo/underwriting/
 order: 0
 status: Live demo
