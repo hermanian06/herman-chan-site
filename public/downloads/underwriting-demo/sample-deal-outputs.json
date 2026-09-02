@@ -89,7 +89,7 @@
       {
         "topic": "What vintage-matching changed on this deal",
         "applies_to": "Rent Comps — tiers",
-        "note": "This subject was built 2019. Two comp sets were selected by identical criteria — same candidate pool, same product test, same tracker exclusions, same radius, same closest-11 cap, same rent rules, same mix weighting — differing only in whether the +/-10-year vintage test was applied. Set A, vintage test ON: 11 communities, vintages 2009 to 2029; this subject's rent reads 3.8% above it. Set B, vintage test OFF: 1 more community joins and none drops out — fewer than 20 qualify either way, so the cap never binds (vintages 1998 to 2029); the same rent reads 6.3% below it. Both figures are weighted by this property's own unit mix and computed over the same bed counts (100% of its units), so the two sets differ by 10.1 points. Every community that joins was built before 2009, set A's oldest, so set B reaches OLDER product, not newer. Both sets are listed on the Rent Comps section — this is a measurement of these two sets on this date, not an estimate of what vintage is worth in this market."
+        "note": "This subject was built 2019. Two comp sets were selected by identical criteria — same candidate pool, same product test, same tracker exclusions, same radius, same closest-20 cap, same rent rules, same mix weighting — differing only in whether the +/-10-year vintage test was applied. Set A, vintage test ON: 11 communities, vintages 2009 to 2029; this subject's rent reads 3.8% above it. Set B, vintage test OFF: 1 more community joins and none drops out — fewer than 20 qualify either way, so the cap never binds (vintages 1998 to 2029); the same rent reads 6.3% below it. Both figures are weighted by this property's own unit mix and computed over the same bed counts (100% of its units), so the two sets differ by 10.1 points. Every community that joins was built before 2009, set A's oldest, so set B reaches OLDER product, not newer. Both sets are listed on the Rent Comps section — this is a measurement of these two sets on this date, not an estimate of what vintage is worth in this market."
       },
       {
         "topic": "This deal does not exist",
@@ -765,7 +765,79 @@
       "occupancy": null,
       "sheet": "Rent Roll (source)",
       "rent_column": "F",
-      "sqft_column": "D"
+      "sqft_column": "D",
+      "duplicate_units": [
+        "D-0ZERO",
+        "D-LOWER",
+        "D-NOCUR"
+      ],
+      "duplicate_detail": [
+        {
+          "unit_id": "D-0ZERO",
+          "kept_row": 41,
+          "kept_lease_status": "Current",
+          "kept_rent": 1160.0,
+          "kept_rent_stated": 1160.0,
+          "kept_market_rent": 1290.0,
+          "dropped": [
+            {
+              "row": 40,
+              "lease_status": "New",
+              "rent": null,
+              "rent_stated": 0.0,
+              "market_rent": 1290.0
+            }
+          ],
+          "candidate_rows": [
+            40,
+            41
+          ]
+        },
+        {
+          "unit_id": "D-LOWER",
+          "kept_row": 51,
+          "kept_lease_status": "Current",
+          "kept_rent": 1969.0,
+          "kept_rent_stated": 1969.0,
+          "kept_market_rent": 1515.0,
+          "dropped": [
+            {
+              "row": 50,
+              "lease_status": "New",
+              "rent": 1530.0,
+              "rent_stated": 1530.0,
+              "market_rent": 1515.0
+            }
+          ],
+          "candidate_rows": [
+            50,
+            51
+          ]
+        },
+        {
+          "unit_id": "D-NOCUR",
+          "kept_row": 60,
+          "kept_lease_status": "New",
+          "kept_rent": 1310.0,
+          "kept_rent_stated": 1310.0,
+          "kept_market_rent": 1310.0,
+          "dropped": [
+            {
+              "row": 61,
+              "lease_status": null,
+              "rent": null,
+              "rent_stated": 0.0,
+              "market_rent": 1310.0
+            }
+          ],
+          "candidate_rows": [
+            60,
+            61
+          ]
+        }
+      ],
+      "in_place_lease_status": "Current",
+      "market_rent": 342300.5
     },
     "as_of": "2026-06-30",
     "lookback_months": 12,
@@ -774,6 +846,7 @@
       {
         "source_row": 4,
         "source_rent_raw": 1535,
+        "market_rent": 1627.1,
         "unit_id": "A1-101",
         "floor_plan": "A1",
         "beds": 1,
@@ -788,6 +861,7 @@
       {
         "source_row": 5,
         "source_rent_raw": 1524,
+        "market_rent": 1615.44,
         "unit_id": "A1-102",
         "floor_plan": "A1",
         "beds": 1,
@@ -802,6 +876,7 @@
       {
         "source_row": 6,
         "source_rent_raw": 1513,
+        "market_rent": 1603.78,
         "unit_id": "A1-103",
         "floor_plan": "A1",
         "beds": 1,
@@ -816,6 +891,7 @@
       {
         "source_row": 7,
         "source_rent_raw": 1502,
+        "market_rent": 1592.12,
         "unit_id": "A1-104",
         "floor_plan": "A1",
         "beds": 1,
@@ -830,6 +906,7 @@
       {
         "source_row": 8,
         "source_rent_raw": 1491,
+        "market_rent": 1580.46,
         "unit_id": "A1-105",
         "floor_plan": "A1",
         "beds": 1,
@@ -844,6 +921,7 @@
       {
         "source_row": 9,
         "source_rent_raw": 1480,
+        "market_rent": 1568.8,
         "unit_id": "A1-106",
         "floor_plan": "A1",
         "beds": 1,
@@ -858,6 +936,7 @@
       {
         "source_row": 10,
         "source_rent_raw": 1469,
+        "market_rent": 1557.14,
         "unit_id": "A1-107",
         "floor_plan": "A1",
         "beds": 1,
@@ -872,6 +951,7 @@
       {
         "source_row": 11,
         "source_rent_raw": 1539,
+        "market_rent": 1631.34,
         "unit_id": "A1-108",
         "floor_plan": "A1",
         "beds": 1,
@@ -886,6 +966,7 @@
       {
         "source_row": 12,
         "source_rent_raw": 1528,
+        "market_rent": 1619.68,
         "unit_id": "A1-109",
         "floor_plan": "A1",
         "beds": 1,
@@ -900,6 +981,7 @@
       {
         "source_row": 13,
         "source_rent_raw": 1517,
+        "market_rent": 1608.02,
         "unit_id": "A1-110",
         "floor_plan": "A1",
         "beds": 1,
@@ -914,6 +996,7 @@
       {
         "source_row": 14,
         "source_rent_raw": 1506,
+        "market_rent": 1596.36,
         "unit_id": "A1-111",
         "floor_plan": "A1",
         "beds": 1,
@@ -928,6 +1011,7 @@
       {
         "source_row": 15,
         "source_rent_raw": 1495,
+        "market_rent": 1584.7,
         "unit_id": "A1-112",
         "floor_plan": "A1",
         "beds": 1,
@@ -942,6 +1026,7 @@
       {
         "source_row": 16,
         "source_rent_raw": 1465,
+        "market_rent": 1552.9,
         "unit_id": "A1-113",
         "floor_plan": "A1",
         "beds": 1,
@@ -956,6 +1041,7 @@
       {
         "source_row": 17,
         "source_rent_raw": 1442,
+        "market_rent": 1528.52,
         "unit_id": "A1-114",
         "floor_plan": "A1",
         "beds": 1,
@@ -970,6 +1056,7 @@
       {
         "source_row": 18,
         "source_rent_raw": 1419,
+        "market_rent": 1504.14,
         "unit_id": "A1-115",
         "floor_plan": "A1",
         "beds": 1,
@@ -984,6 +1071,7 @@
       {
         "source_row": 19,
         "source_rent_raw": 1487,
+        "market_rent": 1576.22,
         "unit_id": "A1-116",
         "floor_plan": "A1",
         "beds": 1,
@@ -998,6 +1086,7 @@
       {
         "source_row": 20,
         "source_rent_raw": 1464,
+        "market_rent": 1551.84,
         "unit_id": "A1-117",
         "floor_plan": "A1",
         "beds": 1,
@@ -1012,6 +1101,7 @@
       {
         "source_row": 21,
         "source_rent_raw": 1441,
+        "market_rent": 1527.46,
         "unit_id": "A1-118",
         "floor_plan": "A1",
         "beds": 1,
@@ -1026,6 +1116,7 @@
       {
         "source_row": 22,
         "source_rent_raw": 1418,
+        "market_rent": 1503.08,
         "unit_id": "A1-119",
         "floor_plan": "A1",
         "beds": 1,
@@ -1040,6 +1131,7 @@
       {
         "source_row": 23,
         "source_rent_raw": 1486,
+        "market_rent": 1575.16,
         "unit_id": "A1-120",
         "floor_plan": "A1",
         "beds": 1,
@@ -1054,6 +1146,7 @@
       {
         "source_row": 24,
         "source_rent_raw": 1463,
+        "market_rent": 1550.78,
         "unit_id": "A1-121",
         "floor_plan": "A1",
         "beds": 1,
@@ -1068,6 +1161,7 @@
       {
         "source_row": 25,
         "source_rent_raw": 1440,
+        "market_rent": 1526.4,
         "unit_id": "A1-122",
         "floor_plan": "A1",
         "beds": 1,
@@ -1082,6 +1176,7 @@
       {
         "source_row": 26,
         "source_rent_raw": 1417,
+        "market_rent": 1502.02,
         "unit_id": "A1-123",
         "floor_plan": "A1",
         "beds": 1,
@@ -1096,6 +1191,7 @@
       {
         "source_row": 27,
         "source_rent_raw": 1485,
+        "market_rent": 1574.1,
         "unit_id": "A1-124",
         "floor_plan": "A1",
         "beds": 1,
@@ -1110,6 +1206,7 @@
       {
         "source_row": 28,
         "source_rent_raw": 1462,
+        "market_rent": 1549.72,
         "unit_id": "A1-125",
         "floor_plan": "A1",
         "beds": 1,
@@ -1124,6 +1221,7 @@
       {
         "source_row": 29,
         "source_rent_raw": 1439,
+        "market_rent": 1525.34,
         "unit_id": "A1-126",
         "floor_plan": "A1",
         "beds": 1,
@@ -1138,6 +1236,7 @@
       {
         "source_row": 30,
         "source_rent_raw": 1416,
+        "market_rent": 1500.96,
         "unit_id": "A1-127",
         "floor_plan": "A1",
         "beds": 1,
@@ -1152,6 +1251,7 @@
       {
         "source_row": 31,
         "source_rent_raw": 1484,
+        "market_rent": 1573.04,
         "unit_id": "A1-128",
         "floor_plan": "A1",
         "beds": 1,
@@ -1166,6 +1266,7 @@
       {
         "source_row": 32,
         "source_rent_raw": 1461,
+        "market_rent": 1548.66,
         "unit_id": "A1-129",
         "floor_plan": "A1",
         "beds": 1,
@@ -1180,6 +1281,7 @@
       {
         "source_row": 33,
         "source_rent_raw": 1438,
+        "market_rent": 1524.28,
         "unit_id": "A1-130",
         "floor_plan": "A1",
         "beds": 1,
@@ -1194,6 +1296,7 @@
       {
         "source_row": 34,
         "source_rent_raw": 1415,
+        "market_rent": 1499.9,
         "unit_id": "A1-131",
         "floor_plan": "A1",
         "beds": 1,
@@ -1208,6 +1311,7 @@
       {
         "source_row": 35,
         "source_rent_raw": 1483,
+        "market_rent": 1571.98,
         "unit_id": "A1-132",
         "floor_plan": "A1",
         "beds": 1,
@@ -1222,6 +1326,7 @@
       {
         "source_row": 36,
         "source_rent_raw": 1460,
+        "market_rent": 1547.6,
         "unit_id": "A1-133",
         "floor_plan": "A1",
         "beds": 1,
@@ -1236,6 +1341,7 @@
       {
         "source_row": 37,
         "source_rent_raw": 1437,
+        "market_rent": 1523.22,
         "unit_id": "A1-134",
         "floor_plan": "A1",
         "beds": 1,
@@ -1250,6 +1356,7 @@
       {
         "source_row": 38,
         "source_rent_raw": 1560,
+        "market_rent": 1653.6,
         "unit_id": "A2-101",
         "floor_plan": "A2",
         "beds": 1,
@@ -1264,6 +1371,7 @@
       {
         "source_row": 39,
         "source_rent_raw": 1549,
+        "market_rent": 1641.94,
         "unit_id": "A2-102",
         "floor_plan": "A2",
         "beds": 1,
@@ -1278,6 +1386,7 @@
       {
         "source_row": 40,
         "source_rent_raw": 1619,
+        "market_rent": 1716.14,
         "unit_id": "A2-103",
         "floor_plan": "A2",
         "beds": 1,
@@ -1292,6 +1401,7 @@
       {
         "source_row": 41,
         "source_rent_raw": 1608,
+        "market_rent": 1704.48,
         "unit_id": "A2-104",
         "floor_plan": "A2",
         "beds": 1,
@@ -1306,6 +1416,7 @@
       {
         "source_row": 42,
         "source_rent_raw": 1597,
+        "market_rent": 1692.82,
         "unit_id": "A2-105",
         "floor_plan": "A2",
         "beds": 1,
@@ -1320,6 +1431,7 @@
       {
         "source_row": 43,
         "source_rent_raw": 1586,
+        "market_rent": 1681.16,
         "unit_id": "A2-106",
         "floor_plan": "A2",
         "beds": 1,
@@ -1334,6 +1446,7 @@
       {
         "source_row": 44,
         "source_rent_raw": 1575,
+        "market_rent": 1669.5,
         "unit_id": "A2-107",
         "floor_plan": "A2",
         "beds": 1,
@@ -1348,6 +1461,7 @@
       {
         "source_row": 45,
         "source_rent_raw": 1564,
+        "market_rent": 1657.84,
         "unit_id": "A2-108",
         "floor_plan": "A2",
         "beds": 1,
@@ -1362,6 +1476,7 @@
       {
         "source_row": 46,
         "source_rent_raw": 1487,
+        "market_rent": 1576.22,
         "unit_id": "A2-109",
         "floor_plan": "A2",
         "beds": 1,
@@ -1376,6 +1491,7 @@
       {
         "source_row": 47,
         "source_rent_raw": 1555,
+        "market_rent": 1648.3,
         "unit_id": "A2-110",
         "floor_plan": "A2",
         "beds": 1,
@@ -1390,6 +1506,7 @@
       {
         "source_row": 48,
         "source_rent_raw": 1532,
+        "market_rent": 1623.92,
         "unit_id": "A2-111",
         "floor_plan": "A2",
         "beds": 1,
@@ -1404,6 +1521,7 @@
       {
         "source_row": 49,
         "source_rent_raw": 1509,
+        "market_rent": 1599.54,
         "unit_id": "A2-112",
         "floor_plan": "A2",
         "beds": 1,
@@ -1418,6 +1536,7 @@
       {
         "source_row": 50,
         "source_rent_raw": 1486,
+        "market_rent": 1575.16,
         "unit_id": "A2-113",
         "floor_plan": "A2",
         "beds": 1,
@@ -1432,6 +1551,7 @@
       {
         "source_row": 51,
         "source_rent_raw": 1554,
+        "market_rent": 1647.24,
         "unit_id": "A2-114",
         "floor_plan": "A2",
         "beds": 1,
@@ -1446,6 +1566,7 @@
       {
         "source_row": 52,
         "source_rent_raw": 1531,
+        "market_rent": 1622.86,
         "unit_id": "A2-115",
         "floor_plan": "A2",
         "beds": 1,
@@ -1460,6 +1581,7 @@
       {
         "source_row": 53,
         "source_rent_raw": 1508,
+        "market_rent": 1598.48,
         "unit_id": "A2-116",
         "floor_plan": "A2",
         "beds": 1,
@@ -1474,6 +1596,7 @@
       {
         "source_row": 54,
         "source_rent_raw": 1485,
+        "market_rent": 1574.1,
         "unit_id": "A2-117",
         "floor_plan": "A2",
         "beds": 1,
@@ -1488,6 +1611,7 @@
       {
         "source_row": 55,
         "source_rent_raw": 1553,
+        "market_rent": 1646.18,
         "unit_id": "A2-118",
         "floor_plan": "A2",
         "beds": 1,
@@ -1502,6 +1626,7 @@
       {
         "source_row": 56,
         "source_rent_raw": 1530,
+        "market_rent": 1621.8,
         "unit_id": "A2-119",
         "floor_plan": "A2",
         "beds": 1,
@@ -1516,6 +1641,7 @@
       {
         "source_row": 57,
         "source_rent_raw": 1507,
+        "market_rent": 1597.42,
         "unit_id": "A2-120",
         "floor_plan": "A2",
         "beds": 1,
@@ -1530,6 +1656,7 @@
       {
         "source_row": 58,
         "source_rent_raw": 1484,
+        "market_rent": 1573.04,
         "unit_id": "A2-121",
         "floor_plan": "A2",
         "beds": 1,
@@ -1544,6 +1671,7 @@
       {
         "source_row": 59,
         "source_rent_raw": 1552,
+        "market_rent": 1645.12,
         "unit_id": "A2-122",
         "floor_plan": "A2",
         "beds": 1,
@@ -1558,6 +1686,7 @@
       {
         "source_row": 60,
         "source_rent_raw": 1529,
+        "market_rent": 1620.74,
         "unit_id": "A2-123",
         "floor_plan": "A2",
         "beds": 1,
@@ -1572,6 +1701,7 @@
       {
         "source_row": 61,
         "source_rent_raw": 1506,
+        "market_rent": 1596.36,
         "unit_id": "A2-124",
         "floor_plan": "A2",
         "beds": 1,
@@ -1586,6 +1716,7 @@
       {
         "source_row": 62,
         "source_rent_raw": 1483,
+        "market_rent": 1571.98,
         "unit_id": "A2-125",
         "floor_plan": "A2",
         "beds": 1,
@@ -1600,6 +1731,7 @@
       {
         "source_row": 63,
         "source_rent_raw": 1551,
+        "market_rent": 1644.06,
         "unit_id": "A2-126",
         "floor_plan": "A2",
         "beds": 1,
@@ -1614,6 +1746,7 @@
       {
         "source_row": 64,
         "source_rent_raw": 1528,
+        "market_rent": 1619.68,
         "unit_id": "A2-127",
         "floor_plan": "A2",
         "beds": 1,
@@ -1628,6 +1761,7 @@
       {
         "source_row": 65,
         "source_rent_raw": 1505,
+        "market_rent": 1595.3,
         "unit_id": "A2-128",
         "floor_plan": "A2",
         "beds": 1,
@@ -1642,6 +1776,7 @@
       {
         "source_row": 66,
         "source_rent_raw": 1831,
+        "market_rent": 1940.86,
         "unit_id": "B1-101",
         "floor_plan": "B1",
         "beds": 2,
@@ -1656,6 +1791,7 @@
       {
         "source_row": 67,
         "source_rent_raw": 1820,
+        "market_rent": 1929.2,
         "unit_id": "B1-102",
         "floor_plan": "B1",
         "beds": 2,
@@ -1670,6 +1806,7 @@
       {
         "source_row": 68,
         "source_rent_raw": 1809,
+        "market_rent": 1917.54,
         "unit_id": "B1-103",
         "floor_plan": "B1",
         "beds": 2,
@@ -1684,6 +1821,7 @@
       {
         "source_row": 69,
         "source_rent_raw": 1798,
+        "market_rent": 1905.88,
         "unit_id": "B1-104",
         "floor_plan": "B1",
         "beds": 2,
@@ -1698,6 +1836,7 @@
       {
         "source_row": 70,
         "source_rent_raw": 1868,
+        "market_rent": 1980.08,
         "unit_id": "B1-105",
         "floor_plan": "B1",
         "beds": 2,
@@ -1712,6 +1851,7 @@
       {
         "source_row": 71,
         "source_rent_raw": 1857,
+        "market_rent": 1968.42,
         "unit_id": "B1-106",
         "floor_plan": "B1",
         "beds": 2,
@@ -1726,6 +1866,7 @@
       {
         "source_row": 72,
         "source_rent_raw": 1846,
+        "market_rent": 1956.76,
         "unit_id": "B1-107",
         "floor_plan": "B1",
         "beds": 2,
@@ -1740,6 +1881,7 @@
       {
         "source_row": 73,
         "source_rent_raw": 1835,
+        "market_rent": 1945.1,
         "unit_id": "B1-108",
         "floor_plan": "B1",
         "beds": 2,
@@ -1754,6 +1896,7 @@
       {
         "source_row": 74,
         "source_rent_raw": 1824,
+        "market_rent": 1933.44,
         "unit_id": "B1-109",
         "floor_plan": "B1",
         "beds": 2,
@@ -1768,6 +1911,7 @@
       {
         "source_row": 75,
         "source_rent_raw": 1813,
+        "market_rent": 1921.78,
         "unit_id": "B1-110",
         "floor_plan": "B1",
         "beds": 2,
@@ -1782,6 +1926,7 @@
       {
         "source_row": 76,
         "source_rent_raw": 1802,
+        "market_rent": 1910.12,
         "unit_id": "B1-111",
         "floor_plan": "B1",
         "beds": 2,
@@ -1796,6 +1941,7 @@
       {
         "source_row": 77,
         "source_rent_raw": 1872,
+        "market_rent": 1984.32,
         "unit_id": "B1-112",
         "floor_plan": "B1",
         "beds": 2,
@@ -1810,6 +1956,7 @@
       {
         "source_row": 78,
         "source_rent_raw": 1734,
+        "market_rent": 1838.04,
         "unit_id": "B1-113",
         "floor_plan": "B1",
         "beds": 2,
@@ -1824,6 +1971,7 @@
       {
         "source_row": 79,
         "source_rent_raw": 1802,
+        "market_rent": 1910.12,
         "unit_id": "B1-114",
         "floor_plan": "B1",
         "beds": 2,
@@ -1838,6 +1986,7 @@
       {
         "source_row": 80,
         "source_rent_raw": 1779,
+        "market_rent": 1885.74,
         "unit_id": "B1-115",
         "floor_plan": "B1",
         "beds": 2,
@@ -1852,6 +2001,7 @@
       {
         "source_row": 81,
         "source_rent_raw": 1756,
+        "market_rent": 1861.36,
         "unit_id": "B1-116",
         "floor_plan": "B1",
         "beds": 2,
@@ -1866,6 +2016,7 @@
       {
         "source_row": 82,
         "source_rent_raw": 1733,
+        "market_rent": 1836.98,
         "unit_id": "B1-117",
         "floor_plan": "B1",
         "beds": 2,
@@ -1880,6 +2031,7 @@
       {
         "source_row": 83,
         "source_rent_raw": 1801,
+        "market_rent": 1909.06,
         "unit_id": "B1-118",
         "floor_plan": "B1",
         "beds": 2,
@@ -1894,6 +2046,7 @@
       {
         "source_row": 84,
         "source_rent_raw": 1778,
+        "market_rent": 1884.68,
         "unit_id": "B1-119",
         "floor_plan": "B1",
         "beds": 2,
@@ -1908,6 +2061,7 @@
       {
         "source_row": 85,
         "source_rent_raw": 1755,
+        "market_rent": 1860.3,
         "unit_id": "B1-120",
         "floor_plan": "B1",
         "beds": 2,
@@ -1922,6 +2076,7 @@
       {
         "source_row": 86,
         "source_rent_raw": 1732,
+        "market_rent": 1835.92,
         "unit_id": "B1-121",
         "floor_plan": "B1",
         "beds": 2,
@@ -1936,6 +2091,7 @@
       {
         "source_row": 87,
         "source_rent_raw": 1800,
+        "market_rent": 1908.0,
         "unit_id": "B1-122",
         "floor_plan": "B1",
         "beds": 2,
@@ -1950,6 +2106,7 @@
       {
         "source_row": 88,
         "source_rent_raw": 1777,
+        "market_rent": 1883.62,
         "unit_id": "B1-123",
         "floor_plan": "B1",
         "beds": 2,
@@ -1964,6 +2121,7 @@
       {
         "source_row": 89,
         "source_rent_raw": 1754,
+        "market_rent": 1859.24,
         "unit_id": "B1-124",
         "floor_plan": "B1",
         "beds": 2,
@@ -1978,6 +2136,7 @@
       {
         "source_row": 90,
         "source_rent_raw": 1731,
+        "market_rent": 1834.86,
         "unit_id": "B1-125",
         "floor_plan": "B1",
         "beds": 2,
@@ -1992,6 +2151,7 @@
       {
         "source_row": 91,
         "source_rent_raw": 1799,
+        "market_rent": 1906.94,
         "unit_id": "B1-126",
         "floor_plan": "B1",
         "beds": 2,
@@ -2006,6 +2166,7 @@
       {
         "source_row": 92,
         "source_rent_raw": 1776,
+        "market_rent": 1882.56,
         "unit_id": "B1-127",
         "floor_plan": "B1",
         "beds": 2,
@@ -2020,6 +2181,7 @@
       {
         "source_row": 93,
         "source_rent_raw": 1753,
+        "market_rent": 1858.18,
         "unit_id": "B1-128",
         "floor_plan": "B1",
         "beds": 2,
@@ -2034,6 +2196,7 @@
       {
         "source_row": 94,
         "source_rent_raw": 1730,
+        "market_rent": 1833.8,
         "unit_id": "B1-129",
         "floor_plan": "B1",
         "beds": 2,
@@ -2048,6 +2211,7 @@
       {
         "source_row": 95,
         "source_rent_raw": 1798,
+        "market_rent": 1905.88,
         "unit_id": "B1-130",
         "floor_plan": "B1",
         "beds": 2,
@@ -2062,6 +2226,7 @@
       {
         "source_row": 96,
         "source_rent_raw": 1775,
+        "market_rent": 1881.5,
         "unit_id": "B1-131",
         "floor_plan": "B1",
         "beds": 2,
@@ -2076,6 +2241,7 @@
       {
         "source_row": 97,
         "source_rent_raw": 1752,
+        "market_rent": 1857.12,
         "unit_id": "B1-132",
         "floor_plan": "B1",
         "beds": 2,
@@ -2090,6 +2256,7 @@
       {
         "source_row": 98,
         "source_rent_raw": 1820,
+        "market_rent": 1929.2,
         "unit_id": "B1-133",
         "floor_plan": "B1",
         "beds": 2,
@@ -2104,6 +2271,7 @@
       {
         "source_row": 99,
         "source_rent_raw": 1797,
+        "market_rent": 1904.82,
         "unit_id": "B1-134",
         "floor_plan": "B1",
         "beds": 2,
@@ -2118,6 +2286,7 @@
       {
         "source_row": 100,
         "source_rent_raw": 1774,
+        "market_rent": 1880.44,
         "unit_id": "B1-135",
         "floor_plan": "B1",
         "beds": 2,
@@ -2132,6 +2301,7 @@
       {
         "source_row": 101,
         "source_rent_raw": 1751,
+        "market_rent": 1856.06,
         "unit_id": "B1-136",
         "floor_plan": "B1",
         "beds": 2,
@@ -2146,6 +2316,7 @@
       {
         "source_row": 102,
         "source_rent_raw": 1819,
+        "market_rent": 1928.14,
         "unit_id": "B1-137",
         "floor_plan": "B1",
         "beds": 2,
@@ -2160,6 +2331,7 @@
       {
         "source_row": 103,
         "source_rent_raw": 1796,
+        "market_rent": 1903.76,
         "unit_id": "B1-138",
         "floor_plan": "B1",
         "beds": 2,
@@ -2174,6 +2346,7 @@
       {
         "source_row": 104,
         "source_rent_raw": 1773,
+        "market_rent": 1879.38,
         "unit_id": "B1-139",
         "floor_plan": "B1",
         "beds": 2,
@@ -2188,6 +2361,7 @@
       {
         "source_row": 105,
         "source_rent_raw": 1750,
+        "market_rent": 1855.0,
         "unit_id": "B1-140",
         "floor_plan": "B1",
         "beds": 2,
@@ -2202,6 +2376,7 @@
       {
         "source_row": 106,
         "source_rent_raw": 1818,
+        "market_rent": 1927.08,
         "unit_id": "B1-141",
         "floor_plan": "B1",
         "beds": 2,
@@ -2216,6 +2391,7 @@
       {
         "source_row": 107,
         "source_rent_raw": 1795,
+        "market_rent": 1902.7,
         "unit_id": "B1-142",
         "floor_plan": "B1",
         "beds": 2,
@@ -2230,6 +2406,7 @@
       {
         "source_row": 108,
         "source_rent_raw": 1930,
+        "market_rent": 2045.8,
         "unit_id": "B2-101",
         "floor_plan": "B2",
         "beds": 2,
@@ -2244,6 +2421,7 @@
       {
         "source_row": 109,
         "source_rent_raw": 1919,
+        "market_rent": 2034.14,
         "unit_id": "B2-102",
         "floor_plan": "B2",
         "beds": 2,
@@ -2258,6 +2436,7 @@
       {
         "source_row": 110,
         "source_rent_raw": 1908,
+        "market_rent": 2022.48,
         "unit_id": "B2-103",
         "floor_plan": "B2",
         "beds": 2,
@@ -2272,6 +2451,7 @@
       {
         "source_row": 111,
         "source_rent_raw": 1897,
+        "market_rent": 2010.82,
         "unit_id": "B2-104",
         "floor_plan": "B2",
         "beds": 2,
@@ -2286,6 +2466,7 @@
       {
         "source_row": 112,
         "source_rent_raw": 1886,
+        "market_rent": 1999.16,
         "unit_id": "B2-105",
         "floor_plan": "B2",
         "beds": 2,
@@ -2300,6 +2481,7 @@
       {
         "source_row": 113,
         "source_rent_raw": 1875,
+        "market_rent": 1987.5,
         "unit_id": "B2-106",
         "floor_plan": "B2",
         "beds": 2,
@@ -2314,6 +2496,7 @@
       {
         "source_row": 114,
         "source_rent_raw": 1945,
+        "market_rent": 2061.7,
         "unit_id": "B2-107",
         "floor_plan": "B2",
         "beds": 2,
@@ -2328,6 +2511,7 @@
       {
         "source_row": 115,
         "source_rent_raw": 1934,
+        "market_rent": 2050.04,
         "unit_id": "B2-108",
         "floor_plan": "B2",
         "beds": 2,
@@ -2342,6 +2526,7 @@
       {
         "source_row": 116,
         "source_rent_raw": 1923,
+        "market_rent": 2038.38,
         "unit_id": "B2-109",
         "floor_plan": "B2",
         "beds": 2,
@@ -2356,6 +2541,7 @@
       {
         "source_row": 117,
         "source_rent_raw": 1822,
+        "market_rent": 1931.32,
         "unit_id": "B2-110",
         "floor_plan": "B2",
         "beds": 2,
@@ -2370,6 +2556,7 @@
       {
         "source_row": 118,
         "source_rent_raw": 1890,
+        "market_rent": 2003.4,
         "unit_id": "B2-111",
         "floor_plan": "B2",
         "beds": 2,
@@ -2384,6 +2571,7 @@
       {
         "source_row": 119,
         "source_rent_raw": 1867,
+        "market_rent": 1979.02,
         "unit_id": "B2-112",
         "floor_plan": "B2",
         "beds": 2,
@@ -2398,6 +2586,7 @@
       {
         "source_row": 120,
         "source_rent_raw": 1844,
+        "market_rent": 1954.64,
         "unit_id": "B2-113",
         "floor_plan": "B2",
         "beds": 2,
@@ -2412,6 +2601,7 @@
       {
         "source_row": 121,
         "source_rent_raw": 1821,
+        "market_rent": 1930.26,
         "unit_id": "B2-114",
         "floor_plan": "B2",
         "beds": 2,
@@ -2426,6 +2616,7 @@
       {
         "source_row": 122,
         "source_rent_raw": 1889,
+        "market_rent": 2002.34,
         "unit_id": "B2-115",
         "floor_plan": "B2",
         "beds": 2,
@@ -2440,6 +2631,7 @@
       {
         "source_row": 123,
         "source_rent_raw": 1866,
+        "market_rent": 1977.96,
         "unit_id": "B2-116",
         "floor_plan": "B2",
         "beds": 2,
@@ -2454,6 +2646,7 @@
       {
         "source_row": 124,
         "source_rent_raw": 1843,
+        "market_rent": 1953.58,
         "unit_id": "B2-117",
         "floor_plan": "B2",
         "beds": 2,
@@ -2468,6 +2661,7 @@
       {
         "source_row": 125,
         "source_rent_raw": 1820,
+        "market_rent": 1929.2,
         "unit_id": "B2-118",
         "floor_plan": "B2",
         "beds": 2,
@@ -2482,6 +2676,7 @@
       {
         "source_row": 126,
         "source_rent_raw": 1888,
+        "market_rent": 2001.28,
         "unit_id": "B2-119",
         "floor_plan": "B2",
         "beds": 2,
@@ -2496,6 +2691,7 @@
       {
         "source_row": 127,
         "source_rent_raw": 1865,
+        "market_rent": 1976.9,
         "unit_id": "B2-120",
         "floor_plan": "B2",
         "beds": 2,
@@ -2510,6 +2706,7 @@
       {
         "source_row": 128,
         "source_rent_raw": 1842,
+        "market_rent": 1952.52,
         "unit_id": "B2-121",
         "floor_plan": "B2",
         "beds": 2,
@@ -2524,6 +2721,7 @@
       {
         "source_row": 129,
         "source_rent_raw": 1819,
+        "market_rent": 1928.14,
         "unit_id": "B2-122",
         "floor_plan": "B2",
         "beds": 2,
@@ -2538,6 +2736,7 @@
       {
         "source_row": 130,
         "source_rent_raw": 1887,
+        "market_rent": 2000.22,
         "unit_id": "B2-123",
         "floor_plan": "B2",
         "beds": 2,
@@ -2552,6 +2751,7 @@
       {
         "source_row": 131,
         "source_rent_raw": 1864,
+        "market_rent": 1975.84,
         "unit_id": "B2-124",
         "floor_plan": "B2",
         "beds": 2,
@@ -2566,6 +2766,7 @@
       {
         "source_row": 132,
         "source_rent_raw": 1841,
+        "market_rent": 1951.46,
         "unit_id": "B2-125",
         "floor_plan": "B2",
         "beds": 2,
@@ -2580,6 +2781,7 @@
       {
         "source_row": 133,
         "source_rent_raw": 1818,
+        "market_rent": 1927.08,
         "unit_id": "B2-126",
         "floor_plan": "B2",
         "beds": 2,
@@ -2594,6 +2796,7 @@
       {
         "source_row": 134,
         "source_rent_raw": 1886,
+        "market_rent": 1999.16,
         "unit_id": "B2-127",
         "floor_plan": "B2",
         "beds": 2,
@@ -2608,6 +2811,7 @@
       {
         "source_row": 135,
         "source_rent_raw": 1863,
+        "market_rent": 1974.78,
         "unit_id": "B2-128",
         "floor_plan": "B2",
         "beds": 2,
@@ -2622,6 +2826,7 @@
       {
         "source_row": 136,
         "source_rent_raw": 1840,
+        "market_rent": 1950.4,
         "unit_id": "B2-129",
         "floor_plan": "B2",
         "beds": 2,
@@ -2636,6 +2841,7 @@
       {
         "source_row": 137,
         "source_rent_raw": 1817,
+        "market_rent": 1926.02,
         "unit_id": "B2-130",
         "floor_plan": "B2",
         "beds": 2,
@@ -2650,6 +2856,7 @@
       {
         "source_row": 138,
         "source_rent_raw": 1885,
+        "market_rent": 1998.1,
         "unit_id": "B2-131",
         "floor_plan": "B2",
         "beds": 2,
@@ -2664,6 +2871,7 @@
       {
         "source_row": 139,
         "source_rent_raw": 1862,
+        "market_rent": 1973.72,
         "unit_id": "B2-132",
         "floor_plan": "B2",
         "beds": 2,
@@ -2678,6 +2886,7 @@
       {
         "source_row": 140,
         "source_rent_raw": 1839,
+        "market_rent": 1949.34,
         "unit_id": "B2-133",
         "floor_plan": "B2",
         "beds": 2,
@@ -2692,6 +2901,7 @@
       {
         "source_row": 141,
         "source_rent_raw": 1816,
+        "market_rent": 1924.96,
         "unit_id": "B2-134",
         "floor_plan": "B2",
         "beds": 2,
@@ -2706,6 +2916,7 @@
       {
         "source_row": 142,
         "source_rent_raw": 1884,
+        "market_rent": 1997.04,
         "unit_id": "B2-135",
         "floor_plan": "B2",
         "beds": 2,
@@ -2720,6 +2931,7 @@
       {
         "source_row": 143,
         "source_rent_raw": 1861,
+        "market_rent": 1972.66,
         "unit_id": "B2-136",
         "floor_plan": "B2",
         "beds": 2,
@@ -2734,6 +2946,7 @@
       {
         "source_row": 144,
         "source_rent_raw": 2184,
+        "market_rent": 2315.04,
         "unit_id": "C1-101",
         "floor_plan": "C1",
         "beds": 3,
@@ -2748,6 +2961,7 @@
       {
         "source_row": 145,
         "source_rent_raw": 2173,
+        "market_rent": 2303.38,
         "unit_id": "C1-102",
         "floor_plan": "C1",
         "beds": 3,
@@ -2762,6 +2976,7 @@
       {
         "source_row": 146,
         "source_rent_raw": 2162,
+        "market_rent": 2291.72,
         "unit_id": "C1-103",
         "floor_plan": "C1",
         "beds": 3,
@@ -2776,6 +2991,7 @@
       {
         "source_row": 147,
         "source_rent_raw": 2151,
+        "market_rent": 2280.06,
         "unit_id": "C1-104",
         "floor_plan": "C1",
         "beds": 3,
@@ -2790,6 +3006,7 @@
       {
         "source_row": 148,
         "source_rent_raw": 2140,
+        "market_rent": 2268.4,
         "unit_id": "C1-105",
         "floor_plan": "C1",
         "beds": 3,
@@ -2804,6 +3021,7 @@
       {
         "source_row": 149,
         "source_rent_raw": 2129,
+        "market_rent": 2256.74,
         "unit_id": "C1-106",
         "floor_plan": "C1",
         "beds": 3,
@@ -2818,6 +3036,7 @@
       {
         "source_row": 150,
         "source_rent_raw": 2127,
+        "market_rent": 2254.62,
         "unit_id": "C1-107",
         "floor_plan": "C1",
         "beds": 3,
@@ -2832,6 +3051,7 @@
       {
         "source_row": 151,
         "source_rent_raw": 2104,
+        "market_rent": 2230.24,
         "unit_id": "C1-108",
         "floor_plan": "C1",
         "beds": 3,
@@ -2846,6 +3066,7 @@
       {
         "source_row": 152,
         "source_rent_raw": 2081,
+        "market_rent": 2205.86,
         "unit_id": "C1-109",
         "floor_plan": "C1",
         "beds": 3,
@@ -2860,6 +3081,7 @@
       {
         "source_row": 153,
         "source_rent_raw": 2058,
+        "market_rent": 2181.48,
         "unit_id": "C1-110",
         "floor_plan": "C1",
         "beds": 3,
@@ -2874,6 +3096,7 @@
       {
         "source_row": 154,
         "source_rent_raw": 2126,
+        "market_rent": 2253.56,
         "unit_id": "C1-111",
         "floor_plan": "C1",
         "beds": 3,
@@ -2888,6 +3111,7 @@
       {
         "source_row": 155,
         "source_rent_raw": 2103,
+        "market_rent": 2229.18,
         "unit_id": "C1-112",
         "floor_plan": "C1",
         "beds": 3,
@@ -2902,6 +3126,7 @@
       {
         "source_row": 156,
         "source_rent_raw": 2080,
+        "market_rent": 2204.8,
         "unit_id": "C1-113",
         "floor_plan": "C1",
         "beds": 3,
@@ -2916,6 +3141,7 @@
       {
         "source_row": 157,
         "source_rent_raw": 2057,
+        "market_rent": 2180.42,
         "unit_id": "C1-114",
         "floor_plan": "C1",
         "beds": 3,
@@ -2930,6 +3156,7 @@
       {
         "source_row": 158,
         "source_rent_raw": 2125,
+        "market_rent": 2252.5,
         "unit_id": "C1-115",
         "floor_plan": "C1",
         "beds": 3,
@@ -2944,6 +3171,7 @@
       {
         "source_row": 159,
         "source_rent_raw": 2102,
+        "market_rent": 2228.12,
         "unit_id": "C1-116",
         "floor_plan": "C1",
         "beds": 3,
@@ -2958,6 +3186,7 @@
       {
         "source_row": 160,
         "source_rent_raw": 2079,
+        "market_rent": 2203.74,
         "unit_id": "C1-117",
         "floor_plan": "C1",
         "beds": 3,
@@ -2972,6 +3201,7 @@
       {
         "source_row": 161,
         "source_rent_raw": 2056,
+        "market_rent": 2179.36,
         "unit_id": "C1-118",
         "floor_plan": "C1",
         "beds": 3,
@@ -2986,6 +3216,7 @@
       {
         "source_row": 162,
         "source_rent_raw": 2124,
+        "market_rent": 2251.44,
         "unit_id": "C1-119",
         "floor_plan": "C1",
         "beds": 3,
@@ -3000,6 +3231,7 @@
       {
         "source_row": 163,
         "source_rent_raw": 2101,
+        "market_rent": 2227.06,
         "unit_id": "C1-120",
         "floor_plan": "C1",
         "beds": 3,
@@ -3014,6 +3246,7 @@
       {
         "source_row": 164,
         "source_rent_raw": 2078,
+        "market_rent": 2202.68,
         "unit_id": "C1-121",
         "floor_plan": "C1",
         "beds": 3,
@@ -3028,6 +3261,7 @@
       {
         "source_row": 165,
         "source_rent_raw": 2055,
+        "market_rent": 2178.3,
         "unit_id": "C1-122",
         "floor_plan": "C1",
         "beds": 3,
@@ -3042,6 +3276,7 @@
       {
         "source_row": 166,
         "source_rent_raw": 2123,
+        "market_rent": 2250.38,
         "unit_id": "C1-123",
         "floor_plan": "C1",
         "beds": 3,
@@ -3056,6 +3291,7 @@
       {
         "source_row": 167,
         "source_rent_raw": 2100,
+        "market_rent": 2226.0,
         "unit_id": "C1-124",
         "floor_plan": "C1",
         "beds": 3,
@@ -3070,6 +3306,7 @@
       {
         "source_row": 168,
         "source_rent_raw": 2077,
+        "market_rent": 2201.62,
         "unit_id": "C1-125",
         "floor_plan": "C1",
         "beds": 3,
@@ -3084,6 +3321,7 @@
       {
         "source_row": 169,
         "source_rent_raw": 2054,
+        "market_rent": 2177.24,
         "unit_id": "C1-126",
         "floor_plan": "C1",
         "beds": 3,
@@ -3098,6 +3336,7 @@
       {
         "source_row": 170,
         "source_rent_raw": 2367,
+        "market_rent": 2509.02,
         "unit_id": "Cypress-101",
         "floor_plan": "Cypress TH",
         "beds": 3,
@@ -3112,6 +3351,7 @@
       {
         "source_row": 171,
         "source_rent_raw": 2344,
+        "market_rent": 2484.64,
         "unit_id": "Cypress-102",
         "floor_plan": "Cypress TH",
         "beds": 3,
@@ -3126,6 +3366,7 @@
       {
         "source_row": 172,
         "source_rent_raw": 2321,
+        "market_rent": 2460.26,
         "unit_id": "Cypress-103",
         "floor_plan": "Cypress TH",
         "beds": 3,
@@ -3140,6 +3381,7 @@
       {
         "source_row": 173,
         "source_rent_raw": 2298,
+        "market_rent": 2435.88,
         "unit_id": "Cypress-104",
         "floor_plan": "Cypress TH",
         "beds": 3,
@@ -3154,6 +3396,7 @@
       {
         "source_row": 174,
         "source_rent_raw": 2366,
+        "market_rent": 2507.96,
         "unit_id": "Cypress-105",
         "floor_plan": "Cypress TH",
         "beds": 3,
@@ -3168,6 +3411,7 @@
       {
         "source_row": 175,
         "source_rent_raw": 2343,
+        "market_rent": 2483.58,
         "unit_id": "Cypress-106",
         "floor_plan": "Cypress TH",
         "beds": 3,
@@ -3182,6 +3426,7 @@
       {
         "source_row": 176,
         "source_rent_raw": 2320,
+        "market_rent": 2459.2,
         "unit_id": "Cypress-107",
         "floor_plan": "Cypress TH",
         "beds": 3,
@@ -3196,6 +3441,7 @@
       {
         "source_row": 177,
         "source_rent_raw": 2297,
+        "market_rent": 2434.82,
         "unit_id": "Cypress-108",
         "floor_plan": "Cypress TH",
         "beds": 3,
@@ -3210,6 +3456,7 @@
       {
         "source_row": 178,
         "source_rent_raw": 2365,
+        "market_rent": 2506.9,
         "unit_id": "Cypress-109",
         "floor_plan": "Cypress TH",
         "beds": 3,
@@ -3224,6 +3471,7 @@
       {
         "source_row": 179,
         "source_rent_raw": 2342,
+        "market_rent": 2482.52,
         "unit_id": "Cypress-110",
         "floor_plan": "Cypress TH",
         "beds": 3,
@@ -3238,6 +3486,7 @@
       {
         "source_row": 180,
         "source_rent_raw": 2319,
+        "market_rent": 2458.14,
         "unit_id": "Cypress-111",
         "floor_plan": "Cypress TH",
         "beds": 3,
@@ -3252,6 +3501,7 @@
       {
         "source_row": 181,
         "source_rent_raw": 2296,
+        "market_rent": 2433.76,
         "unit_id": "Cypress-112",
         "floor_plan": "Cypress TH",
         "beds": 3,
@@ -3266,6 +3516,7 @@
       {
         "source_row": 182,
         "source_rent_raw": 2364,
+        "market_rent": 2505.84,
         "unit_id": "Cypress-113",
         "floor_plan": "Cypress TH",
         "beds": 3,
@@ -3280,6 +3531,7 @@
       {
         "source_row": 183,
         "source_rent_raw": 2341,
+        "market_rent": 2481.46,
         "unit_id": "Cypress-114",
         "floor_plan": "Cypress TH",
         "beds": 3,
