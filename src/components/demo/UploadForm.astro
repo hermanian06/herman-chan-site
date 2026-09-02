@@ -39,6 +39,12 @@ import {
   </p>
 
   <div class="uf__body" data-uf-body hidden>
+    <div class="uf__field uf__codefield" data-uf-codefield hidden>
+      <label class="uf__label" for="uf-code">Access code</label>
+      <input id="uf-code" class="uf__codeinput" type="text" autocomplete="off" spellcheck="false" data-uf-code />
+      <p class="uf__hint">This demo is asking for a code before it will run anything.</p>
+    </div>
+
     <div class="uf__sample">
       <button type="button" class="uf__btn uf__btn--primary" data-uf-sample>
         Use the sample deal
@@ -172,6 +178,8 @@ import {
       var submitEl = root.querySelector("[data-uf-submit]");
       var sampleEl = root.querySelector("[data-uf-sample]");
       var turnstileEl = root.querySelector("[data-uf-turnstile]");
+      var codeEl = root.querySelector("[data-uf-code]");
+      var codeFieldEl = root.querySelector("[data-uf-codefield]");
       var statusEl = root.querySelector("[data-uf-status]");
       var errorEl = root.querySelector("[data-uf-error]");
 
@@ -473,12 +481,33 @@ import {
 
       /* ---------- the run ---------- */
 
-      function poll(runId, statusUrl, startedAt) {
+      /* The run token proves this browser started this run. It lives in this call chain
+         and nowhere else — never in the URL, never in storage — so it cannot be shared by
+         copying a link or survive the tab. An older server sends no token; then no header
+         goes up and the poll is exactly what it was. */
+      function poll(runId, statusUrl, startedAt, runToken) {
         var url = absolute(statusUrl) || BASE + "/api/runs/" + encodeURIComponent(runId);
+        var headers = {};
+        if (runToken) headers["X-Run-Token"] = runToken;
 
-        fetch(url, { method: "GET" })
+        fetch(url, { method: "GET", headers: headers })
           .then(function (res) {
             return readBody(res).then(function (payload) {
+              /* Two answers the status route gives that are facts about the run, not
+                 failures of it, so they get their own sentence rather than the generic
+                 error path. */
+              if (res.status === 410) {
+                setBusy(false);
+                setStatus("");
+                setError("This run has expired — run it again.");
+                return;
+              }
+              if (res.status === 403) {
+                setBusy(false);
+                setStatus("");
+                setError("This run belongs to another session.");
+                return;
+              }
               if (!res.ok) {
                 setBusy(false);
                 setStatus("");
@@ -527,7 +556,7 @@ import {
 
               setStatus(payload.stage_label || STAGE[state] || "Working…");
               setTimeout(function () {
-                poll(runId, statusUrl, startedAt);
+                poll(runId, statusUrl, startedAt, runToken);
               }, POLL_MS);
             });
           })
@@ -544,7 +573,7 @@ import {
         setError("");
         setStatus("Sending…");
 
-        fetch(BASE + path, { method: "POST", body: payload })
+        fetch(BASE + path, { method: "POST", body: payload, headers: gateHeaders() })
           .then(function (res) {
             return readBody(res).then(function (data) {
               if (!res.ok || !data || !data.run_id) {
@@ -558,7 +587,7 @@ import {
                 return;
               }
               setStatus("Received.");
-              poll(data.run_id, data.status_url, Date.now());
+              poll(data.run_id, data.status_url, Date.now(), data.run_token);
             });
           })
           .catch(function () {
@@ -571,6 +600,20 @@ import {
       function turnstileToken() {
         var field = document.querySelector('[name="cf-turnstile-response"]');
         return field && field.value ? field.value : "";
+      }
+
+      function accessCode() {
+        return codeEl && codeEl.value ? codeEl.value.trim() : "";
+      }
+
+      /* The bot gate and the access code now have to be readable BEFORE the multipart body
+         is parsed, so they travel as headers. The same values still go up as form fields,
+         which is what a server that has not moved its gate yet reads. */
+      function gateHeaders() {
+        var headers = { "X-Turnstile-Token": turnstileToken() };
+        var code = accessCode();
+        if (code) headers["X-Access-Code"] = code;
+        return headers;
       }
 
       /* ---------- wiring ---------- */
@@ -605,6 +648,7 @@ import {
         if (running) return;
         var payload = new FormData();
         payload.append("turnstile_token", turnstileToken());
+        if (accessCode()) payload.append("access_code", accessCode());
         startRun("/api/runs/sample", payload, true);
       });
 
@@ -633,6 +677,7 @@ import {
         }
         payload.append("notes", notesEl.value);
         payload.append("turnstile_token", turnstileToken());
+        if (accessCode()) payload.append("access_code", accessCode());
         startRun("/api/runs", payload, false);
       });
 
@@ -684,6 +729,12 @@ import {
           notesEl.setAttribute("maxlength", String(caps.max_notes_chars));
           limitsEl.textContent = limitsText();
           renderCounter();
+
+          /* The field only exists when the server says a code is required; with none
+             required, no X-Access-Code header and no access_code field ever go up. */
+          if (meta.access_code_required === true && codeFieldEl) {
+            codeFieldEl.hidden = false;
+          }
 
           if (meta.accepting === false) {
             setBusy(true);
@@ -912,6 +963,21 @@ import {
     color: var(--muted-2);
     text-align: right;
     margin: var(--s-1) 0 0;
+  }
+
+  .uf__codefield { margin: 0 0 var(--s-5); }
+  .uf__codeinput {
+    display: block;
+    width: 100%;
+    max-width: 22ch;
+    font-family: var(--mono);
+    font-size: var(--t-14);
+    letter-spacing: 0.04em;
+    color: var(--fg);
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 8px var(--s-3);
   }
 
   .uf__turnstile { margin: var(--s-5) 0 0; }
