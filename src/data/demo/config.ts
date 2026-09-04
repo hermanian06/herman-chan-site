@@ -7,7 +7,7 @@
  */
 
 /** Where the demo API lives once it is deployed. */
-export const API_BASE_PRODUCTION = "https://underwriting-demo-api.up.railway.app";
+export const API_BASE_PRODUCTION = "https://api-production-5abc6.up.railway.app";
 
 /** Where it lives while it is running on the same machine as the site. */
 export const API_BASE_LOCAL = "http://localhost:8000";
