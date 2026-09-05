@@ -128,7 +128,7 @@ import {
     var FILES_FIELD = "files";
 
     var POLL_MS = 2000;
-    var GIVE_UP_MS = 150000;
+    var GIVE_UP_MS = 210000;
 
     /* Used until GET /api/meta answers, and kept if it never does. */
     var caps = {
@@ -562,7 +562,7 @@ import {
                 setBusy(false);
                 setStatus("");
                 setError(
-                  "The run is still going after two and a half minutes, which is longer than this page waits. Try again, or run the sample deal."
+                  "The run is still going after three and a half minutes, which is longer than this page waits. Try again, or run the sample deal."
                 );
                 return;
               }
