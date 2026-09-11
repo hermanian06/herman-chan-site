@@ -32,7 +32,6 @@ export const DEMO_TABS: DemoTab[] = [
   { id: "t12-checks", label: "Checks & pricing", group: "T-12 analysis" },
   { id: "rent-roll", label: "Rent roll", group: "Rent roll analysis" },
   { id: "unit-mix", label: "Unit mix", group: "Rent roll analysis" },
-  { id: "trade-out", label: "Trade-out", group: "Rent roll analysis" },
   { id: "manifest", label: "Field manifest", group: "Model-ready outputs" },
   { id: "audit-trail", label: "Audit trail", group: "Model-ready outputs" },
   { id: "notes", label: "Notes & disclosures", group: "Model-ready outputs" },

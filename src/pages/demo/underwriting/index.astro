@@ -55,7 +55,7 @@ const downloads = [
   {
     file: "sample-rent-roll-analysis.xlsx",
     name: "Rent roll analysis",
-    note: "Per-unit roll, unit mix with market rent for model, lease trade-out.",
+    note: "Per-unit roll and unit mix with market rent for model.",
   },
   {
     file: "sample-model-ready-outputs.xlsx",
@@ -150,10 +150,22 @@ const base = "/downloads/underwriting-demo";
         <h2 class="demo__h2">What this sample is, and is not</h2>
         <ul>
           <li>
-            <strong>The deal is synthetic.</strong> Every figure here was fabricated to
-            exercise the formats — including the awkward cases: a floor plan with no new
-            leases, a date the source gave as text, an income line the statement never
-            subtotalled. No real property is described.
+            <strong>The property is synthetic; the location is real.</strong> The unit
+            mix, the rent roll, the trailing-twelve statement and the pricing were
+            fabricated to exercise the formats — including the awkward cases: a floor plan
+            with no new leases, a date the source gave as text, an income line the
+            statement never subtotalled. The address is a real one in Tempe, Arizona, so
+            the demand, supply, rent-comp and property-tax tabs are genuine pulls from the
+            same sources a live upload reads — the same databases, through the same code.
+          </li>
+          <li>
+            <strong>Some values are internal-pipeline only.</strong> This demo is a
+            deliberately reduced copy of the pipeline I run internally: it reaches no
+            licensed data source, no county-portal login, no school-rating lookup and no
+            web valuation, and it does not ask for a lease trade-out report. Wherever one
+            of those would have filled a value, the cell reads
+            <em>Internal pipeline only</em> with the reason, and the field manifest lists
+            every one of them.
           </li>
           <li>
             <strong>Pricing is illustrative.</strong> Every price and cap rate carries an

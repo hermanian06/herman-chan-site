@@ -81,6 +81,27 @@ import {
       <ul class="uf__files" data-uf-files aria-label="Chosen files" hidden></ul>
 
       <div class="uf__field">
+        <label class="uf__label" for="uf-price">
+          Purchase price per unit (required)
+        </label>
+        <input
+          id="uf-price"
+          class="uf__price"
+          type="text"
+          inputmode="numeric"
+          autocomplete="off"
+          spellcheck="false"
+          data-uf-price
+          placeholder="e.g. 215000"
+          aria-describedby="uf-price-hint"
+        />
+        <p class="uf__hint" id="uf-price-hint" data-uf-price-hint>
+          The cap rates, the pricing ladder and the closing costs are priced off it. One
+          unit's price, not the whole asset.
+        </p>
+      </div>
+
+      <div class="uf__field">
         <label class="uf__label" for="uf-notes">
           Anything the pipeline should know (optional)
         </label>
@@ -138,6 +159,7 @@ import {
       max_notes_chars: 2000,
       accepted_extensions: [".pdf", ".docx", ".doc", ".xlsx", ".xls", ".csv"],
       retention_minutes: 60,
+      price_band: { min: 50000, max: 600000 },
       accepting: true,
       message: null,
     };
@@ -186,6 +208,8 @@ import {
       var limitsEl = root.querySelector("[data-uf-limits]");
       var filesEl = root.querySelector("[data-uf-files]");
       var notesEl = root.querySelector("[data-uf-notes]");
+      var priceEl = root.querySelector("[data-uf-price]");
+      var priceHintEl = root.querySelector("[data-uf-price-hint]");
       var counterEl = root.querySelector("[data-uf-counter]");
       var consentEl = root.querySelector("[data-uf-consent]");
       var submitEl = root.querySelector("[data-uf-submit]");
@@ -683,12 +707,35 @@ import {
           setError("The notes box takes " + caps.max_notes_chars + " characters.");
           return;
         }
+        var priceText = priceEl ? String(priceEl.value || "").replace(/[$,\s]/g, "") : "";
+        var priceNum = priceText === "" ? NaN : Number(priceText);
+        if (priceText === "") {
+          setError(
+            "Enter the purchase price per unit — the cap rates, the pricing ladder and the " +
+            "closing costs are priced off it."
+          );
+          return;
+        }
+        if (!isFinite(priceNum)) {
+          setError("The purchase price per unit has to be a number, like 215000.");
+          return;
+        }
+        if (priceNum < caps.price_band.min || priceNum > caps.price_band.max) {
+          setError(
+            "$" + priceNum.toLocaleString("en-US") + " is outside the band a per-unit sale " +
+            "price occupies ($" + caps.price_band.min.toLocaleString("en-US") + " to $" +
+            caps.price_band.max.toLocaleString("en-US") + "). Enter the price of one unit, " +
+            "not the whole asset."
+          );
+          return;
+        }
 
         var payload = new FormData();
         for (var i = 0; i < chosen.length; i++) {
           payload.append(FILES_FIELD, chosen[i], chosen[i].name);
         }
         payload.append("notes", notesEl.value);
+        payload.append("price_per_unit", priceText);
         payload.append("turnstile_token", turnstileToken());
         if (accessCode()) payload.append("access_code", accessCode());
         startRun("/api/runs", payload, false);
@@ -740,6 +787,22 @@ import {
             input.setAttribute("accept", caps.accepted_extensions.join(","));
           }
           notesEl.setAttribute("maxlength", String(caps.max_notes_chars));
+          if (
+            meta.price_band &&
+            typeof meta.price_band.min === "number" &&
+            typeof meta.price_band.max === "number"
+          ) {
+            caps.price_band = meta.price_band;
+          }
+          if (priceHintEl) {
+            priceHintEl.textContent =
+              "The cap rates, the pricing ladder and the closing costs are priced off it. " +
+              "One unit's price, not the whole asset — between $" +
+              caps.price_band.min.toLocaleString("en-US") +
+              " and $" +
+              caps.price_band.max.toLocaleString("en-US") +
+              ".";
+          }
           limitsEl.textContent = limitsText();
           renderCounter();
 
@@ -956,6 +1019,24 @@ import {
     color: var(--muted);
     margin: 0 0 var(--s-2);
   }
+  .uf__price {
+    display: block;
+    width: 100%;
+    max-width: 18rem;
+    font-family: var(--mono);
+    font-size: var(--t-15);
+    line-height: 1.5;
+    color: var(--fg);
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 0.5rem 0.65rem;
+  }
+  .uf__price:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+
   .uf__notes {
     display: block;
     width: 100%;
