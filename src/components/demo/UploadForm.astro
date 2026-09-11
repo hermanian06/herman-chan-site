@@ -40,9 +40,20 @@ import {
 
   <div class="uf__body" data-uf-body hidden>
     <div class="uf__field uf__codefield" data-uf-codefield hidden>
+      <div class="uf__emailrow" data-uf-emailrow hidden>
+        <label class="uf__label" for="uf-email">Your email</label>
+        <div class="uf__emailline">
+          <input id="uf-email" class="uf__codeinput uf__emailinput" type="email" autocomplete="email" spellcheck="false" placeholder="you@example.com" data-uf-email />
+          <button type="button" class="uf__btn" data-uf-sendcode>Email me a code</button>
+        </div>
+        <p class="uf__hint" data-uf-emailhint>
+          Live uploads need a one-time code. Enter your email and we'll send one — good for
+          one upload. Nothing else is ever sent to that address.
+        </p>
+      </div>
       <label class="uf__label" for="uf-code">Access code</label>
-      <input id="uf-code" class="uf__codeinput" type="text" autocomplete="off" spellcheck="false" data-uf-code />
-      <p class="uf__hint">
+      <input id="uf-code" class="uf__codeinput" type="text" autocomplete="one-time-code" spellcheck="false" data-uf-code />
+      <p class="uf__hint" data-uf-codehint>
         Uploads are invite-only. If you would like to run your own deal through it, ask me
         for a code; the sample deal below needs none.
       </p>
@@ -217,6 +228,12 @@ import {
       var turnstileEl = root.querySelector("[data-uf-turnstile]");
       var codeEl = root.querySelector("[data-uf-code]");
       var codeFieldEl = root.querySelector("[data-uf-codefield]");
+      var emailRowEl = root.querySelector("[data-uf-emailrow]");
+      var emailEl = root.querySelector("[data-uf-email]");
+      var sendCodeEl = root.querySelector("[data-uf-sendcode]");
+      var emailHintEl = root.querySelector("[data-uf-emailhint]");
+      var codeHintEl = root.querySelector("[data-uf-codehint]");
+      var codeTtlMinutes = 15;
       var statusEl = root.querySelector("[data-uf-status]");
       var errorEl = root.querySelector("[data-uf-error]");
 
@@ -689,6 +706,44 @@ import {
         startRun("/api/runs/sample", payload, true);
       });
 
+      /* The email step (access_mode "email"): one request, one code, one upload. The
+         server answers 202 with the same sentence whatever the address's history — an
+         address at its daily cap is not distinguishable from a fresh one here — so the
+         hint repeats what it said; a 400 / 429 reads in the server's own words. */
+      if (sendCodeEl) {
+        sendCodeEl.addEventListener("click", function () {
+          var email = emailEl && emailEl.value ? emailEl.value.trim() : "";
+          if (!email || email.indexOf("@") < 1) {
+            emailHintEl.textContent = "Enter the email address the code should go to.";
+            return;
+          }
+          sendCodeEl.disabled = true;
+          emailHintEl.textContent = "Sending…";
+          fetch(BASE + "/api/access/request", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "X-Turnstile-Token": turnstileToken() },
+            body: JSON.stringify({ email: email }),
+          })
+            .then(function (res) {
+              return readBody(res).then(function (data) {
+                sendCodeEl.disabled = false;
+                if (!res.ok) {
+                  emailHintEl.textContent = messageFor(res, data);
+                  return;
+                }
+                emailHintEl.textContent =
+                  (data && data.message) ||
+                  "If that address is yours, a code is on its way. Paste it below.";
+                if (codeEl) codeEl.focus();
+              });
+            })
+            .catch(function () {
+              sendCodeEl.disabled = false;
+              emailHintEl.textContent = NETWORK_MESSAGE;
+            });
+        });
+      }
+
       /* `novalidate` is on the form so every refusal reads in the page's own voice
          rather than as a browser bubble; the checkbox keeps `required` for semantics. */
       form.addEventListener("submit", function (event) {
@@ -810,6 +865,18 @@ import {
              required, no X-Access-Code header and no access_code field ever go up. */
           if (meta.access_code_required === true && codeFieldEl) {
             codeFieldEl.hidden = false;
+            /* "email": the visitor asks for their own code; otherwise the old invite-only
+               hint stands (a static code the operator hands out). */
+            if (meta.access_mode === "email" && emailRowEl) {
+              codeTtlMinutes = meta.code_ttl_minutes || codeTtlMinutes;
+              emailRowEl.hidden = false;
+              emailHintEl.textContent =
+                "Live uploads need a one-time code. Enter your email and we'll send one — good for one upload within " +
+                codeTtlMinutes +
+                " minutes. Nothing else is ever sent to that address.";
+              codeHintEl.textContent =
+                "Paste the code from the email here. Each code is good for one upload; the sample deal below needs none.";
+            }
           }
 
           if (meta.accepting === false) {
@@ -1060,6 +1127,9 @@ import {
   }
 
   .uf__codefield { margin: 0 0 var(--s-5); }
+  .uf__emailrow { margin: 0 0 var(--s-4); }
+  .uf__emailline { display: flex; gap: var(--s-3); align-items: center; flex-wrap: wrap; }
+  .uf__emailinput { flex: 1 1 16rem; }
   .uf__codeinput {
     display: block;
     width: 100%;
