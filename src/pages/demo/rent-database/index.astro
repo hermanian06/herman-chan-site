@@ -1,0 +1,848 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import db from "../../../data/rents/rent-database.json";
+
+/* Every number on this page comes out of the JSON above, which a tool regenerates
+   from the live database after each scrape rotation. Nothing is typed by hand, so
+   the page cannot claim a figure the database does not currently hold. */
+
+const h = db.headline;
+const metros: Record<string, string> = db.metros;
+const markets = db.markets;
+const moves = db.rent_moves;
+const revisit = db.revisit;
+
+const n = (v: number | null | undefined) =>
+  v === null || v === undefined ? "—" : v.toLocaleString("en-US");
+const money = (v: number | null | undefined) =>
+  v === null || v === undefined ? "—" : "$" + Math.round(v).toLocaleString("en-US");
+const pct = (v: number | null | undefined) =>
+  v === null || v === undefined ? "—" : v.toFixed(0) + "%";
+const day = (iso: string | null | undefined) =>
+  !iso ? "—" : new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+
+const asOf = new Date(db.generated_at).toLocaleDateString("en-US", {
+  year: "numeric", month: "long", day: "numeric",
+});
+const firstObs = new Date(h.first_observation).toLocaleDateString("en-US", {
+  month: "long", year: "numeric",
+});
+
+/* Extraction split: twelve deterministic platform adapters against one LLM fallback. */
+const extraction = db.extraction.filter((e: any) => e.engine !== "none");
+const extractionTotal = extraction.reduce((s: number, e: any) => s + e.observations, 0);
+const llmCalls = extraction.find((e: any) => e.engine.startsWith("LLM"))?.observations ?? 0;
+const llmShare = Math.round(
+  (100 * (extraction.find((e: any) => e.engine.startsWith("LLM"))?.observations ?? 0)) /
+    extractionTotal
+);
+const adapterCount = extraction.filter((e: any) => !e.engine.startsWith("LLM")).length;
+
+/* Vintage: BFR year-built is almost never published on a leasing page, so the
+   unknown bucket is the BFR bucket. Say so rather than drawing it as a mystery. */
+const vintage = db.vintage;
+const vintageMax = Math.max(...vintage.map((v: any) => v.communities));
+
+const beds = db.beds.filter((b: any) => b.floor_plans >= 100);
+const bedsMax = Math.max(...beds.map((b: any) => b.floor_plans));
+const bedLabel = (b: number) => (b === 0 ? "Studio" : `${b} bed`);
+
+/* Concession league table — only markets with enough live plans to mean anything. */
+const concession = markets
+  .filter((m: any) => m.floor_plans >= 400 && m.pct_concession !== null)
+  .sort((a: any, b: any) => b.pct_concession - a.pct_concession);
+
+const activity = db.activity;
+const activityMax = Math.max(...activity.map((a: any) => a.observations));
+const lastWeek = activity[activity.length - 1]?.week;
+
+const assetRows = db.asset_class.filter((a: any) => a.floor_plans >= 200);
+
+const movedPct = (v: number) => Math.round((100 * v) / moves.communities);
+
+const samples = db.samples;
+const sampleMarkets = markets.map((m: any) => m.market);
+const defaultMarket = "PHX";
+---
+
+<Layout
+  title="The rent database"
+  description="A weekly scrape of live asking and net-effective rents across 20 Sunbelt and western metros — what is in it, how it is built, and what it can and cannot tell you."
+>
+  <section class="rdb">
+    <div class="wrap">
+      <header class="rdb__head">
+        <span class="kicker">§ · Data</span>
+        <h1 class="rdb__title">The rent database</h1>
+        <p class="rdb__lede">
+          Every week a scraper walks the leasing page of every rental community I
+          track, reads the floor plans off it, and writes down what each one is asking
+          and what it is actually giving away. This is what has accumulated since
+          {firstObs} — {n(h.communities)} communities across {h.markets} metros, and
+          the concession detail that makes a comp set honest.
+        </p>
+      </header>
+
+      <ul class="stats" aria-label="Database at a glance">
+        <li><b class="num">{n(h.communities)}</b><span>communities tracked</span></li>
+        <li><b class="num">{(h.units / 1e6).toFixed(2)}M</b><span>units under coverage</span></li>
+        <li><b class="num">{h.markets}</b><span>metros</span></li>
+        <li><b class="num">{n(h.floor_plans)}</b><span>live floor plans</span></li>
+        <li><b class="num">{n(h.under_concession)}</b><span>currently under concession</span></li>
+        <li><b class="num">{n(h.observations_30d)}</b><span>observations, last 30 days</span></li>
+      </ul>
+      <p class="rdb__asof">Refreshed from the live database on {asOf}.</p>
+
+      <!-- ───────────────────────── 01 ───────────────────────── -->
+      <div class="section-title" id="how">
+        <span class="section-title__hash">§ 01</span>
+        <span class="section-title__label">How it's built</span>
+        <span class="section-title__hint">Adapters first, model last</span>
+      </div>
+
+      <div class="rdb__prose">
+        <p>
+          The expensive way to do this is to point a language model at every leasing
+          page and pay for the reading. The cheap way is to notice that most communities
+          do not have a bespoke website — they run on a leasing platform, and each
+          platform serves its floor plans from an endpoint that returns the same shape
+          every time. So the pipeline tries {adapterCount} deterministic adapters first,
+          one per platform, and only falls through to the model when a site is genuinely
+          bespoke. That tail is about {llmShare}% of runs — {n(llmCalls)} reads over the
+          last two months — and it goes out as one overnight batch at half price rather
+          than one request at a time.
+        </p>
+        <p>
+          The adapters are also the accuracy story, not just the cost one. An adapter
+          reading a JSON endpoint either returns the floor plan or fails loudly; it
+          cannot hallucinate a two-bedroom. The model only ever sees the sites where
+          there was nothing structured to read, and its output goes through the same
+          validation every adapter's does.
+        </p>
+      </div>
+
+      <div class="engines" role="list" aria-label="Extraction engine share, last 60 days">
+        {extraction.map((e: any) => (
+          <div class="engines__row" role="listitem">
+            <span class={e.engine.startsWith("LLM") ? "engines__name is-llm" : "engines__name"}>
+              {e.engine}
+            </span>
+            <span class="engines__bar">
+              <i style={`width:${Math.max(1.2, (100 * e.observations) / extractionTotal)}%`}
+                 class={e.engine.startsWith("LLM") ? "is-llm" : ""}></i>
+            </span>
+            <span class="engines__num num">{n(e.observations)}</span>
+          </div>
+        ))}
+      </div>
+      <p class="rdb__caption">
+        Successful reads by engine over the last 60 days. Every name but the first is a
+        platform adapter.
+      </p>
+
+      <div class="rdb__prose">
+        <p>
+          Markets do not all run weekly. A metro's cadence is a column in a rotation
+          table — weekly, fortnightly, or monthly — and every staleness check derives
+          its window from that same column, so a fortnightly market cannot be reported
+          stale for being fortnightly. Daily assertions check the things that would
+          otherwise rot quietly: coverage rates per market, snapshot freshness, geocode
+          gaps, duplicate communities arriving under two names.
+        </p>
+      </div>
+
+      <!-- ───────────────────────── 02 ───────────────────────── -->
+      <div class="section-title" id="coverage">
+        <span class="section-title__hash">§ 02</span>
+        <span class="section-title__label">Coverage by metro</span>
+        <span class="section-title__hint">Tracked is not the same as scraped</span>
+      </div>
+
+      <div class="rdb__prose">
+        <p>
+          Two different numbers, and conflating them is the easiest way to overstate a
+          database like this. <em>Tracked</em> means the community is in the universe with
+          a confirmed leasing URL. <em>Live plans</em> means the last scrape actually came
+          back with floor plans and rents. A metro seeded last month has the first
+          number and is still working on the second — Dallas–Fort Worth is mid-first-pass
+          as I write this, which is why its two columns are so far apart.
+        </p>
+      </div>
+
+      <div class="tablewrap">
+        <table class="grid">
+          <thead>
+            <tr>
+              <th scope="col">Metro</th>
+              <th scope="col" class="r">Tracked</th>
+              <th scope="col" class="r">Units</th>
+              <th scope="col" class="r">BFR</th>
+              <th scope="col" class="r">Live plans</th>
+              <th scope="col" class="r">Median ask</th>
+              <th scope="col" class="r">$/sf</th>
+              <th scope="col" class="r">Concession</th>
+              <th scope="col" class="r">Last read</th>
+            </tr>
+          </thead>
+          <tbody>
+            {markets.map((m: any) => (
+              <tr>
+                <th scope="row">
+                  <span class="grid__code num">{m.market}</span>
+                  <span class="grid__metro">{metros[m.market]}</span>
+                </th>
+                <td class="r num">{n(m.communities)}</td>
+                <td class="r num">{n(m.units)}</td>
+                <td class="r num">{m.bfr > 0 ? n(m.bfr) : "—"}</td>
+                <td class="r num">{n(m.floor_plans)}</td>
+                <td class={m.floor_plans < 400 ? "r num is-thin" : "r num"}>{money(m.median_rent)}</td>
+                <td class={m.floor_plans < 400 ? "r num is-thin" : "r num"}>{m.median_psf ? "$" + m.median_psf.toFixed(2) : "—"}</td>
+                <td class="r num">{pct(m.pct_concession)}</td>
+                <td class="r num">{day(m.last_scraped)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <p class="rdb__caption">
+        Greyed rents are computed over fewer than 400 live floor plans — a metro
+        part-way through its first pass, where the median is a handful of communities
+        rather than a market. They will settle as the first pass completes.
+      </p>
+
+      <!-- ───────────────────────── 03 ───────────────────────── -->
+      <div class="section-title" id="composition">
+        <span class="section-title__hash">§ 03</span>
+        <span class="section-title__label">What's in it</span>
+        <span class="section-title__hint">Vintage, unit mix, product</span>
+      </div>
+
+      <div class="cols">
+        <div class="cols__unit">
+          <h3 class="rdb__h3">By vintage</h3>
+          <div class="bars" role="list" aria-label="Communities by decade built">
+            {vintage.map((v: any) => (
+              <div class="bars__row" role="listitem">
+                <span class="bars__label">{v.decade}</span>
+                <span class="bars__bar">
+                  <i style={`width:${Math.max(1.2, (100 * v.communities) / vintageMax)}%`}
+                     class={v.decade === "Unknown" ? "is-muted" : ""}></i>
+                </span>
+                <span class="bars__num num">{n(v.communities)}</span>
+              </div>
+            ))}
+          </div>
+          <p class="rdb__caption">
+            The unknown bar is almost entirely build-for-rent. A garden apartment's
+            leasing page states its year built; a new single-family rental community
+            usually does not, because it is still delivering.
+          </p>
+        </div>
+
+        <div class="cols__unit">
+          <h3 class="rdb__h3">By unit type</h3>
+          <div class="tablewrap">
+            <table class="grid grid--tight">
+              <thead>
+                <tr>
+                  <th scope="col">Plan</th>
+                  <th scope="col" class="r">Plans</th>
+                  <th scope="col" class="r">Median rent</th>
+                  <th scope="col" class="r">Median sf</th>
+                  <th scope="col" class="r">$/sf</th>
+                </tr>
+              </thead>
+              <tbody>
+                {beds.map((b: any) => (
+                  <tr>
+                    <th scope="row">
+                      <span class="bars__mini">
+                        <i style={`width:${Math.max(3, (100 * b.floor_plans) / bedsMax)}%`}></i>
+                      </span>
+                      {bedLabel(b.beds)}
+                    </th>
+                    <td class="r num">{n(b.floor_plans)}</td>
+                    <td class="r num">{money(b.median_rent)}</td>
+                    <td class="r num">{n(b.median_sf)}</td>
+                    <td class="r num">${b.median_psf.toFixed(2)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p class="rdb__caption">
+            Rent per square foot falls as plans get bigger, which is the pattern you
+            want to see — it is the cheapest sanity check that the extraction is
+            reading plans correctly rather than mixing up columns.
+          </p>
+        </div>
+      </div>
+
+      <h3 class="rdb__h3">By product</h3>
+      <div class="tablewrap">
+        <table class="grid grid--tight">
+          <thead>
+            <tr>
+              <th scope="col">Product</th>
+              <th scope="col">Structure</th>
+              <th scope="col" class="r">Communities</th>
+              <th scope="col" class="r">Plans</th>
+              <th scope="col" class="r">Median rent</th>
+              <th scope="col" class="r">Median sf</th>
+            </tr>
+          </thead>
+          <tbody>
+            {assetRows.map((a: any) => (
+              <tr>
+                <th scope="row">{a.product === "bfr" ? "Build-for-rent" : "Multifamily"}</th>
+                <td>{a.structure === "unspecified" ? "—" : a.structure.toUpperCase()}</td>
+                <td class="r num">{n(a.communities)}</td>
+                <td class="r num">{n(a.floor_plans)}</td>
+                <td class="r num">{money(a.median_rent)}</td>
+                <td class="r num">{n(a.median_sf)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="rdb__caption">
+        Product comes off the community record, not off the model's read of the page.
+        The model's own structure guess is kept in a separate column and shown here
+        beside it, because on a few hundred rows the two disagree and I would rather
+        that be visible than quietly reconciled.
+      </p>
+
+      <!-- ───────────────────────── 04 ───────────────────────── -->
+      <div class="section-title" id="concessions">
+        <span class="section-title__hash">§ 04</span>
+        <span class="section-title__label">What the portals don't publish</span>
+        <span class="section-title__hint">Concessions and net effective rent</span>
+      </div>
+
+      <div class="rdb__prose">
+        <p>
+          A rent comp that ignores concessions is the most common way a rent assumption
+          goes wrong, and it is wrong in the direction that makes a deal look better.
+          Six weeks free on a twelve-month lease is not a marketing flourish; it is an
+          eleven percent haircut to the rent you will actually collect. So the scraper
+          reads the concession banner as well as the plan grid, parses it into weeks,
+          and stores an asking rent and a net-effective rent side by side.
+          {" "}{n(h.under_concession)} of {n(h.floor_plans)} live plans are carrying one
+          right now.
+        </p>
+        <p>
+          The spread between those two numbers is the part you cannot get from a
+          listings site, and it varies enormously by metro. That variation is the whole
+          point: in the metro at the top of this list, seven in ten communities are
+          buying occupancy, and that is telling you something a median asking rent
+          never will.
+        </p>
+      </div>
+
+      <div class="bars bars--wide" role="list" aria-label="Share of live floor plans under concession, by metro">
+        {concession.map((m: any) => (
+          <div class="bars__row" role="listitem">
+            <span class="bars__label">
+              <span class="num">{m.market}</span> {metros[m.market]}
+            </span>
+            <span class="bars__bar">
+              <i style={`width:${Math.max(1.2, m.pct_concession)}%`}></i>
+            </span>
+            <span class="bars__num num">{pct(m.pct_concession)}</span>
+            <span class="bars__extra num">−{m.avg_discount_pct}% avg</span>
+          </div>
+        ))}
+      </div>
+      <p class="rdb__caption">
+        Share of live floor plans advertising a concession, and the average discount to
+        asking rent where one is being given. Metros with at least 400 live plans.
+      </p>
+
+      <!-- ───────────────────────── 05 ───────────────────────── -->
+      <div class="section-title" id="recent">
+        <span class="section-title__hash">§ 05</span>
+        <span class="section-title__label">The last thirty days</span>
+        <span class="section-title__hint">Direction of travel, not an index</span>
+      </div>
+
+      <div class="rdb__prose">
+        <p>
+          Here is the honest limit of this thing. Fleet-wide collection only reached
+          full coverage in August, so there is no rent index here and I am not going to
+          draw one. What the history <em>can</em> support is direction of travel: of the
+          {" "}{n(moves.communities)} communities seen at least twice, at least two weeks
+          apart, over an average gap of {moves.avg_span_days} days,
+          {" "}{movedPct(moves.moved_down)}% cut a plan rent and
+          {" "}{movedPct(moves.moved_up)}% raised one. Ask me again in six months and
+          this section becomes a chart.
+        </p>
+      </div>
+
+      <div class="two">
+        <div class="two__unit">
+          <h3 class="rdb__h3">Observations per week</h3>
+          <div class="spark" role="list" aria-label="Successful reads per week">
+            {activity.map((a: any) => (
+              <div class="spark__col" role="listitem"
+                   title={`${a.week}: ${n(a.observations)} reads across ${a.markets} metros`}>
+                <i style={`height:${Math.max(2, (100 * a.observations) / activityMax)}%`}
+                   class={a.week === lastWeek ? "is-partial" : ""}></i>
+                <span>{a.week.slice(5)}</span>
+              </div>
+            ))}
+          </div>
+          <p class="rdb__caption">
+            Every week with reads in the last sixteen. The ramp is markets coming
+            online, not a change in how often any one community is read. The final bar
+            is the week in progress.
+          </p>
+        </div>
+        <div class="two__unit">
+          <h3 class="rdb__h3">Where rents went</h3>
+          <div class="split" aria-label="Direction of rent change">
+            <div class="split__bar">
+              <i class="is-down" style={`width:${movedPct(moves.moved_down)}%`}></i>
+              <i class="is-flat" style={`width:${movedPct(moves.unchanged)}%`}></i>
+              <i class="is-up" style={`width:${movedPct(moves.moved_up)}%`}></i>
+            </div>
+            <ul class="split__key">
+              <li><span class="dot is-down"></span> Cut <b class="num">{n(moves.moved_down)}</b></li>
+              <li><span class="dot is-flat"></span> Unchanged <b class="num">{n(moves.unchanged)}</b></li>
+              <li><span class="dot is-up"></span> Raised <b class="num">{n(moves.moved_up)}</b></li>
+            </ul>
+          </div>
+          <p class="rdb__caption">
+            Median plan rent at a community's first and last read in the window.
+            {" "}{n(revisit.twice_plus)} of {n(revisit.observed)} communities have been
+            read more than once so far, averaging {revisit.avg_observations} reads each.
+          </p>
+        </div>
+      </div>
+
+      <!-- ───────────────────────── 06 ───────────────────────── -->
+      <div class="section-title" id="sample">
+        <span class="section-title__hash">§ 06</span>
+        <span class="section-title__label">A sample of the universe</span>
+        <span class="section-title__hint">{db.sample_per_market} per metro</span>
+      </div>
+
+      <div class="rdb__prose">
+        <p>
+          Counts are abstract, so here is what the rows actually look like — a stable
+          random draw of {db.sample_per_market} communities per metro, weighted to
+          include the build-for-rent tail, which is small and is the part I care most
+          about. Rents are deliberately not shown against a name: the aggregates above
+          are the public artifact, and a named comp set is not.
+        </p>
+      </div>
+
+      <div class="picker">
+        <label for="mkt">Metro</label>
+        <select id="mkt">
+          {sampleMarkets.map((m: string) => (
+            <option value={m} selected={m === defaultMarket}>{metros[m]} · {m}</option>
+          ))}
+        </select>
+      </div>
+
+      <div class="tablewrap">
+        <table class="grid grid--tight" id="sample-table">
+          <thead>
+            <tr>
+              <th scope="col">Community</th>
+              <th scope="col">Product</th>
+              <th scope="col" class="r">Units</th>
+              <th scope="col" class="r">Built</th>
+              <th scope="col" class="r">Last read</th>
+            </tr>
+          </thead>
+          <tbody id="sample-body"></tbody>
+        </table>
+      </div>
+
+      <!-- ───────────────────────── limits ───────────────────────── -->
+      <aside class="rdb__limits">
+        <h2 class="rdb__h2">What this is, and is not</h2>
+        <ul>
+          <li>
+            <b>It is a census of advertised rents, not of signed leases.</b> Everything
+            here is what a community was publishing on its own leasing page on the day
+            it was read. A signed-lease dataset would be a different and better thing;
+            it is also not something you can build by reading the open web.
+          </li>
+          <li>
+            <b>Tracked and scraped are different columns for a reason.</b> A metro can be
+            fully seeded and barely scraped. Both numbers are on the table above and
+            neither one is quietly rolled into the other.
+          </li>
+          <li>
+            <b>Median asking rent is the low end of each plan's range.</b> Where a site
+            advertises "from $1,595," that is a floor and it is stored flagged as one.
+          </li>
+          <li>
+            <b>Year built is missing for most build-for-rent communities</b> and that
+            gap is shown as its own bar rather than dropped from the chart.
+          </li>
+          <li>
+            <b>No community-level rents are published here</b> — only rollups, plus a
+            small sample of names to show what the database contains.
+          </li>
+        </ul>
+      </aside>
+
+      <aside class="rdb__callout">
+        <p>
+          The same pipeline feeds the comp tabs in
+          {" "}<a href="/demo/underwriting/">my underwriting outputs</a>, which is why
+          every comp row there carries an asking rent and a net-effective rent instead
+          of one number doing both jobs.
+        </p>
+      </aside>
+    </div>
+  </section>
+</Layout>
+
+<script is:inline define:vars={{ samples, defaultMarket }}>
+  const body = document.getElementById("sample-body");
+  const select = document.getElementById("mkt");
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  function render(market) {
+    const rows = samples[market] || [];
+    body.innerHTML = rows.map((r) => `
+      <tr>
+        <th scope="row">${esc(r.name)}</th>
+        <td><span class="pill${r.product === "BFR" ? " is-bfr" : ""}">${esc(r.product)}</span></td>
+        <td class="r num">${r.units == null ? "—" : r.units.toLocaleString("en-US")}</td>
+        <td class="r num">${r.year_built ?? "—"}</td>
+        <td class="r num">${r.last_seen ?? "not yet read"}</td>
+      </tr>`).join("");
+  }
+
+  select.addEventListener("change", (e) => render(e.target.value));
+  render(defaultMarket);
+</script>
+
+<style>
+  .rdb { padding: clamp(48px, 7vw, 80px) 0 var(--s-9); }
+
+  .rdb__head { max-width: 700px; margin: 0 0 var(--s-6); }
+  .rdb__head .kicker { display: block; margin-bottom: var(--s-3); }
+  .rdb__title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(30px, 4.2vw, 44px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0 0 var(--s-4);
+  }
+  .rdb__lede {
+    font-size: var(--t-19);
+    line-height: 1.6;
+    color: var(--fg-soft);
+    margin: 0;
+  }
+
+  /* ---------- stat row ---------- */
+  .stats {
+    list-style: none;
+    margin: var(--s-7) 0 var(--s-2);
+    padding: var(--s-5) 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: var(--s-4);
+  }
+  .stats li { display: flex; flex-direction: column; gap: 4px; }
+  .stats b {
+    font-family: var(--mono);
+    font-size: clamp(20px, 2.4vw, 28px);
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: -0.01em;
+  }
+  .stats span {
+    font-family: var(--sans);
+    font-size: var(--t-12);
+    color: var(--muted);
+    line-height: 1.35;
+  }
+  .rdb__asof {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    color: var(--muted-2);
+    margin: var(--s-2) 0 var(--s-9);
+  }
+
+  /* ---------- prose ---------- */
+  .rdb__prose { max-width: var(--measure); margin: 0 0 var(--s-6); }
+  .rdb__prose p { margin: 0 0 var(--s-4); line-height: 1.62; }
+  .rdb__prose p:last-child { margin-bottom: 0; }
+  .rdb__prose em { font-style: italic; color: var(--fg); }
+
+  .rdb__h2 {
+    font-family: var(--mono);
+    font-size: var(--t-13);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+    margin: 0 0 var(--s-4);
+  }
+  .rdb__h3 {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    font-weight: 500;
+    margin: var(--s-6) 0 var(--s-4);
+  }
+  .rdb__caption {
+    font-family: var(--sans);
+    font-size: var(--t-13);
+    color: var(--muted);
+    line-height: 1.5;
+    max-width: 62ch;
+    margin: var(--s-3) 0 var(--s-8);
+  }
+
+  .section-title { margin-top: var(--s-8); }
+
+  /* ---------- bars ---------- */
+  .bars { display: grid; gap: 7px; margin: var(--s-2) 0 0; }
+  .bars__row {
+    display: grid;
+    grid-template-columns: 190px 1fr 56px;
+    align-items: center;
+    gap: var(--s-3);
+  }
+  .bars--wide .bars__row { grid-template-columns: 240px 1fr 48px 88px; }
+  .bars__label {
+    font-family: var(--sans);
+    font-size: var(--t-13);
+    color: var(--fg-soft);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .bars__label .num { color: var(--muted-2); font-size: var(--t-12); margin-right: 4px; }
+  .bars__bar { display: block; height: 11px; background: var(--bg-alt); border-radius: 1px; }
+  .bars__bar i {
+    display: block;
+    height: 100%;
+    background: var(--accent);
+    border-radius: 1px;
+  }
+  .bars__bar i.is-muted { background: var(--muted-2); }
+  .bars__num { font-size: var(--t-13); color: var(--fg); text-align: right; }
+  .bars__extra { font-size: var(--t-12); color: var(--muted); text-align: right; }
+  .bars__mini {
+    display: inline-block;
+    width: 46px;
+    height: 7px;
+    background: var(--bg-alt);
+    margin-right: var(--s-3);
+    vertical-align: middle;
+  }
+  .bars__mini i { display: block; height: 100%; background: var(--accent); }
+
+  /* ---------- engines ---------- */
+  .engines { display: grid; gap: 6px; margin-bottom: var(--s-2); }
+  .engines__row {
+    display: grid;
+    grid-template-columns: 130px 1fr 62px;
+    align-items: center;
+    gap: var(--s-3);
+  }
+  .engines__name {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    color: var(--fg-soft);
+  }
+  .engines__name.is-llm { color: var(--accent); font-weight: 500; }
+  .engines__bar { display: block; height: 10px; background: var(--bg-alt); }
+  .engines__bar i { display: block; height: 100%; background: var(--fg-soft); }
+  .engines__bar i.is-llm { background: var(--accent); }
+  .engines__num { font-size: var(--t-12); color: var(--muted); text-align: right; }
+
+  /* ---------- tables ---------- */
+  .tablewrap { overflow-x: auto; margin-bottom: var(--s-2); }
+  .grid {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--sans);
+    font-size: var(--t-13);
+  }
+  .grid th, .grid td {
+    padding: 9px var(--s-3);
+    border-bottom: 1px solid var(--rule-soft);
+    text-align: left;
+    vertical-align: baseline;
+    white-space: nowrap;
+  }
+  .grid thead th {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    font-weight: 500;
+    border-bottom: 1px solid var(--rule);
+  }
+  .grid tbody th { font-weight: 500; color: var(--fg); }
+  .grid .r, .grid thead th.r { text-align: right; }
+  .grid tbody tr:hover { background: var(--accent-soft); }
+  .grid .is-thin { color: var(--muted-2); }
+  .grid--tight th, .grid--tight td { padding: 7px var(--s-3); }
+  .grid__code {
+    font-size: var(--t-12);
+    color: var(--muted-2);
+    margin-right: var(--s-2);
+  }
+  .grid__metro { color: var(--fg); }
+
+  .pill {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    padding: 2px 6px;
+    border: 1px solid var(--rule);
+    color: var(--muted);
+    border-radius: 2px;
+  }
+  .pill.is-bfr { color: var(--accent); border-color: var(--accent); }
+
+  /* ---------- layout helpers ---------- */
+  .cols, .two {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-7);
+    align-items: start;
+  }
+  .cols__unit .rdb__h3:first-child, .two__unit .rdb__h3:first-child { margin-top: 0; }
+
+  /* ---------- sparkline ---------- */
+  .spark {
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+    height: 130px;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 2px;
+  }
+  .spark__col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+    gap: 5px;
+  }
+  .spark__col i { display: block; width: 100%; background: var(--accent); }
+  .spark__col i.is-partial {
+    background: repeating-linear-gradient(
+      135deg, var(--accent), var(--accent) 3px, var(--bg-alt) 3px, var(--bg-alt) 6px
+    );
+  }
+  .spark__col span {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted-2);
+  }
+  .spark {
+    height: 150px;
+    align-items: stretch;
+    margin-bottom: var(--s-5);
+    border-bottom: 0;
+  }
+  .spark__col { justify-content: flex-end; }
+  .spark__col i { border-bottom: 1px solid var(--rule); }
+
+  /* ---------- split bar ---------- */
+  .split__bar { display: flex; height: 22px; overflow: hidden; border-radius: 1px; }
+  .split__bar i { display: block; height: 100%; }
+  .split__bar .is-down { background: var(--accent); }
+  .split__bar .is-flat { background: var(--bg-deep); }
+  .split__bar .is-up   { background: #7a4e1a; }
+  .split__key {
+    list-style: none;
+    margin: var(--s-4) 0 0;
+    padding: 0;
+    display: grid;
+    gap: 7px;
+    font-family: var(--sans);
+    font-size: var(--t-13);
+    color: var(--fg-soft);
+  }
+  .split__key li { display: flex; align-items: center; gap: var(--s-2); }
+  .split__key b { margin-left: auto; font-weight: 500; }
+  .dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+  .dot.is-down { background: var(--accent); }
+  .dot.is-flat { background: var(--bg-deep); }
+  .dot.is-up   { background: #7a4e1a; }
+
+  /* ---------- picker ---------- */
+  .picker { display: flex; align-items: center; gap: var(--s-3); margin-bottom: var(--s-4); }
+  .picker label {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .picker select {
+    font-family: var(--sans);
+    font-size: var(--t-14);
+    padding: 6px 10px;
+    background: var(--bg);
+    color: var(--fg);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+  }
+  .picker select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ---------- asides ---------- */
+  .rdb__limits {
+    margin-top: var(--s-8);
+    padding: var(--s-6);
+    background: var(--bg-alt);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+  }
+  .rdb__limits ul {
+    margin: 0;
+    padding-left: 1.1em;
+    display: grid;
+    gap: var(--s-3);
+    max-width: var(--measure);
+  }
+  .rdb__limits li { font-size: var(--t-15); line-height: 1.55; color: var(--fg-soft); }
+  .rdb__limits b { font-weight: 600; color: var(--fg); }
+
+  .rdb__callout {
+    margin-top: var(--s-6);
+    padding-left: var(--s-4);
+    border-left: 2px solid var(--accent);
+    max-width: var(--measure);
+  }
+  .rdb__callout p { margin: 0; color: var(--fg-soft); }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 900px) {
+    .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-5); }
+    .cols, .two { grid-template-columns: minmax(0, 1fr); gap: var(--s-6); }
+    .bars--wide .bars__row { grid-template-columns: 150px 1fr 44px 78px; }
+    .bars__row { grid-template-columns: 120px 1fr 52px; }
+  }
+  @media (max-width: 560px) {
+    .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .bars--wide .bars__row { grid-template-columns: 110px 1fr 42px; }
+    .bars--wide .bars__extra { display: none; }
+    .engines__row { grid-template-columns: 96px 1fr 52px; }
+    .spark { height: 96px; }
+  }
+</style>

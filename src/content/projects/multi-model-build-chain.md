@@ -1,7 +1,7 @@
 ---
 title: Multi-model build chain
 blurb: The process that builds every other tool on this page. One model writes the implementation plan, a second writes the code, and a third — from a different vendor — reviews each finished diff cold. Findings come back as claims to adjudicate, not fixes to trust, and every confirmed bug becomes a regression test before the work merges.
-order: 7
+order: 8
 status: In production
 statusClass: live
 seriesPosts: true

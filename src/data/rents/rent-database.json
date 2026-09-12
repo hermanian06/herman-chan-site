@@ -1,0 +1,3232 @@
+{
+  "headline": {
+    "communities": 16879,
+    "units": 4674196,
+    "markets": 20,
+    "floor_plans": 47616,
+    "communities_with_rents": 9231,
+    "with_net_effective": 36744,
+    "under_concession": 24071,
+    "observations_all": 45832,
+    "observations_30d": 33774,
+    "last_observation": "2026-09-12T00:49:15+00:00",
+    "first_observation": "2026-05-18T05:26:02+00:00"
+  },
+  "markets": [
+    {
+      "market": "DFW",
+      "communities": 2702,
+      "bfr": 137,
+      "mf": 2565,
+      "units": 817035,
+      "with_rents": 116,
+      "floor_plans": 466,
+      "median_rent": 2270.0,
+      "median_psf": 1.77,
+      "pct_concession": 60.1,
+      "avg_discount_pct": 13.4,
+      "last_scraped": "2026-09-05T01:41:05+00:00"
+    },
+    {
+      "market": "HOU",
+      "communities": 2269,
+      "bfr": 70,
+      "mf": 2199,
+      "units": 644125,
+      "with_rents": 1692,
+      "floor_plans": 9904,
+      "median_rent": 1375.0,
+      "median_psf": 1.5,
+      "pct_concession": 41.8,
+      "avg_discount_pct": 11.6,
+      "last_scraped": "2026-09-07T14:35:21+00:00"
+    },
+    {
+      "market": "ATL",
+      "communities": 1796,
+      "bfr": 120,
+      "mf": 1676,
+      "units": 492070,
+      "with_rents": 1319,
+      "floor_plans": 6847,
+      "median_rent": 1669.0,
+      "median_psf": 1.69,
+      "pct_concession": 44.6,
+      "avg_discount_pct": 11.1,
+      "last_scraped": "2026-09-09T01:03:27+00:00"
+    },
+    {
+      "market": "LAX",
+      "communities": 1538,
+      "bfr": 0,
+      "mf": 1538,
+      "units": 399635,
+      "with_rents": 950,
+      "floor_plans": 4506,
+      "median_rent": 2860.0,
+      "median_psf": 3.47,
+      "pct_concession": 35,
+      "avg_discount_pct": 10.8,
+      "last_scraped": "2026-09-11T14:52:06+00:00"
+    },
+    {
+      "market": "PHX",
+      "communities": 1485,
+      "bfr": 182,
+      "mf": 1303,
+      "units": 375900,
+      "with_rents": 1255,
+      "floor_plans": 5681,
+      "median_rent": 1595.0,
+      "median_psf": 1.78,
+      "pct_concession": 56.5,
+      "avg_discount_pct": 13.6,
+      "last_scraped": "2026-09-03T08:38:07+00:00"
+    },
+    {
+      "market": "AUS",
+      "communities": 1242,
+      "bfr": 54,
+      "mf": 1188,
+      "units": 345193,
+      "with_rents": 949,
+      "floor_plans": 5692,
+      "median_rent": 1515.0,
+      "median_psf": 1.7,
+      "pct_concession": 62,
+      "avg_discount_pct": 14.3,
+      "last_scraped": "2026-09-08T00:36:31+00:00"
+    },
+    {
+      "market": "CLT",
+      "communities": 921,
+      "bfr": 75,
+      "mf": 846,
+      "units": 235195,
+      "with_rents": 762,
+      "floor_plans": 4210,
+      "median_rent": 1594.0,
+      "median_psf": 1.69,
+      "pct_concession": 63.1,
+      "avg_discount_pct": 14.4,
+      "last_scraped": "2026-09-11T14:46:48+00:00"
+    },
+    {
+      "market": "DEN",
+      "communities": 827,
+      "bfr": 0,
+      "mf": 827,
+      "units": 246029,
+      "with_rents": 130,
+      "floor_plans": 751,
+      "median_rent": 1928.0,
+      "median_psf": 2.16,
+      "pct_concession": 71.1,
+      "avg_discount_pct": 15.6,
+      "last_scraped": "2026-09-12T00:49:15+00:00"
+    },
+    {
+      "market": "MCO",
+      "communities": 795,
+      "bfr": 31,
+      "mf": 764,
+      "units": 241993,
+      "with_rents": 27,
+      "floor_plans": 90,
+      "median_rent": 2475.0,
+      "median_psf": 1.4,
+      "pct_concession": 31.1,
+      "avg_discount_pct": 13.9,
+      "last_scraped": "2026-09-04T21:01:41+00:00"
+    },
+    {
+      "market": "TPA",
+      "communities": 779,
+      "bfr": 53,
+      "mf": 726,
+      "units": 219863,
+      "with_rents": 637,
+      "floor_plans": 3239,
+      "median_rent": 1794.0,
+      "median_psf": 1.91,
+      "pct_concession": 51.4,
+      "avg_discount_pct": 11.5,
+      "last_scraped": "2026-09-05T04:33:19+00:00"
+    },
+    {
+      "market": "NSH",
+      "communities": 697,
+      "bfr": 49,
+      "mf": 648,
+      "units": 175044,
+      "with_rents": 542,
+      "floor_plans": 2731,
+      "median_rent": 1671.0,
+      "median_psf": 1.87,
+      "pct_concession": 54.5,
+      "avg_discount_pct": 14.3,
+      "last_scraped": "2026-09-05T10:11:04+00:00"
+    },
+    {
+      "market": "LAS",
+      "communities": 592,
+      "bfr": 20,
+      "mf": 572,
+      "units": 163511,
+      "with_rents": 503,
+      "floor_plans": 1996,
+      "median_rent": 1512.0,
+      "median_psf": 1.63,
+      "pct_concession": 53.4,
+      "avg_discount_pct": 11.5,
+      "last_scraped": "2026-09-11T21:15:35+00:00"
+    },
+    {
+      "market": "RDU",
+      "communities": 523,
+      "bfr": 29,
+      "mf": 494,
+      "units": 135071,
+      "with_rents": 26,
+      "floor_plans": 88,
+      "median_rent": 2356.5,
+      "median_psf": 1.37,
+      "pct_concession": 61.4,
+      "avg_discount_pct": 12.6,
+      "last_scraped": "2026-09-04T20:25:14+00:00"
+    },
+    {
+      "market": "JAX",
+      "communities": 390,
+      "bfr": 33,
+      "mf": 357,
+      "units": 109418,
+      "with_rents": 31,
+      "floor_plans": 101,
+      "median_rent": 2290.0,
+      "median_psf": 1.35,
+      "pct_concession": 31.7,
+      "avg_discount_pct": 12.6,
+      "last_scraped": "2026-09-04T20:41:22+00:00"
+    },
+    {
+      "market": "HSV",
+      "communities": 162,
+      "bfr": 20,
+      "mf": 142,
+      "units": 41149,
+      "with_rents": 143,
+      "floor_plans": 662,
+      "median_rent": 1238.5,
+      "median_psf": 1.29,
+      "pct_concession": 54.1,
+      "avg_discount_pct": 14.1,
+      "last_scraped": "2026-09-11T22:38:08+00:00"
+    },
+    {
+      "market": "SRQ",
+      "communities": 96,
+      "bfr": 20,
+      "mf": 76,
+      "units": 22713,
+      "with_rents": 92,
+      "floor_plans": 455,
+      "median_rent": 1937.5,
+      "median_psf": 1.91,
+      "pct_concession": 58.2,
+      "avg_discount_pct": 14.7,
+      "last_scraped": "2026-09-05T10:53:03+00:00"
+    },
+    {
+      "market": "SAT",
+      "communities": 40,
+      "bfr": 40,
+      "mf": 0,
+      "units": 7092,
+      "with_rents": 34,
+      "floor_plans": 134,
+      "median_rent": 1973.0,
+      "median_psf": 1.34,
+      "pct_concession": 82.1,
+      "avg_discount_pct": 13.9,
+      "last_scraped": "2026-09-04T20:05:58+00:00"
+    },
+    {
+      "market": "SAV",
+      "communities": 9,
+      "bfr": 9,
+      "mf": 0,
+      "units": 1492,
+      "with_rents": 9,
+      "floor_plans": 23,
+      "median_rent": 2070.0,
+      "median_psf": 1.19,
+      "pct_concession": 26.1,
+      "avg_discount_pct": 16,
+      "last_scraped": "2026-09-04T21:25:19+00:00"
+    },
+    {
+      "market": "TYS",
+      "communities": 9,
+      "bfr": 9,
+      "mf": 0,
+      "units": 932,
+      "with_rents": 8,
+      "floor_plans": 22,
+      "median_rent": 2650.0,
+      "median_psf": 1.61,
+      "pct_concession": 63.6,
+      "avg_discount_pct": 10.9,
+      "last_scraped": "2026-09-04T21:40:48+00:00"
+    },
+    {
+      "market": "CHA",
+      "communities": 7,
+      "bfr": 7,
+      "mf": 0,
+      "units": 736,
+      "with_rents": 6,
+      "floor_plans": 18,
+      "median_rent": 1631.0,
+      "median_psf": 1.41,
+      "pct_concession": 16.7,
+      "avg_discount_pct": null,
+      "last_scraped": "2026-09-11T15:47:20+00:00"
+    }
+  ],
+  "vintage": [
+    {
+      "decade": "Pre-1970",
+      "communities": 122,
+      "bfr": 0,
+      "mf": 122,
+      "median_psf": 3.12
+    },
+    {
+      "decade": "1970s",
+      "communities": 1153,
+      "bfr": 0,
+      "mf": 1153,
+      "median_psf": 1.45
+    },
+    {
+      "decade": "1980s",
+      "communities": 1534,
+      "bfr": 2,
+      "mf": 1532,
+      "median_psf": 1.53
+    },
+    {
+      "decade": "1990s",
+      "communities": 842,
+      "bfr": 5,
+      "mf": 837,
+      "median_psf": 1.57
+    },
+    {
+      "decade": "2000s",
+      "communities": 1209,
+      "bfr": 5,
+      "mf": 1204,
+      "median_psf": 1.58
+    },
+    {
+      "decade": "2010s",
+      "communities": 1438,
+      "bfr": 2,
+      "mf": 1436,
+      "median_psf": 1.96
+    },
+    {
+      "decade": "2020s",
+      "communities": 1834,
+      "bfr": 6,
+      "mf": 1828,
+      "median_psf": 1.95
+    },
+    {
+      "decade": "Unknown",
+      "communities": 1099,
+      "bfr": 814,
+      "mf": 285,
+      "median_psf": 1.6
+    }
+  ],
+  "beds": [
+    {
+      "beds": 0,
+      "floor_plans": 3051,
+      "communities": 2258,
+      "median_rent": 1451,
+      "median_sf": 550,
+      "median_psf": 2.64,
+      "pct_concession": 54.3
+    },
+    {
+      "beds": 1,
+      "floor_plans": 17992,
+      "communities": 8245,
+      "median_rent": 1421,
+      "median_sf": 742,
+      "median_psf": 1.89,
+      "pct_concession": 50.5
+    },
+    {
+      "beds": 2,
+      "floor_plans": 18584,
+      "communities": 8276,
+      "median_rent": 1740,
+      "median_sf": 1096,
+      "median_psf": 1.58,
+      "pct_concession": 50.2
+    },
+    {
+      "beds": 3,
+      "floor_plans": 6907,
+      "communities": 5168,
+      "median_rent": 2135,
+      "median_sf": 1395,
+      "median_psf": 1.51,
+      "pct_concession": 51.1
+    },
+    {
+      "beds": 4,
+      "floor_plans": 878,
+      "communities": 577,
+      "median_rent": 2499,
+      "median_sf": 1913,
+      "median_psf": 1.28,
+      "pct_concession": 46.2
+    },
+    {
+      "beds": 5,
+      "floor_plans": 127,
+      "communities": 107,
+      "median_rent": 2811,
+      "median_sf": 2496,
+      "median_psf": 1.12,
+      "pct_concession": 23.6
+    },
+    {
+      "beds": 6,
+      "floor_plans": 4,
+      "communities": 4,
+      "median_rent": 2699,
+      "median_sf": 2926,
+      "median_psf": 1.05,
+      "pct_concession": 0
+    }
+  ],
+  "asset_class": [
+    {
+      "product": "mf",
+      "structure": "unspecified",
+      "floor_plans": 31624,
+      "communities": 6161,
+      "median_rent": 1620,
+      "median_sf": 957
+    },
+    {
+      "product": "mf",
+      "structure": "mf",
+      "floor_plans": 12545,
+      "communities": 2625,
+      "median_rent": 1554,
+      "median_sf": 897
+    },
+    {
+      "product": "bfr",
+      "structure": "unspecified",
+      "floor_plans": 2181,
+      "communities": 618,
+      "median_rent": 2250,
+      "median_sf": 1560
+    },
+    {
+      "product": "mf",
+      "structure": "th",
+      "floor_plans": 498,
+      "communities": 258,
+      "median_rent": 1762,
+      "median_sf": 1238
+    },
+    {
+      "product": "bfr",
+      "structure": "th",
+      "floor_plans": 285,
+      "communities": 104,
+      "median_rent": 2250,
+      "median_sf": 1566
+    },
+    {
+      "product": "bfr",
+      "structure": "mf",
+      "floor_plans": 239,
+      "communities": 98,
+      "median_rent": 1799,
+      "median_sf": 1049
+    },
+    {
+      "product": "bfr",
+      "structure": "sfd",
+      "floor_plans": 226,
+      "communities": 58,
+      "median_rent": 2299,
+      "median_sf": 1709
+    },
+    {
+      "product": "mf",
+      "structure": "sfd",
+      "floor_plans": 18,
+      "communities": 4,
+      "median_rent": 1840,
+      "median_sf": 1948
+    }
+  ],
+  "extraction": [
+    {
+      "engine": "LLM (Haiku)",
+      "observations": 10082
+    },
+    {
+      "engine": "rentcafe",
+      "observations": 8206
+    },
+    {
+      "engine": "sightmap",
+      "observations": 7844
+    },
+    {
+      "engine": "knock",
+      "observations": 4783
+    },
+    {
+      "engine": "entrata",
+      "observations": 2357
+    },
+    {
+      "engine": "realpage",
+      "observations": 676
+    },
+    {
+      "engine": "amh",
+      "observations": 594
+    },
+    {
+      "engine": "razz",
+      "observations": 256
+    },
+    {
+      "engine": "repli360",
+      "observations": 165
+    },
+    {
+      "engine": "avalon",
+      "observations": 102
+    },
+    {
+      "engine": "ark",
+      "observations": 58
+    },
+    {
+      "engine": "appfolio",
+      "observations": 39
+    }
+  ],
+  "activity": [
+    {
+      "week": "2026-06-29",
+      "observations": 281,
+      "communities": 75,
+      "markets": 1
+    },
+    {
+      "week": "2026-07-06",
+      "observations": 216,
+      "communities": 212,
+      "markets": 1
+    },
+    {
+      "week": "2026-07-13",
+      "observations": 688,
+      "communities": 655,
+      "markets": 18
+    },
+    {
+      "week": "2026-07-27",
+      "observations": 1857,
+      "communities": 1000,
+      "markets": 13
+    },
+    {
+      "week": "2026-08-03",
+      "observations": 4620,
+      "communities": 2060,
+      "markets": 18
+    },
+    {
+      "week": "2026-08-10",
+      "observations": 2167,
+      "communities": 1935,
+      "markets": 18
+    },
+    {
+      "week": "2026-08-17",
+      "observations": 6551,
+      "communities": 4472,
+      "markets": 18
+    },
+    {
+      "week": "2026-08-24",
+      "observations": 7791,
+      "communities": 7018,
+      "markets": 18
+    },
+    {
+      "week": "2026-08-31",
+      "observations": 7552,
+      "communities": 6934,
+      "markets": 16
+    },
+    {
+      "week": "2026-09-07",
+      "observations": 3928,
+      "communities": 3925,
+      "markets": 9
+    }
+  ],
+  "revisit": {
+    "observed": 9233,
+    "twice_plus": 7297,
+    "thrice_plus": 5925,
+    "avg_observations": 3.9
+  },
+  "rent_moves": {
+    "communities": 4251,
+    "moved_up": 1583,
+    "moved_down": 1954,
+    "unchanged": 714,
+    "avg_span_days": 27
+  },
+  "samples": {
+    "DFW": [
+      {
+        "name": "Avilla Traditions",
+        "product": "BFR",
+        "units": 218,
+        "year_built": null,
+        "last_seen": "2026-09-03"
+      },
+      {
+        "name": "Elevate at Skyline Townhomes",
+        "product": "BFR",
+        "units": 136,
+        "year_built": null,
+        "last_seen": "2026-09-03"
+      },
+      {
+        "name": "Patriot Estates",
+        "product": "BFR",
+        "units": 1200,
+        "year_built": null,
+        "last_seen": "2026-09-03"
+      },
+      {
+        "name": "The Palo Townhomes",
+        "product": "BFR",
+        "units": 120,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "The Villages 3Eighty",
+        "product": "BFR",
+        "units": 431,
+        "year_built": null,
+        "last_seen": "2026-09-03"
+      },
+      {
+        "name": "Bear Creek at Harwood",
+        "product": "MF",
+        "units": 304,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Cedar Lakes",
+        "product": "MF",
+        "units": 196,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Converge Justin",
+        "product": "MF",
+        "units": 300,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Devi at Valley Ranch",
+        "product": "MF",
+        "units": 267,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Estates On Frankford",
+        "product": "MF",
+        "units": 467,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Gateway East at the Arts District",
+        "product": "MF",
+        "units": 420,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Knox Heights",
+        "product": "MF",
+        "units": 182,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "MAA Highlands North",
+        "product": "MF",
+        "units": 232,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Montfort Crossing",
+        "product": "MF",
+        "units": 178,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Somerset at Spring Creek",
+        "product": "MF",
+        "units": 208,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "The Ace Apartments",
+        "product": "MF",
+        "units": 178,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "The Brixton Apartments",
+        "product": "MF",
+        "units": 224,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "The Garrison",
+        "product": "MF",
+        "units": 244,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "The Greens Of Fossil Lake",
+        "product": "MF",
+        "units": 288,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Woodridge on Buckner",
+        "product": "MF",
+        "units": 272,
+        "year_built": null,
+        "last_seen": null
+      }
+    ],
+    "HOU": [
+      {
+        "name": "Crossing at Timbergrove",
+        "product": "BFR",
+        "units": 97,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Millers at Elyson",
+        "product": "BFR",
+        "units": 170,
+        "year_built": null,
+        "last_seen": "2026-08-29"
+      },
+      {
+        "name": "Mirror Lake Townhomes",
+        "product": "BFR",
+        "units": 88,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "The Village at Granger Pines",
+        "product": "BFR",
+        "units": 120,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Villas at Tamarron",
+        "product": "BFR",
+        "units": 164,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "3122 Leeland St",
+        "product": "MF",
+        "units": 284,
+        "year_built": 2024,
+        "last_seen": "2026-09-07"
+      },
+      {
+        "name": "Allora Parkland",
+        "product": "MF",
+        "units": 378,
+        "year_built": 2024,
+        "last_seen": "2026-09-06"
+      },
+      {
+        "name": "Ashford Aberdeen Apartments",
+        "product": "MF",
+        "units": 656,
+        "year_built": 1974,
+        "last_seen": "2026-09-06"
+      },
+      {
+        "name": "Copperwood Ranch",
+        "product": "MF",
+        "units": 280,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Crystal Falls",
+        "product": "MF",
+        "units": 165,
+        "year_built": 1984,
+        "last_seen": "2026-09-01"
+      },
+      {
+        "name": "CW Cypresswood",
+        "product": "MF",
+        "units": 287,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Gables Metropolitan Uptown",
+        "product": "MF",
+        "units": 318,
+        "year_built": 1994,
+        "last_seen": "2026-09-07"
+      },
+      {
+        "name": "Lenox Heights",
+        "product": "MF",
+        "units": 359,
+        "year_built": 2025,
+        "last_seen": "2026-09-07"
+      },
+      {
+        "name": "Oakmoor Apartments",
+        "product": "MF",
+        "units": 248,
+        "year_built": 2006,
+        "last_seen": "2026-09-06"
+      },
+      {
+        "name": "Rayford\u2019s Edge",
+        "product": "MF",
+        "units": 376,
+        "year_built": 1981,
+        "last_seen": "2026-09-07"
+      },
+      {
+        "name": "San Lucas Apartments",
+        "product": "MF",
+        "units": 472,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "San Marcos Apartments",
+        "product": "MF",
+        "units": 380,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Sire Kingwood",
+        "product": "MF",
+        "units": 318,
+        "year_built": 2023,
+        "last_seen": "2026-09-06"
+      },
+      {
+        "name": "Tuscany Walk Apartments",
+        "product": "MF",
+        "units": 165,
+        "year_built": 2017,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "Willow Lake Apartments",
+        "product": "MF",
+        "units": 336,
+        "year_built": 2003,
+        "last_seen": "2026-09-05"
+      }
+    ],
+    "ATL": [
+      {
+        "name": "Citizens Square Villas",
+        "product": "BFR",
+        "units": 100,
+        "year_built": null,
+        "last_seen": "2026-08-31"
+      },
+      {
+        "name": "Covey Homes Walker Ridge",
+        "product": "BFR",
+        "units": 207,
+        "year_built": null,
+        "last_seen": "2026-08-31"
+      },
+      {
+        "name": "Harmon Cedar Run",
+        "product": "BFR",
+        "units": 151,
+        "year_built": null,
+        "last_seen": "2026-08-31"
+      },
+      {
+        "name": "Summerwell Cedarcrest",
+        "product": "BFR",
+        "units": 127,
+        "year_built": null,
+        "last_seen": "2026-08-31"
+      },
+      {
+        "name": "Westfield Townhomes",
+        "product": "BFR",
+        "units": 130,
+        "year_built": null,
+        "last_seen": "2026-08-31"
+      },
+      {
+        "name": "Aero 24Twenty",
+        "product": "MF",
+        "units": 144,
+        "year_built": 1972,
+        "last_seen": "2026-09-01"
+      },
+      {
+        "name": "Ashley Collegetown",
+        "product": "MF",
+        "units": 376,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Ashley Woods Apartment Homes",
+        "product": "MF",
+        "units": 128,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Corners at Holcomb Bridge",
+        "product": "MF",
+        "units": 360,
+        "year_built": 1984,
+        "last_seen": "2026-09-01"
+      },
+      {
+        "name": "Elite at 285",
+        "product": "MF",
+        "units": 296,
+        "year_built": 1972,
+        "last_seen": "2026-09-02"
+      },
+      {
+        "name": "Evergreen Lenox Park",
+        "product": "MF",
+        "units": 206,
+        "year_built": 1995,
+        "last_seen": "2026-09-01"
+      },
+      {
+        "name": "Mill Creek Place",
+        "product": "MF",
+        "units": 128,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Millworks",
+        "product": "MF",
+        "units": 345,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Modera Decatur",
+        "product": "MF",
+        "units": 194,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Park At Glenwood",
+        "product": "MF",
+        "units": 212,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Reserve Decatur",
+        "product": "MF",
+        "units": 298,
+        "year_built": 2016,
+        "last_seen": "2026-09-01"
+      },
+      {
+        "name": "The Bishop",
+        "product": "MF",
+        "units": 286,
+        "year_built": 2019,
+        "last_seen": "2026-09-02"
+      },
+      {
+        "name": "The Brooke",
+        "product": "MF",
+        "units": 537,
+        "year_built": 2002,
+        "last_seen": "2026-09-02"
+      },
+      {
+        "name": "The Penman",
+        "product": "MF",
+        "units": 262,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "The Wynne",
+        "product": "MF",
+        "units": 618,
+        "year_built": 1983,
+        "last_seen": "2026-09-01"
+      }
+    ],
+    "LAX": [
+      {
+        "name": "104 Brookstone Apartments",
+        "product": "MF",
+        "units": 184,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "1400 Long Beach",
+        "product": "MF",
+        "units": 163,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Adagio On The Green",
+        "product": "MF",
+        "units": 256,
+        "year_built": 2015,
+        "last_seen": "2026-09-10"
+      },
+      {
+        "name": "Ambrose",
+        "product": "MF",
+        "units": 320,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Broadstone Arden",
+        "product": "MF",
+        "units": 1556,
+        "year_built": 2019,
+        "last_seen": "2026-09-10"
+      },
+      {
+        "name": "Cordova Park",
+        "product": "MF",
+        "units": 416,
+        "year_built": 1987,
+        "last_seen": "2026-09-10"
+      },
+      {
+        "name": "Esencia Sur",
+        "product": "MF",
+        "units": 150,
+        "year_built": 2017,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "Horace Heidt Estates",
+        "product": "MF",
+        "units": 159,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Lillian",
+        "product": "MF",
+        "units": 100,
+        "year_built": 2025,
+        "last_seen": "2026-09-10"
+      },
+      {
+        "name": "Lucia",
+        "product": "MF",
+        "units": 141,
+        "year_built": 1971,
+        "last_seen": "2026-09-10"
+      },
+      {
+        "name": "Montecito Vista Apartments",
+        "product": "MF",
+        "units": 162,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Parc Pointe Apartments",
+        "product": "MF",
+        "units": 255,
+        "year_built": 1990,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "Park Del Amo",
+        "product": "MF",
+        "units": 206,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Parker",
+        "product": "MF",
+        "units": 177,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Pine Meadows",
+        "product": "MF",
+        "units": 147,
+        "year_built": 1976,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "Sunset Ridge",
+        "product": "MF",
+        "units": 800,
+        "year_built": 1988,
+        "last_seen": "2026-09-10"
+      },
+      {
+        "name": "Sycamore Lane",
+        "product": "MF",
+        "units": 208,
+        "year_built": 1977,
+        "last_seen": "2026-09-10"
+      },
+      {
+        "name": "The Huntington (8400 Edinger Ave)",
+        "product": "MF",
+        "units": 276,
+        "year_built": 1975,
+        "last_seen": "2026-09-10"
+      },
+      {
+        "name": "WILCO Apartments",
+        "product": "MF",
+        "units": 152,
+        "year_built": 2019,
+        "last_seen": "2026-09-10"
+      },
+      {
+        "name": "Willow Tree",
+        "product": "MF",
+        "units": 436,
+        "year_built": 1970,
+        "last_seen": "2026-09-10"
+      }
+    ],
+    "PHX": [
+      {
+        "name": "Broadway North at Mason Ranch",
+        "product": "BFR",
+        "units": 184,
+        "year_built": null,
+        "last_seen": "2026-09-02"
+      },
+      {
+        "name": "Innovation Villas",
+        "product": "BFR",
+        "units": 183,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Lindsey Palms",
+        "product": "BFR",
+        "units": 106,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Solana Place at Carlton Commons",
+        "product": "BFR",
+        "units": 112,
+        "year_built": null,
+        "last_seen": "2026-09-02"
+      },
+      {
+        "name": "Town Germann",
+        "product": "BFR",
+        "units": 209,
+        "year_built": null,
+        "last_seen": "2026-09-02"
+      },
+      {
+        "name": "32 Arcadia",
+        "product": "MF",
+        "units": 104,
+        "year_built": 1972,
+        "last_seen": "2026-09-03"
+      },
+      {
+        "name": "Adiamo Palm Valley",
+        "product": "MF",
+        "units": 302,
+        "year_built": 2006,
+        "last_seen": "2026-09-03"
+      },
+      {
+        "name": "Agave Ridge",
+        "product": "MF",
+        "units": 148,
+        "year_built": 1973,
+        "last_seen": "2026-09-03"
+      },
+      {
+        "name": "Alta Uptown",
+        "product": "MF",
+        "units": 415,
+        "year_built": 2024,
+        "last_seen": "2026-09-03"
+      },
+      {
+        "name": "Camden Sotelo",
+        "product": "MF",
+        "units": 170,
+        "year_built": 2012,
+        "last_seen": "2026-08-08"
+      },
+      {
+        "name": "Halogen Apartments",
+        "product": "MF",
+        "units": 278,
+        "year_built": 2024,
+        "last_seen": "2026-09-03"
+      },
+      {
+        "name": "IMT Desert Ridge",
+        "product": "MF",
+        "units": 370,
+        "year_built": 2014,
+        "last_seen": "2026-09-02"
+      },
+      {
+        "name": "Latitude Apartments and Casitas",
+        "product": "MF",
+        "units": 672,
+        "year_built": 1979,
+        "last_seen": "2026-09-03"
+      },
+      {
+        "name": "Marquis at Chandler",
+        "product": "MF",
+        "units": 340,
+        "year_built": 2020,
+        "last_seen": "2026-09-02"
+      },
+      {
+        "name": "Meritum Sheely Farms",
+        "product": "MF",
+        "units": 680,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Portola South Mountain",
+        "product": "MF",
+        "units": 134,
+        "year_built": 1999,
+        "last_seen": "2026-08-09"
+      },
+      {
+        "name": "Sonoma Valley Apartments",
+        "product": "MF",
+        "units": 176,
+        "year_built": 2001,
+        "last_seen": "2026-09-03"
+      },
+      {
+        "name": "The Piedmont",
+        "product": "MF",
+        "units": 318,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Tides on 27th",
+        "product": "MF",
+        "units": 260,
+        "year_built": 1981,
+        "last_seen": "2026-09-02"
+      },
+      {
+        "name": "Waterford at Superstition Springs",
+        "product": "MF",
+        "units": 280,
+        "year_built": 2007,
+        "last_seen": "2026-09-03"
+      }
+    ],
+    "AUS": [
+      {
+        "name": "Arista San Gabriel",
+        "product": "BFR",
+        "units": 103,
+        "year_built": null,
+        "last_seen": "2026-09-07"
+      },
+      {
+        "name": "Avilla Berry Creek Highlands",
+        "product": "BFR",
+        "units": 224,
+        "year_built": null,
+        "last_seen": "2026-09-07"
+      },
+      {
+        "name": "BB Living Sweetwater Crossing",
+        "product": "BFR",
+        "units": 128,
+        "year_built": null,
+        "last_seen": "2026-09-07"
+      },
+      {
+        "name": "Beacon at Bunton Creek",
+        "product": "BFR",
+        "units": 103,
+        "year_built": null,
+        "last_seen": "2026-09-07"
+      },
+      {
+        "name": "LC Pflugerville",
+        "product": "BFR",
+        "units": 409,
+        "year_built": 2024,
+        "last_seen": "2026-09-07"
+      },
+      {
+        "name": "3500 Westlake Apartments",
+        "product": "MF",
+        "units": 175,
+        "year_built": 2011,
+        "last_seen": "2026-09-07"
+      },
+      {
+        "name": "Aria Grand",
+        "product": "MF",
+        "units": 70,
+        "year_built": null,
+        "last_seen": "2026-08-10"
+      },
+      {
+        "name": "Arrington Ridge Apartments",
+        "product": "MF",
+        "units": 402,
+        "year_built": 2016,
+        "last_seen": "2026-09-07"
+      },
+      {
+        "name": "Ashton Austin",
+        "product": "MF",
+        "units": 259,
+        "year_built": 2009,
+        "last_seen": "2026-09-07"
+      },
+      {
+        "name": "Austin Avenue",
+        "product": "MF",
+        "units": 312,
+        "year_built": 2022,
+        "last_seen": "2026-09-07"
+      },
+      {
+        "name": "Bridge at Estancia",
+        "product": "MF",
+        "units": 318,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Citizen House Blue Bluff",
+        "product": "MF",
+        "units": 354,
+        "year_built": null,
+        "last_seen": "2026-09-07"
+      },
+      {
+        "name": "Eastside Station",
+        "product": "MF",
+        "units": 330,
+        "year_built": null,
+        "last_seen": "2026-09-07"
+      },
+      {
+        "name": "Flatz 512",
+        "product": "MF",
+        "units": 384,
+        "year_built": 2024,
+        "last_seen": "2026-09-07"
+      },
+      {
+        "name": "MAA Windmill Hill",
+        "product": "MF",
+        "units": 350,
+        "year_built": 2022,
+        "last_seen": "2026-09-07"
+      },
+      {
+        "name": "Sentral East Austin at 1614 E. Sixth",
+        "product": "MF",
+        "units": 119,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Sunchase (1200 Sunrise Dr)",
+        "product": "MF",
+        "units": 168,
+        "year_built": 1985,
+        "last_seen": "2026-09-08"
+      },
+      {
+        "name": "The 704",
+        "product": "MF",
+        "units": 378,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "The Quincy",
+        "product": "MF",
+        "units": 347,
+        "year_built": null,
+        "last_seen": "2026-09-07"
+      },
+      {
+        "name": "Travis At The Lake",
+        "product": "MF",
+        "units": 312,
+        "year_built": 2018,
+        "last_seen": "2026-09-08"
+      }
+    ],
+    "CLT": [
+      {
+        "name": "Cascadia at Highland Creek",
+        "product": "BFR",
+        "units": 89,
+        "year_built": null,
+        "last_seen": "2026-09-09"
+      },
+      {
+        "name": "Cortland Whitehall",
+        "product": "BFR",
+        "units": 271,
+        "year_built": null,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "Founders Point",
+        "product": "BFR",
+        "units": 145,
+        "year_built": null,
+        "last_seen": "2026-09-09"
+      },
+      {
+        "name": "Newton Creek",
+        "product": "BFR",
+        "units": 55,
+        "year_built": null,
+        "last_seen": "2026-09-09"
+      },
+      {
+        "name": "Townhomes at Bridlestone",
+        "product": "BFR",
+        "units": 108,
+        "year_built": null,
+        "last_seen": "2026-09-09"
+      },
+      {
+        "name": "Cottonwood Reserve I & II",
+        "product": "MF",
+        "units": 352,
+        "year_built": 2004,
+        "last_seen": "2026-09-09"
+      },
+      {
+        "name": "Forest Ridge Apartment Homes",
+        "product": "MF",
+        "units": 136,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Hawthorne Waterstone",
+        "product": "MF",
+        "units": 264,
+        "year_built": 2020,
+        "last_seen": "2026-09-09"
+      },
+      {
+        "name": "Johnston Creek Crossing",
+        "product": "MF",
+        "units": 260,
+        "year_built": 1982,
+        "last_seen": "2026-09-09"
+      },
+      {
+        "name": "LakePointe",
+        "product": "MF",
+        "units": 358,
+        "year_built": 2024,
+        "last_seen": "2026-09-09"
+      },
+      {
+        "name": "Link Apartments CYKEL",
+        "product": "MF",
+        "units": 104,
+        "year_built": 2024,
+        "last_seen": "2026-09-09"
+      },
+      {
+        "name": "Oro Ballantyne",
+        "product": "MF",
+        "units": 356,
+        "year_built": 2025,
+        "last_seen": "2026-09-10"
+      },
+      {
+        "name": "Rise Avalon",
+        "product": "MF",
+        "units": 240,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Sharon Pointe Apartment Homes",
+        "product": "MF",
+        "units": 190,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Stoney Trace",
+        "product": "MF",
+        "units": 380,
+        "year_built": 1988,
+        "last_seen": "2026-09-10"
+      },
+      {
+        "name": "The Apartments At Blakeney",
+        "product": "MF",
+        "units": 295,
+        "year_built": 2008,
+        "last_seen": "2026-09-09"
+      },
+      {
+        "name": "The Village of Rosedale Apartments",
+        "product": "MF",
+        "units": 106,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Village Station",
+        "product": "MF",
+        "units": 160,
+        "year_built": 1986,
+        "last_seen": "2026-09-09"
+      },
+      {
+        "name": "Vivo Living Arbor View",
+        "product": "MF",
+        "units": 138,
+        "year_built": 2024,
+        "last_seen": "2026-09-09"
+      },
+      {
+        "name": "Whisper Creek",
+        "product": "MF",
+        "units": 293,
+        "year_built": 2007,
+        "last_seen": "2026-09-09"
+      }
+    ],
+    "DEN": [
+      {
+        "name": "Allison Village Redevelopment",
+        "product": "MF",
+        "units": 150,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Araceli DTC",
+        "product": "MF",
+        "units": 236,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Avail",
+        "product": "MF",
+        "units": 424,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Bell Broomfield",
+        "product": "MF",
+        "units": 292,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Botanica Town Center",
+        "product": "MF",
+        "units": 153,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Compass Meridian",
+        "product": "MF",
+        "units": 448,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Cortland on Cherry Creek",
+        "product": "MF",
+        "units": 384,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Creekside Place Apartments",
+        "product": "MF",
+        "units": 208,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Edge 26",
+        "product": "MF",
+        "units": 402,
+        "year_built": 1970,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "Gables Speer Blvd",
+        "product": "MF",
+        "units": 221,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Golden Nugget",
+        "product": "MF",
+        "units": 210,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Griffis Cheesman Park",
+        "product": "MF",
+        "units": 156,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Incline 45",
+        "product": "MF",
+        "units": 270,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Legacy Ridge",
+        "product": "MF",
+        "units": 232,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Sage at Panorama",
+        "product": "MF",
+        "units": 325,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "The Fillmore at Copperleaf",
+        "product": "MF",
+        "units": 230,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "The Fitzgerald",
+        "product": "MF",
+        "units": 282,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "The Promenade at Hunters Glen",
+        "product": "MF",
+        "units": 264,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Westlink At Oak Station",
+        "product": "MF",
+        "units": 244,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Willow Run Village",
+        "product": "MF",
+        "units": 216,
+        "year_built": null,
+        "last_seen": null
+      }
+    ],
+    "MCO": [
+      {
+        "name": "Eleven Oaks",
+        "product": "BFR",
+        "units": 69,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Osceola Village",
+        "product": "BFR",
+        "units": 118,
+        "year_built": null,
+        "last_seen": "2026-08-14"
+      },
+      {
+        "name": "Sky Lakes",
+        "product": "BFR",
+        "units": 222,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Summerwell Avian Pointe",
+        "product": "BFR",
+        "units": 174,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Yardly Bellalago",
+        "product": "BFR",
+        "units": 107,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Advenir at Magnolia",
+        "product": "MF",
+        "units": 272,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Amalfi Apartments",
+        "product": "MF",
+        "units": 252,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Bell Trelago",
+        "product": "MF",
+        "units": 350,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "BellaNova at JubiLee Park",
+        "product": "MF",
+        "units": 312,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Caden at Lakeside",
+        "product": "MF",
+        "units": 336,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Integra Crossings",
+        "product": "MF",
+        "units": 348,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Integra Towers at Nona South",
+        "product": "MF",
+        "units": 364,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Lake Weston Point Apartments",
+        "product": "MF",
+        "units": 240,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Oakleaf Village",
+        "product": "MF",
+        "units": 356,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Osceola Bend Apartment Homes",
+        "product": "MF",
+        "units": 152,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Seville On The Green",
+        "product": "MF",
+        "units": 170,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Tesora",
+        "product": "MF",
+        "units": 310,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "The Haven at Lake Britt",
+        "product": "MF",
+        "units": 240,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "The Rowan",
+        "product": "MF",
+        "units": 252,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Valencia Trace",
+        "product": "MF",
+        "units": 228,
+        "year_built": null,
+        "last_seen": null
+      }
+    ],
+    "TPA": [
+      {
+        "name": "Balcara 301 at Sun City",
+        "product": "BFR",
+        "units": 120,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Glen Lakes",
+        "product": "BFR",
+        "units": 60,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Magnolia at Spring Hill",
+        "product": "BFR",
+        "units": 162,
+        "year_built": 2026,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Parkside",
+        "product": "BFR",
+        "units": 73,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Woodlake Preserve",
+        "product": "BFR",
+        "units": 125,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Ascend Mirada",
+        "product": "MF",
+        "units": 390,
+        "year_built": 2025,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Avalon Park Wesley Chapel",
+        "product": "MF",
+        "units": 40,
+        "year_built": 2024,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Compton Place",
+        "product": "MF",
+        "units": 384,
+        "year_built": 1998,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "Emerald at MetWest",
+        "product": "MF",
+        "units": 375,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Harbourtowne at Country Woods",
+        "product": "MF",
+        "units": 201,
+        "year_built": 1987,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "Lake Kathy",
+        "product": "MF",
+        "units": 360,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Madison Oaks",
+        "product": "MF",
+        "units": 250,
+        "year_built": 1988,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "Marina Walk",
+        "product": "MF",
+        "units": 245,
+        "year_built": 2021,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Park at Lake Magdalene",
+        "product": "MF",
+        "units": 504,
+        "year_built": 1974,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "Retreat At Crosstown",
+        "product": "MF",
+        "units": 320,
+        "year_built": 1989,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "Sweetwater",
+        "product": "MF",
+        "units": 176,
+        "year_built": 2006,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "The Carlisle at Dunedin",
+        "product": "MF",
+        "units": 160,
+        "year_built": 1973,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "The Park at Valenza",
+        "product": "MF",
+        "units": 776,
+        "year_built": 1988,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "Trinity Palms at Seven Springs",
+        "product": "MF",
+        "units": 390,
+        "year_built": 2007,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "WaterView Echelon City Center",
+        "product": "MF",
+        "units": 226,
+        "year_built": 2020,
+        "last_seen": "2026-09-05"
+      }
+    ],
+    "NSH": [
+      {
+        "name": "1082 Townhomes",
+        "product": "BFR",
+        "units": 52,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Legends Townhomes",
+        "product": "BFR",
+        "units": 116,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Mountain Springs",
+        "product": "BFR",
+        "units": 51,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "South Maple Townhomes",
+        "product": "BFR",
+        "units": 97,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Tricon Cedar Creek",
+        "product": "BFR",
+        "units": 87,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Cantare At Indian Lake Village",
+        "product": "MF",
+        "units": 206,
+        "year_built": 2012,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "Carillon",
+        "product": "MF",
+        "units": 308,
+        "year_built": 2016,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "Coda",
+        "product": "MF",
+        "units": 150,
+        "year_built": 2025,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Cottages at Mount View",
+        "product": "MF",
+        "units": 286,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Everett Nashville Yards",
+        "product": "MF",
+        "units": 361,
+        "year_built": 2026,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Hickory View",
+        "product": "MF",
+        "units": 120,
+        "year_built": 1982,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "LC Murfreesboro",
+        "product": "MF",
+        "units": 580,
+        "year_built": 2013,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "Lyric On Bell",
+        "product": "MF",
+        "units": 336,
+        "year_built": 1986,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "MAA Nashville West",
+        "product": "MF",
+        "units": 433,
+        "year_built": 2000,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "MAA Park",
+        "product": "MF",
+        "units": 440,
+        "year_built": 1986,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "Prima At Paseo South Gulch",
+        "product": "MF",
+        "units": 278,
+        "year_built": 2024,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "The Bend Nashville",
+        "product": "MF",
+        "units": 112,
+        "year_built": 1984,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "The Edge",
+        "product": "MF",
+        "units": 288,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "The Place at Fifth + Broadway",
+        "product": "MF",
+        "units": 381,
+        "year_built": 2020,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "Village at Elam Farms",
+        "product": "MF",
+        "units": 144,
+        "year_built": null,
+        "last_seen": null
+      }
+    ],
+    "LAS": [
+      {
+        "name": "Cactus Cliff",
+        "product": "BFR",
+        "units": 50,
+        "year_built": null,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "Gleneagles Village Townhomes",
+        "product": "BFR",
+        "units": 51,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Pine Landing in Cadence",
+        "product": "BFR",
+        "units": 155,
+        "year_built": null,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "The Alowyn Homes at Centennial",
+        "product": "BFR",
+        "units": 185,
+        "year_built": null,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "Townes at Peace Way",
+        "product": "BFR",
+        "units": 60,
+        "year_built": null,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "5400 Vistas",
+        "product": "MF",
+        "units": 204,
+        "year_built": 1986,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "Amara Spring Valley",
+        "product": "MF",
+        "units": 168,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Arium Meadows",
+        "product": "MF",
+        "units": 383,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Aspire at Grand Canyon",
+        "product": "MF",
+        "units": 288,
+        "year_built": 2021,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "Haven at Lone Mountain",
+        "product": "MF",
+        "units": 228,
+        "year_built": 1987,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "Indigo at Sunset Park",
+        "product": "MF",
+        "units": 240,
+        "year_built": 1982,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "Kaktus Life",
+        "product": "MF",
+        "units": 210,
+        "year_built": 2019,
+        "last_seen": "2026-08-22"
+      },
+      {
+        "name": "North Park Living Ph 1",
+        "product": "MF",
+        "units": 172,
+        "year_built": 2024,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "Park Vista Apartments",
+        "product": "MF",
+        "units": 156,
+        "year_built": 1984,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "Spring Valley Highlands",
+        "product": "MF",
+        "units": 525,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Spur",
+        "product": "MF",
+        "units": 286,
+        "year_built": 2018,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "THE BENNETT",
+        "product": "MF",
+        "units": 240,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "The Hendry",
+        "product": "MF",
+        "units": 347,
+        "year_built": 2020,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "The Quinn",
+        "product": "MF",
+        "units": 237,
+        "year_built": 1991,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "The Vine On 8th",
+        "product": "MF",
+        "units": 300,
+        "year_built": null,
+        "last_seen": null
+      }
+    ],
+    "RDU": [
+      {
+        "name": "ABODE Arringdon",
+        "product": "BFR",
+        "units": 65,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Porchlight Brier Creek",
+        "product": "BFR",
+        "units": 151,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Riverwood Ranch Townhomes",
+        "product": "BFR",
+        "units": 68,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Summerwell Harmony",
+        "product": "BFR",
+        "units": 200,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Walton Farms",
+        "product": "BFR",
+        "units": 61,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Amberton At Stonewater",
+        "product": "MF",
+        "units": 348,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Aurella Cary",
+        "product": "MF",
+        "units": 360,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Beachwood Park",
+        "product": "MF",
+        "units": 253,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Bell Jones Franklin",
+        "product": "MF",
+        "units": 277,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Bridgeport",
+        "product": "MF",
+        "units": 276,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Camden Reunion Park",
+        "product": "MF",
+        "units": 420,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Creekside At Crabtree",
+        "product": "MF",
+        "units": 335,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Marquis on Cary Parkway",
+        "product": "MF",
+        "units": 388,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Montecito West Apartments",
+        "product": "MF",
+        "units": 134,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Nora",
+        "product": "MF",
+        "units": 372,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Park Place Apartments",
+        "product": "MF",
+        "units": 100,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Sunnybrook Pointe",
+        "product": "MF",
+        "units": 180,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "The Pointe at Heritage",
+        "product": "MF",
+        "units": 260,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Villages At Pecan Grove",
+        "product": "MF",
+        "units": 336,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Vintage Raleigh West",
+        "product": "MF",
+        "units": 364,
+        "year_built": null,
+        "last_seen": null
+      }
+    ],
+    "JAX": [
+      {
+        "name": "360 Communities at Avenues Walk",
+        "product": "BFR",
+        "units": 182,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Casa Solara Townhomes",
+        "product": "BFR",
+        "units": 280,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Hammock Oaks",
+        "product": "BFR",
+        "units": 125,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Terrapin Station",
+        "product": "BFR",
+        "units": 60,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Viridian Southside Quarter",
+        "product": "BFR",
+        "units": 76,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Calloway Cove",
+        "product": "MF",
+        "units": 188,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Cove at Peninsula",
+        "product": "MF",
+        "units": 464,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Eastborough San Marco",
+        "product": "MF",
+        "units": 226,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Elevate Baymeadows",
+        "product": "MF",
+        "units": 192,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Mills Creek Preserve",
+        "product": "MF",
+        "units": 188,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Otter Run Apartments",
+        "product": "MF",
+        "units": 192,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Savannah Springs",
+        "product": "MF",
+        "units": 234,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "The Commons",
+        "product": "MF",
+        "units": 328,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "The Felix",
+        "product": "MF",
+        "units": 280,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "The Finley Apartment Homes",
+        "product": "MF",
+        "units": 312,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "The Hawthorne Apartments",
+        "product": "MF",
+        "units": 239,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "The Residences at Enso",
+        "product": "MF",
+        "units": 304,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "The Square at 59 Caroline",
+        "product": "MF",
+        "units": 356,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "The Waterford At Mandarin Apartments",
+        "product": "MF",
+        "units": 432,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Village Walk",
+        "product": "MF",
+        "units": 240,
+        "year_built": null,
+        "last_seen": null
+      }
+    ],
+    "HSV": [
+      {
+        "name": "Lakeside Residences",
+        "product": "BFR",
+        "units": 143,
+        "year_built": null,
+        "last_seen": "2026-08-29"
+      },
+      {
+        "name": "Memorial Village",
+        "product": "BFR",
+        "units": 175,
+        "year_built": null,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "Sanctuary at Indian Creek",
+        "product": "BFR",
+        "units": 244,
+        "year_built": null,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "The Everstead at Madison",
+        "product": "BFR",
+        "units": 231,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Villas at Capital Twenty",
+        "product": "BFR",
+        "units": 162,
+        "year_built": null,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "Arch Street",
+        "product": "MF",
+        "units": 267,
+        "year_built": 2009,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "Aurora Luxury Apartments",
+        "product": "MF",
+        "units": 324,
+        "year_built": 2022,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "Chasewood Village",
+        "product": "MF",
+        "units": 208,
+        "year_built": 1982,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "Encore MidCity",
+        "product": "MF",
+        "units": 244,
+        "year_built": 2023,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "Garden Cove Apartments",
+        "product": "MF",
+        "units": 200,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Grand Reserve at Madison",
+        "product": "MF",
+        "units": 232,
+        "year_built": 2002,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "Holly Anne",
+        "product": "MF",
+        "units": 155,
+        "year_built": 2024,
+        "last_seen": "2026-08-30"
+      },
+      {
+        "name": "Hunters Ridge Apartments",
+        "product": "MF",
+        "units": 431,
+        "year_built": 1983,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "Laurelwood",
+        "product": "MF",
+        "units": 192,
+        "year_built": 1984,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "Legacy at Jones Farm",
+        "product": "MF",
+        "units": 421,
+        "year_built": 2019,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "Mural at Stovehouse",
+        "product": "MF",
+        "units": 200,
+        "year_built": 2024,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "The Alexandria",
+        "product": "MF",
+        "units": 258,
+        "year_built": 2021,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "The Heights",
+        "product": "MF",
+        "units": 172,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "The Pointe At Bailey Cove",
+        "product": "MF",
+        "units": 124,
+        "year_built": 1970,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "Villas at Kelly Springs",
+        "product": "MF",
+        "units": 105,
+        "year_built": null,
+        "last_seen": null
+      }
+    ],
+    "SRQ": [
+      {
+        "name": "BB Living Antigua at Lakewood Ranch",
+        "product": "BFR",
+        "units": 192,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Marisol",
+        "product": "BFR",
+        "units": 172,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "The Sophia",
+        "product": "BFR",
+        "units": 244,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Willow Walk North",
+        "product": "BFR",
+        "units": 253,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Yardly Artisan Lakes",
+        "product": "BFR",
+        "units": 192,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Amalfi on the Ridge",
+        "product": "MF",
+        "units": 103,
+        "year_built": 2025,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "Aspire on 10th",
+        "product": "MF",
+        "units": 157,
+        "year_built": 2026,
+        "last_seen": "2026-08-30"
+      },
+      {
+        "name": "Gulf Gate",
+        "product": "MF",
+        "units": 214,
+        "year_built": 1974,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "Lakes at North Port",
+        "product": "MF",
+        "units": 312,
+        "year_built": 2000,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "Lunara",
+        "product": "MF",
+        "units": 303,
+        "year_built": 2022,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "Lyra",
+        "product": "MF",
+        "units": 222,
+        "year_built": 2020,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "Marlowe Jacaranda",
+        "product": "MF",
+        "units": 240,
+        "year_built": 2024,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "The Concord Luxury Apartments",
+        "product": "MF",
+        "units": 257,
+        "year_built": 2024,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "The Lawrence at Wellen Park",
+        "product": "MF",
+        "units": 359,
+        "year_built": 2026,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "The Residences At Creighton Waterway",
+        "product": "MF",
+        "units": 100,
+        "year_built": 2022,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "The Row Waterside Apartments",
+        "product": "MF",
+        "units": 301,
+        "year_built": 2022,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "Treviso Grand",
+        "product": "MF",
+        "units": 272,
+        "year_built": 2018,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "Velo",
+        "product": "MF",
+        "units": 221,
+        "year_built": 2026,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "Venice Isles",
+        "product": "MF",
+        "units": 324,
+        "year_built": 2020,
+        "last_seen": "2026-09-05"
+      },
+      {
+        "name": "Venice Park",
+        "product": "MF",
+        "units": 243,
+        "year_built": 1985,
+        "last_seen": "2026-09-05"
+      }
+    ],
+    "SAT": [
+      {
+        "name": "Alamar Apartments",
+        "product": "BFR",
+        "units": 283,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Altura",
+        "product": "BFR",
+        "units": 316,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Birdsong at Sonoma Ranch",
+        "product": "BFR",
+        "units": 347,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Braunwood at Towncreek",
+        "product": "BFR",
+        "units": 153,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Caliza at the Loop",
+        "product": "BFR",
+        "units": 154,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Casinas at Gruene",
+        "product": "BFR",
+        "units": 126,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Creekside Ranch",
+        "product": "BFR",
+        "units": 215,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Creekside Terrace",
+        "product": "BFR",
+        "units": 100,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Los Cielos at Brooks",
+        "product": "BFR",
+        "units": 488,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Solstice Springs",
+        "product": "BFR",
+        "units": 76,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "The Arbor at Riverstone",
+        "product": "BFR",
+        "units": 83,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "The Enclave at Medina",
+        "product": "BFR",
+        "units": 120,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "The Willows at Kendall Brook",
+        "product": "BFR",
+        "units": 103,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Tricon Abbott Place",
+        "product": "BFR",
+        "units": 194,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Tricon Trails at Culebra",
+        "product": "BFR",
+        "units": 124,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Village at Mayfair",
+        "product": "BFR",
+        "units": 217,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Villas at College Park",
+        "product": "BFR",
+        "units": 62,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Vista at Avenida Rental Homes",
+        "product": "BFR",
+        "units": 107,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Walnut Bend",
+        "product": "BFR",
+        "units": 60,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Winding Brook Rental Homes",
+        "product": "BFR",
+        "units": 97,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      }
+    ],
+    "SAV": [
+      {
+        "name": "Cottonvale Towns",
+        "product": "BFR",
+        "units": 71,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Covey Homes at New Hampstead",
+        "product": "BFR",
+        "units": 327,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Haven at the Highlands",
+        "product": "BFR",
+        "units": 158,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Mulberry at Rice Hope",
+        "product": "BFR",
+        "units": 266,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Oak Grove Townhomes",
+        "product": "BFR",
+        "units": 54,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Rice Hope",
+        "product": "BFR",
+        "units": 200,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Rivermoor West Townhomes",
+        "product": "BFR",
+        "units": 98,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Savannah Gardens Phase IV",
+        "product": "BFR",
+        "units": 114,
+        "year_built": null,
+        "last_seen": "2026-08-08"
+      },
+      {
+        "name": "The Retreat at Henderson Lakes",
+        "product": "BFR",
+        "units": 204,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      }
+    ],
+    "TYS": [
+      {
+        "name": "Alden North Knoxville",
+        "product": "BFR",
+        "units": 120,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Amber Vista",
+        "product": "BFR",
+        "units": 61,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Chapman Trace Townhomes",
+        "product": "BFR",
+        "units": 113,
+        "year_built": null,
+        "last_seen": "2026-08-29"
+      },
+      {
+        "name": "Highline at Knoxville",
+        "product": "BFR",
+        "units": 261,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Mockingbird Meadows",
+        "product": "BFR",
+        "units": 60,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Pleasant Ridge Stables",
+        "product": "BFR",
+        "units": 68,
+        "year_built": null,
+        "last_seen": "2026-08-29"
+      },
+      {
+        "name": "Steele Landing Townhome Rentals",
+        "product": "BFR",
+        "units": 133,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      },
+      {
+        "name": "Strawberry Meadows Townhomes",
+        "product": "BFR",
+        "units": 62,
+        "year_built": null,
+        "last_seen": "2026-07-16"
+      },
+      {
+        "name": "Windermere Trails",
+        "product": "BFR",
+        "units": 54,
+        "year_built": null,
+        "last_seen": "2026-09-04"
+      }
+    ],
+    "CHA": [
+      {
+        "name": "Anchor Point",
+        "product": "BFR",
+        "units": 156,
+        "year_built": null,
+        "last_seen": "2026-08-21"
+      },
+      {
+        "name": "Arcadia Creekside",
+        "product": "BFR",
+        "units": 104,
+        "year_built": null,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "Ashford Villas",
+        "product": "BFR",
+        "units": 82,
+        "year_built": null,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "Cannondale Court",
+        "product": "BFR",
+        "units": 89,
+        "year_built": null,
+        "last_seen": "2026-08-08"
+      },
+      {
+        "name": "Forest Hill Villas",
+        "product": "BFR",
+        "units": 85,
+        "year_built": null,
+        "last_seen": null
+      },
+      {
+        "name": "Guild Falls",
+        "product": "BFR",
+        "units": 92,
+        "year_built": null,
+        "last_seen": "2026-09-11"
+      },
+      {
+        "name": "Hamilton Villas",
+        "product": "BFR",
+        "units": 128,
+        "year_built": null,
+        "last_seen": "2026-09-11"
+      }
+    ]
+  },
+  "metros": {
+    "ATL": "Atlanta, GA",
+    "AUS": "Austin, TX",
+    "CHA": "Chattanooga, TN",
+    "CLT": "Charlotte, NC",
+    "DEN": "Denver, CO",
+    "DFW": "Dallas\u2013Fort Worth, TX",
+    "HOU": "Houston, TX",
+    "HSV": "Huntsville, AL",
+    "JAX": "Jacksonville, FL",
+    "LAS": "Las Vegas, NV",
+    "LAX": "Los Angeles / Orange County, CA",
+    "MCO": "Orlando, FL",
+    "NSH": "Nashville, TN",
+    "PHX": "Phoenix, AZ",
+    "RDU": "Raleigh\u2013Durham, NC",
+    "SAT": "San Antonio, TX",
+    "SAV": "Savannah, GA",
+    "SRQ": "Sarasota, FL",
+    "TPA": "Tampa, FL",
+    "TYS": "Knoxville, TN"
+  },
+  "generated_at": "2026-09-12T00:49:53+00:00",
+  "sample_per_market": 20
+}

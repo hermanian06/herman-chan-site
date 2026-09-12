@@ -1,7 +1,7 @@
 ---
 title: Evaluation framework
 blurb: A labeled gold-standard set plus scoring scripts to catch regressions before merging prompt or model changes. Built first for the property-type classifier in my supply pipeline — independently-labeled goldens, cost-sensitive scoring, deterministic runs — and extending to the higher-volume document-extraction step.
-order: 5
+order: 6
 status: In production
 statusClass: live
 seriesPosts: true

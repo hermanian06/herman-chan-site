@@ -1,7 +1,7 @@
 ---
 title: Deal-document search
 blurb: A hybrid search system over my team's years of deal documents — pitch memos, broker emails, internal notes. A relational database for the structured facts, vector embeddings for the prose, and a router that picks whichever fits the question.
-order: 6
+order: 7
 status: In production
 statusClass: live
 role: Sole builder & operator
