@@ -1,0 +1,61 @@
+---
+/**
+ * Tab 4 — Rent Database.
+ *   §01 what / how / why, for two readers (draft bullets)
+ *   then the current rent dashboard, unchanged — RentDashboard.astro is the same body
+ *   /demo/rent-database/ renders, read at build time from src/data/rents/rent-database.json.
+ */
+import Layout from "../../layouts/Layout.astro";
+import TabHead from "../../components/tabs/TabHead.astro";
+import TwoAudiences from "../../components/tabs/TwoAudiences.astro";
+import RentDashboard from "../../components/rents/RentDashboard.astro";
+import db from "../../data/rents/rent-database.json";
+
+const h = db.headline;
+const n = (v: number) => v.toLocaleString("en-US");
+
+const forAI = [
+  `What: a weekly census of advertised rents — ${n(h.communities)} communities across ${h.markets} metros, at floor-plan level, with asking rent and net-effective rent side by side and the concession parsed into weeks.`,
+  "How: adapters first. Most communities run on one of a handful of leasing platforms, each serving floor plans from an endpoint with a stable shape, so a deterministic reader per platform runs before any model call. Only bespoke sites fall through to the language model, and that tail goes out as one overnight batch at half price.",
+  "How: a per-market cadence table (weekly, fortnightly, monthly) drives both the scrape and every staleness check, so a fortnightly market cannot be reported stale for being fortnightly. Daily assertions cover coverage rates, snapshot freshness, geocode gaps and duplicate communities.",
+  "Why: an adapter that cannot find a floor plan fails loudly; it cannot hallucinate a two-bedroom. The model's output goes through the same validation as every adapter's.",
+  "Why: tracked and scraped are different columns and are shown as such; medians over thin samples are greyed and labelled provisional. The page cannot claim a figure the database does not hold, because every number is read from it at build time.",
+];
+const forRE = [
+  "What: what every community you would comp against is asking this week — and what it is actually giving away.",
+  "How: six weeks free on a twelve-month lease is roughly an eleven-percent haircut to the rent you will collect. The database stores the asking rent and the net-effective rent next to each other so the haircut is visible.",
+  "How: it feeds the comps tab of the underwriting pack directly. No listings-site quota, no export, no copy-paste.",
+  "Why: a concession-blind comp set is the most common way a rent assumption goes wrong, and it is always wrong in the flattering direction.",
+  "Why: the share of communities under concession, by metro, tells you which markets are buying occupancy — something a median asking rent never will.",
+  "What it is not: a signed-lease dataset, and not a rent index yet. Aggregates are public; no rent is published against a named community.",
+];
+---
+
+<Layout
+  title="Rent database"
+  description="A weekly scrape of live asking and net-effective rents across twenty metros — what it is, how it is built, and the live dashboard over it."
+>
+  <TabHead
+    kicker="Tab 04 · Rent Database"
+    title="What every community is asking this week, and what it is giving away."
+    lede="A scraper walks the leasing page of every rental community I track, reads the floor plans off it, and records the asking rent alongside the concession. The dashboard below is read from the live database at build time."
+    draft
+  />
+
+  <TwoAudiences hash="§ 01" ai={forAI} re={forRE} />
+
+  <section class="dash">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="section-title__hash">§ 02</span>
+        <span class="section-title__label">The dashboard</span>
+        <span class="section-title__hint">Coverage · composition · concessions · the last thirty days</span>
+      </div>
+    </div>
+  </section>
+  <RentDashboard />
+</Layout>
+
+<style>
+  .dash { padding: clamp(40px, 6vw, 64px) 0 0; }
+</style>

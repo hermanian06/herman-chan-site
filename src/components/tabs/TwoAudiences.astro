@@ -1,0 +1,83 @@
+---
+/**
+ * The "what / how / why" block that every project tab opens with, written twice:
+ * once for AI and data people, once for real-estate people. Each side is ~30 seconds
+ * of reading. Bullets are plain strings; Herman rewrites them in place.
+ */
+interface Props {
+  hash?: string;
+  ai: string[];
+  re: string[];
+  aiTitle?: string;
+  reTitle?: string;
+}
+const {
+  hash = "§ 01",
+  ai,
+  re,
+  aiTitle = "For AI and data people",
+  reTitle = "For real-estate people",
+} = Astro.props;
+---
+
+<section class="aud">
+  <div class="wrap">
+    <div class="section-title">
+      <span class="section-title__hash">{hash}</span>
+      <span class="section-title__label">What, how, why</span>
+      <span class="section-title__hint">Two readers, one build</span>
+    </div>
+
+    <div class="aud__grid">
+      <div class="aud__col">
+        <h2 class="aud__h2">{aiTitle}</h2>
+        <ul class="aud__list">
+          {ai.map((b) => <li>{b}</li>)}
+        </ul>
+      </div>
+      <div class="aud__col">
+        <h2 class="aud__h2">{reTitle}</h2>
+        <ul class="aud__list">
+          {re.map((b) => <li>{b}</li>)}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .aud { padding: clamp(40px, 6vw, 64px) 0 0; }
+  .aud__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-7);
+    align-items: start;
+  }
+  .aud__col { border-top: 1px solid var(--rule); padding-top: var(--s-4); }
+  .aud__h2 {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+    color: var(--accent);
+    margin: 0 0 var(--s-4);
+  }
+  .aud__list {
+    margin: 0;
+    padding-left: 1.1em;
+    display: grid;
+    gap: var(--s-3);
+  }
+  .aud__list li {
+    font-family: var(--serif);
+    font-size: var(--t-17);
+    line-height: 1.5;
+    color: var(--fg-soft);
+  }
+  .aud__list li::marker { color: var(--muted-2); }
+
+  @media (max-width: 860px) {
+    .aud__grid { grid-template-columns: minmax(0, 1fr); gap: var(--s-6); }
+  }
+</style>

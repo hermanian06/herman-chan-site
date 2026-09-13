@@ -1,0 +1,196 @@
+---
+/**
+ * Tab 2 — Underwriting Agent.
+ *   §01 what / how / why, for two readers (draft bullets)
+ *   §02 the sample deal, populated (the same baked previews /demo/underwriting/ renders)
+ *   §03 one workbook to download
+ *   §04 the upload portal (same component as /demo/underwriting/try/)
+ *
+ * NOTE for the Tab-2 session: Herman wants uploads with NO email step. The form shows the
+ * email row only when the API's GET /api/meta says access_mode="email" — flipping that is a
+ * Portfolio Demo backend change, not a change here.
+ */
+import Layout from "../../layouts/Layout.astro";
+import TabHead from "../../components/tabs/TabHead.astro";
+import TwoAudiences from "../../components/tabs/TwoAudiences.astro";
+import OutputTabs from "../../components/demo/OutputTabs.astro";
+import UploadForm from "../../components/demo/UploadForm.astro";
+import { DEMO_TABS } from "../../data/demo/tabs";
+
+import summaryHtml from "../../data/demo/summary.html?raw";
+import compsHtml from "../../data/demo/comps.html?raw";
+import propertyTaxHtml from "../../data/demo/property-tax.html?raw";
+import demandHtml from "../../data/demo/demand.html?raw";
+import supplyHtml from "../../data/demo/supply.html?raw";
+import t12DataHtml from "../../data/demo/t12-data.html?raw";
+import t12PnlHtml from "../../data/demo/t12-pnl.html?raw";
+import t12ChecksHtml from "../../data/demo/t12-checks-pricing.html?raw";
+import rentRollHtml from "../../data/demo/rent-roll.html?raw";
+import unitMixHtml from "../../data/demo/unit-mix.html?raw";
+import notesHtml from "../../data/demo/notes.html?raw";
+import manifestHtml from "../../data/demo/manifest.html?raw";
+import auditTrailHtml from "../../data/demo/audit-trail.html?raw";
+
+const panelHtml: Record<string, string> = {
+  summary: summaryHtml,
+  comps: compsHtml,
+  "property-tax": propertyTaxHtml,
+  demand: demandHtml,
+  supply: supplyHtml,
+  "t12-data": t12DataHtml,
+  "t12-pnl": t12PnlHtml,
+  "t12-checks": t12ChecksHtml,
+  "rent-roll": rentRollHtml,
+  "unit-mix": unitMixHtml,
+  manifest: manifestHtml,
+  "audit-trail": auditTrailHtml,
+  notes: notesHtml,
+};
+const sampleTabs = DEMO_TABS.map((tab) => ({ ...tab, html: panelHtml[tab.id] }));
+
+/* One download, per Herman: the deal summary. The other four stay on /demo/underwriting/. */
+const download = {
+  href: "/downloads/underwriting-demo/sample-deal-summary.xlsx",
+  name: "Sample deal — deal summary workbook",
+  note: "Summary card, rent comps with asking and net-effective rent, demand and supply by ring. Synthetic property, real address, illustrative pricing.",
+  file: "sample-deal-summary.xlsx",
+};
+
+const forAI = [
+  "What: a headless pipeline that takes a deal's raw documents — offering memo, trailing-twelve income statement, rent roll — and produces four workbooks from one structured interchange file.",
+  "How: document classification first, so file names and the exporting system do not matter; then one extraction call per document into a fixed schema; then deterministic Python for every tie-out and every workbook, with formulas left live so the arithmetic can be audited.",
+  "How: each analysis is a skill — a Markdown spec plus a folder of Python tools. The model orchestrates and drafts; the code computes. Smaller models do extraction, a larger one does synthesis.",
+  "Why: chained model steps compound error. The model sits at exactly the steps plain code cannot do (reading a scanned statement, judging what a document is) and nowhere else.",
+  "Why: a value the pipeline cannot establish reads MISSING and carries a reason. A visible hole is cheaper than a plausible number that survives into a model.",
+  "Guardrails: every bug fix is red-test-first; a reviewer model from a different vendor reads every diff cold; a field manifest maps each extracted value to the model input it fills.",
+];
+const forRE = [
+  "What: hand it the OM, the T-12 and the rent roll; get back the one-pager, the categorised T-12 with cap-rate and pricing ladders, the rent roll rolled up by floor plan, and a list of every input for your own model.",
+  "How: it does not replace your model. It fills the inputs and tells you where each one goes, so the committee keeps the spreadsheet it already trusts.",
+  "How: market rent for the model is the new-lease average where a plan has new leases in the window, the in-place average otherwise — never a blended 'recently leased' number, which is a renewal average in disguise.",
+  "How: every comp row shows asking rent and net-effective rent, because a concession-blind comp set is the most common way a rent assumption goes wrong.",
+  "Why: the two days of extraction before the model gets touched were the bottleneck. The one-page summary went from about two hours to about fifteen minutes.",
+  "Why: the same definitions on every deal, so a deal underwritten in March compares cleanly with one underwritten in August.",
+];
+---
+
+<Layout
+  title="Underwriting agent"
+  description="An agent that turns a deal's raw documents into an analysis pack: what it is, how it is built, a populated sample, one workbook to download, and an upload portal to run it on a live deal."
+>
+  <TabHead
+    kicker="Tab 02 · Underwriting Agent"
+    title="From a deal's raw documents to a finished analysis pack."
+    lede="Give it the offering memo, the trailing-twelve income statement and the rent roll. It classifies the files, extracts the fields into one structured record, ties the numbers out, and builds the workbooks — with the arithmetic left live."
+    draft
+  />
+
+  <TwoAudiences hash="§ 01" ai={forAI} re={forRE} />
+
+  <section class="blk">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="section-title__hash">§ 02</span>
+        <span class="section-title__label">The sample deal</span>
+        <span class="section-title__hint">Every tab populated from one run</span>
+      </div>
+      <p class="blk__note">
+        A synthetic property at a real address in Tempe, Arizona. The demand, supply, comp
+        and property-tax tabs are genuine pulls; the rent roll, income statement and pricing
+        were fabricated to exercise the formats. Full disclosures on the
+        <a href="/demo/underwriting/">original sample page</a>.
+      </p>
+      <OutputTabs tabs={sampleTabs} />
+    </div>
+  </section>
+
+  <section class="blk">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="section-title__hash">§ 03</span>
+        <span class="section-title__label">Download</span>
+        <span class="section-title__hint">One workbook from the sample deal</span>
+      </div>
+      <ul class="dl">
+        <li class="dl__item">
+          <a class="dl__link" href={download.href} download>{download.name}</a>
+          <span class="dl__note">{download.note}</span>
+          <span class="dl__file">{download.file}</span>
+        </li>
+      </ul>
+      <p class="blk__note blk__note--small">
+        The T-12, rent-roll and model-ready workbooks, plus the interchange JSON, are still
+        downloadable from the <a href="/demo/underwriting/">original sample page</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="blk">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="section-title__hash">§ 04</span>
+        <span class="section-title__label">Try it on a live deal</span>
+        <span class="section-title__hint">Files deleted within the hour · nothing stored or trained on</span>
+      </div>
+      <p class="blk__note">
+        Upload a marketing package, a trailing-twelve income statement and a rent roll, enter
+        the price per unit, and the pipeline returns the same tabs for your deal. The sample
+        deal runs with no files at all.
+      </p>
+      <UploadForm />
+      <div data-uf-results>
+        <OutputTabs prefix="run-" tabs={DEMO_TABS.map((t) => ({ ...t, html: '<p class="uf-ph">Run the sample deal or upload a deal to fill this tab.</p>' }))} />
+      </div>
+      <section class="run-dl" aria-labelledby="run-dl-title">
+        <h2 id="run-dl-title" class="run-dl__h2">Workbooks from this run</h2>
+        <p class="run-dl__empty" data-uf-nodownloads>Nothing yet. The workbooks appear here when a run finishes.</p>
+        <ul class="uf-dl" data-uf-downloads></ul>
+        <p class="run-dl__expiry" data-uf-expiry hidden></p>
+      </section>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .blk { padding: clamp(40px, 6vw, 64px) 0 0; }
+  .blk:last-of-type { padding-bottom: var(--s-9); }
+  .blk__note {
+    font-family: var(--serif);
+    font-size: var(--t-17);
+    line-height: 1.55;
+    color: var(--fg-soft);
+    max-width: var(--measure);
+    margin: 0 0 var(--s-4);
+  }
+  .blk__note--small { font-size: var(--t-15); color: var(--muted); margin-top: var(--s-4); }
+
+  .dl { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+  .dl__item {
+    display: grid;
+    grid-template-columns: minmax(12rem, 20rem) 1fr auto;
+    gap: var(--s-4);
+    align-items: baseline;
+    padding: var(--s-3) 0;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .dl__link { font-family: var(--serif); font-size: var(--t-17); color: var(--accent); }
+  .dl__note { font-family: var(--serif); font-size: var(--t-15); color: var(--muted); }
+  .dl__file { font-family: var(--mono); font-size: var(--t-12); color: var(--muted-2); white-space: nowrap; }
+
+  .run-dl { margin: var(--s-7) 0 0; }
+  .run-dl__h2 {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+    color: var(--muted);
+    margin: 0 0 var(--s-4);
+  }
+  .run-dl__empty { font-family: var(--serif); font-size: var(--t-15); color: var(--muted); margin: 0; }
+  .run-dl__expiry { font-family: var(--mono); font-size: var(--t-12); color: var(--muted-2); margin: var(--s-3) 0 0; }
+
+  @media (max-width: 720px) {
+    .dl__item { grid-template-columns: 1fr; gap: 2px; }
+  }
+</style>

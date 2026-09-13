@@ -19,9 +19,12 @@ interface Tab {
 
 interface Props {
   tabs: Tab[];
+  /* Prefix for element ids, so two tab sets on one page (a baked sample and a live
+     run) do not collide. Defaults to none, which keeps the demo pages byte-identical. */
+  prefix?: string;
 }
 
-const { tabs } = Astro.props;
+const { tabs, prefix = "" } = Astro.props;
 
 const groups: { name: string; tabs: Tab[] }[] = [];
 for (const tab of tabs) {
@@ -42,9 +45,9 @@ for (const tab of tabs) {
               type="button"
               role="tab"
               class="ot__tab"
-              id={`tab-${tab.id}`}
+              id={`${prefix}tab-${tab.id}`}
               data-tab={tab.id}
-              aria-controls={`panel-${tab.id}`}
+              aria-controls={`${prefix}panel-${tab.id}`}
               aria-selected="false"
             >
               {tab.label}
@@ -58,9 +61,9 @@ for (const tab of tabs) {
   {tabs.map((tab) => (
     <section
       class="ot__panel"
-      id={`panel-${tab.id}`}
+      id={`${prefix}panel-${tab.id}`}
       role="tabpanel"
-      aria-labelledby={`tab-${tab.id}`}
+      aria-labelledby={`${prefix}tab-${tab.id}`}
       data-panel={tab.id}
     >
       <div set:html={tab.html} />

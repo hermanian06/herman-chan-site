@@ -1,9 +1,20 @@
 ---
+/* Six-tab nav (redesign, 2026-09-13). The old Index / Projects / Writing entries are
+   gone from the bar; /projects/ and /posts/ still build and are reachable by URL, and the
+   old landing is kept at /legacy/ until the redesign is signed off. */
 const path = Astro.url.pathname;
 const current = (href: string) => {
   if (href === "/") return path === "/";
   return path === href || path.startsWith(href);
 };
+const tabs = [
+  { href: "/", label: "Intro" },
+  { href: "/underwriting-agent/", label: "Underwriting Agent" },
+  { href: "/supply-database/", label: "Supply Database" },
+  { href: "/rent-database/", label: "Rent Database" },
+  { href: "/blog/", label: "Blog" },
+  { href: "/about/", label: "About" },
+];
 ---
 
 <header class="site-header">
@@ -15,10 +26,9 @@ const current = (href: string) => {
       <span class="brand__sub">Acquisitions &amp; AI tooling</span>
     </a>
     <nav class="nav" aria-label="Primary">
-      <a href="/" aria-current={current("/") ? "page" : undefined}>Index</a>
-      <a href="/projects/" aria-current={current("/projects/") ? "page" : undefined}>Projects</a>
-      <a href="/posts/" aria-current={current("/posts/") ? "page" : undefined}>Writing</a>
-      <a href="/rss.xml" title="RSS feed">RSS</a>
+      {tabs.map((t) => (
+        <a href={t.href} aria-current={current(t.href) ? "page" : undefined}>{t.label}</a>
+      ))}
     </nav>
   </div>
 </header>

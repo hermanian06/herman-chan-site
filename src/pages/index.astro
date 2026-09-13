@@ -1,111 +1,149 @@
 ---
+/**
+ * Tab 1 — Intro. Three systems, ~30 seconds each: what, why, result.
+ * Draft bullets (2026-09-13); Herman rewrites in the Intro session.
+ * The pre-redesign landing is kept at /legacy/.
+ */
 import Layout from "../layouts/Layout.astro";
-import PostCard from "../components/PostCard.astro";
-import ProjectCard from "../components/ProjectCard.astro";
-import { getCollection } from "astro:content";
+import ProjectBrief from "../components/tabs/ProjectBrief.astro";
+import db from "../data/rents/rent-database.json";
 
-const allPosts = (await getCollection("posts", ({ data }) => !data.draft)).sort(
-  (a, b) => a.data.pubDate.getTime() - b.data.pubDate.getTime(),
-);
-/* Posts are numbered chronologically from oldest — first post is N° 001. */
-const numberedPosts = allPosts.map((post, idx) => ({ post, num: idx + 1 }));
-/* RULE (Herman, 2026-06-10): § 03 Writing lists EVERY published post, newest
-   first — never cap or slice this list. A published post must always be
-   visible on the landing index. */
-const recentPosts = [...numberedPosts]
-  .sort((a, b) => b.post.data.pubDate.getTime() - a.post.data.pubDate.getTime());
-
-const allProjects = (await getCollection("projects", ({ data }) => !data.draft)).sort(
-  (a, b) => a.data.order - b.data.order,
-);
+const rents = db.headline;
+const k = (v: number) => (v >= 1000 ? Math.round(v / 100) / 10 + "k" : String(v));
 ---
 
-<Layout>
-  <!-- HERO -->
+<Layout description="Herman Chan — three production AI systems built for real-estate underwriting: an underwriting agent, a supply database, and a rent database.">
   <section class="hero">
     <div class="wrap hero__grid">
       <div>
-        <span class="kicker">N° 001 &nbsp;/&nbsp; Index</span>
+        <span class="kicker">Intro</span>
         <h1 class="hero__title">
-          I <em>build LLM tools</em> — for my own real-estate underwriting work.
+          Three systems I built <em>for my own underwriting work.</em>
         </h1>
         <p class="hero__lede">
-          I work in acquisitions at Haven Realty Capital, underwriting rental housing — single-family rentals and build-to-rent communities — across the Sunbelt. The unusual part: I scope the problem, prompt-engineer the workflows, and direct Claude through the build of the AI tooling we use internally — Claude Code skills, Model Context Protocol servers, agent workflows. Six production tools shipped since March 2026, another in build; each one compresses a specific part of the workflow. A one-page deal summary that used to take two hours now takes fifteen minutes.
+          I run acquisitions for a rental-housing investor. Over the last two years I have
+          directed the build of three production systems: an agent that turns a deal's raw
+          documents into an analysis pack, a database of new rental supply read from public
+          filings, and a weekly census of asking rents. This is what each one is, why it
+          exists, and what came out.
         </p>
+        <p class="hero__draft">Draft copy — every bullet on this page gets rewritten in the Intro session.</p>
       </div>
 
       <aside class="hero__aside" aria-label="At a glance">
         <dl>
           <dt>Role</dt><dd>Acquisitions + AI tooling, Haven Realty Capital</dd>
-          <dt>Focus</dt><dd>Claude · MCP · agentic workflows · rental-housing underwriting</dd>
-          <dt>Stack</dt><dd>Python · Anthropic API · Supabase · Railway</dd>
-          <dt>Operating model</dt><dd>I direct the build; Claude writes the code</dd>
+          <dt>Focus</dt><dd>Rental-housing underwriting · Claude · MCP · agent workflows</dd>
+          <dt>Stack</dt><dd>Python · Anthropic API · Postgres · Railway</dd>
+          <dt>Operating model</dt><dd>I make the architecture calls; the models write the code</dd>
           <dt>Contact</dt><dd><a href="https://www.linkedin.com/in/hermanchanai/">LinkedIn</a> · <a href="https://github.com/hermanian06">GitHub</a></dd>
         </dl>
       </aside>
-
     </div>
   </section>
 
-  <!-- PROJECTS -->
-  <section id="projects" class="section">
+  <section class="briefs">
     <div class="wrap">
       <div class="section-title">
-        <span class="section-title__hash">§ 02</span>
-        <span class="section-title__label">Projects</span>
-        <span class="section-title__hint">Internal tools shipped to teammates</span>
+        <span class="section-title__hash">§ 01</span>
+        <span class="section-title__label">The three systems</span>
+        <span class="section-title__hint">About thirty seconds each</span>
       </div>
 
-      <div class="projects">
-        {allProjects.map((p) => (
-          <ProjectCard
-            href={p.data.href ?? `/projects/${p.id}/`}
-            title={p.data.title}
-            blurb={p.data.blurb}
-            category={p.data.category}
-            status={p.data.status}
-            statusClass={p.data.statusClass}
-            stack={p.data.stack}
-            since={p.data.since}
-          />
-        ))}
-      </div>
+      <ProjectBrief
+        num="01"
+        title="Underwriting agent"
+        href="/underwriting-agent/"
+        flow={{
+          input: "A deal's raw documents: the offering memo, the trailing-twelve income statement, the rent roll — in whatever shape they left the property-management system.",
+          process: "Classify each document, extract its fields into one structured file, tie the numbers out, and build the workbooks with formulas left live.",
+          output: "A deal summary with comps, demand and supply; a categorised T-12 with cap-rate ladders; a rent roll rolled up by floor plan; a manifest of every field and the model input it fills.",
+        }}
+        what={[
+          "Takes a deal from raw documents to a finished analysis pack without a person in the loop.",
+          "Does not replace the financial model — it fills the model's inputs and hands over a manifest of where each one goes.",
+          "Comps carry asking and net-effective rent on every row; a value it cannot establish reads MISSING, never a plausible guess.",
+        ]}
+        why={[
+          "The bottleneck was never the model. It was the two days of extraction and categorisation before the model gets touched.",
+          "Definitions drifted between deals when the work was done by hand or in a chat window; two deals a month apart were not comparable.",
+          "Every shop already has a model its committee trusts. Nobody wants a stranger's spreadsheet.",
+        ]}
+        result={[
+          "The one-page deal summary went from about two hours to about fifteen minutes.",
+          "The pack runs unattended on a schedule; the same definitions apply to every deal.",
+          "Public sample plus an upload portal on the Underwriting Agent tab.",
+        ]}
+        stats={[
+          { num: "2 h → 15 min", label: "one-page deal summary" },
+          { num: "4", label: "workbooks per deal" },
+          { num: "1", label: "structured file they are all built from" },
+        ]}
+      />
+
+      <ProjectBrief
+        num="02"
+        title="Supply database"
+        href="/supply-database/"
+        flow={{
+          input: "Public development filings across nine Sunbelt metros: state environmental filings, county and city permits, planning and entitlement cases.",
+          process: "Scrape each portal with plain code; one language-model call per document for the fields code cannot read; classify, de-duplicate, geocode, stage.",
+          output: "A map dashboard, a read-only MCP server the team queries from claude.ai in plain English, and a weekly sheet.",
+        }}
+        what={[
+          "Watches public records in nine metros for new rental-housing supply — single-family, townhome and multifamily — from rezoning through construction.",
+          "Each filing becomes one structured row: units (stated or estimated from acreage), builder, stage, location.",
+          "Three signal tiers: entitlement (a year or more out), permit, construction.",
+        ]}
+        why={[
+          "Commercial datasets see a project when it is leasing. The filings see it twelve to thirty-six months earlier — when a builder conversation is still worth having.",
+          "Chained model steps compound error, so the model gets exactly one job per document and everything else stays deterministic and testable.",
+          "The dashboard once served frozen numbers for two weeks with every health check green — so the checks now follow the number all the way to the screen.",
+        ]}
+        result={[
+          "All nine metros live end-to-end on a weekly refresh since mid-2026.",
+          "Ask 'what is coming within three miles of this site' and get an answer by product type and stage.",
+          "An evaluation with independently labelled answers gates every prompt change.",
+        ]}
+        stats={[
+          { num: "9", label: "metros, weekly refresh" },
+          { num: "3", label: "signal tiers: entitlement · permit · construction" },
+          { num: "11", label: "read-only MCP tools" },
+        ]}
+      />
+
+      <ProjectBrief
+        num="03"
+        title="Rent database"
+        href="/rent-database/"
+        flow={{
+          input: "The leasing page of every rental community tracked across twenty metros, read on a per-market cadence.",
+          process: "Deterministic adapters for each leasing platform first; a language model only for the bespoke tail, batched overnight. Concession banners parsed into weeks.",
+          output: "Asking rent and net-effective rent per floor plan, with the concession alongside — feeding the comps tab of the underwriting pack.",
+        }}
+        what={[
+          "A weekly census of advertised rents: what every community is asking, and what it is actually giving away.",
+          "Floor-plan level, with the concession stored as a number rather than a marketing line.",
+          "Adapters first: a reader that fails loudly cannot hallucinate a two-bedroom.",
+        ]}
+        why={[
+          "A comp set that ignores concessions is wrong in the direction that makes a deal look better.",
+          "Listings sites publish the asking rent; none of them publish the six weeks free that turn it into an eleven-percent haircut.",
+          "Paid comp services meter every pull; my own scrape does not.",
+        ]}
+        result={[
+          `${rents.communities.toLocaleString("en-US")} communities across ${rents.markets} metros, refreshed on a rotation.`,
+          "Every comp row in the underwriting pack carries asking and net-effective rent instead of one number doing both jobs.",
+          "Aggregates are public on the Rent Database tab; no rent is published against a named community.",
+        ]}
+        stats={[
+          { num: k(rents.communities), label: "communities tracked" },
+          { num: String(rents.markets), label: "metros" },
+          { num: rents.floor_plans.toLocaleString("en-US"), label: "live floor plans" },
+        ]}
+      />
     </div>
   </section>
-
-  <!-- WRITING -->
-  {recentPosts.length > 0 && (
-    <section class="section">
-      <div class="wrap">
-        <div class="section-title">
-          <span class="section-title__hash">§ 03</span>
-          <span class="section-title__label">Writing</span>
-          <span class="section-title__hint">
-            Builder notes on the AI tools I run on real deals · all {allPosts.length} posts
-          </span>
-        </div>
-
-        <ol class="posts">
-          {recentPosts.map(({ post, num }) => (
-            <PostCard
-              href={`/posts/${post.id}/`}
-              num={num}
-              title={post.data.title}
-              description={post.data.description}
-              pubDate={post.data.pubDate}
-              tag={post.data.tag}
-              tagClass={post.data.tagClass}
-            />
-          ))}
-        </ol>
-
-        <div class="endplate">
-          <span>End of index</span>
-          <span><a href="/rss.xml">Subscribe via RSS →</a></span>
-        </div>
-      </div>
-    </section>
-  )}
 </Layout>
 
 <style>
@@ -129,11 +167,7 @@ const allProjects = (await getCollection("projects", ({ data }) => !data.draft))
     text-wrap: balance;
     color: var(--fg);
   }
-  .hero__title em {
-    font-style: italic;
-    font-weight: 400;
-    color: var(--accent);
-  }
+  .hero__title em { font-style: italic; font-weight: 400; color: var(--accent); }
   .hero__lede {
     font-family: var(--serif);
     font-size: clamp(17px, 1.6vw, 19px);
@@ -142,14 +176,22 @@ const allProjects = (await getCollection("projects", ({ data }) => !data.draft))
     max-width: 52ch;
     margin: 0;
   }
+  .hero__draft {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    letter-spacing: 0.04em;
+    color: var(--muted-2);
+    margin: var(--s-4) 0 0;
+    padding: 6px 10px;
+    border: 1px dashed var(--rule);
+    display: inline-block;
+  }
   .hero__aside {
     border-left: 1px solid var(--rule);
     padding-left: var(--s-5);
     font-family: var(--sans);
     font-size: var(--t-14);
     color: var(--fg-soft);
-    display: grid;
-    gap: var(--s-3);
     align-self: end;
   }
   .hero__aside dl {
@@ -166,74 +208,14 @@ const allProjects = (await getCollection("projects", ({ data }) => !data.draft))
     text-transform: uppercase;
     letter-spacing: 0.08em;
   }
-  .hero__aside dd { margin: 0; color: var(--fg-soft); }
+  .hero__aside dd { margin: 0; }
   .hero__aside dd a { color: var(--fg); border-bottom: 1px solid var(--rule); }
-  .hero__aside dd a:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    text-decoration: none;
-  }
+  .hero__aside dd a:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
 
-  .colophon {
-    grid-column: 1 / -1;
-    margin-top: var(--s-7);
-    display: flex;
-    align-items: baseline;
-    gap: var(--s-4);
-    font-family: var(--mono);
-    font-size: var(--t-12);
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-  .colophon .line { flex: 1; height: 1px; background: var(--rule); }
-
-  .section { padding: clamp(48px, 7vw, 80px) 0 0; }
-
-  /* Per-row + per-card styles live in PostCard.astro and ProjectCard.astro
-     respectively — Astro scopes <style> blocks to their own file's DOM. */
-  .posts {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    border-top: 1px solid var(--rule-soft);
-  }
-
-  .projects {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1px;
-    background: var(--rule-soft);
-    border: 1px solid var(--rule-soft);
-  }
-
-  .endplate {
-    margin-top: var(--s-7);
-    padding: var(--s-5) 0;
-    border-top: 1px solid var(--rule);
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    font-family: var(--mono);
-    font-size: var(--t-12);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-  }
-  .endplate a { color: var(--fg-soft); border-bottom: 1px solid var(--rule); }
-  .endplate a:hover {
-    color: var(--accent);
-    border-color: var(--accent);
-    text-decoration: none;
-  }
+  .briefs { padding: clamp(48px, 7vw, 80px) 0 var(--s-8); }
 
   @media (max-width: 860px) {
     .hero__grid { grid-template-columns: 1fr; gap: var(--s-6); }
-    .hero__aside {
-      border-left: 0;
-      border-top: 1px solid var(--rule);
-      padding: var(--s-5) 0 0;
-    }
-    .projects { grid-template-columns: 1fr; }
+    .hero__aside { border-left: 0; border-top: 1px solid var(--rule); padding: var(--s-5) 0 0; }
   }
 </style>

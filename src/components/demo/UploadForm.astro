@@ -455,7 +455,11 @@ import {
       /* ---------- results ---------- */
 
       function fillPanels(previews) {
-        var panels = document.querySelectorAll("[data-panel]");
+        /* A page that also shows a baked sample marks the run's panels with
+           [data-uf-results]; only those are filled. With no such container (the
+           original try page) every panel on the page belongs to the run. */
+        var scope = document.querySelector("[data-uf-results]") || document;
+        var panels = scope.querySelectorAll("[data-panel]");
         for (var i = 0; i < panels.length; i++) {
           var panel = panels[i];
           var id = panel.getAttribute("data-panel");

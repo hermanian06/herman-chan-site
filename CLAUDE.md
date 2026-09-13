@@ -7,6 +7,28 @@ resume). This file carries rules and architecture only; closeout never appends e
 
 ---
 
+## Redesign in progress — six tabs (started 2026-09-13, branch `redesign/six-tabs`)
+
+Herman is re-arranging the site into six tabs, one dedicated session per tab. **Nothing on this
+branch is pushed** — a push to `main` deploys, and every tab still carries draft bullet copy he
+intends to rewrite. Merge/push only when he says so.
+
+| Tab | Route | File | Session status |
+|---|---|---|---|
+| 1 Intro | `/` | `src/pages/index.astro` | scaffolded, draft bullets + flow strips |
+| 2 Underwriting Agent | `/underwriting-agent/` | `src/pages/underwriting-agent/index.astro` | scaffolded — sample tabs, one download, upload form (email-code step is a backend flag) |
+| 3 Supply Database | `/supply-database/` | `src/pages/supply-database/index.astro` | scaffolded — address search is UI only, needs a public read endpoint; MCP tool table |
+| 4 Rent Database | `/rent-database/` | `src/pages/rent-database/index.astro` + `src/components/rents/RentDashboard.astro` | scaffolded — dashboard body shared with `/demo/rent-database/` |
+| 5 Blog | `/blog/` | `src/pages/blog/index.astro` + `src/data/blog-outline.ts` | scaffolded — every post condensed to bullets, grouped by system |
+| 6 About | `/about/` | `src/pages/about/index.astro` | scaffolded, draft bio bullets |
+
+Kept, not deleted, until the redesign is signed off: the old landing at `/legacy/`
+(`src/pages/legacy/index.astro`), `/projects/` and `/posts/` (unlinked from the nav, still
+built). The "every published post is listed" rule below now applies to the **Blog tab**: an
+unfiled post renders under "Unfiled" there rather than vanishing.
+
+---
+
 ## The two locations (the "Option A" split, decided 2026-05-25)
 
 | Path | What lives here |

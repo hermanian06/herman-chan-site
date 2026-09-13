@@ -1,0 +1,119 @@
+---
+/**
+ * Tab 6 — About. Short bio as bullets (draft, 2026-09-13). Sources: the FDE résumé
+ * (2026-05-29), the old landing hero, and the "What this site is" post. Builder posture
+ * only — nothing here signals a job search. No phone, no email.
+ */
+import Layout from "../../layouts/Layout.astro";
+import TabHead from "../../components/tabs/TabHead.astro";
+
+const now = [
+  "Herman Chan. Director of Acquisitions at Haven Realty Capital since 2021: I source, underwrite and take build-to-rent and single-family-rental deals through investment committee across Sunbelt markets — Atlanta, Phoenix, Houston, Dallas–Fort Worth, Tampa.",
+  "Since 2024 I have also designed and operated the team's AI tooling against live, real-money deal workflows: the three systems on this site, plus the Claude Code skills, the two MCP servers and the evaluation harness underneath them.",
+  "I make the architecture calls; the models write the code. My job is deciding what each tool needs to do, where a plain script is the right answer and where a language model is, and then directing the build and testing the result on real deals.",
+];
+const before = [
+  "Ten years before that as an owner-operator: acquired and ran a thirty-home single-family rental portfolio in Houston and Phoenix — acquisitions, financing, renovations, property management, end to end.",
+  "Master of Real Estate Development, University of Southern California. B.S. Management Science and Economics, UC San Diego.",
+  "ARGUS Enterprise certified. Real-estate licenses in Arizona and Texas. Fluent in Mandarin and Cantonese.",
+];
+const site = [
+  "This site is the working log: builder notes on the tools I run on live deals every week — what was hard, what I tried first and threw away, what I would do differently.",
+  "One filter for everything here: if I write about a tool, it is one in production on real deals.",
+  "Bay Area, California. Elsewhere: LinkedIn and GitHub, linked below.",
+];
+---
+
+<Layout
+  title="About"
+  description="Herman Chan — acquisitions at a rental-housing investor, and the builder of the AI tooling that runs the underwriting work."
+>
+  <TabHead
+    kicker="Tab 06 · About"
+    title="Acquisitions by trade. Builder by habit."
+    lede="I underwrite rental housing for a living and build the tooling I wished existed for that work. The unusual part is the split: the architecture decisions are mine; the code is written by the models."
+    draft
+  />
+
+  <section class="about">
+    <div class="wrap about__grid">
+      <div class="about__main">
+        <h2 class="about__h2">Now</h2>
+        <ul class="about__list">{now.map((b) => <li>{b}</li>)}</ul>
+
+        <h2 class="about__h2">Before</h2>
+        <ul class="about__list">{before.map((b) => <li>{b}</li>)}</ul>
+
+        <h2 class="about__h2">This site</h2>
+        <ul class="about__list">{site.map((b) => <li>{b}</li>)}</ul>
+      </div>
+
+      <aside class="about__aside" aria-label="At a glance">
+        <dl>
+          <dt>Role</dt><dd>Director of Acquisitions, Haven Realty Capital</dd>
+          <dt>Domain</dt><dd>Build-to-rent · single-family rental · multifamily · Sunbelt</dd>
+          <dt>Builds</dt><dd>Underwriting agent · supply database · rent database</dd>
+          <dt>Stack</dt><dd>Python · Anthropic API · Model Context Protocol · Postgres · Railway</dd>
+          <dt>Model</dt><dd>I make the architecture calls; the models write the code</dd>
+          <dt>Elsewhere</dt><dd><a href="https://www.linkedin.com/in/hermanchanai/">LinkedIn</a> · <a href="https://github.com/hermanian06">GitHub</a> · <a href="/rss.xml">RSS</a></dd>
+        </dl>
+      </aside>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .about { padding: clamp(40px, 6vw, 64px) 0 var(--s-9); }
+  .about__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    gap: clamp(32px, 6vw, 80px);
+    align-items: start;
+  }
+  .about__h2 {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+    color: var(--accent);
+    margin: var(--s-6) 0 var(--s-3);
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--rule);
+  }
+  .about__h2:first-child { margin-top: 0; }
+  .about__list { margin: 0; padding-left: 1.1em; display: grid; gap: var(--s-3); }
+  .about__list li {
+    font-family: var(--serif);
+    font-size: var(--t-17);
+    line-height: 1.55;
+    color: var(--fg-soft);
+  }
+  .about__list li::marker { color: var(--muted-2); }
+
+  .about__aside {
+    border-left: 1px solid var(--rule);
+    padding-left: var(--s-5);
+    font-family: var(--sans);
+    font-size: var(--t-14);
+    color: var(--fg-soft);
+    position: sticky;
+    top: var(--s-6);
+  }
+  .about__aside dl { margin: 0; display: grid; grid-template-columns: 88px 1fr; row-gap: 8px; column-gap: var(--s-3); }
+  .about__aside dt {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .about__aside dd { margin: 0; }
+  .about__aside dd a { color: var(--fg); border-bottom: 1px solid var(--rule); }
+  .about__aside dd a:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+
+  @media (max-width: 860px) {
+    .about__grid { grid-template-columns: minmax(0, 1fr); gap: var(--s-6); }
+    .about__aside { border-left: 0; border-top: 1px solid var(--rule); padding: var(--s-5) 0 0; position: static; }
+  }
+</style>

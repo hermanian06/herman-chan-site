@@ -8,6 +8,57 @@ This file is the record of what shipped and why — read the newest 1–3 entrie
 
 <!-- session-closeout: insert new entries directly below this line -->
 
+### What just changed (2026-09-13 — six-tab redesign scaffolded, branch `redesign/six-tabs`, NOT pushed)
+
+**Herman's brief:** re-arrange the site into six tabs — Intro · Underwriting Agent · Supply
+Database · Rent Database · Blog · About — with ~30-second bullet copy per section that he will
+rewrite, one dedicated session per tab. This session built the skeleton only; the old tabs are
+removed from the nav but their files are kept.
+
+- **Nav** (`src/components/Header.astro`): six tabs replace Index / Projects / Writing / RSS.
+  RSS stays in the footer. Mobile: the bar wraps to three lines at 375px, no horizontal scroll.
+- **Intro** (`/`): hero + three `ProjectBrief` blocks (what / why / result bullets, an in → runs →
+  out flow strip as the first infographic pass, and a stat row). Rent numbers read from
+  `src/data/rents/rent-database.json` at build time. Old landing moved to `/legacy/`.
+- **Underwriting Agent**: two-audience bullets, the baked sample previews (same `OutputTabs`
+  + HTML as `/demo/underwriting/`), ONE download (deal-summary workbook), and the `UploadForm`
+  with a second, prefixed `OutputTabs` for the run. `UploadForm.fillPanels` now fills only
+  panels inside `[data-uf-results]` when that container exists, so a live run cannot overwrite
+  the sample; `OutputTabs` gained an optional `prefix` prop so two instances have unique ids.
+  Both changes are no-ops on the two existing demo pages.
+- **Supply Database**: two-audience bullets, an address / radius / product / stage / window
+  search form (disabled — needs a public read endpoint; today only the OAuth MCP exists), and
+  the MCP section (endpoint, connect steps, 11-tool table).
+- **Rent Database**: two-audience bullets, then the dashboard. The body of
+  `/demo/rent-database/` was extracted verbatim into `src/components/rents/RentDashboard.astro`
+  (top padding moved to the page head); both routes render it from the same JSON.
+- **Blog**: `src/data/blog-outline.ts` condenses all 16 posts to 3–4 bullets each, grouped
+  underwriting-agent (3) · supply-database (8) · rent-database (0, with candidate topics) ·
+  how-i-build (4 process posts — my call, fold in if unwanted). `what-this-site-is` moved to
+  About. Any post not in the outline renders under "Unfiled".
+- **About**: bio bullets from the 2026-05-29 résumé + the old intro post. No phone/email, no
+  job-search signal. Location written as "Bay Area" because the résumé says San Jose and the
+  meta strip says San Mateo.
+- **Shared components:** `src/components/tabs/{TabHead,TwoAudiences,ProjectBrief}.astro`.
+
+**Verification.** `npm run build` clean, 36 pages. Dev server driven in the Browser pane: all
+six tabs render at the top of page; DOM checks — no duplicate element ids on the underwriting
+tab, 13 run panels scoped, sample panels carry content; rent tab 6 stats / 4 tables / 20 sample
+rows; blog groups 3/8/0/4 with no unfiled posts; `/legacy/` and `/demo/rent-database/` still
+render; page width 1009/1009 desktop and 375/375 mobile (no sideways scroll). Scrolled
+screenshots came back blank (the hidden-pane paint issue recorded 2026-09-13), so below-the-fold
+proof is DOM-level, not visual. The one console error is the upload form probing
+`localhost:8000` on dev — expected.
+
+**Paid-API spend: $0.**
+
+**Loose ends: ACTION — you:** (1) merge/push is yours — it deploys draft copy. (2) Tab-2 session:
+uploads without the email step means flipping the Portfolio Demo API's `access_mode` (it
+answers `email` today); the form follows `/api/meta`. (3) Tab-3 session: decide whether the
+address search gets a public read endpoint or stays a documented MCP. (4) `mcp_server.py` also
+carries a `debt_maturities` tool from the retired Capital Stack work; the table lists the 11
+in `CLAUDE.md`, not it.
+
 ### What just changed (2026-09-12/13 — /demo/rent-database/, the rent database as a public page)
 
 **Shipped: `/demo/rent-database/` is live at https://hermanchan.ai/demo/rent-database/** — a

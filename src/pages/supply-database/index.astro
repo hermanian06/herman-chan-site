@@ -1,0 +1,287 @@
+---
+/**
+ * Tab 3 — Supply Database.
+ *   §01 what / how / why, for two readers (draft bullets)
+ *   §02 supply near an address — the search UI, NOT yet wired (needs a public read
+ *       endpoint; today the only public surface is the OAuth-gated MCP)
+ *   §03 the MCP server: endpoint, tools, how to connect
+ */
+import Layout from "../../layouts/Layout.astro";
+import TabHead from "../../components/tabs/TabHead.astro";
+import TwoAudiences from "../../components/tabs/TwoAudiences.astro";
+
+const forAI = [
+  "What: ingestion of public development filings across nine Sunbelt metros into one Postgres schema, each row classified by dwelling type and lifecycle stage and geocoded.",
+  "How: dozens of small Python scrapers, one per portal; exactly one language-model call per document, for the fields plain code cannot read off a scanned form; structured-output schema; de-duplication across re-publishes.",
+  "How: a weekly cron on Railway with a heartbeat-only liveness check; daily SQL assertions where any returned row is a violation; an evaluation with independently labelled answers that gates every prompt change.",
+  "Why: the model is the least reliable step in the chain, so it gets one job and everything else stays deterministic and testable.",
+  "Why: the dashboard once served frozen numbers for two weeks while every health check was green. The checks now follow the number from ingestion to the screen.",
+  "Surfaces: a map dashboard, a read-only MCP server behind OAuth 2.1 so the team queries from claude.ai in plain English, and a weekly sheet.",
+];
+const forRE = [
+  "What: an early-warning system for new rental supply. It sees a community twelve to thirty-six months before it starts leasing.",
+  "How: three tiers of signal — entitlement (rezonings, plats, PUDs), permits (land disturbance, building permits), and construction — each row with units, builder, stage and location.",
+  "How: units come from the filing where stated and are estimated from acreage where not, with the estimate labelled as one.",
+  "How: ask 'what is coming within three miles of this site' and get the answer by product type and stage; ask which builders are active in a metro and get their pipeline.",
+  "Why: commercial datasets see supply at lease-up. By then the builder conversation is late and the underwriting assumption is already wrong.",
+  "Why: builder activity across metros — who is delivering where — is the list for off-market outreach.",
+];
+
+/* The eleven read-only tools the server exposes today (all nine metros wired). */
+const tools = [
+  { name: "find_subdivisions", what: "Search the pipeline with structured filters: metro, product, stage, size, date." },
+  { name: "recent_filings", what: "What was filed across the pipeline in the last N days." },
+  { name: "lookup_subdivision", what: "Look up one project by name or by any of its record IDs." },
+  { name: "permits_near", what: "Filings within a radius of a point in the last N days." },
+  { name: "off_market_signals", what: "Projects building but not yet selling — the pre-listing pattern." },
+  { name: "builder_activity", what: "One builder's activity across every source, with alias resolution." },
+  { name: "canonical_project", what: "The full cross-source timeline for one project." },
+  { name: "get_pdf_url", what: "A signed link to the stored source document for a filing." },
+  { name: "pipeline_health", what: "Ingestion freshness per metro and per source." },
+  { name: "mf_projects", what: "Late-stage multifamily and attached projects from the permit layer." },
+  { name: "entitlement_leads", what: "Pre-permit leads: rezonings, PUDs, site plans, plats, district formations." },
+];
+---
+
+<Layout
+  title="Supply database"
+  description="A nine-metro database of new rental-housing supply read from public filings: what it is, how it is built, supply near an address, and the MCP server the team queries it through."
+>
+  <TabHead
+    kicker="Tab 03 · Supply Database"
+    title="New rental supply, read from public filings a year before it leases."
+    lede="Nine Sunbelt metros. State environmental filings, county and city permits, planning and entitlement cases — each one classified, geocoded and staged into a single database, refreshed weekly."
+    draft
+  />
+
+  <TwoAudiences hash="§ 01" ai={forAI} re={forRE} />
+
+  <section class="blk">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="section-title__hash">§ 02</span>
+        <span class="section-title__label">Supply near an address</span>
+        <span class="section-title__hint">Search UI drafted · not yet wired</span>
+      </div>
+      <p class="blk__note">
+        Enter an address, pick a radius, and see what is in the pipeline around it by
+        product and stage. The controls below are the intended shape; the search itself
+        needs a public read endpoint in front of the database and is built in this tab's
+        dedicated session.
+      </p>
+
+      <form class="near" data-supply-search aria-labelledby="near-title" novalidate>
+        <h2 id="near-title" class="near__h2">Find supply near</h2>
+        <div class="near__row">
+          <label class="near__label" for="near-address">Address</label>
+          <input id="near-address" class="near__input" type="text" placeholder="e.g. 1200 E Apache Blvd, Tempe, AZ" autocomplete="street-address" disabled />
+        </div>
+        <div class="near__grid">
+          <div>
+            <label class="near__label" for="near-radius">Radius</label>
+            <select id="near-radius" class="near__select" disabled>
+              <option>1 mile</option>
+              <option>3 miles</option>
+              <option selected>5 miles</option>
+              <option>10 miles</option>
+            </select>
+          </div>
+          <div>
+            <label class="near__label" for="near-product">Product</label>
+            <select id="near-product" class="near__select" disabled>
+              <option selected>All</option>
+              <option>Single-family / townhome</option>
+              <option>Multifamily</option>
+            </select>
+          </div>
+          <div>
+            <label class="near__label" for="near-stage">Stage</label>
+            <select id="near-stage" class="near__select" disabled>
+              <option selected>All stages</option>
+              <option>Entitlement</option>
+              <option>Permit</option>
+              <option>Construction</option>
+            </select>
+          </div>
+          <div>
+            <label class="near__label" for="near-window">Filed within</label>
+            <select id="near-window" class="near__select" disabled>
+              <option>90 days</option>
+              <option>12 months</option>
+              <option selected>24 months</option>
+              <option>Any time</option>
+            </select>
+          </div>
+        </div>
+        <div class="near__actions">
+          <button type="submit" class="near__btn" disabled>Search</button>
+          <span class="near__hint">Results will list projects by distance with units, builder, stage and the source filing, and plot them on a small map.</span>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="blk blk--last">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="section-title__hash">§ 03</span>
+        <span class="section-title__label">The MCP server</span>
+        <span class="section-title__hint">Read-only · OAuth 2.1 · all nine metros</span>
+      </div>
+      <p class="blk__note">
+        The same database, exposed to Claude as a small set of read-only tools. My team
+        connects it to claude.ai once and then asks in plain English — "what has been filed
+        near this site in the last ninety days", "what is this builder doing in Atlanta" — and
+        the server runs the query and returns a clean answer.
+      </p>
+
+      <dl class="mcp">
+        <dt>Endpoint</dt>
+        <dd><code>https://permit-pipeline-mcp-production.up.railway.app/mcp</code></dd>
+        <dt>Auth</dt>
+        <dd>OAuth 2.1 (claude.ai custom connector) or a bearer token issued per person. Access is by invitation; the tools are read-only against the database.</dd>
+        <dt>Connect</dt>
+        <dd>In claude.ai: Settings → Connectors → Add custom connector → paste the endpoint → authorise. Claude Code: <code>claude mcp add --transport http supply https://permit-pipeline-mcp-production.up.railway.app/mcp</code>.</dd>
+      </dl>
+
+      <div class="tablewrap">
+        <table class="tools">
+          <thead>
+            <tr><th scope="col">Tool</th><th scope="col">What it answers</th></tr>
+          </thead>
+          <tbody>
+            {tools.map((t) => (
+              <tr>
+                <th scope="row"><code>{t.name}</code></th>
+                <td>{t.what}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="blk__note blk__note--small">
+        Tab-3 session, to decide: whether the page shows a live "ask the database" box
+        (needs a public, rate-limited read path — today only the OAuth-gated MCP exists) or
+        stays as documentation plus a worked example of a claude.ai conversation.
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .blk { padding: clamp(40px, 6vw, 64px) 0 0; }
+  .blk--last { padding-bottom: var(--s-9); }
+  .blk__note {
+    font-family: var(--serif);
+    font-size: var(--t-17);
+    line-height: 1.55;
+    color: var(--fg-soft);
+    max-width: var(--measure);
+    margin: 0 0 var(--s-5);
+  }
+  .blk__note--small { font-size: var(--t-15); color: var(--muted); margin: var(--s-5) 0 0; }
+
+  /* ---- search form ---- */
+  .near {
+    padding: var(--s-6);
+    background: var(--bg-alt);
+    max-width: 72ch;
+    display: grid;
+    gap: var(--s-4);
+  }
+  .near__h2 {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+    color: var(--muted);
+    margin: 0;
+  }
+  .near__row { display: grid; gap: 6px; }
+  .near__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--s-4);
+  }
+  .near__grid > div { display: grid; gap: 6px; }
+  .near__label {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .near__input, .near__select {
+    font-family: var(--sans);
+    font-size: var(--t-14);
+    padding: 8px 10px;
+    background: var(--bg);
+    color: var(--fg);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    width: 100%;
+  }
+  .near__input:disabled, .near__select:disabled { opacity: 0.6; cursor: not-allowed; }
+  .near__actions { display: flex; gap: var(--s-4); align-items: center; flex-wrap: wrap; }
+  .near__btn {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 9px 16px;
+    background: var(--accent);
+    color: var(--bg);
+    border: 1px solid var(--accent);
+    border-radius: 2px;
+  }
+  .near__btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .near__hint { font-family: var(--serif); font-size: var(--t-14); color: var(--muted); max-width: 46ch; }
+
+  /* ---- MCP block ---- */
+  .mcp {
+    margin: 0 0 var(--s-6);
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    row-gap: var(--s-3);
+    column-gap: var(--s-4);
+    max-width: var(--measure);
+  }
+  .mcp dt {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .mcp dd { margin: 0; font-family: var(--serif); font-size: var(--t-15); line-height: 1.55; color: var(--fg-soft); }
+  .mcp code, .tools code {
+    font-family: var(--mono);
+    font-size: 0.86em;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 2px;
+    word-break: break-all;
+  }
+
+  .tablewrap { overflow-x: auto; }
+  .tools { width: 100%; border-collapse: collapse; font-family: var(--sans); font-size: var(--t-14); max-width: 80ch; }
+  .tools th, .tools td { padding: 9px var(--s-3); border-bottom: 1px solid var(--rule-soft); text-align: left; vertical-align: baseline; }
+  .tools thead th {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    font-weight: 500;
+    border-bottom: 1px solid var(--rule);
+  }
+  .tools tbody th { font-weight: 500; white-space: nowrap; }
+  .tools tbody th code { word-break: normal; }
+
+  @media (max-width: 860px) {
+    .near__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .mcp { grid-template-columns: 1fr; row-gap: 4px; }
+    .mcp dd { margin-bottom: var(--s-3); }
+  }
+</style>
