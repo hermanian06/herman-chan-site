@@ -8,6 +8,56 @@ This file is the record of what shipped and why — read the newest 1–3 entrie
 
 <!-- session-closeout: insert new entries directly below this line -->
 
+### What just changed (2026-09-12/13 — /demo/rent-database/, the rent database as a public page)
+
+**Shipped: `/demo/rent-database/` is live at https://hermanchan.ai/demo/rent-database/** — a
+six-section public page over the bfr-rent-tracker scrape. §01 how it's built (11 platform
+adapters ahead of a 29% LLM tail, batched overnight) · §02 coverage by metro · §03 vintage /
+unit mix / product · §04 concessions and net-effective rent · §05 the last thirty days · §06 a
+20-per-metro sample of community names. Commits `c6f3114` (page) and `02d6914` (breakpoint
+fix); project card at `order: 1`, the seven non-demo projects shifted down one so the sort key
+stays whole integers.
+
+**Every number is read at build time** from `src/data/rents/rent-database.json`, which
+bfr-rent-tracker's `tools/export_public_stats.py` (`4211bc7`) regenerates from the live
+database. Nothing on the page is typed by hand, so it cannot claim a figure the database does
+not hold. Refresh is one command; it is not wired to anything (ledger #1285 carries the
+decision).
+
+**Herman's calls, 2026-09-12:** aggregates only but with ~20 named communities per metro so a
+reader can see what is in the database · FDE audience first, capital second · a page inside
+this repo rather than a standalone site · baked JSON over a live endpoint. He authorised the
+push/deploy explicitly.
+
+**The honesty constraints are the design, and each one is a way the page could have overstated
+itself.** Tracked and live-plans are separate columns — DFW reads 2,702 tracked against 466
+live plans because it is mid-first-pass. Medians over fewer than 400 live plans are greyed and
+labelled provisional. There is no rent index: fleet-wide collection only reached full coverage
+in August, so §05 reports direction of travel over a measured 27-day average gap and says so.
+Vintage keeps its Unknown bar (1,099 communities, almost all BFR — leasing pages for
+delivering SFR communities do not state a year built) rather than dropping it. No rents are
+shown against any named community.
+
+**Two defects found and fixed, both by measuring rather than looking:**
+- Mobile: a bare `1fr` grid track is `minmax(auto, 1fr)`, so the tables set a min-content floor
+  and the whole page scrolled sideways at 375px (`docScrollW 484` vs `clientWidth 375`).
+  `minmax(0, 1fr)` restored `375 / 375`.
+- 1024px: the paired §03 columns left the unit-type table `clientW 440` against `scrollW 464` —
+  it scrolled, but a 24px clip reads as a broken table. Stacking moved from 900px to 1080px;
+  after, all four `.tablewrap`s measure `927 / 927, clipped: false`, 375px unchanged.
+
+**Verification.** `npm run build` clean at every step (30 pages). The deployed HTML was checked
+directly — 91,306 bytes, all six headings, current figures, real metro names, and the landing
+page links the card once. The full-page visual pass could NOT run on 2026-09-12: the Browser
+pane was hidden, and a hidden pane returns the previous paint instead of erroring, so scrolled
+screenshots came back blank or stale. It ran on 2026-09-13 once the pane reopened, end to end,
+and that pass is what found the 1024px clip — the geometry check had reported it as a working
+scroll container. Recorded as memory shape 30j.
+
+**Paid-API spend: $0** — Supabase reads only, no model calls.
+
+**Loose ends: ACTION — you:** push `02d6914` to ship the 1024px fix (`git -C ~/code/herman-chan-site push origin HEAD`) — this repo deploys on push, so it is your call, and the live page carries the clip until then. **ACTION — you:** the site's own redaction checklist asks for two-line manager sign-off before work-derived material goes public; the page is aggregates plus ~440 sampled names with no Haven branding anywhere, but the gate is yours.
+
 ### What just changed (2026-07-30 — project 7 + posts 008–016)
 
 **Shipped** — commit `890bf60`, pushed to `main`, Netlify auto-deployed and verified in a
