@@ -832,6 +832,9 @@ const defaultMarket = "PHX";
   .rdb__callout p { margin: 0; color: var(--fg-soft); }
 
   /* ---------- responsive ---------- */
+  @media (max-width: 1080px) {
+    .cols, .two { grid-template-columns: minmax(0, 1fr); gap: var(--s-6); }
+  }
   @media (max-width: 900px) {
     .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-5); }
     .cols, .two { grid-template-columns: minmax(0, 1fr); gap: var(--s-6); }
