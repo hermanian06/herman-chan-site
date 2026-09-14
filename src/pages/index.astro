@@ -54,7 +54,7 @@ const k = (v: number) => (v >= 1000 ? Math.round(v / 100) / 10 + "k" : String(v)
         flow={{
           input: "The offering memo, the T-12 income and expense statement, the rent roll.",
           process: "Classify each file, extract its fields into one structured record, tie the numbers out, build the workbooks.",
-          output: "Deal summary · T-12 analysis · rent roll analysis · a manifest of every model input · supply and rent data.",
+          output: "Deal summary · T-12 analysis · rent roll analysis · a manifest of every model input, with supply and rent data.",
         }}
         points={[
           "What: a deal's raw documents in, a finished analysis pack out — with a person as the final quality check.",
@@ -74,18 +74,18 @@ const k = (v: number) => (v >= 1000 ? Math.round(v / 100) / 10 + "k" : String(v)
         href="/supply-database/"
         flow={{
           input: "Public development filings across nine Sunbelt metros — environmental, permit, planning.",
-          process: "Scrape with plain code; one model call per document for what code can't read; classify, de-duplicate, geocode, stage.",
-          output: "A map dashboard, an MCP server the team asks in plain English, a weekly sheet.",
+          process: "Scrape each portal with plain code; a model reads the filings code can't parse and classifies the product; de-duplicate, geocode, stage.",
+          output: "A supply search around any subject property address — everything in the pipeline within a 10-mile radius — on a map and through an MCP server the team asks in plain English.",
         }}
         points={[
           "What: every new rental-housing project in nine metros as one structured row — units, builder, stage, location.",
-          "Why: commercial datasets see a project when it is leasing; the filings see it a year or more earlier.",
-          "Result: all nine metros live on a weekly refresh; 'what is coming within three miles of this site' is one question.",
+          "Why: the upcoming supply around an investment property is one of the inputs that decides the deal — and the filings show it a year or more before it starts leasing.",
+          "Result: a nearby-supply check that used to require a paid data vendor now runs in-house, on demand, across nine metros.",
         ]}
         stats={[
           { num: "9", label: "metros, weekly refresh" },
           { num: "3", label: "signal tiers: entitlement · permit · construction" },
-          { num: "11", label: "read-only MCP tools" },
+          { num: "200+", label: "public-record sources on the weekly refresh" },
         ]}
       />
 
@@ -95,13 +95,13 @@ const k = (v: number) => (v >= 1000 ? Math.round(v / 100) / 10 + "k" : String(v)
         href="/rent-database/"
         flow={{
           input: "The leasing page of every rental community tracked across twenty metros.",
-          process: "A deterministic reader per leasing platform first; a model only for the bespoke tail. Concessions parsed into weeks.",
+          process: "A deterministic reader per leasing platform first; a model only for the bespoke tail.",
           output: "Asking rent and net-effective rent per floor plan, feeding the comps in the underwriting pack.",
         }}
         points={[
-          "What: a weekly census of what every community is asking — and what it is actually giving away.",
-          "Why: a comp set that ignores concessions is wrong in the direction that makes a deal look better.",
-          `Result: ${rents.communities.toLocaleString("en-US")} communities across ${rents.markets} metros; every comp row carries asking and net-effective rent.`,
+          "What: weekly tracking of every rental community's asking rent and concessions, by floor plan.",
+          "Why: the market rent around an investment property decides the deal, and it has to be knowable in minutes, not an afternoon.",
+          "Result: instead of visiting ten leasing websites and copying rents by hand, the rent-comp section of any analysis fills itself from the database.",
         ]}
         stats={[
           { num: k(rents.communities), label: "communities tracked" },
