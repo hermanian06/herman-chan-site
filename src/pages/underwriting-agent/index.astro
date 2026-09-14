@@ -2,9 +2,9 @@
 /**
  * Tab 2 — Underwriting Agent.
  *   §01 what / how / why, for two readers (draft bullets)
- *   §02 the sample deal, populated (the same baked previews /demo/underwriting/ renders)
- *   §03 one workbook to download
- *   §04 the upload portal (same component as /demo/underwriting/try/)
+ *   §02 the sample deal, populated (the same baked previews /demo/underwriting/ renders),
+ *       with the four workbooks downloadable right under the tabs
+ *   §03 the upload portal (same component as /demo/underwriting/try/)
  *
  * NOTE for the Tab-2 session: Herman wants uploads with NO email step. The form shows the
  * email row only when the API's GET /api/meta says access_mode="email" — flipping that is a
@@ -48,13 +48,14 @@ const panelHtml: Record<string, string> = {
 };
 const sampleTabs = DEMO_TABS.map((tab) => ({ ...tab, html: panelHtml[tab.id] }));
 
-/* One download, per Herman: the deal summary. The other four stay on /demo/underwriting/. */
-const download = {
-  href: "/downloads/underwriting-demo/sample-deal-summary.xlsx",
-  name: "Sample deal — deal summary workbook",
-  note: "Summary card, rent comps with asking and net-effective rent, demand and supply by ring. Synthetic property, real address, illustrative pricing.",
-  file: "sample-deal-summary.xlsx",
-};
+/* One workbook per tab group above, so what is shown is what is downloaded. */
+const downloads = [
+  { file: "sample-deal-summary.xlsx", name: "Deal summary", note: "Summary, rent comps, property tax, demand and supply by ring." },
+  { file: "sample-t12-analysis.xlsx", name: "T-12 analysis", note: "Monthly data, P&L summary, checks and pricing." },
+  { file: "sample-rent-roll-analysis.xlsx", name: "Rent roll analysis", note: "Rent roll and unit mix." },
+  { file: "sample-model-ready-outputs.xlsx", name: "Model-ready outputs", note: "Field manifest, audit trail, notes and disclosures." },
+];
+const base = "/downloads/underwriting-demo";
 
 const forAI = [
   "What: a headless pipeline that takes a deal's raw documents — offering memo, trailing-twelve income statement, rent roll — and produces four workbooks from one structured interchange file.",
@@ -88,50 +89,37 @@ const forRE = [
 
   <TwoAudiences hash="§ 01" ai={forAI} re={forRE} />
 
-  <section class="blk">
+  <section class="blk" id="sample">
     <div class="wrap">
       <div class="section-title">
         <span class="section-title__hash">§ 02</span>
         <span class="section-title__label">The sample deal</span>
-        <span class="section-title__hint">Every tab populated from one run</span>
+        <span class="section-title__hint"><a href="#try">Try it on your own deal ↓</a></span>
       </div>
       <p class="blk__note">
-        A synthetic property at a real address in Tempe, Arizona. The demand, supply, comp
-        and property-tax tabs are genuine pulls; the rent roll, income statement and pricing
-        were fabricated to exercise the formats. Full disclosures on the
-        <a href="/demo/underwriting/">original sample page</a>.
+        Here is the real output for a sample deal in Phoenix, Arizona. All financial numbers
+        are illustrative. The same output is downloadable below the tabs.
       </p>
       <OutputTabs tabs={sampleTabs} />
+
+      <ul class="dl" aria-label="Download the sample workbooks">
+        {downloads.map((d) => (
+          <li class="dl__item">
+            <a class="dl__link" href={`${base}/${d.file}`} download>{d.name}</a>
+            <span class="dl__note">{d.note}</span>
+            <span class="dl__file">{d.file}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   </section>
 
-  <section class="blk">
+  <section class="blk" id="try">
     <div class="wrap">
       <div class="section-title">
         <span class="section-title__hash">§ 03</span>
-        <span class="section-title__label">Download</span>
-        <span class="section-title__hint">One workbook from the sample deal</span>
-      </div>
-      <ul class="dl">
-        <li class="dl__item">
-          <a class="dl__link" href={download.href} download>{download.name}</a>
-          <span class="dl__note">{download.note}</span>
-          <span class="dl__file">{download.file}</span>
-        </li>
-      </ul>
-      <p class="blk__note blk__note--small">
-        The T-12, rent-roll and model-ready workbooks, plus the interchange JSON, are still
-        downloadable from the <a href="/demo/underwriting/">original sample page</a>.
-      </p>
-    </div>
-  </section>
-
-  <section class="blk">
-    <div class="wrap">
-      <div class="section-title">
-        <span class="section-title__hash">§ 04</span>
-        <span class="section-title__label">Try it on a live deal</span>
-        <span class="section-title__hint">Files deleted within the hour · nothing stored or trained on</span>
+        <span class="section-title__label">Try it on your own deal</span>
+        <span class="section-title__hint">Same tabs, your files</span>
       </div>
       <p class="blk__note">
         Upload a marketing package, a trailing-twelve income statement and a rent roll, enter
@@ -165,7 +153,7 @@ const forRE = [
   }
   .blk__note--small { font-size: var(--t-15); color: var(--muted); margin-top: var(--s-4); }
 
-  .dl { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+  .dl { list-style: none; margin: var(--s-6) 0 0; padding: 0; border-top: 1px solid var(--rule); }
   .dl__item {
     display: grid;
     grid-template-columns: minmax(12rem, 20rem) 1fr auto;
