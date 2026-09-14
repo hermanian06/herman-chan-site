@@ -1,8 +1,8 @@
 ---
 /**
- * One project on the Intro tab: ~30 seconds of what / why / result in bullets, a
- * three-box flow strip (in → runs → out) as the first pass at an infographic, and a
- * stat row. Every number shown is one that already lives elsewhere on the site.
+ * One system on the Intro tab: a three-box flow strip (in → runs → out), three one-line
+ * points (what · why · result), and a stat row. Every number shown already lives
+ * elsewhere on the site.
  */
 interface Stat {
   num: string;
@@ -12,13 +12,11 @@ interface Props {
   num: string;
   title: string;
   href: string;
-  what: string[];
-  why: string[];
-  result: string[];
+  points: string[];
   flow: { input: string; process: string; output: string };
   stats: Stat[];
 }
-const { num, title, href, what, why, result, flow, stats } = Astro.props;
+const { num, title, href, points, flow, stats } = Astro.props;
 ---
 
 <article class="pb">
@@ -36,20 +34,9 @@ const { num, title, href, what, why, result, flow, stats } = Astro.props;
     <div class="pb__box"><span class="pb__boxlabel">Out</span>{flow.output}</div>
   </div>
 
-  <div class="pb__cols">
-    <div>
-      <h3 class="pb__h3">What</h3>
-      <ul>{what.map((b) => <li>{b}</li>)}</ul>
-    </div>
-    <div>
-      <h3 class="pb__h3">Why</h3>
-      <ul>{why.map((b) => <li>{b}</li>)}</ul>
-    </div>
-    <div>
-      <h3 class="pb__h3">Result</h3>
-      <ul>{result.map((b) => <li>{b}</li>)}</ul>
-    </div>
-  </div>
+  <ul class="pb__points">
+    {points.map((p) => <li>{p}</li>)}
+  </ul>
 
   <ul class="pb__stats" aria-label="At a glance">
     {stats.map((s) => (
@@ -93,13 +80,13 @@ const { num, title, href, what, why, result, flow, stats } = Astro.props;
   }
   .pb__more:hover { color: var(--accent); text-decoration: none; }
 
-  /* ---- flow strip (the infographic, first pass) ---- */
+  /* ---- flow strip ---- */
   .pb__flow {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.25fr) auto minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.2fr) auto minmax(0, 1fr);
     gap: var(--s-3);
     align-items: stretch;
-    margin: 0 0 var(--s-6);
+    margin: 0 0 var(--s-5);
   }
   .pb__box {
     border: 1px solid var(--rule);
@@ -133,39 +120,26 @@ const { num, title, href, what, why, result, flow, stats } = Astro.props;
     font-size: var(--t-17);
   }
 
-  /* ---- what / why / result ---- */
-  .pb__cols {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--s-6);
-  }
-  .pb__h3 {
-    font-family: var(--mono);
-    font-size: var(--t-12);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-weight: 500;
-    color: var(--muted);
-    margin: 0 0 var(--s-3);
-  }
-  .pb__cols ul {
+  /* ---- three points ---- */
+  .pb__points {
     margin: 0;
     padding-left: 1.1em;
     display: grid;
     gap: var(--s-2);
+    max-width: var(--measure);
   }
-  .pb__cols li {
+  .pb__points li {
     font-family: var(--serif);
-    font-size: var(--t-15);
+    font-size: var(--t-17);
     line-height: 1.5;
     color: var(--fg-soft);
   }
-  .pb__cols li::marker { color: var(--muted-2); }
+  .pb__points li::marker { color: var(--muted-2); }
 
   /* ---- stat row ---- */
   .pb__stats {
     list-style: none;
-    margin: var(--s-6) 0 0;
+    margin: var(--s-5) 0 0;
     padding: var(--s-4) 0 0;
     border-top: 1px solid var(--rule-soft);
     display: flex;
@@ -188,7 +162,6 @@ const { num, title, href, what, why, result, flow, stats } = Astro.props;
   @media (max-width: 860px) {
     .pb__flow { grid-template-columns: minmax(0, 1fr); }
     .pb__arrow { transform: rotate(90deg); justify-self: center; }
-    .pb__cols { grid-template-columns: minmax(0, 1fr); gap: var(--s-5); }
     .pb__head { flex-wrap: wrap; }
   }
 </style>

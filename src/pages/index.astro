@@ -1,7 +1,7 @@
 ---
 /**
- * Tab 1 — Intro. Three systems, ~30 seconds each: what, why, result.
- * Draft bullets (2026-09-13); Herman rewrites in the Intro session.
+ * Tab 1 — Intro. Three systems: a flow strip, three one-line points, a stat row.
+ * Draft copy (2026-09-13); Herman rewrites in the Intro session.
  * The pre-redesign landing is kept at /legacy/.
  */
 import Layout from "../layouts/Layout.astro";
@@ -24,10 +24,9 @@ const k = (v: number) => (v >= 1000 ? Math.round(v / 100) / 10 + "k" : String(v)
           I run acquisitions for a rental-housing investor. Over the last two years I have
           directed the build of three production systems: an agent that turns a deal's raw
           documents into an analysis pack, a database of new rental supply read from public
-          filings, and a weekly census of asking rents. This is what each one is, why it
-          exists, and what came out.
+          filings, and a weekly census of asking rents.
         </p>
-        <p class="hero__draft">Draft copy — every bullet on this page gets rewritten in the Intro session.</p>
+        <p class="hero__draft">Draft copy — rewritten in the Intro session.</p>
       </div>
 
       <aside class="hero__aside" aria-label="At a glance">
@@ -55,24 +54,14 @@ const k = (v: number) => (v >= 1000 ? Math.round(v / 100) / 10 + "k" : String(v)
         title="Underwriting agent"
         href="/underwriting-agent/"
         flow={{
-          input: "A deal's raw documents: the offering memo, the trailing-twelve income statement, the rent roll — in whatever shape they left the property-management system.",
-          process: "Classify each document, extract its fields into one structured file, tie the numbers out, and build the workbooks with formulas left live.",
-          output: "A deal summary with comps, demand and supply; a categorised T-12 with cap-rate ladders; a rent roll rolled up by floor plan; a manifest of every field and the model input it fills.",
+          input: "The offering memo, the trailing-twelve income statement, the rent roll.",
+          process: "Classify each file, extract its fields into one structured record, tie the numbers out, build the workbooks.",
+          output: "Deal summary with comps · categorised T-12 · rent roll by floor plan · a manifest of every model input.",
         }}
-        what={[
-          "Takes a deal from raw documents to a finished analysis pack without a person in the loop.",
-          "Does not replace the financial model — it fills the model's inputs and hands over a manifest of where each one goes.",
-          "Comps carry asking and net-effective rent on every row; a value it cannot establish reads MISSING, never a plausible guess.",
-        ]}
-        why={[
-          "The bottleneck was never the model. It was the two days of extraction and categorisation before the model gets touched.",
-          "Definitions drifted between deals when the work was done by hand or in a chat window; two deals a month apart were not comparable.",
-          "Every shop already has a model its committee trusts. Nobody wants a stranger's spreadsheet.",
-        ]}
-        result={[
-          "The one-page deal summary went from about two hours to about fifteen minutes.",
-          "The pack runs unattended on a schedule; the same definitions apply to every deal.",
-          "Public sample plus an upload portal on the Underwriting Agent tab.",
+        points={[
+          "What: a deal's raw documents in, a finished analysis pack out — no person in the loop.",
+          "Why: the bottleneck was never the model; it was the two days of extraction before the model gets touched.",
+          "Result: the one-page summary went from about two hours to about fifteen minutes, with the same definitions on every deal.",
         ]}
         stats={[
           { num: "2 h → 15 min", label: "one-page deal summary" },
@@ -86,24 +75,14 @@ const k = (v: number) => (v >= 1000 ? Math.round(v / 100) / 10 + "k" : String(v)
         title="Supply database"
         href="/supply-database/"
         flow={{
-          input: "Public development filings across nine Sunbelt metros: state environmental filings, county and city permits, planning and entitlement cases.",
-          process: "Scrape each portal with plain code; one language-model call per document for the fields code cannot read; classify, de-duplicate, geocode, stage.",
-          output: "A map dashboard, a read-only MCP server the team queries from claude.ai in plain English, and a weekly sheet.",
+          input: "Public development filings across nine Sunbelt metros — environmental, permit, planning.",
+          process: "Scrape with plain code; one model call per document for what code can't read; classify, de-duplicate, geocode, stage.",
+          output: "A map dashboard, an MCP server the team asks in plain English, a weekly sheet.",
         }}
-        what={[
-          "Watches public records in nine metros for new rental-housing supply — single-family, townhome and multifamily — from rezoning through construction.",
-          "Each filing becomes one structured row: units (stated or estimated from acreage), builder, stage, location.",
-          "Three signal tiers: entitlement (a year or more out), permit, construction.",
-        ]}
-        why={[
-          "Commercial datasets see a project when it is leasing. The filings see it twelve to thirty-six months earlier — when a builder conversation is still worth having.",
-          "Chained model steps compound error, so the model gets exactly one job per document and everything else stays deterministic and testable.",
-          "The dashboard once served frozen numbers for two weeks with every health check green — so the checks now follow the number all the way to the screen.",
-        ]}
-        result={[
-          "All nine metros live end-to-end on a weekly refresh since mid-2026.",
-          "Ask 'what is coming within three miles of this site' and get an answer by product type and stage.",
-          "An evaluation with independently labelled answers gates every prompt change.",
+        points={[
+          "What: every new rental-housing project in nine metros as one structured row — units, builder, stage, location.",
+          "Why: commercial datasets see a project when it is leasing; the filings see it a year or more earlier.",
+          "Result: all nine metros live on a weekly refresh; 'what is coming within three miles of this site' is one question.",
         ]}
         stats={[
           { num: "9", label: "metros, weekly refresh" },
@@ -117,24 +96,14 @@ const k = (v: number) => (v >= 1000 ? Math.round(v / 100) / 10 + "k" : String(v)
         title="Rent database"
         href="/rent-database/"
         flow={{
-          input: "The leasing page of every rental community tracked across twenty metros, read on a per-market cadence.",
-          process: "Deterministic adapters for each leasing platform first; a language model only for the bespoke tail, batched overnight. Concession banners parsed into weeks.",
-          output: "Asking rent and net-effective rent per floor plan, with the concession alongside — feeding the comps tab of the underwriting pack.",
+          input: "The leasing page of every rental community tracked across twenty metros.",
+          process: "A deterministic reader per leasing platform first; a model only for the bespoke tail. Concessions parsed into weeks.",
+          output: "Asking rent and net-effective rent per floor plan, feeding the comps in the underwriting pack.",
         }}
-        what={[
-          "A weekly census of advertised rents: what every community is asking, and what it is actually giving away.",
-          "Floor-plan level, with the concession stored as a number rather than a marketing line.",
-          "Adapters first: a reader that fails loudly cannot hallucinate a two-bedroom.",
-        ]}
-        why={[
-          "A comp set that ignores concessions is wrong in the direction that makes a deal look better.",
-          "Listings sites publish the asking rent; none of them publish the six weeks free that turn it into an eleven-percent haircut.",
-          "Paid comp services meter every pull; my own scrape does not.",
-        ]}
-        result={[
-          `${rents.communities.toLocaleString("en-US")} communities across ${rents.markets} metros, refreshed on a rotation.`,
-          "Every comp row in the underwriting pack carries asking and net-effective rent instead of one number doing both jobs.",
-          "Aggregates are public on the Rent Database tab; no rent is published against a named community.",
+        points={[
+          "What: a weekly census of what every community is asking — and what it is actually giving away.",
+          "Why: a comp set that ignores concessions is wrong in the direction that makes a deal look better.",
+          `Result: ${rents.communities.toLocaleString("en-US")} communities across ${rents.markets} metros; every comp row carries asking and net-effective rent.`,
         ]}
         stats={[
           { num: k(rents.communities), label: "communities tracked" },
