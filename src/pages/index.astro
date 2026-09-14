@@ -9,9 +9,8 @@ import ProjectBrief from "../components/tabs/ProjectBrief.astro";
 import db from "../data/rents/rent-database.json";
 
 const rents = db.headline;
-/* Rounded stat labels. "~17,000" = nearest thousand; "47,000+" = floored thousand, so the
-   plus sign is always true of the number the JSON actually holds. */
-const approxK = (v: number) => "~" + (Math.round(v / 1000) * 1000).toLocaleString("en-US");
+/* Rounded stat labels: floored to the thousand with a plus sign, so the label is always
+   true of the number the JSON actually holds (16,879 → "16,000+"). */
 const floorK = (v: number) => (Math.floor(v / 1000) * 1000).toLocaleString("en-US") + "+";
 ---
 
@@ -107,7 +106,7 @@ const floorK = (v: number) => (Math.floor(v / 1000) * 1000).toLocaleString("en-U
           "Result: instead of going to ten different rent websites and copying rents by hand, the rent tab of the Excel model fills itself from the in-house rent database.",
         ]}
         stats={[
-          { num: approxK(rents.communities), label: "communities tracked" },
+          { num: floorK(rents.communities), label: "communities tracked" },
           { num: String(rents.markets), label: "metros" },
           { num: floorK(rents.floor_plans), label: "live floor plans" },
         ]}
