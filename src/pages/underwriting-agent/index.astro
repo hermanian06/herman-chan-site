@@ -65,12 +65,13 @@ const forAI = [
   "Guardrails: every bug fix is red-test-first; a reviewer model from a different vendor reads every diff cold; a field manifest maps each extracted value to the model input it fills.",
 ];
 const forRE = [
-  "What: hand it the OM, the T-12 and the rent roll; get back the one-pager, the categorised T-12 with cap-rate and pricing ladders, the rent roll rolled up by floor plan, and a list of every input for your own model.",
-  "How: it does not replace your model. It fills the inputs and tells you where each one goes, so the committee keeps the spreadsheet it already trusts.",
-  "How: market rent for the model is the new-lease average where a plan has new leases in the window, the in-place average otherwise — never a blended 'recently leased' number, which is a renewal average in disguise.",
-  "How: every comp row shows asking rent and net-effective rent, because a concession-blind comp set is the most common way a rent assumption goes wrong.",
-  "Why: the two days of extraction before the model gets touched were the bottleneck. The one-page summary went from about two hours to about fifteen minutes.",
-  "Why: the same definitions on every deal, so a deal underwritten in March compares cleanly with one underwritten in August.",
+  "Typical process: read the OM, the T-12 and the rent roll; prepare a deal summary; process and analyse the T-12 and the rent roll; build out the financial model. The underwriting agent now does all of that end to end, with a human review as the final stage.",
+  "Deal summary: the basic facts of the deal — address, product type, unit count, year built, seller, broker, pricing — plus a demand-ring analysis at 1, 3, 5 and 10 miles showing household income, unemployment, population and the rest.",
+  "T-12 analysis: the seller's T-12 categorised into your firm's own line items; T-12 and T-3 views; income, utility expense and utility reimbursement (RUBS) analysis.",
+  "Rent roll analysis: units grouped by floor plan to find the rent for each plan; in-place rent kept apart from recently signed rent to show the trend; turnover rate and occupancy confirmed from the roll itself.",
+  "Property tax: the county's billed rate looked up and applied to the purchase basis, with the source noted — so the tax line in the model is not the seller's number.",
+  "Financial model: 192 fields — deal basics, T-12, rent roll, supply, demand, rent comps, property tax and more (the full list is the model-ready outputs tab) — exported in a shape that fits any company's own model.",
+  "Audit trail: every published value carries a stamp — which document it came from, where in that document, whether it was read or computed, and what it was built from — so the T-12, the rent roll and the model can be cross-checked line by line.",
 ];
 ---
 
@@ -80,8 +81,8 @@ const forRE = [
 >
   <TabHead
     kicker="Tab 02 · Underwriting Agent"
-    title="From a deal's raw documents to a finished analysis pack."
-    lede="Give it the offering memo, the trailing-twelve income statement and the rent roll. It classifies the files, extracts the fields into one structured record, ties the numbers out, and builds the workbooks — with the arithmetic left live."
+    title="From raw documents to a finished analysis pack."
+    lede="Give it the OM, the T-12 and the rent roll; it returns the deal summary, the T-12 and rent roll analyses, and every input your model needs. The sample below is exactly what comes back."
     draft
   />
 
