@@ -9,7 +9,10 @@ import ProjectBrief from "../components/tabs/ProjectBrief.astro";
 import db from "../data/rents/rent-database.json";
 
 const rents = db.headline;
-const k = (v: number) => (v >= 1000 ? Math.round(v / 100) / 10 + "k" : String(v));
+/* Rounded stat labels. "~17,000" = nearest thousand; "47,000+" = floored thousand, so the
+   plus sign is always true of the number the JSON actually holds. */
+const approxK = (v: number) => "~" + (Math.round(v / 1000) * 1000).toLocaleString("en-US");
+const floorK = (v: number) => (Math.floor(v / 1000) * 1000).toLocaleString("en-US") + "+";
 ---
 
 <Layout description="Herman Chan — three production AI systems built for real-estate underwriting: an underwriting agent, a supply database, and a rent database.">
@@ -104,9 +107,9 @@ const k = (v: number) => (v >= 1000 ? Math.round(v / 100) / 10 + "k" : String(v)
           "Result: instead of going to ten different rent websites and copying rents by hand, the rent tab of the Excel model fills itself from the in-house rent database.",
         ]}
         stats={[
-          { num: k(rents.communities), label: "communities tracked" },
+          { num: approxK(rents.communities), label: "communities tracked" },
           { num: String(rents.markets), label: "metros" },
-          { num: rents.floor_plans.toLocaleString("en-US"), label: "live floor plans" },
+          { num: floorK(rents.floor_plans), label: "live floor plans" },
         ]}
       />
     </div>
