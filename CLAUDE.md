@@ -9,14 +9,16 @@ resume). This file carries rules and architecture only; closeout never appends e
 
 ## Redesign in progress — six tabs (started 2026-09-13, branch `redesign/six-tabs`)
 
-Herman is re-arranging the site into six tabs, one dedicated session per tab. **Nothing on this
-branch is pushed** — a push to `main` deploys, and every tab still carries draft bullet copy he
-intends to rewrite. Merge/push only when he says so.
+Herman is re-arranging the site into six tabs, one dedicated session per tab. **Live since
+2026-09-14** (Herman: "push the website live"; `main` fast-forwarded to `redesign/six-tabs` at
+`8ecfa75`). Tabs 1–2 are his copy; tabs 3–6 still carry the "Draft copy" marker and draft bullets
+in public until their sessions happen. Keep working on `redesign/six-tabs` and fast-forward `main`
+when he says push.
 
 | Tab | Route | File | Session status |
 |---|---|---|---|
-| 1 Intro | `/` | `src/pages/index.astro` | scaffolded, draft bullets + flow strips |
-| 2 Underwriting Agent | `/underwriting-agent/` | `src/pages/underwriting-agent/index.astro` | scaffolded — sample tabs, one download, upload form (email-code step is a backend flag) |
+| 1 Intro | `/` | `src/pages/index.astro` | done (Herman's copy, 2026-09-13) |
+| 2 Underwriting Agent | `/underwriting-agent/` | `src/pages/underwriting-agent/index.astro` | RE column in Herman's words; sample = a real deal perturbed at an illustrative Mesa address (published from Portfolio Demo); four downloads under the tabs; upload form keeps files for review. AI column still draft. |
 | 3 Supply Database | `/supply-database/` | `src/pages/supply-database/index.astro` | scaffolded — address search is UI only, needs a public read endpoint; MCP tool table |
 | 4 Rent Database | `/rent-database/` | `src/pages/rent-database/index.astro` + `src/components/rents/RentDashboard.astro` | scaffolded — dashboard body shared with `/demo/rent-database/` |
 | 5 Blog | `/blog/` | `src/pages/blog/index.astro` + `src/data/blog-outline.ts` | scaffolded — every post condensed to bullets, grouped by system |

@@ -8,6 +8,32 @@ This file is the record of what shipped and why — read the newest 1–3 entrie
 
 <!-- session-closeout: insert new entries directly below this line -->
 
+### What just changed (2026-09-14 — six-tab redesign LIVE; Intro + Underwriting tabs in Herman's words; the sample is a real deal, perturbed)
+
+**Live.** `main` fast-forwarded to `redesign/six-tabs` and pushed (`8ed506b..8ecfa75`), Netlify
+deployed; curl of hermanchan.ai, /underwriting-agent/ and /about/ returns the new pages. Tabs 3–6
+still show the "Draft copy" marker in public — Herman's call to push.
+
+**Intro** rewritten from Herman's edits: team framing, six months, the T-12 wording, a person as the
+final QC, "4 h → 15 + 30 min per deal, 4–6 deals a week", supply "Out" = a 10-mile radius search, a
+"200+ public-record sources" stat (258 registry rows, 230 on cron), rent stats floored from the JSON
+(16,000+ / 47,000+). RSS, the colophon and the CC BY line removed site-wide; Source Serif stays.
+
+**Underwriting tab:** the real-estate column is Herman's seven bullets (property-tax and audit-trail
+lines written to spec, 192 manifest fields); the sample section carries the four workbooks and a
+jump link to the upload form; consent box and every "deleted within the hour" line removed; the
+form says uploads are kept for review.
+
+**The sample deal** (built in Portfolio Demo, see its CHANGELOG 2026-09-14): the showcase asset's
+statements perturbed by Herman's rule, at 2151 E Southern Ave, Mesa (illustrative), market tabs
+pulled for that address, name/seller/brokerage withheld, pricing illustrative. Published through
+`publish_to_site.py --allow-real`; the server fixture swapped and deployed (`05f50e3a`); a live
+sample run on production returns "Southern Avenue Sample". A verification upload on production
+was kept on the new Railway volume (`/data/uploads/<run_id>`), proven from the deploy log.
+
+**Paid-API spend:** $0.62 (local live run) + one production verification upload (8 model calls,
+under $1) on the demo's own key.
+
 ### What just changed (2026-09-13 — six-tab redesign scaffolded, branch `redesign/six-tabs`, NOT pushed)
 
 **Herman's brief:** re-arrange the site into six tabs — Intro · Underwriting Agent · Supply
