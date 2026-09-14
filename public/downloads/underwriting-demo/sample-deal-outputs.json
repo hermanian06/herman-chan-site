@@ -7854,7 +7854,7 @@
   },
   "trade_out": {
     "rows": [],
-    "absent_reason": "The upload demo does not ask for a lease trade-out report, so there is no basis for a new-versus-renewal block."
+    "absent_reason": "Lease trade-out is an internal-pipeline input: the demo does not ask for a trade-out report, on the sample or on an upload."
   },
   "pricing": {
     "price_per_unit": 215000.0,
@@ -13725,10 +13725,10 @@
       "note": "Read from the uploaded rent roll."
     },
     "trade_out.rows": {
-      "source_doc": "Not asked for by the upload demo",
+      "source_doc": "Internal pipeline only",
       "locator": "—",
       "method": "read",
-      "note": "The upload demo does not ask for a lease trade-out report, so there is no basis for a new-versus-renewal block."
+      "note": "The internal pipeline reads a lease trade-out report (new versus renewal rents); the demo does not ask for one."
     },
     "summary.construction_status": {
       "source_doc": "Not stated in the uploaded documents",
@@ -13749,10 +13749,10 @@
       "note": "No uploaded document stated this, so the value reads MISSING. Nothing was assumed to fill it."
     },
     "summary.fair_market_value": {
-      "source_doc": "Not stated in the uploaded documents",
+      "source_doc": "Internal pipeline only",
       "locator": "—",
       "method": "read",
-      "note": "No uploaded document stated this, so the value reads MISSING. Nothing was assumed to fill it."
+      "note": "The internal pipeline pulls a market value by web lookup; the demo does not reach the web."
     },
     "summary.tax_rate_as_billed": {
       "source_doc": "Vendored county rate table",
@@ -13815,22 +13815,22 @@
       "note": "Not run in the upload demo. This section needs data sources the demo does not reach, so it is left empty rather than filled with placeholders."
     },
     "summary.school_elementary_name": {
-      "source_doc": "Not stated in the uploaded documents",
+      "source_doc": "Internal pipeline only",
       "locator": "—",
       "method": "read",
-      "note": "No uploaded document stated this, so the value reads MISSING. Nothing was assumed to fill it."
+      "note": "The internal pipeline looks up the attendance-zone elementary, middle and high school and their public ratings; the demo reads a school name only where the memorandum states one and never rates it."
     },
     "summary.school_middle_name": {
-      "source_doc": "Not stated in the uploaded documents",
+      "source_doc": "Internal pipeline only",
       "locator": "—",
       "method": "read",
-      "note": "No uploaded document stated this, so the value reads MISSING. Nothing was assumed to fill it."
+      "note": "The internal pipeline looks up the attendance-zone elementary, middle and high school and their public ratings; the demo reads a school name only where the memorandum states one and never rates it."
     },
     "summary.school_high_name": {
-      "source_doc": "Not stated in the uploaded documents",
+      "source_doc": "Internal pipeline only",
       "locator": "—",
       "method": "read",
-      "note": "No uploaded document stated this, so the value reads MISSING. Nothing was assumed to fill it."
+      "note": "The internal pipeline looks up the attendance-zone elementary, middle and high school and their public ratings; the demo reads a school name only where the memorandum states one and never rates it."
     },
     "t12.month_labels": {
       "source_doc": "Sample Property T-12 June 26.xlsx",
