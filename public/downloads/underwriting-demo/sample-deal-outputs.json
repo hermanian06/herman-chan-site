@@ -117,9 +117,9 @@
         "note": "Unit-weighted in-place rent is $1,457 and market rent for the model is $1,345 — -7.7%. That is not an error. New leases are signing below what residents in place are paying, so the no-blend rule surfaces a downward mark the model has to carry. A blended new-and-renewal average would have hidden it."
       },
       {
-        "topic": "This sample is a real deal, perturbed, at an illustrative address",
+        "topic": "This sample sits at an illustrative address",
         "applies_to": "throughout",
-        "note": "This sample is a real, previously marketed multifamily asset's statements, perturbed: trailing-twelve income lines are 10% higher and expense lines 5% lower than the originals, rent-roll rents are 5% higher and lease dates one month earlier, and the pricing is illustrative. The property facts — unit mix, vintage, size — are the real ones. The ADDRESS is illustrative: 2151 E Southern Ave, Mesa, AZ 85204 is not the asset's location, and the demand, supply, rent-comp and property-tax tabs were pulled for this illustrative address from the same sources a live upload reads. The seller and brokerage names are illustrative; the real parties are withheld."
+        "note": "The address shown is illustrative and is not the asset's location; the demand, supply, rent-comp and property-tax tabs were pulled for this illustrative address from the same sources a live upload reads. The seller and brokerage names are illustrative; the real parties are withheld. Pricing is illustrative."
       },
       {
         "topic": "About the market pull",
@@ -301,13 +301,13 @@
     "tax_statement_amount": 239566.79,
     "tax_per_unit_flag": "In band (the statement's line per unit): $717 per unit a year is inside the AZ band of $400–$2,600",
     "tax_rate_year": 2025,
-    "school_elementary_name": "MISSING",
-    "school_elementary_rating": "MISSING",
-    "school_middle_name": "MISSING",
-    "school_middle_rating": "MISSING",
-    "school_high_name": "MISSING",
-    "school_high_rating": "MISSING",
-    "notes": "This sample is a real, previously marketed multifamily asset's statements, perturbed: trailing-twelve income lines are 10% higher and expense lines 5% lower than the originals, rent-roll rents are 5% higher and lease dates one month earlier, and the pricing is illustrative. The property facts — unit mix, vintage, size — are the real ones. The ADDRESS is illustrative: 2151 E Southern Ave, Mesa, AZ 85204 is not the asset's location, and the demand, supply, rent-comp and property-tax tabs were pulled for this illustrative address from the same sources a live upload reads. The seller and brokerage names are illustrative; the real parties are withheld."
+    "school_elementary_name": "Porter Elementary School",
+    "school_elementary_rating": 6,
+    "school_middle_name": "Taylor Junior High School",
+    "school_middle_rating": 2,
+    "school_high_name": "Mesa High School",
+    "school_high_rating": 6,
+    "notes": "The address shown is illustrative and is not the asset's location; the demand, supply, rent-comp and property-tax tabs were pulled for this illustrative address from the same sources a live upload reads. The seller and brokerage names are illustrative; the real parties are withheld. Pricing is illustrative."
   },
   "t12": {
     "month_labels": [
@@ -13815,22 +13815,22 @@
       "note": "Not run in the upload demo. This section needs data sources the demo does not reach, so it is left empty rather than filled with placeholders."
     },
     "summary.school_elementary_name": {
-      "source_doc": "Internal pipeline only",
-      "locator": "—",
+      "source_doc": "Internal underwriting agent — attendance-zone school lookup",
+      "locator": "2151 E Southern Ave, Mesa, AZ 85204 on 2026-09-14",
       "method": "read",
-      "note": "The internal pipeline looks up the attendance-zone elementary, middle and high school and their public ratings; the demo reads a school name only where the memorandum states one and never rates it."
+      "note": "Looked up for the illustrative address by the internal underwriting agent; the public demo does not run this on an uploaded deal."
     },
     "summary.school_middle_name": {
-      "source_doc": "Internal pipeline only",
-      "locator": "—",
+      "source_doc": "Internal underwriting agent — attendance-zone school lookup",
+      "locator": "2151 E Southern Ave, Mesa, AZ 85204 on 2026-09-14",
       "method": "read",
-      "note": "The internal pipeline looks up the attendance-zone elementary, middle and high school and their public ratings; the demo reads a school name only where the memorandum states one and never rates it."
+      "note": "Looked up for the illustrative address by the internal underwriting agent; the public demo does not run this on an uploaded deal."
     },
     "summary.school_high_name": {
-      "source_doc": "Internal pipeline only",
-      "locator": "—",
+      "source_doc": "Internal underwriting agent — attendance-zone school lookup",
+      "locator": "2151 E Southern Ave, Mesa, AZ 85204 on 2026-09-14",
       "method": "read",
-      "note": "The internal pipeline looks up the attendance-zone elementary, middle and high school and their public ratings; the demo reads a school name only where the memorandum states one and never rates it."
+      "note": "Looked up for the illustrative address by the internal underwriting agent; the public demo does not run this on an uploaded deal."
     },
     "t12.month_labels": {
       "source_doc": "Sample Property T-12 June 26.xlsx",

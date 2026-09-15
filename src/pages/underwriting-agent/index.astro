@@ -105,11 +105,6 @@ const forRE = [
         are illustrative. The same output is downloadable below the tabs.
       </p>
       <OutputTabs tabs={sampleTabs} />
-      <ul class="blk__fine" aria-label="What this sample is">
-        <li>A real, previously marketed multifamily asset's statements, perturbed: T-12 income lines +10%, expense lines −5%, rent-roll rents +5%, lease dates one month earlier. Unit mix, vintage and size are the real ones.</li>
-        <li>The address is illustrative. The demand, supply, rent-comp and property-tax tabs were pulled for that address from the same sources a live upload reads. The asset's name, seller and brokerage are withheld.</li>
-        <li>Pricing is illustrative; every cap rate is computed from it. No licensed data source is used anywhere; comps come only from my own weekly rent scrape.</li>
-      </ul>
 
       <ul class="dl" aria-label="Download the sample workbooks">
         {downloads.map((d) => (
@@ -161,15 +156,6 @@ const forRE = [
     margin: 0 0 var(--s-4);
   }
   .blk__note--small { font-size: var(--t-15); color: var(--muted); margin-top: var(--s-4); }
-  .blk__fine {
-    margin: var(--s-5) 0 0;
-    padding-left: 1.1em;
-    max-width: var(--measure);
-    display: grid;
-    gap: var(--s-2);
-  }
-  .blk__fine li { font-family: var(--serif); font-size: var(--t-14); line-height: 1.5; color: var(--muted); }
-  .blk__fine li::marker { color: var(--muted-2); }
 
   .dl { list-style: none; margin: var(--s-6) 0 0; padding: 0; border-top: 1px solid var(--rule); }
   .dl__item {
