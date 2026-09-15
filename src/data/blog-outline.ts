@@ -1,6 +1,6 @@
 /**
- * The Blog's reading order: short notes, not newly dated full articles.
- * An originalSlug links a note to an existing article without changing its title or URL.
+ * The Blog's reading order. fullPostSlug promotes a note to a complete inline article.
+ * originalSlug keeps an earlier article accessible while its note is still an outline.
  * The page automatically lists every other published article in the archive section.
  */
 export interface BuildNote {
@@ -9,6 +9,7 @@ export interface BuildNote {
   description: string;
   bullets: [string, string, string];
   originalSlug?: string;
+  fullPostSlug?: string;
 }
 
 export interface OutlineGroup {
@@ -28,7 +29,7 @@ export const BLOG_OUTLINE: OutlineGroup[] = [
         id: "reusable-skills",
         title: "Turning an underwriting workflow into a reusable AI skill",
         description: "Moving the rules out of a conversation so the next run follows the same specification.",
-        originalSlug: "rent-comps-t12-skills",
+        fullPostSlug: "rent-comps-t12-skills",
         bullets: [
           "In chat, rent definitions and workbook formats drifted between sessions. I moved the recurring instructions into a written skill the agent reads before doing the work.",
           "The skill defines the workflow and decision rules. Python tools read the source files, calculate the results and write them into a consistent workbook layout.",
@@ -39,7 +40,7 @@ export const BLOG_OUTLINE: OutlineGroup[] = [
         id: "planning-building-review",
         title: "How I split planning, building and review between AI models",
         description: "A task brief, a small change and a separate reviewer give me something concrete to judge.",
-        originalSlug: "three-models-three-jobs",
+        fullPostSlug: "three-models-three-jobs",
         bullets: [
           "I define the outcome, constraints and completion evidence before a model starts building. The builder works against that brief and commits a small, coherent change.",
           "A separate AI reads the change and reports possible defects. Findings go back to the builder to reproduce, accept or reject with evidence; I resolve the decisions that need my judgment.",
@@ -50,7 +51,7 @@ export const BLOG_OUTLINE: OutlineGroup[] = [
         id: "failing-test-first",
         title: "Writing the failing test before an AI fixes the bug",
         description: "A passing test once repeated the code's mistake. The expected answer needed its own source.",
-        originalSlug: "a-test-that-was-never-red",
+        fullPostSlug: "a-test-that-was-never-red",
         bullets: [
           "An AI-written regression test passed while the defect was still present because it copied the implementation's assumption about the correct answer.",
           "My rule now is to derive the expected result from the source document or business requirement, watch the test fail, then fix the code and rerun that same test.",
@@ -61,7 +62,7 @@ export const BLOG_OUTLINE: OutlineGroup[] = [
         id: "separate-working-copies",
         title: "Why each AI builder gets a separate working copy",
         description: "One session's cleanup erased another's edits. I changed where parallel builders work.",
-        originalSlug: "work-that-wasnt-its-own",
+        fullPostSlug: "work-that-wasnt-its-own",
         bullets: [
           "Two model sessions were editing the same folder when one discarded uncommitted changes belonging to the other. I recovered that incident's edits from the session record.",
           "Each builder now gets a Git worktree: a separate working folder with its own branch and edits. Changes are committed and combined deliberately.",
@@ -77,6 +78,7 @@ export const BLOG_OUTLINE: OutlineGroup[] = [
     notes: [
       {
         id: "column-mapping",
+        fullPostSlug: "the-model-maps-python-reads",
         title: "The model maps the columns. Python reads the numbers.",
         description: "Interpreting a spreadsheet layout and copying its values are different jobs.",
         bullets: [

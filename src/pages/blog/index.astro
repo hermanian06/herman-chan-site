@@ -1,10 +1,11 @@
 ---
 /**
- * Short build notes are separate from the published article collection. Explicit original
- * links join the two; every other published article automatically remains in the archive.
+ * Full stories render from the same collection entry as their permanent article page.
+ * Outlines retain earlier article links; every other published post remains in the archive.
  */
 import Layout from "../../layouts/Layout.astro";
 import TabHead from "../../components/tabs/TabHead.astro";
+import BuildStory from "../../components/blog/BuildStory.astro";
 import { getCollection } from "astro:content";
 import { BLOG_OUTLINE } from "../../data/blog-outline";
 
@@ -15,14 +16,16 @@ let noteNumber = 0;
 const groups = BLOG_OUTLINE.map((group) => ({
   ...group,
   notes: group.notes.map((note) => {
-    const original = note.originalSlug ? bySlug.get(note.originalSlug) : undefined;
-    if (note.originalSlug && !original) {
-      throw new Error(`Blog note ${note.id} links to an unpublished or missing article: ${note.originalSlug}`);
+    const articleSlug = note.fullPostSlug ?? note.originalSlug;
+    const article = articleSlug ? bySlug.get(articleSlug) : undefined;
+    if (articleSlug && !article) {
+      throw new Error(`Blog note ${note.id} links to an unpublished or missing article: ${articleSlug}`);
     }
-    if (original) linkedSlugs.add(original.id);
-    return { ...note, original, number: ++noteNumber };
+    if (article) linkedSlugs.add(article.id);
+    return { ...note, article, isFullPost: Boolean(note.fullPostSlug), number: ++noteNumber };
   }),
 }));
+const fullPostCount = groups.flatMap((group) => group.notes).filter((note) => note.isFullPost).length;
 const archive = posts
   .filter((post) => !linkedSlugs.has(post.id))
   .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
@@ -44,8 +47,8 @@ const pad = (number: number) => String(number).padStart(2, "0");
 
   <div class="blog wrap">
     <div class="blog__intro">
-      <p class="blog__count">{noteNumber} short notes <span aria-hidden="true">·</span> {groups.length} topics</p>
-      <p class="blog__instruction">Open a title for the notes. Earlier full articles are linked inside.</p>
+      <p class="blog__count">{fullPostCount} full posts <span aria-hidden="true">·</span> {noteNumber - fullPostCount} outlines <span aria-hidden="true">·</span> {groups.length} topics</p>
+      <p class="blog__instruction">Open a title to read here. Full posts also have their own page.</p>
     </div>
 
     <div class="blog__layout">
@@ -79,21 +82,35 @@ const pad = (number: number) => String(number).padStart(2, "0");
                     <summary class="note__summary">
                       <span class="note__number" aria-hidden="true">{pad(note.number)}</span>
                       <span class="note__preview">
+                        {note.isFullPost && <span class="note__format">Full post</span>}
                         <span class="note__title">{note.title}</span>
                         <span class="note__description">{note.description}</span>
                       </span>
                       <span class="note__toggle" aria-hidden="true"></span>
                     </summary>
                     <div class="note__body">
-                      <ul class="note__bullets">
-                        {note.bullets.map((bullet) => <li>{bullet}</li>)}
-                      </ul>
-                      {note.original && (
-                        <p class="note__original">
-                          <a href={`/posts/${note.original.id}/`}>Original post <span aria-hidden="true">↗</span></a>
-                          <span aria-hidden="true">·</span>
-                          <time datetime={note.original.data.pubDate.toISOString()}>{fmt(note.original.data.pubDate)}</time>
-                        </p>
+                      {note.isFullPost && note.article ? (
+                        <>
+                          <p class="note__meta">
+                            <span>Published <time datetime={note.article.data.pubDate.toISOString()}>{fmt(note.article.data.pubDate)}</time></span>
+                            {note.article.data.updatedDate && <span>Updated <time datetime={note.article.data.updatedDate.toISOString()}>{fmt(note.article.data.updatedDate)}</time></span>}
+                          </p>
+                          <BuildStory post={note.article} />
+                          <p class="note__original"><a href={`/posts/${note.article.id}/`}>Open this post on its own page <span aria-hidden="true">↗</span></a></p>
+                        </>
+                      ) : (
+                        <>
+                          <ul class="note__bullets">
+                            {note.bullets.map((bullet) => <li>{bullet}</li>)}
+                          </ul>
+                          {note.article && (
+                            <p class="note__original">
+                              <a href={`/posts/${note.article.id}/`}>Original post <span aria-hidden="true">↗</span></a>
+                              <span aria-hidden="true">·</span>
+                              <time datetime={note.article.data.pubDate.toISOString()}>{fmt(note.article.data.pubDate)}</time>
+                            </p>
+                          )}
+                        </>
                       )}
                     </div>
                   </details>
@@ -156,6 +173,8 @@ const pad = (number: number) => String(number).padStart(2, "0");
   .note__summary::-webkit-details-marker { display: none; }
   .note__number { padding-top: 5px; font-family: var(--mono); font-size: var(--t-12); color: var(--muted); }
   .note__preview { display: block; min-width: 0; }
+  .note__format { display: block; margin-bottom: 6px; font-family: var(--mono); font-size: 10px; line-height: 1.4; letter-spacing: .09em; text-transform: uppercase; color: var(--accent); }
+  .note__meta { display: flex; flex-wrap: wrap; gap: 5px var(--s-4); margin: 0 0 var(--s-5); font-family: var(--mono); font-size: var(--t-12); color: var(--muted); }
   .note__title { display: block; font-family: var(--serif); font-size: clamp(19px, 1.8vw, 22px); line-height: 1.3; color: var(--fg); }
   .note__description { display: block; margin-top: 7px; max-width: 68ch; font-family: var(--sans); font-size: var(--t-14); font-weight: 400; line-height: 1.55; color: var(--muted); }
   .note__toggle { position: relative; width: 22px; height: 22px; margin-top: 3px; border: 1px solid var(--rule); border-radius: 50%; color: var(--accent); }

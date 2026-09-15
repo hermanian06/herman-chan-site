@@ -1,20 +1,35 @@
 ---
-title: One model plans, another builds, a third reviews
+title: How I split planning, building and review between AI models
 pubDate: 2026-07-29
-description: The reliability math that keeps my pipeline to one LLM call per document also applies to the process that builds the pipeline.
+updatedDate: 2026-09-15
+description: A task brief, a small change and a separate reviewer give me something concrete to judge.
 project: multi-model-build-chain
 tag: AI
 tagClass: ai
 ---
 
-Earlier this year I wrote about keeping exactly one language-model call per document in my records pipeline, because chained model steps compound their error rates. It took me embarrassingly long to notice the same math applied to the process that builds the pipeline itself.
+An underwriting workbook can calculate a plausible answer from the wrong cells. When AI writes the code that fills it, I need more than the builder's explanation that everything looks right. I need someone to challenge the assumptions behind the change.
 
-For most of the year, one model did everything on a build: planned the change, wrote the code, then looked its own work over and told me it was fine. That last step is the problem. A model reviewing its own output brings the same assumptions to the review that it brought to the writing. The bugs it catches are mostly the ones it already avoided.
+I split the work into planning, building and review. I define the business outcome, constraints and what would count as finished. The planner turns that into a task brief. A builder implements a small change and commits it, saving an exact version. A separate reviewer reads that version and reports possible defects. I resolve the underwriting decisions; the builder must reproduce technical findings before changing the code.
 
-So I split the job three ways. One model — the strongest planner I have access to — reads the task and writes an implementation plan I can argue with before any code exists. A second model builds against that plan. A third model, from a different vendor entirely, reads the finished changes cold and tries to break them. It gets no context about intentions, only the work.
+One August review caught a useful example. A formula checker was removing spaces before comparing Excel formulas. Ignoring cosmetic spacing sounds harmless, but spaces inside a quoted worksheet name are part of the address. Using invented sheet names, these references point to different sheets:
 
-The vendor split is the part that matters. Two models from the same family share training and taste, and review across that line is softer than it looks. The reviewer I use disagrees with the builder in ways that are occasionally wrong and reliably uncomfortable, which is exactly what I want from a reviewer.
+```text
+='Rent Roll'!A1
+='RentRoll'!A1
+```
 
-The review runs at every milestone rather than once at the end, and its findings come back to me as claims, not fixes. I decide which ones are real, the builder applies those, and anything confirmed becomes a regression test so the same bug can't return quietly.
+The reviewer flagged the comparison rule. The builder confirmed it and changed the helper to preserve spaces inside quoted names. Writing the test exposed another problem: two helpers shared a name, so a later definition had replaced the intended one. The fix gave the specialized helper its own name. That second issue came from testing the finding, not from the review itself.
 
-My own role shrank in a way I didn't expect. I used to be the reviewer of first resort, reading code line by line at eleven at night. Now I mostly rule on disagreements between two machines. It's a better job.
+<figure class="story-flow">
+<figcaption>The handoff I want at each meaningful change</figcaption>
+<ol>
+<li><strong>Brief</strong>Outcome, constraints and expected evidence.</li>
+<li><strong>Committed change</strong>A fixed version the reviewer can inspect.</li>
+<li><strong>Adjudication</strong>Reproduce the finding, decide, fix and check.</li>
+</ol>
+</figure>
+
+The archived decision record ties that finding to fix `235a1e5`. It also states what was not exercised, including the Windows writer. I find that limit more useful than a blanket “review passed.”
+
+A fresh model can still share the builder's blind spots, even across vendors. Review also costs time and creates another context handoff. I use it to surface claims I can investigate. I remain responsible for deciding whether the evidence is enough to trust the workbook.

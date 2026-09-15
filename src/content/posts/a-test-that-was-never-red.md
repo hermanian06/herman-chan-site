@@ -1,20 +1,43 @@
 ---
-title: A fix isn't proven by a test that never failed
+title: Writing the failing test before an AI fixes the bug
 pubDate: 2026-08-04
-description: The regression test I trust is the one I watched fail first. The other kind has lied to me twice.
+updatedDate: 2026-09-15
+description: A passing test once repeated the code's mistake. The expected answer needed its own source.
 project: multi-model-build-chain
 tag: AI
 tagClass: ai
 ---
 
-When a bug gets fixed in one of my analysis tools, the fix ships with a test so the bug can't quietly come back. For a while I let those tests be written after the fix, from the code as it stood. That ordering burned me twice in quick succession.
+One of my analysis tools once returned a number a thousand times too small. An AI-written fix arrived with a passing regression test, a check meant to catch the same bug later. The problem was still present in the path that mattered. The test had learned its expected answer from the code it was supposed to check.
 
-The first time, a tool was scaling a number by the wrong factor — an output coming out a thousand times too small. The test that shipped with the fix was written by reading the code and asserting it did what it did. Except the fix hadn't actually landed in the path that mattered, and the test, derived from the broken behavior, passed anyway. Green checkmark, bug still live. The test wasn't guarding the spec; it was notarizing whatever the code happened to do.
+That changed the order I require. Before the builder fixes anything, I want the expected answer derived from the source document or business requirement. Then I want to see the check fail against the broken behavior. Only after that should the implementation change and the same check run again.
 
-The second time, a supposed fix turned out to have quietly disabled the feature at both places it was used. Every existing test stayed green, because no test had ever pinned the feature as working in the first place.
+Here is a small illustration using invented values. It demonstrates the failure pattern; it is not a replay of the original incident. Suppose a statement labels amounts “in thousands.” A displayed 2.4 means 2,400 dollars. The expected answer comes from that unit label.
 
-The rule I run now is strict ordering. Before any fix: write the test from the spec — what the number should be, according to the source document — and watch it fail. That failing run is the only evidence the test can detect the bug at all. Then fix, then watch the same test pass. Red, then green, in that order, with both runs kept as the record.
+```python
+# Broken implementation ignores the source's unit label.
+def dollars(amount):
+    return amount
 
-It sounds like ceremony. It's the opposite. In a build process where models write the code and other models review it, the red-then-green sequence is the one step that can't be faked by a confident model or a tired reviewer — me included.
+assert dollars(2.4) == 2400
+```
 
-I'd already learned, and written here, that you can't grade a language model against its own guesses. A test written from the code is the same circle: the code grading itself. Apparently I needed to relearn it with ordinary Python.
+The proposed change is deliberately small:
+
+```python
+def dollars(amount):
+    return amount * 1000
+
+assert dollars(2.4) == 2400  # Same expected answer.
+```
+
+<aside class="story-evidence" aria-label="Local demonstration result">
+<p><strong>LOCAL DEMONSTRATION · SEP 15, 2026</strong></p>
+<p>Before: FAIL — expected 2,400, got 2.4.<br>After: PASS — expected 2,400, got 2,400.<br>The same expectation ran both times.</p>
+</aside>
+
+A test that instead asserted `dollars(2.4) == 2.4` would pass before the fix and reward the mistake. That is why I ask where an expected answer came from, especially when the same model writes both the function and its tests.
+
+The test also has to reach the function used by the workflow. Correcting an unused helper does nothing for the workbook someone receives. For a real fix, I need the failing case connected to that path, followed by an appropriate output check.
+
+Red then green establishes that this check detects this behavior. It does not prove the unit label was read correctly or that downstream calculations are right. My job is to pin the business meaning and ask for evidence at the point where a wrong answer would affect a deal.

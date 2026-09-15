@@ -1,5 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import BuildStory from "../../components/blog/BuildStory.astro";
+import { BLOG_OUTLINE } from "../../data/blog-outline";
 import { getCollection, render } from "astro:content";
 import type { GetStaticPaths } from "astro";
 
@@ -12,6 +14,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const { post } = Astro.props;
+const isBuildStory = BLOG_OUTLINE.some((group) => group.notes.some((note) => note.fullPostSlug === post.id));
 const { Content, headings } = await render(post);
 
 /* Determine this post's chronological number (oldest = 001). */
@@ -32,7 +35,11 @@ const further = [...allPosts]
 
 const tocItems = headings.filter((h) => h.depth === 2);
 
-const wordCount = post.body ? post.body.split(/\s+/).filter(Boolean).length : 0;
+/* Full build stories include code and HTML figures; count readable prose, not markup. */
+const countableBody = isBuildStory
+  ? (post.body ?? "").replace(/```[\s\S]*?```/g, "").replace(/<[^>]+>/g, " ")
+  : (post.body ?? "");
+const wordCount = countableBody.split(/\s+/).filter(Boolean).length;
 const minutes = Math.max(1, Math.round(wordCount / 230));
 
 /* Pin to UTC — frontmatter dates are calendar dates with no zone intent. */
@@ -72,6 +79,7 @@ const dateFiled = post.data.pubDate.toLocaleDateString("en-US", {
       {post.data.description && (
         <p class="post-head__dek">{post.data.description}</p>
       )}
+      {post.data.updatedDate && <p class="post-head__updated">Updated <time datetime={post.data.updatedDate.toISOString()}>{post.data.updatedDate.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric", timeZone: "UTC" })}</time></p>}
       <div class="post-head__byline">
         <span class="author">By Herman Chan</span>
         {post.data.tag && (
@@ -94,9 +102,7 @@ const dateFiled = post.data.pubDate.toLocaleDateString("en-US", {
         <div class="post-toc-spacer" aria-hidden="true"></div>
       )}
 
-      <div class="post-body">
-        <Content />
-      </div>
+      {isBuildStory ? <BuildStory post={post} /> : <div class="post-body"><Content /></div>}
 
       <div class="marginalia-spacer" aria-hidden="true"></div>
     </div>
@@ -184,6 +190,7 @@ const dateFiled = post.data.pubDate.toLocaleDateString("en-US", {
     max-width: 56ch;
     margin: 0;
   }
+  .post-head__updated { margin: var(--s-4) 0 0; font-family: var(--mono); font-size: var(--t-12); color: var(--muted); }
   .post-head__byline {
     margin-top: var(--s-6);
     display: flex;

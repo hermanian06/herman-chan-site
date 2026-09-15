@@ -8,6 +8,28 @@ This file is the record of what shipped and why — read the newest 1–3 entrie
 
 <!-- session-closeout: insert new entries directly below this line -->
 
+## Blog: first five full decision stories (2026-09-15 — local preview, not deployed)
+
+The first five Blog entries now expand into complete stories: reusable skills, separate AI
+planning/building/review, a failing test before a fix, separate Git worktrees, and column
+mapping versus numeric extraction. Four existing article URLs and publication dates are
+preserved with September 15 update dates; one new article is dated September 15. A shared
+renderer uses the same Markdown on the Blog and each permanent article page. The remaining
+nineteen outlines and all earlier article links remain available across six topics.
+
+Stories include a role diagram, an archived formula-review example tied to fix `235a1e5`, a
+clearly labeled synthetic red/green demonstration, a worktree diagram, and synthetic rent
+rows with a shortened mapping. They distinguish source-level/local evidence from live Excel
+or model execution and state the remaining limits. No current scale, accuracy or savings
+metrics are introduced. Scoped story styles keep figures, code and tables readable without
+new dependencies. Other project tabs are unchanged.
+
+`npm run build` passed (37 pages). Independent generated-HTML checks verify five full bodies,
+nineteen three-bullet outlines, all twenty-four accepted titles, all seventeen published
+article routes, preserved dates, 200–400 prose words per story and identical inline/permalink
+content. Desktop/mobile browser QA and committed-diff review are recorded by the parent task.
+
+
 ## Blog: 24 short build notes (2026-09-15 — local implementation, not deployed)
 
 The Blog tab now has six topics with four notes each: Building with AI, Underwriting agent,

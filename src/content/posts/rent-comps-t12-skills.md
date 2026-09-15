@@ -1,22 +1,30 @@
 ---
-title: Why I moved my rent-benchmark and income-statement workflows out of Claude chat into Skills
+title: Turning an underwriting workflow into a reusable AI skill
 pubDate: 2026-05-22
-description: Three problems running spreadsheet workflows in Claude chat that pushed me to build dedicated skills.
+updatedDate: 2026-09-15
+description: Moving the rules out of a conversation so the next run follows the same specification.
 project: skills-suite
 tag: AI
 tagClass: ai
 ---
 
-Every single-family rental deal comes with two repetitive Excel exercises: benchmarking rents against similar properties nearby, and recategorizing the property's trailing twelve-month income statement line by line. Each used to take me about an hour. When I started pasting the workbooks into Claude chat and asking for help, each dropped to maybe twenty minutes. That felt like a win until I noticed three problems.
+When I compare rental-housing deals, “recent rent” needs to mean the same thing on every property. Early chat-based runs kept making slightly different choices about the lookback period, renewals and zero-rent units. The spreadsheets looked reasonable individually. Comparing them was the problem.
 
-The first was drift. Part of the rent work is calculating the property's in-place rent and its recently-leased rent — the spread between them tells you where rents are heading. Ask in chat, and each session interprets that calculation a little differently: how many months counts as "recent," whether renewals count, what to do with units showing zero rent. Every version is defensible on its own. But if the definition moves between deals, the comparison across deals is worthless.
+I moved recurring work into skills: written instructions an agent reads before running a task, backed by Python tools. I supply the underwriting definitions and decide what a reviewer needs to see. AI helps implement them. The agent can interpret an unfamiliar export, but the calculation should come from an explicit rule that survives the conversation.
 
-Formatting was the second. Chat shapes the output differently every time — different columns, different layout — and pasting Excel into chat strips the formulas anyway, so I'd end up re-typing the answer into my own workbook. Half the speed-up gone right there.
+The income-statement skill shows the split. A T-12 is twelve months of income and expenses; a T-3 is the latest three. The source-sheet helper adds those three months. Annualizing that result, multiplying by four, happens separately in the analysis. Those are different numbers, and putting both under an ambiguous “T-3” label would make a correct formula misleading.
 
-And the benchmark data comes from an API I pay for. There's no way to hand a chat window your API key, so every deal meant pulling the export myself and copy-pasting it in by hand.
+<figure class="story-flow">
+<figcaption>How the skill divides responsibility</figcaption>
+<ol>
+<li><strong>Written workflow</strong>Defines the period, categories and expected output.</li>
+<li><strong>Agent</strong>Interprets the file and supplies its layout.</li>
+<li><strong>Python tools</strong>Build formulas, write the workbook and check the saved cells.</li>
+</ol>
+</figure>
 
-So I moved both workflows into Claude Code skills: a written spec of the workflow plus small Python tools for the mechanical parts. The calculations are pinned in the spec, so "recent" means the same lookback on every deal. The output lands in an Excel workbook template, so every deal comes out in the same shape, formulas intact. And the tools call the API directly, key and all — the manual copy-paste step just disappeared.
+In the current tools, one rules module produces a plan of cell values, formulas and formatting. The Mac and Windows writers apply that same plan. A check then reads the saved, closed workbook back against it. This gives me a way to distinguish a wrong rule from a writer that failed to put the rule into Excel.
 
-That last part opened a door I hadn't planned on. Once the tools could hold credentials, I started wiring in other sources the same way: the Census API for income and population around a property, and my email, so a skill can pull deal-specific details and pricing straight out of the broker's thread.
+For example, a source-sheet test expects `=SUM(P6:R6)` for the three-month helper. It checks the literal formula, including its selected columns. A local check with invented January–June headers selected April–June in either chronological direction: 100 + 110 + 120 = 330. That exercises the rule, not a live workbook. Unreadable headers still need attention.
 
-An hour down to five minutes is the headline. The real win is that two deals processed a month apart now come out calculated and formatted the same way.
+The cost is upkeep. If I change what “recent” means, the workflow, code and expected answer have to move together. A saved specification can preserve a mistake as consistently as a good decision. I still review the definitions; I no longer want to invent them again on the next deal.

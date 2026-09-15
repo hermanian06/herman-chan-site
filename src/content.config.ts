@@ -7,6 +7,7 @@ const posts = defineCollection({
     title: z.string(),
     description: z.string().optional(),
     pubDate: z.coerce.date(),
+    updatedDate: z.coerce.date().optional(),
     project: z.string().optional(),
     tag: z.string().optional(),
     tagClass: z.enum(['ai', 'cre', 'notes']).optional(),

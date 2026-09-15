@@ -1,18 +1,30 @@
 ---
-title: The agent deleted work that wasn't its own
+title: Why each AI builder gets a separate working copy
 pubDate: 2026-08-07
-description: Two model sessions, one shared folder, and a cleanup command that threw away a morning of edits.
+updatedDate: 2026-09-15
+description: One session's cleanup erased another's edits. I changed where parallel builders work.
 project: multi-model-build-chain
 tag: AI
 tagClass: ai
 ---
 
-I usually have more than one model session running at a time — one building a feature, another fixing something unrelated in the same project. One afternoon, a session that was testing a safety check did what testing sometimes requires: it made a throwaway edit, then ran the git command that resets everything back to the last saved checkpoint, discarding all uncommitted changes.
+I know the trouble two people can cause editing the same underwriting spreadsheet. I still let two AI sessions work in the same code folder: one building a feature, another testing something unrelated. One session cleaned up its experiment by discarding uncommitted changes. That command also erased the other session's edits.
 
-The problem is "all." The other session had a morning's worth of edits sitting in that folder, not yet committed. The reset erased those too. The session that did it noticed on its own — the files no longer matched what it had just been told about them — and confessed before I'd seen anything wrong.
+The cleanup was broader than the task that justified it. Telling agents to be more careful would leave the same shared folder underneath. I changed the working arrangement: each builder gets a Git worktree, a separate working folder attached to its own branch of the repository. A branch alone is not enough if the builders still edit the same files on disk.
 
-Two things came out of that day. The first is a set of standing rules, written down where every session reads them. Destructive git commands are banned outright. Every session commits at each natural stopping point — a passing test, a finished file — so hours of work never sit exposed. And when two sessions genuinely need to modify the same project, each works in its own separate copy, merged deliberately afterward. Uncommitted edits are the one thing version control cannot give back, so every rule is shaped around never holding many of them.
+<figure class="story-flow">
+<figcaption>Illustrative two-task setup</figcaption>
+<ol>
+<li><strong>Builder A</strong>Rent parser change in folder A, on branch A.</li>
+<li><strong>Builder B</strong>Workbook check in folder B, on branch B.</li>
+<li><strong>Integration</strong>Review each commit, then combine changes deliberately.</li>
+</ol>
+</figure>
 
-The second thing was the recovery, which I did not expect to work. Every model session keeps a transcript of what it did, including the exact text of every edit. We replayed the lost session's transcript, edit by edit, and got the morning back byte for byte. The transcript turned out to be a journal I'd been keeping without knowing it.
+The builders share project history, but each has its own current files and pending edits. They commit small, coherent changes so I can give a reviewer an exact version. If both change the same area, integration is where we resolve the disagreement. Separate folders do not make those changes automatically compatible.
 
-I've had years of warnings about two people editing the same spreadsheet, and a whole discipline of version locks and read-only copies exists because of it. Two agents editing the same folder is the identical problem in new clothes. It gets the same respect now.
+For this Blog revision, the builder also worked in its own worktree. That is a checkable application of the rule, not evidence that agents can never interfere. They can still reach other folders if their permissions allow it.
+
+We recovered the earlier incident's edits from its session record. I was relieved, but I would not design a recovery process around getting that lucky again. A transcript may be incomplete; saved commits are the checkpoints I deliberately control.
+
+The boundary matters beyond files. Two worktrees can still connect to the same database, deployment or running Excel application. Those resources need an explicit owner and coordinated writes. Parallel builders are useful to me when their work can proceed separately; I still combine their changes and approve shared actions deliberately.
