@@ -251,11 +251,11 @@
       "kind": "sample",
       "model_calls": 7,
       "input_tokens": 78414,
-      "output_tokens": 9190,
+      "output_tokens": 9286,
       "cache_read_tokens": 0,
       "cache_write_tokens": 0,
-      "dollars": 0.6218,
-      "seconds": 58.6,
+      "dollars": 0.6242,
+      "seconds": 54.0,
       "models": {
         "extraction": "claude-opus-5",
         "classification": "claude-haiku-4-5"
@@ -272,11 +272,11 @@
     "county": "Maricopa",
     "msa": "Phoenix MSA",
     "address_provenance": "Illustrative address — not the asset's real location. The market tabs were pulled for this address on 2026-09-14.",
-    "product_type": "garden-style multifamily",
+    "product_type": "Garden-style multifamily",
     "structure": "1 & 2 stories",
     "unit_count": 334,
     "year_built": 1981,
-    "product_detail": "One-, two-, and three-bedroom residences averaging 856 square feet across 40 buildings on 15.87 acres",
+    "product_detail": "Diversified mix of one-, two-, and three-bedroom residences averaging 856 square feet on approximately 15.9 acres",
     "construction_status": "MISSING",
     "delivery_date": "MISSING",
     "seller_entity": "Sonoran Residential Holdings LLC",
@@ -778,7 +778,7 @@
       },
       {
         "label": "DEPOSIT WAIVER EXPENSE (3157)",
-        "category": "Revenue Adjustments",
+        "category": "Other Income",
         "monthly": [
           -2499.07,
           -1861.46,
@@ -814,7 +814,7 @@
       },
       {
         "label": "RENTER'S INSURANCE EXPENSE (3176)",
-        "category": "Revenue Adjustments",
+        "category": "Other Income",
         "monthly": [
           -4683.15,
           -4669.27,
@@ -1408,7 +1408,7 @@
       },
       {
         "label": "TELEPHONE - LOCAL LINES (5530)",
-        "category": "Utilities",
+        "category": "General and Administrative",
         "monthly": [
           1174.85,
           468.85,
@@ -1426,7 +1426,7 @@
       },
       {
         "label": "HIGH SPEED INTERNET (5531)",
-        "category": "Utilities",
+        "category": "General and Administrative",
         "monthly": [
           0.0,
           0.0,
@@ -7711,8 +7711,8 @@
       },
       "occupied_units": 313,
       "occupied_basis": "Occupied + Notice Available + Notice Rented",
-      "market_rent": 448550.0,
-      "current_rent": 465690.0,
+      "market_rent": 470988.0,
+      "current_rent": 488975.0,
       "duplicate_units": [
         "1060",
         "1077",
@@ -12326,7 +12326,7 @@
       "note": "The same selection with the vintage test switched off and every other criterion held fixed — same product test, same tracker exclusions, same radius, same cap, same rent rule. One variable, so the difference between this and the detailed tiers is the vintage effect. Bounded by the 20 communities the service quoted rents for: a community it did not preselect cannot be priced here."
     },
     "tiering": {
-      "subject_product": "garden-style multifamily",
+      "subject_product": "Garden-style multifamily",
       "subject_year_built": 1981,
       "year_band": 10,
       "radius_mi": 10.0,
