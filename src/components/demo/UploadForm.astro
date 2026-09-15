@@ -39,25 +39,11 @@ import {
   </p>
 
   <div class="uf__body" data-uf-body hidden>
-    <div class="uf__field uf__codefield" data-uf-codefield hidden>
-      <div class="uf__emailrow" data-uf-emailrow hidden>
-        <label class="uf__label" for="uf-email">Your email</label>
-        <div class="uf__emailline">
-          <input id="uf-email" class="uf__codeinput uf__emailinput" type="email" autocomplete="email" spellcheck="false" placeholder="you@example.com" data-uf-email />
-          <button type="button" class="uf__btn" data-uf-sendcode>Email me a code</button>
-        </div>
-        <p class="uf__hint" data-uf-emailhint>
-          Live uploads need a one-time code. Enter your email and we'll send one — good for
-          one upload. Nothing else is ever sent to that address.
-        </p>
-      </div>
-      <label class="uf__label" for="uf-code">Access code</label>
-      <input id="uf-code" class="uf__codeinput" type="text" autocomplete="one-time-code" spellcheck="false" data-uf-code />
-      <p class="uf__hint" data-uf-codehint>
-        Uploads are invite-only. If you would like to run your own deal through it, ask me
-        for a code; the sample deal below needs none.
-      </p>
-    </div>
+    {/* Herman, 2026-09-15: no access code and no email step. The field and the
+        "Email me a code" row are DELETED rather than hidden — a hidden input that
+        nothing fills is a thing the next reader has to rule out. The service answers
+        access_code_required:false (DEMO_ACCESS_MODE=off); if that ever changes back,
+        this markup and its script come back with it. */}
 
     <div class="uf__sample">
       <button type="button" class="uf__btn uf__btn--primary" data-uf-sample>
@@ -190,7 +176,9 @@ import {
        planned. Where the server does send a message, that message wins. */
     var STATUS_FALLBACK = {
       400: "The demo could not accept that request.",
-      401: "This run needs an access code.",
+      /* No access code exists any more (Herman, 2026-09-15); a 401 here means the
+         service was reconfigured to demand one and this page cannot satisfy it. */
+      401: "Uploads are not open right now.",
       403: "That link is no longer valid.",
       404: "That run is gone — its files have already been deleted.",
       408: "That upload took too long to arrive. Try again on a steadier connection.",
@@ -224,14 +212,6 @@ import {
       var submitEl = root.querySelector("[data-uf-submit]");
       var sampleEl = root.querySelector("[data-uf-sample]");
       var turnstileEl = root.querySelector("[data-uf-turnstile]");
-      var codeEl = root.querySelector("[data-uf-code]");
-      var codeFieldEl = root.querySelector("[data-uf-codefield]");
-      var emailRowEl = root.querySelector("[data-uf-emailrow]");
-      var emailEl = root.querySelector("[data-uf-email]");
-      var sendCodeEl = root.querySelector("[data-uf-sendcode]");
-      var emailHintEl = root.querySelector("[data-uf-emailhint]");
-      var codeHintEl = root.querySelector("[data-uf-codehint]");
-      var codeTtlMinutes = 15;
       var statusEl = root.querySelector("[data-uf-status]");
       var errorEl = root.querySelector("[data-uf-error]");
 
@@ -664,18 +644,12 @@ import {
         return field && field.value ? field.value : "";
       }
 
-      function accessCode() {
-        return codeEl && codeEl.value ? codeEl.value.trim() : "";
-      }
-
-      /* The bot gate and the access code now have to be readable BEFORE the multipart body
-         is parsed, so they travel as headers. The same values still go up as form fields,
-         which is what a server that has not moved its gate yet reads. */
+      /* The bot gate has to be readable BEFORE the multipart body is parsed, so it
+         travels as a header. The same value still goes up as a form field, which is what
+         a server that has not moved its gate yet reads. (The access-code half of this
+         went with the field it read — Herman, 2026-09-15.) */
       function gateHeaders() {
-        var headers = { "X-Turnstile-Token": turnstileToken() };
-        var code = accessCode();
-        if (code) headers["X-Access-Code"] = code;
-        return headers;
+        return { "X-Turnstile-Token": turnstileToken() };
       }
 
       /* ---------- wiring ---------- */
@@ -710,47 +684,8 @@ import {
         if (running) return;
         var payload = new FormData();
         payload.append("turnstile_token", turnstileToken());
-        if (accessCode()) payload.append("access_code", accessCode());
         startRun("/api/runs/sample", payload, true);
       });
-
-      /* The email step (access_mode "email"): one request, one code, one upload. The
-         server answers 202 with the same sentence whatever the address's history — an
-         address at its daily cap is not distinguishable from a fresh one here — so the
-         hint repeats what it said; a 400 / 429 reads in the server's own words. */
-      if (sendCodeEl) {
-        sendCodeEl.addEventListener("click", function () {
-          var email = emailEl && emailEl.value ? emailEl.value.trim() : "";
-          if (!email || email.indexOf("@") < 1) {
-            emailHintEl.textContent = "Enter the email address the code should go to.";
-            return;
-          }
-          sendCodeEl.disabled = true;
-          emailHintEl.textContent = "Sending…";
-          fetch(BASE + "/api/access/request", {
-            method: "POST",
-            headers: { "Content-Type": "application/json", "X-Turnstile-Token": turnstileToken() },
-            body: JSON.stringify({ email: email }),
-          })
-            .then(function (res) {
-              return readBody(res).then(function (data) {
-                sendCodeEl.disabled = false;
-                if (!res.ok) {
-                  emailHintEl.textContent = messageFor(res, data);
-                  return;
-                }
-                emailHintEl.textContent =
-                  (data && data.message) ||
-                  "If that address is yours, a code is on its way. Paste it below.";
-                if (codeEl) codeEl.focus();
-              });
-            })
-            .catch(function () {
-              sendCodeEl.disabled = false;
-              emailHintEl.textContent = NETWORK_MESSAGE;
-            });
-        });
-      }
 
       /* `novalidate` is on the form so every refusal reads in the page's own voice
          rather than as a browser bubble; the checkbox keeps `required` for semantics. */
@@ -796,7 +731,6 @@ import {
         payload.append("notes", notesEl.value);
         payload.append("price_per_unit", priceText);
         payload.append("turnstile_token", turnstileToken());
-        if (accessCode()) payload.append("access_code", accessCode());
         startRun("/api/runs", payload, false);
       });
 
@@ -865,22 +799,18 @@ import {
           limitsEl.textContent = limitsText();
           renderCounter();
 
-          /* The field only exists when the server says a code is required; with none
-             required, no X-Access-Code header and no access_code field ever go up. */
-          if (meta.access_code_required === true && codeFieldEl) {
-            codeFieldEl.hidden = false;
-            /* "email": the visitor asks for their own code; otherwise the old invite-only
-               hint stands (a static code the operator hands out). */
-            if (meta.access_mode === "email" && emailRowEl) {
-              codeTtlMinutes = meta.code_ttl_minutes || codeTtlMinutes;
-              emailRowEl.hidden = false;
-              emailHintEl.textContent =
-                "Live uploads need a one-time code. Enter your email and we'll send one — good for one upload within " +
-                codeTtlMinutes +
-                " minutes. Nothing else is ever sent to that address.";
-              codeHintEl.textContent =
-                "Paste the code from the email here. Each code is good for one upload; the sample deal below needs none.";
-            }
+          /* No access-code branch: the form has no field to reveal (Herman,
+             2026-09-15). A service that starts answering access_code_required:true
+             again would refuse every upload here with nothing to satisfy it, so that
+             flag reads as a STATE THIS PAGE CANNOT SERVE and says so plainly rather
+             than failing at submit with the server's "needs an access code". */
+          if (meta.access_code_required === true) {
+            setBusy(true);
+            setStatus(
+              "Uploads are paused: the service is asking for an access code and this " +
+              "page no longer has that field. The sample deal still runs."
+            );
+            if (sampleEl) sampleEl.disabled = false;
           }
 
           if (meta.accepting === false) {
@@ -1128,24 +1058,6 @@ import {
     color: var(--muted-2);
     text-align: right;
     margin: var(--s-1) 0 0;
-  }
-
-  .uf__codefield { margin: 0 0 var(--s-5); }
-  .uf__emailrow { margin: 0 0 var(--s-4); }
-  .uf__emailline { display: flex; gap: var(--s-3); align-items: center; flex-wrap: wrap; }
-  .uf__emailinput { flex: 1 1 16rem; }
-  .uf__codeinput {
-    display: block;
-    width: 100%;
-    max-width: 22ch;
-    font-family: var(--mono);
-    font-size: var(--t-14);
-    letter-spacing: 0.04em;
-    color: var(--fg);
-    background: var(--bg);
-    border: 1px solid var(--rule);
-    border-radius: 2px;
-    padding: 8px var(--s-3);
   }
 
   .uf__turnstile { margin: var(--s-5) 0 0; }

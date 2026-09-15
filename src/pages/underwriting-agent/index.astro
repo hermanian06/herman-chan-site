@@ -3,12 +3,13 @@
  * Tab 2 — Underwriting Agent.
  *   §01 what / how / why, for two readers
  *   §02 the sample deal, populated (the same baked previews /demo/underwriting/ renders),
- *       with the consolidated workbook downloadable right under the tabs
+ *       with the consolidated workbook downloadable ABOVE the tabs (Herman, 2026-09-15)
  *   §03 the upload portal (same component as /demo/underwriting/try/)
  *
- * NOTE for the Tab-2 session: Herman wants uploads with NO email step. The form shows the
- * email row only when the API's GET /api/meta says access_mode="email" — flipping that is a
- * Portfolio Demo backend change, not a change here.
+ * Uploads take NO email step and NO access code (Herman, 2026-09-15). The form's code and
+ * email fields are gone, not hidden, and the service answers access_code_required:false
+ * with DEMO_ACCESS_MODE=off. Both halves have to move together: a server that starts
+ * demanding a code again would refuse every upload with no field to satisfy it.
  */
 import Layout from "../../layouts/Layout.astro";
 import TabHead from "../../components/tabs/TabHead.astro";
@@ -54,7 +55,7 @@ const sampleTabs = PAGE_TABS.map((tab) => ({ ...tab, html: panelHtml[tab.id] }))
 
 /* One workbook, every tab in the page's order (Herman, 2026-09-14). */
 const downloads = [
-  { file: "sample-underwriting-pack.xlsx", name: "Underwriting pack", note: "Every tab above in one workbook, in the same order: deal summary, demand, rent comps, property tax, supply, the T-12 and rent-roll raw data / analysis / audit trail, the model-ready outputs and the audit trail." },
+  { file: "sample-underwriting-pack.xlsx", name: "Underwriting pack", note: "Every tab below in one workbook, in the same order: deal summary, demand, rent comps, property tax, supply, the T-12 and rent-roll raw data / analysis / audit trail, the model-ready outputs and the audit trail." },
 ];
 const base = "/downloads/underwriting-demo";
 
@@ -112,11 +113,12 @@ const base = "/downloads/underwriting-demo";
       </div>
       <p class="blk__note">
         Here is the real output for a sample deal in Mesa, Arizona. All financial numbers
-        are illustrative. The same output is downloadable below the tabs.
+        are illustrative. The same output is downloadable here.
       </p>
-      <OutputTabs tabs={sampleTabs} />
 
-      <ul class="dl" aria-label="Download the sample workbooks">
+      {/* Herman, 2026-09-15: the pack download sits ABOVE the tabs — a reader who wants
+          the workbook should not have to scroll past thirteen tab panels to find it. */}
+      <ul class="dl dl--top" aria-label="Download the sample workbooks">
         {downloads.map((d) => (
           <li class="dl__item">
             <a class="dl__link" href={`${base}/${d.file}`} download>{d.name}</a>
@@ -125,6 +127,8 @@ const base = "/downloads/underwriting-demo";
           </li>
         ))}
       </ul>
+
+      <OutputTabs tabs={sampleTabs} />
     </div>
   </section>
 
@@ -184,6 +188,8 @@ const base = "/downloads/underwriting-demo";
   .blk__note--small { font-size: var(--t-15); color: var(--muted); margin-top: var(--s-4); }
 
   .dl { list-style: none; margin: var(--s-6) 0 0; padding: 0; border-top: 1px solid var(--rule); }
+  /* Above the tabs it needs a gap BELOW it as well, or the tab strip sits on its rule. */
+  .dl--top { margin: var(--s-5) 0 var(--s-6); }
   .dl__item {
     display: grid;
     grid-template-columns: minmax(12rem, 20rem) 1fr auto;
