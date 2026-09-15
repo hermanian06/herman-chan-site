@@ -52,12 +52,9 @@ const panelHtml: Record<string, string> = {
 const PAGE_TABS = DEMO_TABS.filter((tab) => tab.id !== "notes");
 const sampleTabs = PAGE_TABS.map((tab) => ({ ...tab, html: panelHtml[tab.id] }));
 
-/* One workbook per tab group above, so what is shown is what is downloaded. */
+/* One workbook, every tab in the page's order (Herman, 2026-09-14). */
 const downloads = [
-  { file: "sample-deal-summary.xlsx", name: "Deal summary", note: "Summary, rent comps, property tax, demand and supply by ring." },
-  { file: "sample-t12-analysis.xlsx", name: "T-12 analysis", note: "Monthly data, P&L summary, checks and pricing." },
-  { file: "sample-rent-roll-analysis.xlsx", name: "Rent roll analysis", note: "Rent roll and unit mix." },
-  { file: "sample-model-ready-outputs.xlsx", name: "Model-ready outputs", note: "Field manifest, audit trail, notes and disclosures." },
+  { file: "sample-underwriting-pack.xlsx", name: "Underwriting pack", note: "Every tab above in one workbook, in the same order: deal summary, demand, rent comps, property tax, supply, the T-12 and rent-roll raw data / analysis / audit trail, the model-ready outputs and the audit trail." },
 ];
 const base = "/downloads/underwriting-demo";
 
@@ -137,7 +134,7 @@ const forRE = [
       <section class="run-dl" aria-labelledby="run-dl-title">
         <h2 id="run-dl-title" class="run-dl__h2">Workbooks from this run</h2>
         <p class="run-dl__empty" data-uf-nodownloads>Nothing yet. The workbooks appear here when a run finishes.</p>
-        <ul class="uf-dl" data-uf-downloads></ul>
+        <ul class="uf-dl" data-uf-downloads data-uf-only="pack"></ul>
         <p class="run-dl__expiry" data-uf-expiry hidden></p>
       </section>
     </div>

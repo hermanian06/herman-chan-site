@@ -483,6 +483,14 @@ import {
         while (downloadsEl.firstChild) downloadsEl.removeChild(downloadsEl.firstChild);
 
         var list = downloads || [];
+        /* A page that offers the pack alone marks its list data-uf-only="pack": the four
+           single-purpose workbooks are still produced and served, just not listed there. */
+        if (downloadsEl.getAttribute("data-uf-only") === "pack") {
+          list = list.filter(function (item) {
+            var n = String((item && item.name) || "");
+            return n.indexOf("pack") !== -1 || /\.json$/i.test(n);
+          });
+        }
         var stamp = expiresAt;
         var rendered = 0;
 
