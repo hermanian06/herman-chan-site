@@ -8,6 +8,24 @@ This file is the record of what shipped and why — read the newest 1–3 entrie
 
 <!-- session-closeout: insert new entries directly below this line -->
 
+## Blog: 24 short build notes (2026-09-15 — local implementation, not deployed)
+
+The Blog tab now has six topics with four notes each: Building with AI, Underwriting agent,
+Supply database, Rent database, Evals & reliability, and MCP & integration. Each title opens
+three short bullets inline; a contents navigation keeps the full set browsable on one tab.
+Existing full articles retain their URLs and dates, with original-post links in matching notes
+and every remaining article (including the site introduction) listed in the archive section.
+Short-note counts and published-article counts are separate. The draft-copy marker is removed
+from Blog; other tabs, shared styles and article bodies are unchanged.
+
+Content preserves the incomplete engine migration, historical desktop incident, tool-coverage
+limits and differences between observations, estimates and validation. No new current scale,
+accuracy, cost or adoption metrics are claimed. `npm run build` passed (36 pages). Generated
+HTML checks passed: six groups, 24 exact accepted titles, 72 bullets, all 16 published URLs
+linked exactly once, valid local routes and unique IDs. Browser QA and independent committed-diff
+review follow in the parent task.
+
+
 ## Sample set re-restaged (2026-09-14, night — reconciliation PASS, sanity checks, T-3 series, duplicates)
 
 `53d890c` on main, Netlify live: the same 14 fragments and downloads, re-published from the refooted sample

@@ -1,11 +1,7 @@
 ---
 /**
- * Tab 5 — Blog. Posts grouped by the three systems (plus a "how I build" group), each
- * condensed to bullets from src/data/blog-outline.ts. Titles, dates and links come from
- * the post collection so they cannot drift from the post files.
- *
- * RULE carried over from the old landing page: every published post is listed here.
- * Anything not filed in the outline renders under "Unfiled" rather than disappearing.
+ * Short build notes are separate from the published article collection. Explicit original
+ * links join the two; every other published article automatically remains in the archive.
  */
 import Layout from "../../layouts/Layout.astro";
 import TabHead from "../../components/tabs/TabHead.astro";
@@ -13,190 +9,196 @@ import { getCollection } from "astro:content";
 import { BLOG_OUTLINE } from "../../data/blog-outline";
 
 const posts = await getCollection("posts", ({ data }) => !data.draft);
-const bySlug = new Map(posts.map((p) => [p.id, p]));
-
-const fmt = (d: Date) =>
-  d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
-
-const filed = new Set<string>();
-const groups = BLOG_OUTLINE.map((g) => ({
-  ...g,
-  posts: g.posts
-    .map((op) => {
-      const post = bySlug.get(op.slug);
-      if (post) filed.add(op.slug);
-      return post ? { ...op, post } : null;
-    })
-    .filter((x): x is NonNullable<typeof x> => x !== null)
-    .sort((a, b) => b.post.data.pubDate.getTime() - a.post.data.pubDate.getTime()),
+const bySlug = new Map(posts.map((post) => [post.id, post]));
+const linkedSlugs = new Set<string>();
+let noteNumber = 0;
+const groups = BLOG_OUTLINE.map((group) => ({
+  ...group,
+  notes: group.notes.map((note) => {
+    const original = note.originalSlug ? bySlug.get(note.originalSlug) : undefined;
+    if (note.originalSlug && !original) {
+      throw new Error(`Blog note ${note.id} links to an unpublished or missing article: ${note.originalSlug}`);
+    }
+    if (original) linkedSlugs.add(original.id);
+    return { ...note, original, number: ++noteNumber };
+  }),
 }));
-
-/* /posts/what-this-site-is/ is the site introduction; its content moved to the About tab. */
-const unfiled = posts
-  .filter((p) => !filed.has(p.id) && p.id !== "what-this-site-is")
+const archive = posts
+  .filter((post) => !linkedSlugs.has(post.id))
   .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+const fmt = (date: Date) => date.toLocaleDateString("en-US", {
+  year: "numeric", month: "short", day: "numeric", timeZone: "UTC",
+});
+const pad = (number: number) => String(number).padStart(2, "0");
 ---
 
 <Layout
-  title="Blog"
-  description="Builder notes on the three systems, condensed: what was hard, what was thrown away, what changed."
+  title="AI & data build notes"
+  description="How I use AI to build my underwriting agent, supply database and rent database: workflows, extraction, evaluations, MCP and operating failures."
 >
   <TabHead
     kicker="Tab 05 · Blog"
-    title="Builder notes, grouped by system."
-    lede={`${posts.length} posts so far, each condensed to a few bullets here. Every post still opens in full.`}
-    draft
+    title="AI & data build notes"
+    lede="Notes on how I use AI to build my underwriting agent, supply database and rent database: workflow design, document extraction, evaluations, MCP and the problems I find while running them."
   />
 
-  <section class="blog">
-    <div class="wrap">
-      {groups.map((g, i) => (
-        <section class="grp" id={g.key}>
-          <div class="section-title">
-            <span class="section-title__hash">§ 0{i + 1}</span>
-            <span class="section-title__label"><a href={g.href}>{g.title}</a></span>
-            <span class="section-title__hint">{g.posts.length} {g.posts.length === 1 ? "post" : "posts"}</span>
-          </div>
-          <p class="grp__blurb">{g.blurb}</p>
+  <div class="blog wrap">
+    <div class="blog__intro">
+      <p class="blog__count">{noteNumber} short notes <span aria-hidden="true">·</span> {groups.length} topics</p>
+      <p class="blog__instruction">Open a title for the notes. Earlier full articles are linked inside.</p>
+    </div>
 
-          {g.posts.length > 0 && (
-            <ol class="plist">
-              {g.posts.map(({ post, bullets }) => (
-                <li class="pitem">
-                  <div class="pitem__meta">
-                    <time class="num" datetime={post.data.pubDate.toISOString()}>{fmt(post.data.pubDate)}</time>
-                  </div>
-                  <div class="pitem__body">
-                    <h3 class="pitem__title"><a href={`/posts/${post.id}/`}>{post.data.title}</a></h3>
-                    <ul class="pitem__bullets">
-                      {bullets.map((b) => <li>{b}</li>)}
-                    </ul>
-                    <a class="pitem__more" href={`/posts/${post.id}/`}>Read the post →</a>
-                  </div>
+    <div class="blog__layout">
+      <aside class="contents">
+        <nav aria-label="Build note topics" class="contents__inner">
+          <p class="kicker">On this page</p>
+          <ol class="contents__list">
+            {groups.map((group, index) => (
+              <li><a href={`#${group.key}`}><span aria-hidden="true">{pad(index + 1)}</span>{group.title}</a></li>
+            ))}
+          </ol>
+          <a class="contents__archive" href="#published-archive">More from the archive <span aria-hidden="true">↓</span></a>
+        </nav>
+      </aside>
+
+      <div class="blog__sections">
+        {groups.map((group, index) => (
+          <section class="note-group" id={group.key} aria-labelledby={`${group.key}-heading`}>
+            <header class="note-group__head">
+              <div class="note-group__label">
+                <span class="kicker">Section {pad(index + 1)}</span>
+                <span class="note-group__count">{group.notes.length} notes</span>
+              </div>
+              <h2 id={`${group.key}-heading`}>{group.title}</h2>
+              <p>{group.blurb}</p>
+            </header>
+            <ol class="notes" start={group.notes[0]?.number}>
+              {group.notes.map((note) => (
+                <li class="note" id={note.id}>
+                  <details class="note__details">
+                    <summary class="note__summary">
+                      <span class="note__number" aria-hidden="true">{pad(note.number)}</span>
+                      <span class="note__preview">
+                        <span class="note__title">{note.title}</span>
+                        <span class="note__description">{note.description}</span>
+                      </span>
+                      <span class="note__toggle" aria-hidden="true"></span>
+                    </summary>
+                    <div class="note__body">
+                      <ul class="note__bullets">
+                        {note.bullets.map((bullet) => <li>{bullet}</li>)}
+                      </ul>
+                      {note.original && (
+                        <p class="note__original">
+                          <a href={`/posts/${note.original.id}/`}>Original post <span aria-hidden="true">↗</span></a>
+                          <span aria-hidden="true">·</span>
+                          <time datetime={note.original.data.pubDate.toISOString()}>{fmt(note.original.data.pubDate)}</time>
+                        </p>
+                      )}
+                    </div>
+                  </details>
                 </li>
               ))}
             </ol>
-          )}
-        </section>
-      ))}
+          </section>
+        ))}
 
-      {unfiled.length > 0 && (
-        <section class="grp" id="unfiled">
-          <div class="section-title">
-            <span class="section-title__hash">§ ··</span>
-            <span class="section-title__label">Unfiled</span>
-            <span class="section-title__hint">Published but not yet grouped above</span>
+        <section class="archive" id="published-archive" aria-labelledby="archive-heading">
+          <div class="archive__heading">
+            <h2 id="archive-heading">More from the archive</h2>
+            <span class="archive__count">{archive.length} articles</span>
           </div>
-          <ol class="plist">
-            {unfiled.map((post) => (
-              <li class="pitem">
-                <div class="pitem__meta"><time class="num">{fmt(post.data.pubDate)}</time></div>
-                <div class="pitem__body">
-                  <h3 class="pitem__title"><a href={`/posts/${post.id}/`}>{post.data.title}</a></h3>
-                  {post.data.description && <p class="pitem__desc">{post.data.description}</p>}
-                </div>
+          <p class="archive__intro">Earlier incidents and notes, with their original titles and dates.</p>
+          <ol class="archive__list">
+            {archive.map((post) => (
+              <li>
+                <time datetime={post.data.pubDate.toISOString()}>{fmt(post.data.pubDate)}</time>
+                <a href={`/posts/${post.id}/`}>{post.data.title}</a>
               </li>
             ))}
           </ol>
+          <div class="archive__end">
+            <span>{posts.length} published articles in total</span>
+            <a href="/posts/">Browse the full archive <span aria-hidden="true">→</span></a>
+          </div>
         </section>
-      )}
-
-      <div class="endplate">
-        <span>{posts.length} posts</span>
-        <span>Full archive at <a href="/posts/">/posts/</a></span>
       </div>
     </div>
-  </section>
+  </div>
 </Layout>
 
 <style>
-  .blog { padding: clamp(40px, 6vw, 64px) 0 var(--s-9); }
-  .grp + .grp { margin-top: var(--s-8); }
-  .grp .section-title__label a { color: var(--fg); }
-  .grp .section-title__label a:hover { color: var(--accent); text-decoration: none; }
-  .grp__blurb {
-    font-family: var(--serif);
-    font-size: var(--t-17);
-    line-height: 1.55;
-    color: var(--fg-soft);
-    max-width: var(--measure);
-    margin: 0 0 var(--s-5);
-  }
+  .blog { padding-top: var(--s-6); padding-bottom: var(--s-5); }
+  .blog__intro { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px var(--s-5); padding-bottom: var(--s-5); margin-bottom: var(--s-7); border-bottom: 1px solid var(--rule); }
+  .blog__intro p { margin: 0; }
+  .blog__count { font-family: var(--mono); font-size: var(--t-12); color: var(--accent); }
+  .blog__instruction { font-family: var(--sans); font-size: var(--t-14); color: var(--muted); }
+  .blog__layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: clamp(32px, 5vw, 72px); align-items: start; }
+  .contents { position: sticky; top: var(--s-5); }
+  .contents__inner > .kicker { margin: 0 0 var(--s-4); }
+  .contents__list { margin: 0; padding: 0; list-style: none; }
+  .contents__list a { display: grid; grid-template-columns: 24px 1fr; gap: var(--s-2); padding: 9px 0; font-family: var(--sans); font-size: var(--t-14); line-height: 1.4; color: var(--fg-soft); }
+  .contents__list a > span { font-family: var(--mono); font-size: var(--t-12); padding-top: 2px; color: var(--muted); }
+  .contents__list a:hover { color: var(--accent); }
+  .contents__archive { display: inline-block; margin-top: var(--s-5); padding: 8px 0; border-top: 1px solid var(--rule); font-family: var(--sans); font-size: var(--t-13); }
+  .blog__sections { min-width: 0; }
+  .note-group { scroll-margin-top: var(--s-5); }
+  .note-group + .note-group { margin-top: var(--s-8); }
+  .note-group__head { padding-bottom: var(--s-5); }
+  .note-group__label { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-3); margin-bottom: var(--s-2); }
+  .note-group__label > .kicker { color: var(--accent); }
+  .note-group__count { font-family: var(--mono); font-size: var(--t-12); color: var(--muted); white-space: nowrap; }
+  .note-group h2, .archive h2 { font-family: var(--serif); font-size: clamp(26px, 2.6vw, 32px); font-weight: 400; line-height: 1.2; letter-spacing: -0.015em; margin: 0 0 var(--s-3); }
+  .note-group__head > p { max-width: 61ch; margin: 0; font-family: var(--sans); font-size: var(--t-15); color: var(--muted); line-height: 1.55; }
+  .notes { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--rule); }
+  .note { border-bottom: 1px solid var(--rule); scroll-margin-top: var(--s-5); }
+  .note__summary { display: grid; grid-template-columns: 28px minmax(0, 1fr) 22px; gap: var(--s-3); padding: 21px 4px 21px 0; list-style: none; cursor: pointer; }
+  .note__summary::-webkit-details-marker { display: none; }
+  .note__number { padding-top: 5px; font-family: var(--mono); font-size: var(--t-12); color: var(--muted); }
+  .note__preview { display: block; min-width: 0; }
+  .note__title { display: block; font-family: var(--serif); font-size: clamp(19px, 1.8vw, 22px); line-height: 1.3; color: var(--fg); }
+  .note__description { display: block; margin-top: 7px; max-width: 68ch; font-family: var(--sans); font-size: var(--t-14); font-weight: 400; line-height: 1.55; color: var(--muted); }
+  .note__toggle { position: relative; width: 22px; height: 22px; margin-top: 3px; border: 1px solid var(--rule); border-radius: 50%; color: var(--accent); }
+  .note__toggle::before, .note__toggle::after { content: ""; position: absolute; background: currentColor; }
+  .note__toggle::before { height: 1px; width: 8px; top: 10px; left: 6px; }
+  .note__toggle::after { width: 1px; height: 8px; top: 6px; left: 10px; }
+  .note__summary:hover .note__title, .note__details[open] .note__title { color: var(--accent); }
+  .note__summary:hover .note__toggle { border-color: var(--accent); }
+  .note__details[open] .note__toggle::after { display: none; }
+  .note__details[open] .note__summary { padding-bottom: var(--s-4); }
+  .note__body { margin-left: 40px; padding: 0 34px var(--s-5) 0; }
+  .note__bullets { margin: 0; padding-left: 18px; font-family: var(--sans); font-size: var(--t-15); line-height: 1.65; color: var(--fg-soft); }
+  .note__bullets li + li { margin-top: var(--s-3); }
+  .note__bullets li::marker { color: var(--accent); }
+  .note__original { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: baseline; margin: var(--s-5) 0 0; font-family: var(--mono); font-size: var(--t-12); color: var(--muted); }
+  .note__original a { border-bottom: 1px solid var(--rule); }
+  .archive { margin-top: var(--s-9); scroll-margin-top: var(--s-5); }
+  .archive__heading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--s-3); }
+  .archive__count { font-family: var(--mono); font-size: var(--t-12); color: var(--muted); }
+  .archive__intro { margin: 0 0 var(--s-5); font-family: var(--sans); font-size: var(--t-14); color: var(--muted); }
+  .archive__list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--rule); }
+  .archive__list li { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: var(--s-4); align-items: baseline; padding: var(--s-4) 0; border-bottom: 1px solid var(--rule-soft); }
+  .archive__list time { font-family: var(--mono); font-size: var(--t-12); color: var(--muted); }
+  .archive__list a { font-size: var(--t-17); line-height: 1.4; }
+  .archive__end { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-3); margin-top: var(--s-5); font-family: var(--mono); font-size: var(--t-12); color: var(--muted); }
 
-  .plist { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
-  .pitem {
-    display: grid;
-    grid-template-columns: 112px minmax(0, 1fr);
-    gap: var(--s-5);
-    padding: var(--s-5) 0;
-    border-bottom: 1px solid var(--rule-soft);
+  @media (max-width: 900px) {
+    .blog__layout { grid-template-columns: minmax(0, 1fr); gap: var(--s-7); }
+    .contents { position: static; }
+    .contents__list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 var(--s-4); }
+    .contents__archive { margin-top: var(--s-3); }
   }
-  .pitem__meta {
-    font-family: var(--mono);
-    font-size: var(--t-12);
-    color: var(--muted-2);
-    letter-spacing: 0.04em;
-    padding-top: 6px;
-  }
-  .pitem__title {
-    font-family: var(--serif);
-    font-weight: 400;
-    font-size: var(--t-22);
-    line-height: 1.25;
-    letter-spacing: -0.01em;
-    margin: 0 0 var(--s-3);
-  }
-  .pitem__title a { color: var(--fg); }
-  .pitem__title a:hover { color: var(--accent); text-decoration: none; }
-  .pitem__bullets {
-    margin: 0;
-    padding-left: 1.1em;
-    display: grid;
-    gap: var(--s-2);
-    max-width: var(--measure);
-  }
-  .pitem__bullets li {
-    font-family: var(--serif);
-    font-size: var(--t-15);
-    line-height: 1.5;
-    color: var(--fg-soft);
-  }
-  .pitem__bullets li::marker { color: var(--muted-2); }
-  .pitem__desc {
-    font-family: var(--serif);
-    font-size: var(--t-15);
-    color: var(--muted);
-    margin: 0;
-    max-width: var(--measure);
-  }
-  .pitem__more {
-    display: inline-block;
-    margin-top: var(--s-3);
-    font-family: var(--mono);
-    font-size: var(--t-12);
-    color: var(--muted);
-  }
-  .pitem__more:hover { color: var(--accent); text-decoration: none; }
-
-  .endplate {
-    margin-top: var(--s-8);
-    padding: var(--s-5) 0;
-    border-top: 1px solid var(--rule);
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    font-family: var(--mono);
-    font-size: var(--t-12);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-  }
-  .endplate a { color: var(--fg-soft); border-bottom: 1px solid var(--rule); }
-  .endplate a:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
-
-  @media (max-width: 720px) {
-    .pitem { grid-template-columns: minmax(0, 1fr); gap: var(--s-2); }
-    .pitem__meta { padding-top: 0; }
-    .endplate { flex-direction: column; gap: var(--s-2); }
+  @media (max-width: 540px) {
+    .blog__intro { margin-bottom: var(--s-6); }
+    .contents__list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-1) var(--s-3); }
+    .contents__list a { grid-template-columns: 20px minmax(0, 1fr); gap: 4px; }
+    .note-group + .note-group { margin-top: var(--s-7); }
+    .note__summary { grid-template-columns: 22px minmax(0, 1fr) 20px; gap: var(--s-2); padding: 18px 0; }
+    .note__toggle { width: 20px; height: 20px; }
+    .note__toggle::before { top: 9px; left: 5px; }
+    .note__toggle::after { top: 5px; left: 9px; }
+    .note__body { margin-left: 30px; padding-right: 0; }
+    .archive { margin-top: var(--s-8); }
+    .archive__list li { grid-template-columns: 1fr; gap: var(--s-1); }
   }
 </style>
