@@ -1,7 +1,7 @@
 ---
 /**
  * Tab 2 — Underwriting Agent.
- *   §01 what / how / why, for two readers (draft bullets)
+ *   §01 what / how / why, for two readers
  *   §02 the sample deal, populated (the same baked previews /demo/underwriting/ renders),
  *       with the four workbooks downloadable right under the tabs
  *   §03 the upload portal (same component as /demo/underwriting/try/)
@@ -58,14 +58,6 @@ const downloads = [
 ];
 const base = "/downloads/underwriting-demo";
 
-const forAI = [
-  "What: a headless pipeline that takes a deal's raw documents — offering memo, trailing-twelve income statement, rent roll — and produces four workbooks from one structured interchange file.",
-  "How: document classification first, so file names and the exporting system do not matter; then one extraction call per document into a fixed schema; then deterministic Python for every tie-out and every workbook, with formulas left live so the arithmetic can be audited.",
-  "How: each analysis is a skill — a Markdown spec plus a folder of Python tools. The model orchestrates and drafts; the code computes. Smaller models do extraction, a larger one does synthesis.",
-  "Why: chained model steps compound error. The model sits at exactly the steps plain code cannot do (reading a scanned statement, judging what a document is) and nowhere else.",
-  "Why: a value the pipeline cannot establish reads MISSING and carries a reason. A visible hole is cheaper than a plausible number that survives into a model.",
-  "Guardrails: every bug fix is red-test-first; a reviewer model from a different vendor reads every diff cold; a field manifest maps each extracted value to the model input it fills.",
-];
 const forRE = [
   "Typical process: read the OM, the T-12 and the rent roll; prepare a deal summary; process and analyse the T-12 and the rent roll; build out the financial model. The underwriting agent now does all of that end to end, with a human review as the final stage.",
   "Deal summary: the basic facts of the deal — address, product type, unit count, year built, seller, broker, pricing — plus a demand-ring analysis at 1, 3, 5 and 10 miles showing household income, unemployment, population and the rest.",
@@ -88,7 +80,20 @@ const forRE = [
     draft
   />
 
-  <TwoAudiences hash="§ 01" ai={forAI} re={forRE} />
+  <TwoAudiences hash="§ 01" re={forRE}>
+    <Fragment slot="ai">
+      <p class="ai-flow"><strong>Documents → Classification → Extraction → Enrichment → Calculation → Validation → Outputs → Human review</strong></p>
+      <ol class="ai-steps">
+        <li><strong>Read and classify the documents.</strong> The pipeline identifies the offering memo, income statement and rent roll from their contents, then routes each to the appropriate parser and extraction process.</li>
+        <li><strong>Extract into a consistent structure.</strong> Spreadsheet parsers read rows and cells. A language model extracts property facts, maps income and expense labels into standard categories, and identifies rent-roll columns. The results follow a fixed schema—the fields and data types the pipeline expects.</li>
+        <li><strong>Add market data.</strong> The property’s location connects the deal to rent comps from my rent database, nearby development activity from my supply database, and public demographic data. Sources and coverage limitations travel with those inputs.</li>
+        <li><strong>Run the calculations.</strong> The public demo’s Python engine applies the underwriting rules: category totals, trailing-period calculations, lease classifications, rent averages and occupancy. It computes the results without Excel installed.</li>
+        <li><strong>Validate and cross-check.</strong> The pipeline checks the data structure and compares calculated totals with figures printed in the source documents. Differences read <strong>REVIEW</strong>; checks without enough evidence read <strong>NOT CHECKED</strong>. Audit trails record sources and calculation inputs.</li>
+        <li><strong>Generate the outputs.</strong> One structured deal record supplies the browser previews, downloadable Excel pack and model-ready fields. The workbook contains formulas for inspection; the named fields can be mapped into an existing financial model.</li>
+        <li><strong>Review the exceptions.</strong> I review the source references, flagged differences and assumptions before using the outputs in an investment decision.</li>
+      </ol>
+    </Fragment>
+  </TwoAudiences>
 
   <section class="blk" id="sample">
     <div class="wrap">
@@ -142,6 +147,22 @@ const forRE = [
 </Layout>
 
 <style>
+  .ai-flow,
+  .ai-steps li {
+    font-family: var(--serif);
+    font-size: var(--t-17);
+    line-height: 1.5;
+    color: var(--fg-soft);
+  }
+  .ai-flow { margin: 0 0 var(--s-4); }
+  .ai-steps {
+    margin: 0;
+    padding-left: 1.1em;
+    display: grid;
+    gap: var(--s-3);
+  }
+  .ai-steps li::marker { color: var(--muted-2); }
+
   .blk { padding: clamp(40px, 6vw, 64px) 0 0; }
   .blk:last-of-type { padding-bottom: var(--s-9); }
   .blk__note {

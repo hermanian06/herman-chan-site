@@ -1,19 +1,19 @@
 ---
 /**
  * The "what / how / why" block that every project tab opens with, written twice:
- * once for AI and data people, once for real-estate people. Each side is ~30 seconds
- * of reading. Bullets are plain strings; Herman rewrites them in place.
+ * once for AI and data people, once for real-estate people. Bullets are plain
+ * strings by default; the named ai slot supports richer content when needed.
  */
 interface Props {
   hash?: string;
-  ai: string[];
+  ai?: string[];
   re: string[];
   aiTitle?: string;
   reTitle?: string;
 }
 const {
   hash = "§ 01",
-  ai,
+  ai = [],
   re,
   aiTitle = "For AI and data people",
   reTitle = "For real-estate people",
@@ -31,9 +31,11 @@ const {
     <div class="aud__grid">
       <div class="aud__col">
         <h2 class="aud__h2">{aiTitle}</h2>
-        <ul class="aud__list">
-          {ai.map((b) => <li>{b}</li>)}
-        </ul>
+        <slot name="ai">
+          <ul class="aud__list">
+            {ai.map((b) => <li>{b}</li>)}
+          </ul>
+        </slot>
       </div>
       <div class="aud__col">
         <h2 class="aud__h2">{reTitle}</h2>
