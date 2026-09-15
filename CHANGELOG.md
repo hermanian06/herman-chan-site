@@ -8,6 +8,15 @@ This file is the record of what shipped and why — read the newest 1–3 entrie
 
 <!-- session-closeout: insert new entries directly below this line -->
 
+## Sample set re-restaged (2026-09-14, night — reconciliation PASS, sanity checks, T-3 series, duplicates)
+
+`53d890c` on main, Netlify live: the same 14 fragments and downloads, re-published from the refooted sample
+materials and one new pipeline run. The rent-roll audit trail reads `Reconciliation: PASS — units off by 0,
+market rent off by $0` (it read MISMATCH by exactly 5% before — a stale totals row in the perturbed roll);
+the T-12 tabs carry four statement sanity checks and the trailing T-3 series; six duplicate rows are
+disclosed. Verified live by curl (public page) and the pack download (124 KB). No page code changed.
+
+
 ### What just changed (2026-09-14 — six-tab redesign LIVE; Intro + Underwriting tabs in Herman's words; the sample is a real deal, perturbed)
 
 **Live.** `main` fast-forwarded to `redesign/six-tabs` and pushed (`8ed506b..8ecfa75`), Netlify
