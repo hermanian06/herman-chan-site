@@ -18,7 +18,7 @@ when he says push.
 | Tab | Route | File | Session status |
 |---|---|---|---|
 | 1 Intro | `/` | `src/pages/index.astro` | done (Herman's copy, 2026-09-13) |
-| 2 Underwriting Agent | `/underwriting-agent/` | `src/pages/underwriting-agent/index.astro` | RE column in Herman's words; sample = a real deal perturbed at an illustrative Mesa address (published from Portfolio Demo); four downloads under the tabs; upload form keeps files for review. AI column still draft. |
+| 2 Underwriting Agent | `/underwriting-agent/` | `src/pages/underwriting-agent/index.astro` | AI/data and real-estate columns approved, with eight matched process steps each; sample = a real deal perturbed at an illustrative Mesa address (published from Portfolio Demo); one downloadable pack under the tabs; upload form keeps files for review. |
 | 3 Supply Database | `/supply-database/` | `src/pages/supply-database/index.astro` | scaffolded — address search is UI only, needs a public read endpoint; MCP tool table |
 | 4 Rent Database | `/rent-database/` | `src/pages/rent-database/index.astro` + `src/components/rents/RentDashboard.astro` | scaffolded — dashboard body shared with `/demo/rent-database/` |
 | 5 Blog | `/blog/` | `src/pages/blog/index.astro` + `src/data/blog-outline.ts` | scaffolded — every post condensed to bullets, grouped by system |

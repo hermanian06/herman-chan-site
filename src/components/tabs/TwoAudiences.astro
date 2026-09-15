@@ -2,19 +2,19 @@
 /**
  * The "what / how / why" block that every project tab opens with, written twice:
  * once for AI and data people, once for real-estate people. Bullets are plain
- * strings by default; the named ai slot supports richer content when needed.
+ * strings by default; named ai and re slots support richer content when needed.
  */
 interface Props {
   hash?: string;
   ai?: string[];
-  re: string[];
+  re?: string[];
   aiTitle?: string;
   reTitle?: string;
 }
 const {
   hash = "§ 01",
   ai = [],
-  re,
+  re = [],
   aiTitle = "For AI and data people",
   reTitle = "For real-estate people",
 } = Astro.props;
@@ -39,9 +39,11 @@ const {
       </div>
       <div class="aud__col">
         <h2 class="aud__h2">{reTitle}</h2>
-        <ul class="aud__list">
-          {re.map((b) => <li>{b}</li>)}
-        </ul>
+        <slot name="re">
+          <ul class="aud__list">
+            {re.map((b) => <li>{b}</li>)}
+          </ul>
+        </slot>
       </div>
     </div>
   </div>

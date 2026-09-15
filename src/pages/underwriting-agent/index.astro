@@ -3,7 +3,7 @@
  * Tab 2 — Underwriting Agent.
  *   §01 what / how / why, for two readers
  *   §02 the sample deal, populated (the same baked previews /demo/underwriting/ renders),
- *       with the four workbooks downloadable right under the tabs
+ *       with the consolidated workbook downloadable right under the tabs
  *   §03 the upload portal (same component as /demo/underwriting/try/)
  *
  * NOTE for the Tab-2 session: Herman wants uploads with NO email step. The form shows the
@@ -58,15 +58,6 @@ const downloads = [
 ];
 const base = "/downloads/underwriting-demo";
 
-const forRE = [
-  "Typical process: read the OM, the T-12 and the rent roll; prepare a deal summary; process and analyse the T-12 and the rent roll; build out the financial model. The underwriting agent now does all of that end to end, with a human review as the final stage.",
-  "Deal summary: the basic facts of the deal — address, product type, unit count, year built, seller, broker, pricing — plus a demand-ring analysis at 1, 3, 5 and 10 miles showing household income, unemployment, population and the rest.",
-  "T-12 analysis: the seller's T-12 categorised into your firm's own line items; T-12 and T-3 views; income, utility expense and utility reimbursement (RUBS) analysis.",
-  "Rent roll analysis: units grouped by floor plan to find the rent for each plan; in-place rent kept apart from recently signed rent to show the trend; turnover rate and occupancy confirmed from the roll itself.",
-  "Property tax: the county's billed rate looked up and applied to the purchase basis, with the source noted — so the tax line in the model is not the seller's number.",
-  "Financial model: 192 fields — deal basics, T-12, rent roll, supply, demand, rent comps, property tax and more (the full list is the model-ready outputs tab) — exported in a shape that fits any company's own model.",
-  "Audit trail: every published value carries a stamp — which document it came from, where in that document, whether it was read or computed, and what it was built from — so the T-12, the rent roll and the model can be cross-checked line by line.",
-];
 ---
 
 <Layout
@@ -77,20 +68,37 @@ const forRE = [
     kicker="Tab 02 · Underwriting Agent"
     title="From raw documents to a finished analysis pack."
     lede="Give it the OM, the T-12 and the rent roll; it returns the deal summary, the T-12 and rent roll analyses, and every input your model needs. The sample below is exactly what comes back."
-    draft
   />
 
-  <TwoAudiences hash="§ 01" re={forRE}>
+  <TwoAudiences
+    hash="§ 01"
+    aiTitle="For AI and data professionals"
+    reTitle="For real estate professionals"
+  >
     <Fragment slot="ai">
-      <p class="ai-flow"><strong>Documents → Classification → Extraction → Enrichment → Calculation → Validation → Outputs → Human review</strong></p>
-      <ol class="ai-steps">
-        <li><strong>Read and classify the documents.</strong> The pipeline identifies the offering memo, income statement and rent roll from their contents, then routes each to the appropriate parser and extraction process.</li>
-        <li><strong>Extract into a consistent structure.</strong> Spreadsheet parsers read rows and cells. A language model extracts property facts, maps income and expense labels into standard categories, and identifies rent-roll columns. The results follow a fixed schema—the fields and data types the pipeline expects.</li>
-        <li><strong>Add market data.</strong> The property’s location connects the deal to rent comps from my rent database, nearby development activity from my supply database, and public demographic data. Sources and coverage limitations travel with those inputs.</li>
-        <li><strong>Run the calculations.</strong> The public demo’s Python engine applies the underwriting rules: category totals, trailing-period calculations, lease classifications, rent averages and occupancy. It computes the results without Excel installed.</li>
-        <li><strong>Validate and cross-check.</strong> The pipeline checks the data structure and compares calculated totals with figures printed in the source documents. Differences read <strong>REVIEW</strong>; checks without enough evidence read <strong>NOT CHECKED</strong>. Audit trails record sources and calculation inputs.</li>
-        <li><strong>Generate the outputs.</strong> One structured deal record supplies the browser previews, downloadable Excel pack and model-ready fields. The workbook contains formulas for inspection; the named fields can be mapped into an existing financial model.</li>
-        <li><strong>Review the exceptions.</strong> I review the source references, flagged differences and assumptions before using the outputs in an investment decision.</li>
+      <p class="audience-flow"><strong>Documents → Classification → Extraction → Enrichment → Calculation → Validation → Outputs → Human review</strong></p>
+      <ol class="audience-steps">
+        <li><strong>Documents.</strong> The starting documents are the offering memo, income statement and rent roll.</li>
+        <li><strong>Classification.</strong> The pipeline identifies each document from its contents, then routes it to the appropriate parser and extraction process.</li>
+        <li><strong>Extraction.</strong> Spreadsheet parsers read rows and cells. A language model extracts property facts, maps income and expense labels into standard categories, and identifies rent-roll columns. The results follow a fixed schema—the fields and data types the pipeline expects.</li>
+        <li><strong>Enrichment.</strong> The property’s location connects the deal to rent comps from my rent database, nearby development activity from my supply database, and public demographic data. Sources and coverage limitations travel with those inputs.</li>
+        <li><strong>Calculation.</strong> The public demo’s Python engine applies the underwriting rules: category totals, trailing-period calculations, lease classifications, rent averages and occupancy. It computes the results without Excel installed.</li>
+        <li><strong>Validation.</strong> The pipeline checks the data structure and compares calculated totals with figures printed in the source documents. Differences read <strong>REVIEW</strong>; checks without enough evidence read <strong>NOT CHECKED</strong>. Audit trails record sources and calculation inputs.</li>
+        <li><strong>Outputs.</strong> One structured deal record supplies the browser previews, downloadable Excel pack and model-ready fields. The workbook contains formulas for inspection; the named fields can be mapped into an existing financial model.</li>
+        <li><strong>Human review.</strong> I review the source references, flagged differences and assumptions before using the outputs in an investment decision.</li>
+      </ol>
+    </Fragment>
+    <Fragment slot="re">
+      <p class="audience-flow"><strong>Documents → Deal summary → T-12 analysis → Rent roll analysis → Property tax → Financial model → Audit trail → Human review</strong></p>
+      <ol class="audience-steps">
+        <li><strong>Documents.</strong> The typical process starts with the OM, the T-12 and the rent roll, then moves through the deal summary, operating analysis and financial model. The underwriting agent automates that preparation, with human review as the final stage.</li>
+        <li><strong>Deal summary.</strong> The basic facts of the deal—address, product type, unit count, year built, seller, broker and pricing—plus demand analysis at 1, 3, 5 and 10 miles covering household income, unemployment, population and other local demographics.</li>
+        <li><strong>T-12 analysis.</strong> The seller’s income and expenses organized into standard underwriting line items, with T-12 and T-3 views and separate analysis of other income, utility expenses and utility reimbursements (RUBS).</li>
+        <li><strong>Rent roll analysis.</strong> Units grouped by floor plan, with in-place rents kept separate from recently signed rents to show the leasing trend. Occupancy and turnover are calculated from the rent roll, with the supporting dates and classifications available for review.</li>
+        <li><strong>Property tax.</strong> The billed tax rate and applicable assessment basis inform the underwriting tax assumption, with sources noted and missing information flagged for follow-up.</li>
+        <li><strong>Financial model.</strong> Deal basics, T-12 results, rent roll metrics, supply, demand, rent comps and property-tax assumptions become inputs to the financial model. The public demo exports these as named fields that can be mapped into a firm’s existing model; the full list appears in the model-ready outputs tab.</li>
+        <li><strong>Audit trail.</strong> Source references show where figures came from, whether they were extracted or calculated, and the inputs used in the calculations, so the analyses and model inputs can be cross-checked.</li>
+        <li><strong>Human review.</strong> I review the completed analyses, investigate flagged differences and confirm the assumptions before using the outputs in an investment decision.</li>
       </ol>
     </Fragment>
   </TwoAudiences>
@@ -147,21 +155,21 @@ const forRE = [
 </Layout>
 
 <style>
-  .ai-flow,
-  .ai-steps li {
+  .audience-flow,
+  .audience-steps li {
     font-family: var(--serif);
     font-size: var(--t-17);
     line-height: 1.5;
     color: var(--fg-soft);
   }
-  .ai-flow { margin: 0 0 var(--s-4); }
-  .ai-steps {
+  .audience-flow { margin: 0 0 var(--s-4); }
+  .audience-steps {
     margin: 0;
     padding-left: 1.1em;
     display: grid;
     gap: var(--s-3);
   }
-  .ai-steps li::marker { color: var(--muted-2); }
+  .audience-steps li::marker { color: var(--muted-2); }
 
   .blk { padding: clamp(40px, 6vw, 64px) 0 0; }
   .blk:last-of-type { padding-bottom: var(--s-9); }
