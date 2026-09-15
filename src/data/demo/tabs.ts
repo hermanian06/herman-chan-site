@@ -1,5 +1,7 @@
 /**
- * The demo's fourteen output tabs — the one list both demo pages render from.
+ * The demo's fourteen output tabs — the one list every demo page renders from
+ * (regrouped 2026-09-14: rent comps, property tax and supply are their own sections; each
+ * analysis has raw data / analysis / audit trail; the Excel model group ends the list).
  *
  * The ids are load-bearing, not cosmetic. `GET /api/meta` echoes this same list, and a
  * finished run returns `previews` keyed by exactly these strings; OutputTabs turns each
@@ -23,16 +25,17 @@ export interface DemoTab {
 
 export const DEMO_TABS: DemoTab[] = [
   { id: "summary", label: "Deal summary", group: "Deal summary" },
-  { id: "comps", label: "Rent comps", group: "Deal summary" },
-  { id: "property-tax", label: "Property tax", group: "Deal summary" },
   { id: "demand", label: "Demand", group: "Deal summary" },
-  { id: "supply", label: "Supply", group: "Deal summary" },
-  { id: "t12-data", label: "Monthly data", group: "T-12 analysis" },
-  { id: "t12-pnl", label: "P&L summary", group: "T-12 analysis" },
-  { id: "t12-checks", label: "Checks & pricing", group: "T-12 analysis" },
-  { id: "rent-roll", label: "Rent roll", group: "Rent roll analysis" },
-  { id: "unit-mix", label: "Unit mix", group: "Rent roll analysis" },
-  { id: "manifest", label: "Field manifest", group: "Model-ready outputs" },
-  { id: "audit-trail", label: "Audit trail", group: "Model-ready outputs" },
-  { id: "notes", label: "Notes & disclosures", group: "Model-ready outputs" },
+  { id: "comps", label: "Rent comps", group: "Rent database" },
+  { id: "property-tax", label: "Property tax", group: "Property tax" },
+  { id: "supply", label: "Supply", group: "Supply database" },
+  { id: "t12-data", label: "Raw data", group: "T-12 analysis" },
+  { id: "t12-pnl", label: "Analysis", group: "T-12 analysis" },
+  { id: "t12-checks", label: "Audit trail", group: "T-12 analysis" },
+  { id: "rent-roll", label: "Raw data", group: "Rent roll analysis" },
+  { id: "unit-mix", label: "Analysis", group: "Rent roll analysis" },
+  { id: "rent-roll-checks", label: "Audit trail", group: "Rent roll analysis" },
+  { id: "manifest", label: "Model-ready outputs", group: "Excel model" },
+  { id: "audit-trail", label: "Audit trail", group: "Excel model" },
+  { id: "notes", label: "Notes & disclosures", group: "Excel model" },
 ];

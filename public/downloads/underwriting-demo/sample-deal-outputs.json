@@ -1,8 +1,8 @@
 {
   "meta": {
     "toolkit_name": "AI Underwriting Pipeline — Sample Outputs",
-    "deal_name": "Southern Avenue Sample",
-    "deal_slug": "southern-avenue-sample",
+    "deal_name": "505 West",
+    "deal_slug": "505-west-sample",
     "generated_on": "2026-09-14",
     "as_of_date": "2026-08-31",
     "illustrative_pricing": true,
@@ -119,7 +119,7 @@
       {
         "topic": "This sample is a real deal, perturbed, at an illustrative address",
         "applies_to": "throughout",
-        "note": "This sample is a real, previously marketed multifamily asset's statements, perturbed: trailing-twelve income lines are 10% higher and expense lines 5% lower than the originals, rent-roll rents are 5% higher and lease dates one month earlier, and the pricing is illustrative. The property facts — unit mix, vintage, size — are the real ones. The ADDRESS is illustrative: 2151 E Southern Ave, Mesa, AZ 85204 is not the asset's location, and the demand, supply, rent-comp and property-tax tabs were pulled for this illustrative address from the same sources a live upload reads. The asset's name, its seller and its brokerage are withheld."
+        "note": "This sample is a real, previously marketed multifamily asset's statements, perturbed: trailing-twelve income lines are 10% higher and expense lines 5% lower than the originals, rent-roll rents are 5% higher and lease dates one month earlier, and the pricing is illustrative. The property facts — unit mix, vintage, size — are the real ones. The ADDRESS is illustrative: 2151 E Southern Ave, Mesa, AZ 85204 is not the asset's location, and the demand, supply, rent-comp and property-tax tabs were pulled for this illustrative address from the same sources a live upload reads. The seller and brokerage names are illustrative; the real parties are withheld."
       },
       {
         "topic": "About the market pull",
@@ -264,7 +264,7 @@
     }
   },
   "summary": {
-    "deal_name": "Southern Avenue Sample",
+    "deal_name": "505 West",
     "street_address": "2151 E Southern Ave",
     "city": "Mesa",
     "state": "AZ",
@@ -279,8 +279,8 @@
     "product_detail": "One-, two-, and three-bedroom residences averaging 856 square feet across 40 buildings on 15.87 acres",
     "construction_status": "MISSING",
     "delivery_date": "MISSING",
-    "seller_entity": "Institutional owner-operator (name withheld)",
-    "listing_brokerage": "Listing brokerage",
+    "seller_entity": "Sonoran Residential Holdings LLC",
+    "listing_brokerage": "Desert Ridge Capital Advisors",
     "deal_status": "MISSING",
     "pricing_guidance": "$215,000 per unit (illustrative)",
     "in_place_rent_avg": 1456.99,
@@ -307,7 +307,7 @@
     "school_middle_rating": "MISSING",
     "school_high_name": "MISSING",
     "school_high_rating": "MISSING",
-    "notes": "This sample is a real, previously marketed multifamily asset's statements, perturbed: trailing-twelve income lines are 10% higher and expense lines 5% lower than the originals, rent-roll rents are 5% higher and lease dates one month earlier, and the pricing is illustrative. The property facts — unit mix, vintage, size — are the real ones. The ADDRESS is illustrative: 2151 E Southern Ave, Mesa, AZ 85204 is not the asset's location, and the demand, supply, rent-comp and property-tax tabs were pulled for this illustrative address from the same sources a live upload reads. The asset's name, its seller and its brokerage are withheld."
+    "notes": "This sample is a real, previously marketed multifamily asset's statements, perturbed: trailing-twelve income lines are 10% higher and expense lines 5% lower than the originals, rent-roll rents are 5% higher and lease dates one month earlier, and the pricing is illustrative. The property facts — unit mix, vintage, size — are the real ones. The ADDRESS is illustrative: 2151 E Southern Ave, Mesa, AZ 85204 is not the asset's location, and the demand, supply, rent-comp and property-tax tabs were pulled for this illustrative address from the same sources a live upload reads. The seller and brokerage names are illustrative; the real parties are withheld."
   },
   "t12": {
     "month_labels": [
@@ -13552,10 +13552,10 @@
   },
   "provenance": {
     "summary.deal_name": {
-      "source_doc": "Illustrative",
-      "locator": "—",
+      "source_doc": "Sample Property Offering Memorandum.pdf",
+      "locator": "p.3",
       "method": "read",
-      "note": "The sample's name is illustrative; the asset's real name is withheld."
+      "note": "The deal name as the memorandum states it."
     },
     "summary.street_address": {
       "source_doc": "Illustrative address",
@@ -13627,16 +13627,16 @@
       "quote": "the property offers a diversified mix of \none-, two-, and three-bedroom residences averaging 856 square \nfeet"
     },
     "summary.seller_entity": {
-      "source_doc": "Sample Property Offering Memorandum.pdf",
-      "locator": "withheld",
+      "source_doc": "Illustrative name",
+      "locator": "—",
       "method": "read",
-      "note": "Stated in the memorandum; withheld from the public sample because it identifies the real asset."
+      "note": "An illustrative name. The real party is withheld from the public sample."
     },
     "summary.listing_brokerage": {
-      "source_doc": "Sample Property Offering Memorandum.pdf",
-      "locator": "withheld",
+      "source_doc": "Illustrative name",
+      "locator": "—",
       "method": "read",
-      "note": "Stated in the memorandum; withheld from the public sample because it identifies the real asset."
+      "note": "An illustrative name. The real party is withheld from the public sample."
     },
     "summary.pricing_guidance": {
       "source_doc": "Illustrative price",

@@ -1,0 +1,85 @@
+<style>
+.op-wrap { font-family: var(--sans, sans-serif); color: var(--fg, #111); }
+.op-wrap h3 {
+  font-family: var(--serif, Georgia, serif); font-weight: 500;
+  font-size: var(--t-22, 22px); letter-spacing: -0.01em;
+  margin: 0 0 var(--s-2, 8px); color: var(--fg, #111);
+}
+.op-note {
+  font-family: var(--serif, Georgia, serif); font-size: var(--t-15, 15px);
+  line-height: 1.5; color: var(--muted, #666); margin: 0 0 var(--s-5, 24px);
+  max-width: 62ch;
+}
+.op-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 0 var(--s-5, 24px); }
+.op-table { border-collapse: collapse; width: 100%; min-width: max-content; font-size: var(--t-13, 13px); }
+.op-table th, .op-table td {
+  padding: 6px 12px; text-align: left; white-space: nowrap;
+  border-bottom: 1px solid var(--rule-soft, #e6e6e6);
+}
+.op-table thead th {
+  font-family: var(--mono, monospace); font-size: var(--t-12, 12px);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--muted, #666); font-weight: 500;
+  border-bottom: 1px solid var(--rule, #ccc); background: var(--bg-alt, #f2f2f2);
+  position: sticky; top: 0;
+}
+.op-table td.op-num, .op-table th.op-num { text-align: right; font-family: var(--mono, monospace); font-variant-numeric: tabular-nums; }
+.op-table tr.op-total td { font-weight: 600; background: var(--bg-alt, #f2f2f2); border-bottom: 1px solid var(--rule, #ccc); }
+.op-table tr.op-sub td { background: var(--bg-alt, #f6f6f6); font-weight: 600; }
+.op-table td.op-wrapcell { white-space: normal; min-width: 26ch; max-width: 46ch; }
+.op-card { display: grid; gap: 0; margin: 0 0 var(--s-5, 24px); }
+.op-sec {
+  font-family: var(--mono, monospace); font-size: var(--t-12, 12px);
+  text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted, #666);
+  padding: var(--s-4, 16px) 0 var(--s-2, 8px); border-bottom: 1px solid var(--rule, #ccc);
+}
+.op-row { display: grid; grid-template-columns: minmax(11rem, 15rem) 1fr; gap: var(--s-4, 16px);
+  padding: 7px 0; border-bottom: 1px solid var(--rule-soft, #eee); align-items: baseline; }
+.op-row dt { font-family: var(--mono, monospace); font-size: var(--t-12, 12px); color: var(--muted, #666); }
+.op-row dd { margin: 0; font-size: var(--t-15, 15px); }
+.op-row dd .op-prov { display: block; font-size: var(--t-12, 12px); color: var(--muted-2, #999); margin-top: 3px; }
+.op-row dd .op-src { display: block; font-size: var(--t-11, 11px); color: var(--muted-2, #999); margin-top: 2px; opacity: .8; font-style: italic; }
+td .op-src { display: block; font-size: var(--t-11, 11px); color: var(--muted-2, #999); margin-top: 2px; opacity: .8; font-style: italic; }
+.op-chip {
+  display: inline-block; font-family: var(--mono, monospace); font-size: 10px;
+  text-transform: uppercase; letter-spacing: 0.07em; padding: 1px 6px;
+  border: 1px solid var(--rule, #ccc); border-radius: 2px;
+  color: var(--muted, #666); margin-left: 6px; vertical-align: 1px; white-space: nowrap;
+}
+.op-flag { color: var(--accent, #14304f); font-weight: 600; }
+.op-ok { color: var(--muted, #666); }
+.op-missing { font-family: var(--mono, monospace); font-size: var(--t-12, 12px); color: var(--accent, #14304f); }
+.op-internal { font-family: var(--mono, monospace); font-size: var(--t-12, 12px); color: var(--muted, #666); border-bottom: 1px dotted var(--muted, #666); cursor: help; }
+.op-bar { display: grid; grid-template-columns: 7rem 1fr 5.5rem; gap: 8px; align-items: center;
+  margin: 0 0 5px; font-size: var(--t-12, 12px); }
+.op-bar__label { font-family: var(--mono, monospace); color: var(--muted, #666); }
+.op-bar__track { background: var(--bg-alt, #eee); height: 14px; position: relative;
+  display: grid; grid-auto-rows: 1fr; }
+.op-bar__track--multi { height: auto; background: transparent; gap: 1px; }
+.op-bar__sub { background: var(--bg-alt, #eee); height: 8px; }
+.op-bar__fill { background: var(--accent, #14304f); height: 100%; display: block; }
+.op-bar__fill--alt { background: var(--muted-2, #999); }
+.op-bar__fill--soft { background: var(--rule, #ccc); }
+.op-bar__val { font-family: var(--mono, monospace); text-align: right; color: var(--fg, #111);
+  font-variant-numeric: tabular-nums; }
+.op-legend { display: flex; gap: var(--s-4, 16px); flex-wrap: wrap; margin: 0 0 var(--s-3, 12px);
+  font-family: var(--mono, monospace); font-size: 10px; color: var(--muted, #666);
+  text-transform: uppercase; letter-spacing: .07em; }
+.op-legend i { display: inline-block; width: 10px; height: 10px; margin-right: 5px;
+  vertical-align: -1px; }
+.op-empty { border: 1px dashed var(--rule, #ccc); padding: var(--s-5, 24px);
+  font-family: var(--serif, Georgia, serif); color: var(--muted, #666); max-width: 62ch; }
+@media (max-width: 640px) {
+  .op-row { grid-template-columns: 1fr; gap: 2px; }
+}
+</style>
+<div class="op-wrap">
+<h3>Rent roll audit trail</h3>
+<p class="op-note">The normalized roll tied back to the export's own stated totals — unit count, square footage, occupancy, rent totals — then a seeded readback of unit rents against the source cells. Every row compares against a figure the SOURCE printed, never against another number this toolkit derived.</p>
+<h3>Rent-roll tie-outs</h3>
+<div class="op-scroll"><table class="op-table"><thead><tr><th>Check</th><th class="op-num">Our calc</th><th class="op-num">Source</th><th class="op-num">Difference</th><th>Status</th><th>Note</th></tr></thead><tbody><tr><td>Total units</td><td class="op-num">334</td><td class="op-num">334</td><td class="op-num">0</td><td><span class="op-ok">OK</span></td><td class="op-wrapcell">Unit count after de-duplicating rows for units listed twice mid-turnover.</td></tr><tr><td>Total square feet</td><td class="op-num">285,882</td><td class="op-num">285,882</td><td class="op-num">0</td><td><span class="op-ok">OK</span></td><td class="op-wrapcell">This project&#x27;s own addition — the operator&#x27;s rent-roll skill has no square-footage tie-out. It earns its place because square footage is what the de-duplication is checked against: dropping the wrong duplicate row changes the total.</td></tr><tr><td>Occupied units (physical)</td><td class="op-num">313</td><td class="op-num">313</td><td class="op-num">0</td><td><span class="op-ok">OK</span></td><td class="op-wrapcell">Against the source&#x27;s own status buckets: Occupied + Notice Available + Notice Rented. A resident on notice has not moved out, so the source&#x27;s &#x27;Occupied&#x27; bucket alone is a LEASING status, not physical occupancy.</td></tr><tr><td>Occupancy</td><td class="op-num">93.7%</td><td class="op-num">93.7%</td><td class="op-num">0.0%</td><td><span class="op-ok">OK</span></td><td class="op-wrapcell">PHYSICAL occupancy: 313 of 334 units. Residents on notice count as occupied; down, model and employee units do not. Economic occupancy is a different number and is not this one.</td></tr><tr><td>Market rent (monthly total)</td><td class="op-num">470,988</td><td class="op-num">448,550</td><td class="op-num">22,438</td><td><span class="op-flag">MISMATCH</span></td><td class="op-wrapcell">Validates row COMPLETENESS — 334 units counted once each, none dropped or double-counted. It does NOT validate which row was kept on a duplicate: all 6 readable turnover pair(s) carry the same market rent on both rows, so this total is identical under either de-duplication rule while in-place rent is not. The row CHOICE is checked separately below.</td></tr><tr><td>Duplicate rows: kept the in-place lease</td><td class="op-num">6</td><td class="op-num">6</td><td class="op-num">0</td><td><span class="op-ok">OK</span></td><td class="op-wrapcell">6 unit(s) listed twice; every one where an in-place row was available retained it (1 had none — 2107, where the alternative row carries no status and no rent, so keeping the other is correct). Keeping the other row instead would move in-place rent by $4,823/mo ($57,876/yr) — which the market-rent tie-out above cannot see.</td></tr><tr><td>Occupied units</td><td class="op-num">313</td><td class="op-num">—</td><td class="op-num">—</td><td><span class="op-note">INFO</span></td><td class="op-wrapcell">The numerator above, stated separately so the ratio can be re-derived.</td></tr></tbody></table></div>
+<p class="op-note"><strong>5/6 tie-outs OK.</strong> A total the source export never printed reads NOT CHECKED and stays in the denominator — excluding it would let a check that could not run flatter the ratio. Occupancy here is physical: 313/334 units, physical; down, model and employee units count as vacant.</p>
+<h3>Rent readback — 10 units</h3>
+<div class="op-scroll"><table class="op-table"><thead><tr><th>Unit</th><th>Plan</th><th class="op-num">Our in-place rent</th><th class="op-num">Source cell</th><th>Source locator</th><th>Status</th></tr></thead><tbody><tr><td>1022</td><td>2X1R</td><td class="op-num">$1,388</td><td class="op-num">$1,388</td><td>HG_RMOROLLE!N25</td><td><span class="op-ok">OK</span></td></tr><tr><td>1027</td><td>2X2R</td><td class="op-num">$1,307</td><td class="op-num">$1,307</td><td>HG_RMOROLLE!N30</td><td><span class="op-ok">OK</span></td></tr><tr><td>1030</td><td>1X1R</td><td class="op-num">$1,653</td><td class="op-num">$1,653</td><td>HG_RMOROLLE!N33</td><td><span class="op-ok">OK</span></td></tr><tr><td>1041</td><td>1X1</td><td class="op-num">$1,224</td><td class="op-num">$1,224</td><td>HG_RMOROLLE!N44</td><td><span class="op-ok">OK</span></td></tr><tr><td>1079</td><td>3X2AR</td><td class="op-num">$1,998</td><td class="op-num">$1,998</td><td>HG_RMOROLLE!N84</td><td><span class="op-ok">OK</span></td></tr><tr><td>1100</td><td>2X2R</td><td class="op-num">$1,470</td><td class="op-num">$1,470</td><td>HG_RMOROLLE!N105</td><td><span class="op-ok">OK</span></td></tr><tr><td>1144</td><td>1X1R</td><td class="op-num">$1,351</td><td class="op-num">$1,351</td><td>HG_RMOROLLE!N150</td><td><span class="op-ok">OK</span></td></tr><tr><td>1158</td><td>1X1R</td><td class="op-num">$1,181</td><td class="op-num">$1,181</td><td>HG_RMOROLLE!N165</td><td><span class="op-ok">OK</span></td></tr><tr><td>1167</td><td>2X2</td><td class="op-num">$1,748</td><td class="op-num">$1,748</td><td>HG_RMOROLLE!N174</td><td><span class="op-ok">OK</span></td></tr><tr><td>2013</td><td>2X2</td><td class="op-num">$1,496</td><td class="op-num">$1,496</td><td>HG_RMOROLLE!N188</td><td><span class="op-ok">OK</span></td></tr></tbody></table></div>
+<p class="op-note">10 of 10 match within $0.50. The sample is seeded from the roll's as-of date (2026-08-31|334), so the same roll always checks the same units and anyone re-running this sees these rows. Both sides of the readback read the same rent column, so it validates TRANSCRIPTION — that the number was carried across correctly — and cannot detect the wrong column having been chosen in the first place. The column choice is evidenced in the audit trail instead.</p>
+</div>

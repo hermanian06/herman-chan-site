@@ -27,6 +27,7 @@ import t12PnlHtml from "../../data/demo/t12-pnl.html?raw";
 import t12ChecksHtml from "../../data/demo/t12-checks-pricing.html?raw";
 import rentRollHtml from "../../data/demo/rent-roll.html?raw";
 import unitMixHtml from "../../data/demo/unit-mix.html?raw";
+import rentRollChecksHtml from "../../data/demo/rent-roll-checks.html?raw";
 import notesHtml from "../../data/demo/notes.html?raw";
 import manifestHtml from "../../data/demo/manifest.html?raw";
 import auditTrailHtml from "../../data/demo/audit-trail.html?raw";
@@ -42,11 +43,14 @@ const panelHtml: Record<string, string> = {
   "t12-checks": t12ChecksHtml,
   "rent-roll": rentRollHtml,
   "unit-mix": unitMixHtml,
+  "rent-roll-checks": rentRollChecksHtml,
   manifest: manifestHtml,
   "audit-trail": auditTrailHtml,
   notes: notesHtml,
 };
-const sampleTabs = DEMO_TABS.map((tab) => ({ ...tab, html: panelHtml[tab.id] }));
+/* Herman, 2026-09-14: no Notes & disclosures tab on this page. The API still emits it. */
+const PAGE_TABS = DEMO_TABS.filter((tab) => tab.id !== "notes");
+const sampleTabs = PAGE_TABS.map((tab) => ({ ...tab, html: panelHtml[tab.id] }));
 
 /* One workbook per tab group above, so what is shown is what is downloaded. */
 const downloads = [
@@ -133,7 +137,7 @@ const forRE = [
       </p>
       <UploadForm />
       <div data-uf-results>
-        <OutputTabs prefix="run-" tabs={DEMO_TABS.map((t) => ({ ...t, html: '<p class="uf-ph">Run the sample deal or upload a deal to fill this tab.</p>' }))} />
+        <OutputTabs prefix="run-" tabs={PAGE_TABS.map((t) => ({ ...t, html: '<p class="uf-ph">Run the sample deal or upload a deal to fill this tab.</p>' }))} />
       </div>
       <section class="run-dl" aria-labelledby="run-dl-title">
         <h2 id="run-dl-title" class="run-dl__h2">Workbooks from this run</h2>
