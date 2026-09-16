@@ -11,7 +11,7 @@ resume). This file carries rules and architecture only; closeout never appends e
 
 Herman is re-arranging the site into six tabs, one dedicated session per tab. **Live since
 2026-09-14** (Herman: "push the website live"; `main` fast-forwarded to `redesign/six-tabs` at
-`8ecfa75`). Tabs 1–2 are his copy; Supply, Rent and About still carry the "Draft copy" marker.
+`8ecfa75`). Tabs 1–2 and About are his copy; Supply and Rent still carry the "Draft copy" marker.
 Blog is live at `4cab4fe` with twenty-four full stories and seven archive articles (31 total). Keep working on `redesign/six-tabs` and fast-forward `main`
 when he says push.
 
@@ -22,7 +22,7 @@ when he says push.
 | 3 Supply Database | `/supply-database/` | `src/pages/supply-database/index.astro` | scaffolded — address search is UI only, needs a public read endpoint; MCP tool table |
 | 4 Rent Database | `/rent-database/` | `src/pages/rent-database/index.astro` + `src/components/rents/RentDashboard.astro` | scaffolded — dashboard body shared with `/demo/rent-database/` |
 | 5 Blog | `/blog/` | `src/pages/blog/index.astro` + `src/data/blog-outline.ts` | live at `4cab4fe`: six topics, 24 full stories and seven archive articles (31 total). `src/components/blog/BuildStory.astro` renders the same Markdown inline and at each permanent article URL. Build, independent review and live-content proof: `/Users/hermanchan/Documents/Codex/blog-complete-review/VERIFICATION.md` and `deployment.json` beside it. |
-| 6 About | `/about/` | `src/pages/about/index.astro` | scaffolded, draft bio bullets |
+| 6 About | `/about/` | `src/pages/about/index.astro` | approved headline and eight-paragraph bio; existing aside and contact links retained; draft marker removed |
 
 Kept, not deleted, until the redesign is signed off: the old landing at `/legacy/`
 (`src/pages/legacy/index.astro`), `/projects/` and `/posts/` (unlinked from the nav, still

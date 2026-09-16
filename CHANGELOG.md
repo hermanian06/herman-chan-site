@@ -8,6 +8,18 @@ This file is the record of what shipped and why — read the newest 1–3 entrie
 
 <!-- session-closeout: insert new entries directly below this line -->
 
+## 2026-09-16 — Approved About bio (local ready, not deployed)
+
+Replaced the draft Now/Before/This site bullets with Herman's approved headline and eight
+bio paragraphs. Removed the obsolete lede and draft marker; retained the existing grid,
+typography, aside facts and contact links. The aside's operating model now matches the
+approved homepage wording.
+
+Validation: `npm run build` passed (51 pages); generated HTML matches all eight paragraphs
+and the headline exactly after whitespace normalization. The homepage source is unchanged,
+and all 50 other generated HTML pages are byte-identical to the base build. Independent
+committed-diff review and publication verification follow in the parent task.
+
 ### What just changed (2026-09-16 — twenty-four Blog stories published; session closeout)
 
 **Shipped.** Herman approved publication with “make it live.” Commit `4cab4fe97aea386ec05e52cf29b142e4430316df` is live at https://hermanchan.ai/blog/: 24 full decision stories across six topics, plus seven archive articles, for 31 articles in total. Fourteen new URLs and five rewrites complete the remaining nineteen outlines; all 17 earlier article URLs, the approved first five bodies and seven archive bodies are preserved. Each story uses one Markdown source for its inline and permanent-page versions. Concurrent approved homepage changes were integrated without changing the reviewed Blog content.
