@@ -15,14 +15,17 @@ Herman is re-arranging the site into six tabs, one dedicated session per tab. **
 Blog is live at `4cab4fe` with twenty-four full stories and seven archive articles (31 total). Keep working on `redesign/six-tabs` and fast-forward `main`
 when he says push.
 
+Latest verified site publication: `ff0aac7` (2026-09-16). Homepage/About proof:
+`/Users/hermanchan/Documents/Codex/home-about-publication-receipt-20260916.md`.
+
 | Tab | Route | File | Session status |
 |---|---|---|---|
-| 1 Intro | `/` | `src/pages/index.astro` | done (Herman's copy, 2026-09-13) |
+| 1 Intro | `/` | `src/pages/index.astro` | approved copy `2dea4f9`, live since the `4cab4fe` release; linked project titles; live floor plans retained; no export date or new CTA |
 | 2 Underwriting Agent | `/underwriting-agent/` | `src/pages/underwriting-agent/index.astro` | AI/data and real-estate columns approved, with eight matched process steps each; sample = a real deal perturbed at an illustrative Mesa address (published from Portfolio Demo); one downloadable pack under the tabs; upload form keeps files for review. |
 | 3 Supply Database | `/supply-database/` | `src/pages/supply-database/index.astro` | scaffolded — address search is UI only, needs a public read endpoint; MCP tool table |
 | 4 Rent Database | `/rent-database/` | `src/pages/rent-database/index.astro` + `src/components/rents/RentDashboard.astro` | scaffolded — dashboard body shared with `/demo/rent-database/` |
 | 5 Blog | `/blog/` | `src/pages/blog/index.astro` + `src/data/blog-outline.ts` | live at `4cab4fe`: six topics, 24 full stories and seven archive articles (31 total). `src/components/blog/BuildStory.astro` renders the same Markdown inline and at each permanent article URL. Build, independent review and live-content proof: `/Users/hermanchan/Documents/Codex/blog-complete-review/VERIFICATION.md` and `deployment.json` beside it. |
-| 6 About | `/about/` | `src/pages/about/index.astro` | approved headline and eight-paragraph bio; existing aside and contact links retained; draft marker removed |
+| 6 About | `/about/` | `src/pages/about/index.astro` | live at `ff0aac7`: approved headline and eight-paragraph bio; existing aside and contact links retained; draft marker removed |
 
 Kept, not deleted, until the redesign is signed off: the old landing at `/legacy/`
 (`src/pages/legacy/index.astro`), `/projects/` and `/posts/` (unlinked from the nav, still

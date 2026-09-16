@@ -8,7 +8,50 @@ This file is the record of what shipped and why — read the newest 1–3 entrie
 
 <!-- session-closeout: insert new entries directly below this line -->
 
-## 2026-09-16 — Approved About bio (local ready, not deployed)
+### What just changed (2026-09-16 — website copy published; session closeout)
+
+**Shipped.** Underwriting copy `9d6bcc8c2830cb45c5dc84203b94c0a8621c1f92` gives each
+professional audience eight matching chain stages and paragraph headings, preserves the
+real-estate meaning, and removes the draft marker. Homepage copy
+`2dea4f9bd435589d8138c20a9f628d4095667d80`, published with the concurrent Blog release,
+clarifies the introduction, human workflow/verification role, coverage and source labels,
+and leasing-platform extraction. Linked project titles replace “Open the tab”. Herman
+explicitly retained “live floor plans” and rejected an export date or new CTA.
+
+About is published at `ff0aac7ee43e8b7519d188d3a608e6fe3adcc09e`: the approved headline
+and eight paragraphs include 2011–2020 ownership, the late-February-2026 AI start, master's
+degree and father/running/HYROX closing line. Obsolete claims and the draft marker are gone.
+The concurrent Blog closeout documentation was preserved during the About rebase.
+
+**Verification.** Exact rendered-copy checks, independent committed-diff review and parent
+local/live browser checks passed. The About build passed with 51 pages; its homepage source
+was unchanged and all 50 other generated pages were byte-identical to the base build.
+Publication receipts and detailed proof:
+`/Users/hermanchan/Documents/Codex/underwriting-page-approved-copy-receipt-20260915.md` and
+`/Users/hermanchan/Documents/Codex/home-about-publication-receipt-20260916.md`.
+
+**Closeout sweep.** The read-only ledger check found 0 open/triaged and 0 snoozed rows for
+`herman-chan-site`: 0 closed in-session and 0 deferred; no rows changed. `portfolio-demo`
+is a separate backend project. Before this documentation update, site HEAD/main/remote
+were aligned and the working tree had no changes or untracked files; there is no
+`DEPLOY_QUEUE.md` or `CURRENT_STATE.md`. Task agents and publication work are complete,
+with no unanswered decision. Shared claude-skills main was 0 ahead/0 behind after fetch;
+its concurrent modified files/review artifacts and the recent CFO/e3-json-fill work were
+left untouched. A claude-skills test sweep was outside this website-only session.
+
+Memory index: 17,033 bytes / 89 lines, 477 bytes headroom. All 61 topic files: 0 OVER,
+0 NEAR, 24 WARN and 37 OK; consolidation was not triggered and no new memory entry was
+needed. The About preview server was stopped. Receipts and `/private/tmp` proof logs are
+retained; existing worktrees were preserved without destructive cleanup.
+
+**Paid external API spend: $0**, excluding ChatGPT account usage. No production database
+writes or underlying-system runtime audit occurred. This closeout changes documentation
+only; application source/configuration stays identical to published `ff0aac7`. Its commit
+uses `[skip netlify]` to avoid a new deployment.
+
+**Loose ends: none.**
+
+## 2026-09-16 — Approved About bio (published at `ff0aac7`)
 
 Replaced the draft Now/Before/This site bullets with Herman's approved headline and eight
 bio paragraphs. Removed the obsolete lede and draft marker; retained the existing grid,
@@ -18,7 +61,8 @@ approved homepage wording.
 Validation: `npm run build` passed (51 pages); generated HTML matches all eight paragraphs
 and the headline exactly after whitespace normalization. The homepage source is unchanged,
 and all 50 other generated HTML pages are byte-identical to the base build. Independent
-committed-diff review and publication verification follow in the parent task.
+committed-diff review and local/live browser verification passed. Publication receipt:
+`/Users/hermanchan/Documents/Codex/home-about-publication-receipt-20260916.md`.
 
 ### What just changed (2026-09-16 — twenty-four Blog stories published; session closeout)
 
