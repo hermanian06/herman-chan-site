@@ -23,7 +23,6 @@ const { num, title, href, points, flow, stats } = Astro.props;
   <header class="pb__head">
     <span class="pb__num num">{num}</span>
     <h2 class="pb__title"><a href={href}>{title}</a></h2>
-    <a class="pb__more" href={href}>Open the tab →</a>
   </header>
 
   <div class="pb__flow" aria-label={`${title}: inputs, process, outputs`}>
@@ -72,13 +71,6 @@ const { num, title, href, points, flow, stats } = Astro.props;
   }
   .pb__title a { color: var(--fg); }
   .pb__title a:hover { color: var(--accent); text-decoration: none; }
-  .pb__more {
-    font-family: var(--mono);
-    font-size: var(--t-12);
-    color: var(--muted);
-    white-space: nowrap;
-  }
-  .pb__more:hover { color: var(--accent); text-decoration: none; }
 
   /* ---- flow strip ---- */
   .pb__flow {

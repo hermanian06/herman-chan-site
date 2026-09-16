@@ -23,10 +23,9 @@ const floorK = (v: number) => (Math.floor(v / 1000) * 1000).toLocaleString("en-U
           Three systems I built <em>to automate my real estate workflows.</em>
         </h1>
         <p class="hero__lede">
-          I work on the acquisitions team at a multifamily and rental-housing company. Over
-          the last six months I have directed the build of three production systems: an agent
-          that turns a deal's raw documents into an analysis pack, a database of new rental
-          supply read from public filings, and a database of weekly asking rents.
+          I work in real estate acquisitions and build AI tools for that work. The three
+          systems here turn deal documents into underwriting analysis, organize development
+          activity from public filings, and track asking rents and concessions.
         </p>
       </div>
 
@@ -35,7 +34,7 @@ const floorK = (v: number) => (Math.floor(v / 1000) * 1000).toLocaleString("en-U
           <dt>Role</dt><dd>Acquisitions + AI tooling, Haven Realty Capital</dd>
           <dt>Focus</dt><dd>Rental-housing underwriting · Claude · MCP · agent workflows</dd>
           <dt>Stack</dt><dd>Python · Anthropic API · Postgres · Railway</dd>
-          <dt>Operating model</dt><dd>I make the architecture calls; the models write the code</dd>
+          <dt>Operating model</dt><dd>I define the workflow, make the system decisions and verify the results. AI writes the code.</dd>
           <dt>Contact</dt><dd><a href="https://www.linkedin.com/in/hermanchanai/">LinkedIn</a> · <a href="https://github.com/hermanian06">GitHub</a></dd>
         </dl>
       </aside>
@@ -64,7 +63,7 @@ const floorK = (v: number) => (Math.floor(v / 1000) * 1000).toLocaleString("en-U
           "Result: one deal and its four files used to take about four human hours. Now it is about fifteen minutes of AI time and thirty minutes of human review, four to six times a week.",
         ]}
         stats={[
-          { num: "4 h → 15 + 30 min", label: "per deal: AI time + human review" },
+          { num: "4 h → 15 + 30 min", label: "My approximate time per deal" },
           { num: "4–6", label: "deals a week" },
           { num: "4", label: "files per deal" },
         ]}
@@ -77,16 +76,16 @@ const floorK = (v: number) => (Math.floor(v / 1000) * 1000).toLocaleString("en-U
         flow={{
           input: "Public development filings across nine Sunbelt metros — environmental, permit, planning.",
           process: "Scrape each portal with plain code; a model reads the filings code can't parse and classifies the product; de-duplicate, geocode, stage.",
-          output: "A supply search around any subject property address — everything in the pipeline within a 10-mile radius — on a map and through an MCP server the team asks in plain English.",
+          output: "A supply search around any subject property address — tracked projects within a 10-mile radius — on a map and through an MCP server the team asks in plain English.",
         }}
         points={[
-          "What: every new rental-housing project in nine metros as one structured row — units, builder, stage, location.",
+          "What: housing developments identified from the public filings I cover across nine metros, organized into structured rows with units, builder, stage and location.",
           "Why: the upcoming supply around an investment property is one of the inputs that decides the deal — and the filings show it a year or more before it starts leasing.",
           "Result: a nearby-supply check that used to require a paid data vendor now runs in-house, on demand, across nine metros.",
         ]}
         stats={[
           { num: "9", label: "metros, weekly refresh" },
-          { num: "3", label: "signal tiers: entitlement · permit · construction" },
+          { num: "3", label: "source types: environmental filings · permits · planning cases" },
           { num: "200+", label: "public-record sources on the weekly refresh" },
         ]}
       />
@@ -97,11 +96,11 @@ const floorK = (v: number) => (Math.floor(v / 1000) * 1000).toLocaleString("en-U
         href="/rent-database/"
         flow={{
           input: "The leasing page of every rental community tracked across twenty metros.",
-          process: "A deterministic reader per leasing platform first; a model only for the bespoke tail.",
+          process: "Code reads the standard leasing platforms; AI handles pages that need interpretation.",
           output: "Asking rent and net-effective rent per floor plan, feeding the comps in the underwriting pack.",
         }}
         points={[
-          "What: weekly tracking of every rental community's asking rent and concessions, by floor plan.",
+          "What: regular tracking of asking rents and concessions from the communities I track, by floor plan, with refresh schedules that vary by market.",
           "Why: quickly determine the nearby market rent of an investment project to make an informed investment decision.",
           "Result: instead of going to ten different rent websites and copying rents by hand, the rent tab of the Excel model fills itself from the in-house rent database.",
         ]}
