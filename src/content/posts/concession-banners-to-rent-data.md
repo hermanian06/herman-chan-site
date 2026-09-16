@@ -16,7 +16,7 @@ The parser deliberately leaves a dollar credit as text. It does not turn that cr
 <figcaption>Invented banners, illustrating the current parsing boundary</figcaption>
 <table>
 <thead><tr><th scope="col">Banner</th><th scope="col">What can travel forward</th></tr></thead>
-<tbody><tr><td>Six weeks free</td><td>A supported free-rent duration and original text</td></tr><tr><td>$1,000 move-in credit</td><td>Original text; no invented free weeks</td></tr><tr><td>Special on selected floor plans</td><td>An eligibility question that still needs resolving</td></tr></tbody>
+<tbody><tr><td>Six weeks free</td><td>A supported free-rent duration and original text</td></tr><tr><td>$500 off your first month</td><td>Original text; no invented free weeks</td></tr><tr><td>Special on selected floor plans</td><td>An eligibility question that still needs resolving</td></tr></tbody>
 </table>
 </figure>
 
