@@ -1,18 +1,29 @@
 ---
-title: An accuracy number is meaningless without the cost of being wrong
+title: "Scoring classifier errors by their effect on the supply estimate"
 pubDate: 2026-06-05
-description: Not all classification errors cost the same. The eval reports two numbers and ranks every failure by business impact.
+updatedDate: 2026-09-15
+description: "Equal mistakes in a headline accuracy score can have different downstream effects."
 project: evaluation-framework
 tag: AI
 tagClass: ai
 ---
 
-The classifier sorts housing filings into single-family, townhome, and multifamily. Mixing up the first two costs me nothing — both are for-sale product, and nothing downstream changes. Mislabeling either one as multifamily is a real problem, because multifamily is rental supply, and rental supply is the number the whole dashboard exists to track. The same size of error on a test sheet, a completely different size of error in the business.
+My supply classifier distinguishes single-family homes, townhomes and multifamily buildings. Two wrong labels can count equally in an accuracy score while affecting different parts of the comparison I use. I wanted the evaluation to expose that difference without hiding the underlying mistakes.
 
-That's why my eval reports two scores instead of one. The strict score counts every miss. The second score collapses single-family and townhome into one for-sale bucket and only counts a miss when the model crosses from for-sale to rental. On my hand-verified answer set the strict score lands in the low eighties and the bucketed score runs several points higher — and the gap between the two is exactly the pile of mistakes I don't care about.
+The comparator reports exact-label agreement and a second, task-specific grouping. In the current grouping, single-family and townhome sit together; multifamily sits separately. A single-family prediction for a townhome fails the strict check but agrees at the grouped level. Calling that same townhome multifamily crosses the grouping boundary.
 
-Each individual failure gets sorted too. A miss inside the bucket — single-family called townhome — gets logged and ignored. A miss that crosses the rental line gets flagged loudly. And there's a third kind I track separately: filings where a person reading the same document genuinely couldn't tell, but the model answered anyway, confidently. House rule in this pipeline is that a missing value beats a wrong one. So a confident guess on an unanswerable case counts as a failure, even though it looks like a good-faith effort. It's a rough measure of whether the model knows what it doesn't know.
+That grouping is a pipeline convention. It is not proof of ownership or rental tenure: single-family homes and townhomes can be rentals, and building form alone cannot establish whether units are rented or sold. My earlier explanation blurred that distinction. Even a single-family versus townhome error can affect a form-sensitive density estimate. The second score examines a chosen reporting boundary; it does not make that error harmless.
 
-A single accuracy number would hide all of this. You can change a prompt, watch the headline score go up, and never notice you traded harmless misses for boundary-crossing ones. The score improves while the dashboard quietly gets worse.
+<figure>
+<figcaption>Synthetic cases checked against the current comparator</figcaption>
+<table>
+<thead><tr><th scope="col">Expected → predicted</th><th scope="col">Strict result</th><th scope="col">Grouped result</th></tr></thead>
+<tbody><tr><td>Single-family → townhome</td><td>Mismatch</td><td>Agreement</td></tr><tr><td>Single-family → multifamily</td><td>Mismatch</td><td>Mismatch</td></tr></tbody>
+</table>
+</figure>
 
-So when someone tells me a model is "ninety-something percent accurate," my question now is: accurate on which errors? The ones that change a decision, or the ones nobody would ever notice? You only get that answer by sitting down with whoever uses the output and deciding which mistakes actually cost something.
+Unknown answers need another view. If the source cannot support a dwelling type and the model supplies one anyway, the problem is unsupported certainty. If the source supports a type but the model leaves it unknown, the problem is missed information. Those failures can need different fixes even though neither supplies the desired answer.
+
+Local, synthetic comparator checks exercise these distinctions. They verify how cases are scored; they do not measure current model quality or attach a financial loss to an error. I have not built a measured dollar-cost model for these mistakes.
+
+I keep the strict score visible because a business grouping can make a model look better by forgiving distinctions that another user needs. A tool comparing building forms for construction planning might care deeply about the townhome versus detached-home distinction. The grouping is a question I bring to the person using the output, and I would revisit it when the decision changes.

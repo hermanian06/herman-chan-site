@@ -26,6 +26,7 @@ const groups = BLOG_OUTLINE.map((group) => ({
   }),
 }));
 const fullPostCount = groups.flatMap((group) => group.notes).filter((note) => note.isFullPost).length;
+const outlineCount = noteNumber - fullPostCount;
 const archive = posts
   .filter((post) => !linkedSlugs.has(post.id))
   .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
@@ -47,7 +48,7 @@ const pad = (number: number) => String(number).padStart(2, "0");
 
   <div class="blog wrap">
     <div class="blog__intro">
-      <p class="blog__count">{fullPostCount} full posts <span aria-hidden="true">·</span> {noteNumber - fullPostCount} outlines <span aria-hidden="true">·</span> {groups.length} topics</p>
+      <p class="blog__count">{fullPostCount} full posts {outlineCount > 0 && <><span aria-hidden="true">·</span> {outlineCount} outlines </>}<span aria-hidden="true">·</span> {groups.length} topics</p>
       <p class="blog__instruction">Open a title to read here. Full posts also have their own page.</p>
     </div>
 

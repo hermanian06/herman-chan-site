@@ -12,7 +12,7 @@ resume). This file carries rules and architecture only; closeout never appends e
 Herman is re-arranging the site into six tabs, one dedicated session per tab. **Live since
 2026-09-14** (Herman: "push the website live"; `main` fast-forwarded to `redesign/six-tabs` at
 `8ecfa75`). Tabs 1–2 are his copy; Supply, Rent and About still carry the "Draft copy" marker.
-Blog now has full stories and outlines as described below. Keep working on `redesign/six-tabs` and fast-forward `main`
+Blog now has twenty-four full stories as described below. Keep working on `redesign/six-tabs` and fast-forward `main`
 when he says push.
 
 | Tab | Route | File | Session status |
@@ -21,7 +21,7 @@ when he says push.
 | 2 Underwriting Agent | `/underwriting-agent/` | `src/pages/underwriting-agent/index.astro` | AI/data and real-estate columns approved, with eight matched process steps each; sample = a real deal perturbed at an illustrative Mesa address (published from Portfolio Demo); one downloadable pack under the tabs; upload form keeps files for review. |
 | 3 Supply Database | `/supply-database/` | `src/pages/supply-database/index.astro` | scaffolded — address search is UI only, needs a public read endpoint; MCP tool table |
 | 4 Rent Database | `/rent-database/` | `src/pages/rent-database/index.astro` + `src/components/rents/RentDashboard.astro` | scaffolded — dashboard body shared with `/demo/rent-database/` |
-| 5 Blog | `/blog/` | `src/pages/blog/index.astro` + `src/data/blog-outline.ts` | six topics and 24 entries: five full stories, nineteen outlines. `src/components/blog/BuildStory.astro` renders the same Markdown inline and at each permanent article URL; earlier articles remain linked or archived. |
+| 5 Blog | `/blog/` | `src/pages/blog/index.astro` + `src/data/blog-outline.ts` | six topics and 24 full stories. `src/components/blog/BuildStory.astro` renders the same Markdown inline and at each permanent article URL; earlier articles remain linked or archived. |
 | 6 About | `/about/` | `src/pages/about/index.astro` | scaffolded, draft bio bullets |
 
 Kept, not deleted, until the redesign is signed off: the old landing at `/legacy/`

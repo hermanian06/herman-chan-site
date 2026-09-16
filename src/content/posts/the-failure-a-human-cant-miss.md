@@ -1,18 +1,29 @@
 ---
-title: The failure a human can't miss and an agent can't see
+title: "Monitoring Excel when an agent runs the workbook"
 pubDate: 2026-08-13
-description: Excel quietly grew to six gigabytes on my Mac. I'd have noticed in a minute. The agents driving it never would.
+updatedDate: 2026-09-15
+description: "An earlier desktop workflow exposed a failure the agent could not see on screen."
 project: skills-suite
 tag: AI
 tagClass: ai
 ---
 
-A good share of my deal work runs through Excel on a Mac, driven by model agents rather than by me. Mac Excel only runs as a single shared instance, so every agent's automation flows through one program — and that program, I discovered, was sitting at nearly six gigabytes of memory, wedged behind an invisible dialog box, quietly failing every attempt to open a workbook.
+When an agent opens an underwriting workbook, it waits for Excel to answer. In an earlier Mac workflow, Excel was stuck behind a dialog. A person at the keyboard could have seen it; the agent only saw a file-open call that never finished. Retrying the same call did not explain what was wrong.
 
-Had I been at the keyboard, I'd have caught it in a minute: the sluggishness, the bouncing icon, the dialog. I'd have restarted Excel without registering the decision. An agent has none of those senses. It sees a file-open call that never returns, waits, retries, times out, and reports a vague failure that looks like a dozen other failures. The human reflex — glance at the machine, restart the obvious thing — doesn't exist unless somebody builds it.
+I added a watchdog, a small program that checks the application's condition. But deciding that Excel looks unhealthy is different from deciding it is safe to quit. The Mac workflow shares an Excel process with other work. Restarting it at the wrong moment could interrupt another workbook or discard an edit.
 
-So I built it. A small watchdog now checks Excel's memory and state on a schedule and restarts it safely when it crosses a line. In its first week it caught and reclaimed a four-and-a-half-gigabyte instance entirely on its own, before any deal work hit it.
+The current decision function, `assess()`, checks memory, active writers, CPU activity and open workbooks. Unsaved changes and protected workbooks block a restart. So does an unreadable sensor. Crucially, an unresponsive Excel returns `UNRESPONSIVE`: the watchdog refuses to force-kill it. A modal dialog can still need a person to dismiss it.
 
-The subtler lesson arrived afterward, when I checked the watchdog's log, found it empty, and assumed the watchdog was broken. It wasn't. Nothing had been wrong, so it had written nothing. Silence was the designed behavior — and I'd built myself a monitor I couldn't tell apart from a dead one. It now writes a small heartbeat every time it checks, so "quiet because healthy" and "quiet because dead" finally look different.
+<figure>
+<figcaption>Mocked inputs passed to the current decision function</figcaption>
+<table>
+<thead><tr><th scope="col">Observed condition</th><th scope="col">Decision</th></tr></thead>
+<tbody><tr><td>A writer is active</td><td>Refuse restart</td></tr><tr><td>Excel does not answer</td><td>Refuse restart</td></tr><tr><td>An unsaved workbook is open</td><td>Refuse restart</td></tr><tr><td>High memory, idle, no workbooks</td><td>Eligible for a graceful quit</td></tr></tbody>
+</table>
+</figure>
 
-Handing real work to agents, this turns out to be much of the actual job. Not the intelligence — the senses. Every glance-at-the-screen instinct a person supplies for free has to be noticed, named, and wired in. I'm finding them one outage at a time.
+The monitor also needed to show that it had run. An empty log once looked like a dead watchdog, when the checks were correctly leaving active work alone. Its separate heartbeat file now records the latest check time, verdict and reason. `WRITER_ACTIVE` with a recent timestamp means something quite different from an old timestamp.
+
+For this post, six local checks exercised refusal decisions, the eligible case and heartbeat output using mocked sensors and a temporary file. They never opened, queried or restarted Excel. That is evidence for the decision logic, not a fresh test of the running desktop installation.
+
+This is a lesson from the desktop workflow, not the headless public demo. I want automation to report what it can observe and leave a clear reason when recovery needs me. A monitor that refuses to act can be doing exactly the right job.

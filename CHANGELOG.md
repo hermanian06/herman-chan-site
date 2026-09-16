@@ -1,5 +1,14 @@
 # Changelog — hermanchan.ai
 
+## 2026-09-15 — Complete the twenty-four Blog stories (local)
+
+Expanded the remaining nineteen accepted entries into 200–400-word decision stories, using five existing article URLs and fourteen new Markdown files. All twenty-four stories now render in place on the Blog tab and at permanent post URLs. The approved first five and seven archive articles are unchanged. No other tab implementation changed.
+
+The writing uses current source and local evidence: parser and cadence checks, synthetic classifier cases, storage fallback and budget-stop stubs, source grouping, estimate labels, PKCE checks and a localhost market-service fixture. Historical incidents remain dated accounts; source inspection, local checks and unverified live behavior are distinguished. The Blog count hides the outlines count when none remain.
+
+Validation: production build; full-post, title, URL, metadata, word-count and first-five/archive preservation checks; local desktop/mobile review. Final receipts and independent review are recorded in `/Users/hermanchan/Documents/Codex/blog-complete-review/VERIFICATION.md`. This entry records local work, not a deployment.
+
+
 Session history, newest first. Architecture, rules, and conventions live in
 [`CLAUDE.md`](CLAUDE.md); the parked punch list lives in [`BUILD_NOTES.md`](BUILD_NOTES.md).
 This file is the record of what shipped and why — read the newest 1–3 entries to resume.

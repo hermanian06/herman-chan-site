@@ -89,6 +89,7 @@ export const BLOG_OUTLINE: OutlineGroup[] = [
       },
       {
         id: "source-tracing",
+        fullPostSlug: "tracing-an-underwriting-number",
         title: "Tracing an underwriting number back to its source",
         description: "A review output needs to explain where a value came from and what was checked.",
         bullets: [
@@ -101,7 +102,7 @@ export const BLOG_OUTLINE: OutlineGroup[] = [
         id: "excel-monitoring",
         title: "Monitoring Excel when an agent runs the workbook",
         description: "An earlier desktop workflow exposed a failure the agent could not see on screen.",
-        originalSlug: "the-failure-a-human-cant-miss",
+        fullPostSlug: "the-failure-a-human-cant-miss",
         bullets: [
           "In the Mac desktop workflow, a shared Excel process became stuck behind a dialog. The agent saw a workbook-open call that never returned.",
           "I added a watchdog to check the application's state. Then I added a heartbeat to its log, so a completed healthy check could be distinguished from a monitor that never ran.",
@@ -110,6 +111,7 @@ export const BLOG_OUTLINE: OutlineGroup[] = [
       },
       {
         id: "workbook-compatibility",
+        fullPostSlug: "keeping-the-underwriting-workbooks",
         title: "Why I kept the existing underwriting workbooks",
         description: "The existing filenames, tabs and labels turned out to be interfaces other tools depended on.",
         bullets: [
@@ -127,6 +129,7 @@ export const BLOG_OUTLINE: OutlineGroup[] = [
     notes: [
       {
         id: "reusable-portal-readers",
+        fullPostSlug: "reusing-permit-portal-readers",
         title: "Reusing scraper code across different permit portals",
         description: "Shared portal software creates reusable work; each jurisdiction still has its own details.",
         bullets: [
@@ -139,7 +142,7 @@ export const BLOG_OUTLINE: OutlineGroup[] = [
         id: "supply-model-boundary",
         title: "Where I use language models in the supply pipeline",
         description: "Structured fields and ambiguous document text need different kinds of processing.",
-        originalSlug: "one-place-the-llm-lives",
+        fullPostSlug: "one-place-the-llm-lives",
         bullets: [
           "Ordinary code retrieves records and parses structured fields. Language models help interpret document content and classify filings where labels alone do not answer the question.",
           "Those model outputs feed defined data fields and checks. Extraction and classification are separate evaluation tasks, and the current pipeline has more than one model-assisted path.",
@@ -148,6 +151,7 @@ export const BLOG_OUTLINE: OutlineGroup[] = [
       },
       {
         id: "project-identity",
+        fullPostSlug: "three-filings-one-housing-project",
         title: "When three filings describe one housing project",
         description: "Counting records is easy. Deciding which records refer to the same development is harder.",
         bullets: [
@@ -158,6 +162,7 @@ export const BLOG_OUTLINE: OutlineGroup[] = [
       },
       {
         id: "estimated-supply",
+        fullPostSlug: "showing-estimated-supply",
         title: "Showing estimated supply without making it look measured",
         description: "A reported unit count, an acreage-based estimate and an unknown count carry different evidence.",
         bullets: [
@@ -175,6 +180,7 @@ export const BLOG_OUTLINE: OutlineGroup[] = [
     notes: [
       {
         id: "reader-fallbacks",
+        fullPostSlug: "rent-scraper-reader-fallbacks",
         title: "Why the rent scraper tries more than one platform reader",
         description: "A platform signal on a leasing page does not guarantee its reader can retrieve the rents.",
         bullets: [
@@ -185,6 +191,7 @@ export const BLOG_OUTLINE: OutlineGroup[] = [
       },
       {
         id: "concession-banners",
+        fullPostSlug: "concession-banners-to-rent-data",
         title: "Turning concession banners into usable rent data",
         description: "The promotion on the marketing page may be missing from the availability feed.",
         bullets: [
@@ -195,6 +202,7 @@ export const BLOG_OUTLINE: OutlineGroup[] = [
       },
       {
         id: "observed-rents",
+        fullPostSlug: "rent-ranges-and-observations",
         title: "Why a rent range is not a list of observed rents",
         description: "Minimum and maximum prices lose the distribution a rent benchmark needs.",
         bullets: [
@@ -205,6 +213,7 @@ export const BLOG_OUTLINE: OutlineGroup[] = [
       },
       {
         id: "rent-cadence",
+        fullPostSlug: "rent-schedule-and-freshness",
         title: "Making the rent schedule and freshness checks agree",
         description: "A market that is not due this week should not look like a failed collection run.",
         bullets: [
@@ -224,7 +233,7 @@ export const BLOG_OUTLINE: OutlineGroup[] = [
         id: "independent-test-set",
         title: "How I built an independent test set for the supply classifier",
         description: "The classifier's existing answers could not also be its answer key.",
-        originalSlug: "grading-an-llm-against-its-own-guesses",
+        fullPostSlug: "grading-an-llm-against-its-own-guesses",
         bullets: [
           "My first evaluation compared the classifier with labels the pipeline had already generated. Agreement with its own answers gave me little evidence of correctness.",
           "The test set pairs saved inputs with independently supported expected labels and their evidence. Representative samples stay separate from targeted collections of known failures.",
@@ -235,7 +244,7 @@ export const BLOG_OUTLINE: OutlineGroup[] = [
         id: "green-health-checks",
         title: "The dashboard was wrong for two weeks. Every health check was green.",
         description: "Successful ingestion and scheduled jobs concealed a query refreshing its own stale snapshot.",
-        originalSlug: "every-health-check-was-green",
+        fullPostSlug: "every-health-check-was-green",
         bullets: [
           "In this incident, a migration made a database view copy its own stale snapshot. The dashboard showed plausible, frozen numbers while the surrounding jobs reported success.",
           "I followed the data through to the query the dashboard consumed and added checks on the values and freshness. Model evaluations could not detect a failure outside the model.",
@@ -246,7 +255,7 @@ export const BLOG_OUTLINE: OutlineGroup[] = [
         id: "classifier-error-impact",
         title: "Scoring classifier errors by their effect on the supply estimate",
         description: "Equal mistakes in a headline accuracy score can have different downstream effects.",
-        originalSlug: "cost-of-being-wrong",
+        fullPostSlug: "cost-of-being-wrong",
         bullets: [
           "The evaluator reports exact-label matches alongside a task-specific grouping used by the pipeline. The two views help show which distinctions a headline score hides.",
           "It also separates unsupported confident answers from cases where the model leaves the answer unknown. Missing evidence and an incorrect guess need different treatment.",
@@ -255,6 +264,7 @@ export const BLOG_OUTLINE: OutlineGroup[] = [
       },
       {
         id: "model-observability",
+        fullPostSlug: "tracking-model-cost-and-failures",
         title: "Tracking model cost and failures across my systems",
         description: "Consistent call records make usage comparable; different failures need different responses.",
         bullets: [
@@ -272,6 +282,7 @@ export const BLOG_OUTLINE: OutlineGroup[] = [
     notes: [
       {
         id: "supply-mcp-tools",
+        fullPostSlug: "supply-questions-as-mcp-tools",
         title: "Turning supply questions into MCP tools",
         description: "Named tools let an AI client ask useful questions without learning the database's table layout.",
         bullets: [
@@ -282,6 +293,7 @@ export const BLOG_OUTLINE: OutlineGroup[] = [
       },
       {
         id: "mcp-sign-in",
+        fullPostSlug: "mcp-sign-in-and-revocation",
         title: "Adding sign-in and revocation to my MCP server",
         description: "Remote access needs a way to grant permission, recognize a caller and withdraw that permission.",
         bullets: [
@@ -292,6 +304,7 @@ export const BLOG_OUTLINE: OutlineGroup[] = [
       },
       {
         id: "market-service-integration",
+        fullPostSlug: "underwriting-market-data-service",
         title: "Connecting the underwriting agent to my market-data service",
         description: "The upload workflow reuses demand, supply and rent services through one report interface.",
         bullets: [
@@ -302,6 +315,7 @@ export const BLOG_OUTLINE: OutlineGroup[] = [
       },
       {
         id: "incomplete-tool-data",
+        fullPostSlug: "when-tool-data-is-incomplete",
         title: "What an AI tool should return when its data is incomplete",
         description: "No matching records, missing coverage and an approximate location are different answers.",
         bullets: [

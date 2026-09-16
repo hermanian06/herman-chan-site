@@ -1,20 +1,28 @@
 ---
-title: You can't grade a language model against its own guesses
+title: "How I built an independent test set for the supply classifier"
 pubDate: 2026-06-02
-description: The fastest way to build a useless eval is to use the model's own output as the answer key.
+updatedDate: 2026-09-15
+description: "The classifier's existing answers could not also be its answer key."
 project: evaluation-framework
 tag: AI
 tagClass: ai
 ---
 
-The pipeline classifies every public filing by dwelling type — single-family, townhome, or multifamily — and the dashboard turns those labels into a housing-supply estimate. A wrong label quietly corrupts a number somebody uses to make a decision. So before touching the classifier's prompt, I wanted a way to measure it. My first attempt at one was worse than useless.
+A housing-type label is an intermediate result in my supply pipeline. It eventually affects which projects appear in a market comparison. Before changing the classifier, I needed a way to tell whether its new answers were better.
 
-Here's the mistake. The classifier writes a dwelling-type value for each filing, and the obvious source of "correct answers" was the column the pipeline had already filled in. I graded the model against it and got a score close to 100%. Which, in hindsight, is obvious: I was asking the model whether it agreed with itself. A test like that can't fail. The scoreboard stays green no matter how wrong the system is, because the answer key came from the system.
+My first evaluation used labels the pipeline had already filled in as the expected answers. That measured agreement with an earlier output. It could detect a change, but it could not establish that either answer was correct. A stable mistake would look like success.
 
-Real answers have to come from somewhere the model never touched. I rebuilt the answer set by hand — about ninety filings where I read the source document myself, checked the developer's own website, or matched against a separate county building-permit dataset produced by a completely different process. Each answer is stored with where it came from, so I can defend any label. Graded against that, the score landed in the mid-seventies.
+I rebuilt the answer key around evidence outside the classifier's predictions: source documents, developer material and separate permit records. A golden case is a saved input paired with an expected answer and a reason to trust that answer. The comparison itself can be ordinary code. The difficult judgment is deciding what the source actually supports.
 
-Honestly, mid-seventies stung a little after seeing a near-perfect score. But it was a real number. The fake one would have told me the classifier needed no work; the real one told me exactly where it was weak.
+<figure>
+<figcaption>Illustrative evaluation case, not an actual filing</figcaption>
+<table>
+<tbody><tr><th scope="row">Input</th><td>A filing describing an apartment building</td></tr><tr><th scope="row">Expected label</th><td>Multifamily</td></tr><tr><th scope="row">Independent support</th><td>A separately reviewed permit document</td></tr><tr><th scope="row">Model prediction</th><td>Kept separate until comparison</td></tr></tbody>
+</table>
+</figure>
 
-The same logic kept me from the fast, popular option of having a second model do the grading. A judge model shares blind spots with the model it's judging — the same circle, one level up. My comparisons stay dumb on purpose: does the label match, yes or no.
+The current evaluation structure distinguishes representative cases from collections built around known failures. Both are useful, but they answer different questions. A targeted set tells me whether a particular weakness remains. It cannot tell me how often that weakness occurs across all incoming filings. Mixing those cases into one headline score would hide the sampling choice.
 
-Building the test harness took an afternoon. Finding answers the model had no hand in producing took much longer, and that's the part that makes the score worth anything.
+The source review checked the evaluation policy and stored-case structure. It did not independently reread every underlying document or run a new model evaluation, so I am not presenting a current accuracy score. A field saying that a label was reviewed is a record of a process, not a substitute for the supporting evidence.
+
+An answer key can also contain mistakes. If a source is ambiguous, forcing a specific dwelling type into the expected answer would reward the model for guessing. I need an unknown option and a review trail for changed labels. When a score changes, I want to know whether I changed the model, the sample or my definition of the correct answer.
