@@ -2,13 +2,14 @@
 /**
  * Tab 3 — Supply Database.
  *   §01 what / how / why, for two readers (draft bullets)
- *   §02 supply near an address — the search UI, NOT yet wired (needs a public read
- *       endpoint; today the only public surface is the OAuth-gated MCP)
+ *   §02 ask the databases — the chat box over the MCP (supply + rents + demand), the
+ *       public read path the old search form was waiting for
  *   §03 the MCP server: endpoint, tools, how to connect
  */
 import Layout from "../../layouts/Layout.astro";
 import TabHead from "../../components/tabs/TabHead.astro";
 import TwoAudiences from "../../components/tabs/TwoAudiences.astro";
+import AskTheData from "../../components/chat/AskTheData.astro";
 
 const forAI = [
   "What: ingestion of public development filings across nine Sunbelt metros into one Postgres schema, each row classified by dwelling type and lifecycle stage and geocoded.",
@@ -27,7 +28,7 @@ const forRE = [
   "Why: builder activity across metros — who is delivering where — is the list for off-market outreach.",
 ];
 
-/* The eleven read-only tools the server exposes today (all nine metros wired). */
+/* The seventeen read-only tools the server exposes (all nine metros wired; rent + demand added 2026-09-15). */
 const tools = [
   { name: "find_subdivisions", what: "Search the pipeline with structured filters: metro, product, stage, size, date." },
   { name: "recent_filings", what: "What was filed across the pipeline in the last N days." },
@@ -40,6 +41,12 @@ const tools = [
   { name: "pipeline_health", what: "Ingestion freshness per metro and per source." },
   { name: "mf_projects", what: "Late-stage multifamily and attached projects from the permit layer." },
   { name: "entitlement_leads", what: "Pre-permit leads: rezonings, PUDs, site plans, plats, district formations." },
+  { name: "debt_maturities", what: "Financed multifamily with loan maturities and the permitted units within three miles." },
+  { name: "rent_comps_near", what: "Rent database: floor-plan-level asking and net-effective rents within a radius of a point." },
+  { name: "rent_market_summary", what: "Rent database: market medians, concession share and depth, availability — overall and by bed count." },
+  { name: "rent_community_lookup", what: "Rent database: a community by name, with its coordinates and current floor plans." },
+  { name: "rent_coverage", what: "Rent database: which markets are covered and how fresh each is." },
+  { name: "demand_rings", what: "Demand: population, households, income and jobs in 1/3/5/10-mile rings around an address, from Census and LODES." },
 ];
 ---
 
@@ -60,68 +67,19 @@ const tools = [
     <div class="wrap">
       <div class="section-title">
         <span class="section-title__hash">§ 02</span>
-        <span class="section-title__label">Supply near an address</span>
-        <span class="section-title__hint">Search UI drafted · not yet wired</span>
+        <span class="section-title__label">Ask the databases</span>
+        <span class="section-title__hint">Live · supply, rents and demand over one MCP server</span>
       </div>
       <p class="blk__note">
-        Enter an address, pick a radius, and see what is in the pipeline around it by
-        product and stage. The controls below are the intended shape; the search itself
-        needs a public read endpoint in front of the database and is built in this tab's
-        dedicated session.
+        The same server the tool table below describes, behind a chat box. Every answer shows
+        which methods it called and which records it cited; a question the databases cannot
+        answer says so rather than guessing.
       </p>
-
-      <form class="near" data-supply-search aria-labelledby="near-title" novalidate>
-        <h2 id="near-title" class="near__h2">Find supply near</h2>
-        <div class="near__row">
-          <label class="near__label" for="near-address">Address</label>
-          <input id="near-address" class="near__input" type="text" placeholder="e.g. 1200 E Apache Blvd, Tempe, AZ" autocomplete="street-address" disabled />
-        </div>
-        <div class="near__grid">
-          <div>
-            <label class="near__label" for="near-radius">Radius</label>
-            <select id="near-radius" class="near__select" disabled>
-              <option>1 mile</option>
-              <option>3 miles</option>
-              <option selected>5 miles</option>
-              <option>10 miles</option>
-            </select>
-          </div>
-          <div>
-            <label class="near__label" for="near-product">Product</label>
-            <select id="near-product" class="near__select" disabled>
-              <option selected>All</option>
-              <option>Single-family / townhome</option>
-              <option>Multifamily</option>
-            </select>
-          </div>
-          <div>
-            <label class="near__label" for="near-stage">Stage</label>
-            <select id="near-stage" class="near__select" disabled>
-              <option selected>All stages</option>
-              <option>Entitlement</option>
-              <option>Permit</option>
-              <option>Construction</option>
-            </select>
-          </div>
-          <div>
-            <label class="near__label" for="near-window">Filed within</label>
-            <select id="near-window" class="near__select" disabled>
-              <option>90 days</option>
-              <option>12 months</option>
-              <option selected>24 months</option>
-              <option>Any time</option>
-            </select>
-          </div>
-        </div>
-        <div class="near__actions">
-          <button type="submit" class="near__btn" disabled>Search</button>
-          <span class="near__hint">Results will list projects by distance with units, builder, stage and the source filing, and plot them on a small map.</span>
-        </div>
-      </form>
+      <AskTheData page="supply" />
     </div>
   </section>
 
-  <section class="blk blk--last">
+  <section id="mcp" class="blk blk--last">
     <div class="wrap">
       <div class="section-title">
         <span class="section-title__hash">§ 03</span>

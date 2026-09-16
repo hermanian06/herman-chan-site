@@ -2,13 +2,15 @@
 /**
  * Tab 4 — Rent Database.
  *   §01 what / how / why, for two readers (draft bullets)
- *   then the current rent dashboard, unchanged — RentDashboard.astro is the same body
+ *   §02 ask the databases — the chat box over the MCP (rents + supply + demand)
+ *   §03 the current rent dashboard, unchanged — RentDashboard.astro is the same body
  *   /demo/rent-database/ renders, read at build time from src/data/rents/rent-database.json.
  */
 import Layout from "../../layouts/Layout.astro";
 import TabHead from "../../components/tabs/TabHead.astro";
 import TwoAudiences from "../../components/tabs/TwoAudiences.astro";
 import RentDashboard from "../../components/rents/RentDashboard.astro";
+import AskTheData from "../../components/chat/AskTheData.astro";
 import db from "../../data/rents/rent-database.json";
 
 const h = db.headline;
@@ -48,6 +50,23 @@ const forRE = [
     <div class="wrap">
       <div class="section-title">
         <span class="section-title__hash">§ 02</span>
+        <span class="section-title__label">Ask the databases</span>
+        <span class="section-title__hint">Live · rents, supply and demand over one MCP server</span>
+      </div>
+      <p class="dash__note">
+        Four rent methods sit on the same MCP server as the supply and demand tools —
+        <code>rent_market_summary</code>, <code>rent_comps_near</code>, <code>rent_community_lookup</code>,
+        <code>rent_coverage</code> — so a rent question can be chained with what is being built nearby.
+        The full tool table and connect instructions are on the <a href="/supply-database/#mcp">Supply tab</a>.
+      </p>
+      <AskTheData page="rents" />
+    </div>
+  </section>
+
+  <section class="dash">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="section-title__hash">§ 03</span>
         <span class="section-title__label">The dashboard</span>
         <span class="section-title__hint">Coverage · composition · concessions · the last thirty days</span>
       </div>
@@ -58,4 +77,6 @@ const forRE = [
 
 <style>
   .dash { padding: clamp(40px, 6vw, 64px) 0 0; }
+  .dash__note { max-width: var(--measure, 72ch); color: var(--fg-soft); margin: 0 0 20px; }
+  .dash__note code { font-family: var(--mono); font-size: 0.85em; }
 </style>
