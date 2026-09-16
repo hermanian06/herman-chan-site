@@ -1,5 +1,27 @@
 # Changelog — hermanchan.ai
 
+Session history, newest first. Architecture, rules, and conventions live in
+[`CLAUDE.md`](CLAUDE.md); the parked punch list lives in [`BUILD_NOTES.md`](BUILD_NOTES.md).
+This file is the record of what shipped and why — read the newest 1–3 entries to resume.
+
+## Entries (newest first)
+
+<!-- session-closeout: insert new entries directly below this line -->
+
+### What just changed (2026-09-16 — twenty-four Blog stories published; session closeout)
+
+**Shipped.** Herman approved publication with “make it live.” Commit `4cab4fe97aea386ec05e52cf29b142e4430316df` is live at https://hermanchan.ai/blog/: 24 full decision stories across six topics, plus seven archive articles, for 31 articles in total. Fourteen new URLs and five rewrites complete the remaining nineteen outlines; all 17 earlier article URLs, the approved first five bodies and seven archive bodies are preserved. Each story uses one Markdown source for its inline and permanent-page versions. Concurrent approved homepage changes were integrated without changing the reviewed Blog content.
+
+**Verification.** The production build passed with 51 pages. HTML checks passed for titles, dates, word limits, every local link, inline/permanent agreement and source preservation; publication scan: zero findings. Desktop, phone and keyboard review passed. A separate read-only AI review found no actionable issues. After publication, HTTP 200 and an exact comparison of the complete live Blog body and three permanent article bodies matched the reviewed build; an in-app browser confirmed the live page. Receipts: `/Users/hermanchan/Documents/Codex/blog-complete-review/VERIFICATION.md`, `INDEPENDENT_REVIEW.md` and `deployment.json` in that directory.
+
+The stories distinguish dated incidents, inspected implementation and executed local proof. Parser, cadence, classifier, storage, estimate, PKCE, market-client and mocked Excel checks support their stated mechanisms. They do not establish current production health, model accuracy, user adoption, full OAuth security or a completed engine migration. The website deployment was verified; underlying production systems were not exercised for the writing pass.
+
+**Closeout sweep.** No website-owned ledger rows were found: 0 closed in-session, 0 deferred, 0 open and 0 snoozed. Existing backend watches belong to their own project and were not changed. Other sessions' recent branches and worktrees were left intact. Memory index: 16,993 bytes / 89 lines, with 517 bytes of headroom; 61 topic files: 0 OVER, 0 NEAR, 24 WARN and 37 OK. The consolidation trigger was not reached. Temporary synthetic fixtures and the draft generator are retained under the review directory's `.tmp/`; proof scripts and receipts remain available.
+
+**Paid external API spend: $0**, excluding ChatGPT account usage. This closeout changes documentation only; application source and configuration remain identical to the published `4cab4fe`. Its commit carries `[skip netlify]` to avoid a redundant build.
+
+**Loose ends: none.**
+
 ## 2026-09-15 — Complete the twenty-four Blog stories (local)
 
 Expanded the remaining nineteen accepted entries into 200–400-word decision stories, using five existing article URLs and fourteen new Markdown files. All twenty-four stories now render in place on the Blog tab and at permanent post URLs. The approved first five and seven archive articles are unchanged. No other tab implementation changed.
@@ -8,14 +30,6 @@ The writing uses current source and local evidence: parser and cadence checks, s
 
 Validation: production build; full-post, title, URL, metadata, word-count and first-five/archive preservation checks; local desktop/mobile review. Final receipts and independent review are recorded in `/Users/hermanchan/Documents/Codex/blog-complete-review/VERIFICATION.md`. This entry records local work, not a deployment.
 
-
-Session history, newest first. Architecture, rules, and conventions live in
-[`CLAUDE.md`](CLAUDE.md); the parked punch list lives in [`BUILD_NOTES.md`](BUILD_NOTES.md).
-This file is the record of what shipped and why — read the newest 1–3 entries to resume.
-
-## Entries (newest first)
-
-<!-- session-closeout: insert new entries directly below this line -->
 
 ## Blog: first five full decision stories (2026-09-15 — local preview, not deployed)
 
