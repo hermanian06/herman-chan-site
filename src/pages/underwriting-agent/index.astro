@@ -55,7 +55,7 @@ const sampleTabs = PAGE_TABS.map((tab) => ({ ...tab, html: panelHtml[tab.id] }))
 
 /* One workbook, every tab in the page's order (Herman, 2026-09-14). */
 const downloads = [
-  { file: "sample-underwriting-pack.xlsx", name: "Underwriting pack", note: "Every tab below in one workbook, in the same order: deal summary, demand, rent comps, property tax, supply, the T-12 and rent-roll raw data / analysis / audit trail, the model-ready outputs and the audit trail." },
+  { file: "sample-underwriting-pack.xlsx", name: "Download sample Excel pack (.xlsx)", note: "Every tab below in one workbook, in the same order: deal summary, demand, rent comps, property tax, supply, the T-12 and rent-roll raw data / analysis / audit trail, the model-ready outputs and the audit trail." },
 ];
 const base = "/downloads/underwriting-demo";
 
@@ -124,7 +124,11 @@ const forRE = [
     kicker="Tab 02 · Underwriting Agent"
     title="From deal documents to an analysis pack ready for review."
     lede="The offering memo, T-12 and rent roll become a deal summary, operating analyses and model-ready inputs, with source references and flagged differences. The sample below shows the pack I review before using the results."
-  />
+  >
+    <a slot="actions" class="sample-download sample-download--hero" href={`${base}/${downloads[0].file}`} download>
+      <span aria-hidden="true">↓</span><span>{downloads[0].name}</span>
+    </a>
+  </TabHead>
 
   <TwoAudiences
     hash="§ 01"
@@ -148,10 +152,10 @@ const forRE = [
 
       {/* Herman, 2026-09-15: the pack download sits ABOVE the tabs — a reader who wants
           the workbook should not have to scroll past thirteen tab panels to find it. */}
-      <ul class="dl dl--top" aria-label="Download the sample workbooks">
+      <ul class="dl dl--top" aria-label="Download the sample Excel pack">
         {downloads.map((d) => (
           <li class="dl__item">
-            <a class="dl__link" href={`${base}/${d.file}`} download>{d.name}</a>
+            <a class="sample-download dl__link" href={`${base}/${d.file}`} download><span aria-hidden="true">↓</span><span>{d.name}</span></a>
             <span class="dl__note">{d.note}</span>
             <span class="dl__file">{d.file}</span>
           </li>
@@ -201,20 +205,22 @@ const forRE = [
   }
   .blk__note--small { font-size: var(--t-15); color: var(--muted); margin-top: var(--s-4); }
 
-  .dl { list-style: none; margin: var(--s-6) 0 0; padding: 0; border-top: 1px solid var(--rule); }
+  .sample-download { display: inline-flex; align-items: center; justify-content: center; gap: 12px; max-width: 100%; padding: 15px 20px; background: var(--accent); color: white; border: 1px solid var(--accent); font: 600 15px/1.4 var(--sans); text-align: center; }
+  .sample-download:hover { background: var(--accent-ink); border-color: var(--accent-ink); color: white; text-decoration: none; }
+  .sample-download--hero { margin-top: 26px; }
+  .dl { list-style: none; margin: var(--s-6) 0 0; padding: 0; border: 1px solid var(--rule); background: var(--bg-alt); }
   /* Above the tabs it needs a gap BELOW it as well, or the tab strip sits on its rule. */
   .dl--top { margin: var(--s-5) 0 var(--s-6); }
   .dl__item {
     display: grid;
-    grid-template-columns: minmax(12rem, 20rem) 1fr auto;
-    gap: var(--s-4);
-    align-items: baseline;
-    padding: var(--s-3) 0;
-    border-bottom: 1px solid var(--rule-soft);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+    gap: 12px 24px;
+    align-items: start;
+    padding: 24px;
   }
-  .dl__link { font-family: var(--serif); font-size: var(--t-17); color: var(--accent); }
-  .dl__note { font-family: var(--serif); font-size: var(--t-15); color: var(--muted); }
-  .dl__file { font-family: var(--mono); font-size: var(--t-12); color: var(--muted-2); white-space: nowrap; }
+  .dl__link { grid-row: span 2; align-self: center; }
+  .dl__note { font: 15px/1.6 var(--sans); color: var(--fg-soft); }
+  .dl__file { font-family: var(--mono); font-size: var(--t-12); color: var(--muted); overflow-wrap: anywhere; }
 
   .run-dl { margin: var(--s-7) 0 0; }
   .run-dl__h2 {
@@ -229,7 +235,8 @@ const forRE = [
   .run-dl__empty { font-family: var(--serif); font-size: var(--t-15); color: var(--muted); margin: 0; }
   .run-dl__expiry { font-family: var(--mono); font-size: var(--t-12); color: var(--muted-2); margin: var(--s-3) 0 0; }
 
-  @media (max-width: 720px) {
-    .dl__item { grid-template-columns: 1fr; gap: 2px; }
+  @media (max-width: 760px) {
+    .dl__item { grid-template-columns: 1fr; gap: 14px; padding: 20px; }
+    .dl__link { grid-row: auto; }
   }
 </style>

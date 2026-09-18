@@ -11,6 +11,8 @@ import TabHead from "../../components/tabs/TabHead.astro";
 import TwoAudiences from "../../components/tabs/TwoAudiences.astro";
 import RentDashboard from "../../components/rents/RentDashboard.astro";
 import AskTheData from "../../components/chat/AskTheData.astro";
+import rentHeadline from "../../data/rents/portfolio-headline.json";
+const rentHeadlineDate = new Date(rentHeadline.measured_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
 const forAI = [
   {
     "title": "Collect advertised prices",
@@ -87,6 +89,11 @@ const forRE = [
         <span class="section-title__label">The dashboard</span>
         <span class="section-title__hint">Coverage · composition · concessions · the last thirty days</span>
       </div>
+      <p class="dash__note">
+        Headline totals were measured on {rentHeadlineDate}. Historical rent records count
+        priced floor-plan groups from successful collections; repeated observations over time
+        count separately, not as unique apartments. The dashboard below uses its own dated snapshot.
+      </p>
     </div>
   </section>
   <RentDashboard />

@@ -1,0 +1,12 @@
+{
+  "measured_at": "2026-09-18T20:59:42Z",
+  "community_counts_measured_at": "2026-09-18T20:59:14Z",
+  "metros": 20,
+  "communities_tracked": 16879,
+  "historical_rent_records": 165827,
+  "first_observation_at": "2026-05-18T05:26:02Z",
+  "latest_observation_at": "2026-09-18T20:59:41Z",
+  "source": "Read-only aggregates of rents.communities and rents.weekly_snapshots.",
+  "scope": "Communities and observations in non-provisional markets (market NOT LIKE 'NEW-%').",
+  "historical_record_definition": "One units-array floor-plan/bedroom-square-footage group with a numeric rent_min greater than zero in a snapshot whose status is live_data. Repeated observations over time count separately; these are not unique apartments or executed leases."
+}

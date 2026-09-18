@@ -15,6 +15,7 @@ const hasAside = Boolean(project) || Astro.slots.has('aside');
         <span class="kicker">{kicker}</span>
         <h1 class="tabhead__title">{title}</h1>
         {lede && <p class="tabhead__lede">{lede}</p>}
+        <slot name="actions" />
         {draft && <p class="tabhead__draft">Draft copy — bullet points to be rewritten in this tab's dedicated session.</p>}
       </header>
       <slot name="aside" />
