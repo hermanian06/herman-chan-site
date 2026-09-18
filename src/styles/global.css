@@ -394,7 +394,7 @@ body .tablewrap{max-width:100%;overflow:auto}body .tablewrap:focus-visible{outli
 body .tools{max-width:none;font-size:15px}body .tools th,body .tools td{padding-top:14px;padding-bottom:14px}
 body .mcp{max-width:100%;background:var(--bg-alt);padding:26px 30px;border-left:2px solid var(--accent)}
 body .op-wrap{min-width:0}body .ot__panel{min-width:0}body .op-row dd{min-width:0;overflow-wrap:anywhere}
-body .ask__q{font-family:var(--sans)}body .ask__intro-p,body .ask__q-text{font:var(--font-prose)}
+body .ask__q{font-family:var(--sans)}body .ask__intro-h{font:var(--font-subheading)}body .ask__intro-p,body .ask__q-text{font:var(--font-prose)}
 body .rdb__asof,body .rdb__caption{font:var(--font-caption)}body .stats b{font-family:var(--serif);font-weight:400;letter-spacing:-.04em}body .rdb .stats{background:var(--bg-alt);padding:28px;gap:26px}
 body .build-story{font-family:var(--sans)}body .build-story h2,body .build-story h3{font-family:var(--serif);font-weight:400;color:var(--accent-ink)}
 @media(min-width:1440px){:root{--gutter:56px}}
