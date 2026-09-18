@@ -1,7 +1,7 @@
 ---
 /**
- * Tab 1 — Intro. Three systems: a flow strip, three one-line points, a stat row.
- * Draft copy (2026-09-13); Herman rewrites in the Intro session.
+ * Tab 1 — Intro. Three systems: why I built it, how it works, what changed.
+ * Approved editorial structure, 2026-09-18; rent stats remain tied to the snapshot.
  * The pre-redesign landing is kept at /legacy/.
  */
 import Layout from "../layouts/Layout.astro";
@@ -14,7 +14,7 @@ const rents = db.headline;
 const floorK = (v: number) => (Math.floor(v / 1000) * 1000).toLocaleString("en-US") + "+";
 ---
 
-<Layout description="Herman Chan — three production AI systems built for real-estate underwriting: an underwriting agent, a supply database, and a rent database.">
+<Layout description="Herman Chan — three systems I built to automate real estate workflows: deal analysis, housing supply research and rental pricing.">
   <section class="hero">
     <div class="wrap hero__grid">
       <div>
@@ -23,9 +23,9 @@ const floorK = (v: number) => (Math.floor(v / 1000) * 1000).toLocaleString("en-U
           Three systems I built <em>to automate my real estate workflows.</em>
         </h1>
         <p class="hero__lede">
-          I work in real estate acquisitions and build AI tools for that work. The three
-          systems here turn deal documents into underwriting analysis, organize development
-          activity from public filings, and track asking rents and concessions.
+          I work in real estate acquisitions. I built these systems to prepare deal analyses,
+          research upcoming housing supply and track rental pricing. They bring the documents
+          and market data I use into a repeatable underwriting process.
         </p>
       </div>
 
@@ -34,7 +34,7 @@ const floorK = (v: number) => (Math.floor(v / 1000) * 1000).toLocaleString("en-U
           <dt>Role</dt><dd>Acquisitions + AI tooling, Haven Realty Capital</dd>
           <dt>Focus</dt><dd>Rental-housing underwriting · Claude · MCP · agent workflows</dd>
           <dt>Stack</dt><dd>Python · Anthropic API · Postgres · Railway</dd>
-          <dt>Operating model</dt><dd>I define the workflow, make the system decisions and verify the results. AI writes the code.</dd>
+          <dt>Operating model</dt><dd>I define the workflows, make the system decisions and verify the results. AI writes the code.</dd>
           <dt>Contact</dt><dd><a href="https://www.linkedin.com/in/hermanchanai/">LinkedIn</a> · <a href="https://github.com/hermanian06">GitHub</a></dd>
         </dl>
       </aside>
@@ -52,58 +52,42 @@ const floorK = (v: number) => (Math.floor(v / 1000) * 1000).toLocaleString("en-U
         num="01"
         title="Underwriting agent"
         href="/underwriting-agent/"
+        why="Every deal requires similar preparation: pull property facts from the offering memo, organize the financial statements, analyze the rent roll and assemble inputs for the model."
         flow={{
-          input: "The offering memo, the T-12 income and expense statement, the rent roll.",
-          process: "Classify each file, extract its fields into one structured record, tie the numbers out, build the workbooks.",
-          output: "Deal summary · T-12 analysis · rent roll analysis · a manifest of every model input, with supply and rent data.",
+          input: "Offering memo, T-12 and rent roll",
+          process: "Extract, enrich, calculate and check",
+          output: "Analysis pack and model inputs",
         }}
-        points={[
-          "What: a deal's raw documents in, a finished analysis pack out — with a person as the final quality check.",
-          "Why: most of the analysis is the same workflow every time — pull the facts out of the broker's email, the marketing package, the Excel financial statements and a web search, then put them into the model.",
-          "Result: one deal and its four files used to take about four human hours. Now it is about fifteen minutes of AI time and thirty minutes of human review, four to six times a week.",
-        ]}
-        stats={[
-          { num: "4 h → 15 + 30 min", label: "My approximate time per deal" },
-          { num: "4–6", label: "deals a week" },
-          { num: "4", label: "files per deal" },
-        ]}
+        how="The pack brings together the deal summary, operating analyses, rent comps, supply, demand and property-tax inputs, with source references and flagged differences."
+        changed="Preparing a deal’s analysis used to take me about four hours. Now the agent handles the preparation, and I spend about thirty minutes reviewing the outputs, resolving discrepancies and confirming assumptions."
       />
 
       <ProjectBrief
         num="02"
         title="Supply database"
         href="/supply-database/"
+        why="Understanding future competition means piecing together development activity across separate government websites. Those filings can also identify builders and projects worth approaching before an acquisition opportunity is marketed."
         flow={{
-          input: "Public development filings across nine Sunbelt metros — environmental, permit, planning.",
-          process: "Scrape each portal with plain code; a model reads the filings code can't parse and classifies the product; de-duplicate, geocode, stage.",
-          output: "A supply search around any subject property address — tracked projects within a 10-mile radius — on a map and through an MCP server the team asks in plain English.",
+          input: "Environmental filings, permits and planning cases",
+          process: "Collect, classify and connect",
+          output: "Mapped projects with development stages, unit counts and builder information",
         }}
-        points={[
-          "What: housing developments identified from the public filings I cover across nine metros, organized into structured rows with units, builder, stage and location.",
-          "Why: the upcoming supply around an investment property is one of the inputs that decides the deal — and the filings show it a year or more before it starts leasing.",
-          "Result: a nearby-supply check that used to require a paid data vendor now runs in-house, on demand, across nine metros.",
-        ]}
-        stats={[
-          { num: "9", label: "metros, weekly refresh" },
-          { num: "3", label: "source types: environmental filings · permits · planning cases" },
-          { num: "200+", label: "public-record sources on the weekly refresh" },
-        ]}
+        how="Source-reported figures and estimates are distinguished, with coverage varying by jurisdiction."
+        changed="I can research development around a property and investigate builder activity from one database. The same information supports the underwriting pack’s supply analysis and questions asked through an AI assistant."
       />
 
       <ProjectBrief
         num="03"
         title="Rent database"
         href="/rent-database/"
+        why="Building a rent-comp set means visiting leasing websites, comparing floor plans and checking concessions. Prices and offers change, making that research a recurring task."
         flow={{
-          input: "The leasing page of every rental community tracked across twenty metros.",
-          process: "Code reads the standard leasing platforms; AI handles pages that need interpretation.",
-          output: "Asking rent and net-effective rent per floor plan, feeding the comps in the underwriting pack.",
+          input: "Community leasing websites",
+          process: "Read prices, availability and concessions",
+          output: "Asking and net-effective rents for underwriting comps",
         }}
-        points={[
-          "What: regular tracking of asking rents and concessions from the communities I track, by floor plan, with refresh schedules that vary by market.",
-          "Why: quickly determine the nearby market rent of an investment project to make an informed investment decision.",
-          "Result: instead of going to ten different rent websites and copying rents by hand, the rent tab of the Excel model fills itself from the in-house rent database.",
-        ]}
+        how="Code reads supported leasing platforms, with AI handling pages that need interpretation. Each observation keeps its collection date and the advertised offer for review."
+        changed="The database supplies rent comps to my underwriting pack, reducing manual collection and showing concessions alongside asking rents. I can focus on whether the properties are comparable and which rent assumption the evidence supports."
         stats={[
           { num: floorK(rents.communities), label: "communities tracked" },
           { num: String(rents.markets), label: "metros" },

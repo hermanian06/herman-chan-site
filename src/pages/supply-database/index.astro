@@ -1,7 +1,7 @@
 ---
 /**
  * Tab 3 — Supply Database.
- *   §01 what / how / why, for two readers (draft bullets)
+ *   §01 four process steps for each professional audience
  *   §02 ask the databases — the chat box over the MCP (supply + rents + demand), the
  *       public read path the old search form was waiting for
  *   §03 the MCP server: endpoint, tools, how to connect
@@ -12,20 +12,40 @@ import TwoAudiences from "../../components/tabs/TwoAudiences.astro";
 import AskTheData from "../../components/chat/AskTheData.astro";
 
 const forAI = [
-  "What: ingestion of public development filings across nine Sunbelt metros into one Postgres schema, each row classified by dwelling type and lifecycle stage and geocoded.",
-  "How: dozens of small Python scrapers, one per portal; exactly one language-model call per document, for the fields plain code cannot read off a scanned form; structured-output schema; de-duplication across re-publishes.",
-  "How: a weekly cron on Railway with a heartbeat-only liveness check; daily SQL assertions where any returned row is a violation; an evaluation with independently labelled answers that gates every prompt change.",
-  "Why: the model is the least reliable step in the chain, so it gets one job and everything else stays deterministic and testable.",
-  "Why: the dashboard once served frozen numbers for two weeks while every health check was green. The checks now follow the number from ingestion to the screen.",
-  "Surfaces: a map dashboard, a read-only MCP server behind OAuth 2.1 so the team queries from claude.ai in plain English, and a weekly sheet.",
+  {
+    "title": "Collect public records",
+    "body": "Python scrapers collect environmental filings, permits and planning cases, reusing readers where portals share software. Dates, record identifiers and source references stay with the data."
+  },
+  {
+    "title": "Classify and connect projects",
+    "body": "Rules standardize known fields; language models interpret descriptions and documents. Addresses are mapped where possible, and matching rules connect related filings in supported sources while retaining the underlying records."
+  },
+  {
+    "title": "Check data and estimates",
+    "body": "Checks flag stale data, missing locations and coverage changes; separate evaluations compare classifications with independently labelled examples. Source-reported unit counts, acreage-based estimates and assumed delivery dates are labelled separately."
+  },
+  {
+    "title": "Deliver through dashboards and AI tools",
+    "body": "Dashboards, spreadsheets, underwriting inputs and read-only MCP tools make the data searchable. I review uncertain matches and estimates; coverage varies, so no results does not establish no supply."
+  }
 ];
 const forRE = [
-  "What: an early-warning system for new rental supply. It sees a community twelve to thirty-six months before it starts leasing.",
-  "How: three tiers of signal — entitlement (rezonings, plats, PUDs), permits (land disturbance, building permits), and construction — each row with units, builder, stage and location.",
-  "How: units come from the filing where stated and are estimated from acreage where not, with the estimate labelled as one.",
-  "How: ask 'what is coming within three miles of this site' and get the answer by product type and stage; ask which builders are active in a metro and get their pipeline.",
-  "Why: commercial datasets see supply at lease-up. By then the builder conversation is late and the underwriting assumption is already wrong.",
-  "Why: builder activity across metros — who is delivering where — is the list for off-market outreach.",
+  {
+    "title": "Find upcoming development",
+    "body": "Planning cases, environmental filings and permits bring development activity into one place, helping identify potential housing supply before a community starts leasing or selling."
+  },
+  {
+    "title": "Assess size and stage",
+    "body": "Filing types and permit statuses indicate progress through proposals, approvals and construction. Published unit or lot counts are separated from acreage-based estimates; an application does not establish delivery timing."
+  },
+  {
+    "title": "Identify competition and builders",
+    "body": "Mapped projects show nearby activity and available builder, developer and applicant details. Product classifications distinguish housing types; whether homes will be rented or sold requires supporting evidence."
+  },
+  {
+    "title": "Inform underwriting",
+    "body": "Supply joins rent comps and demand data to inform leasing, concession and rent-growth assumptions, while builder activity can guide outreach. I confirm relevant projects, likely timing and coverage gaps before relying on the results."
+  }
 ];
 
 /* The seventeen read-only tools the server exposes (all nine metros wired; rent + demand added 2026-09-15). */
@@ -52,13 +72,12 @@ const tools = [
 
 <Layout
   title="Supply database"
-  description="A nine-metro database of new rental-housing supply read from public filings: what it is, how it is built, supply near an address, and the MCP server the team queries it through."
+  description="Housing development activity from public filings, organized by location, product type and stage to support supply research, builder outreach and underwriting."
 >
   <TabHead
     kicker="Tab 03 · Supply Database"
-    title="New rental supply, read from public filings a year before it leases."
-    lede="Nine Sunbelt metros. State environmental filings, county and city permits, planning and entitlement cases — each one classified, geocoded and staged into a single database, refreshed weekly."
-    draft
+    title="Upcoming housing supply, brought together from public filings."
+    lede="Environmental filings, permits and planning cases help me investigate what could be built near a property and which builders are active. Source records, development stages and labelled estimates support that research, with coverage varying by jurisdiction."
   />
 
   <TwoAudiences hash="§ 01" ai={forAI} re={forRE} />
@@ -117,11 +136,6 @@ const tools = [
           </tbody>
         </table>
       </div>
-      <p class="blk__note blk__note--small">
-        Tab-3 session, to decide: whether the page shows a live "ask the database" box
-        (needs a public, rate-limited read path — today only the OAuth-gated MCP exists) or
-        stays as documentation plus a worked example of a claude.ai conversation.
-      </p>
     </div>
   </section>
 </Layout>

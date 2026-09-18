@@ -8,6 +8,30 @@ This file is the record of what shipped and why — read the newest 1–3 entrie
 
 <!-- session-closeout: insert new entries directly below this line -->
 
+
+## 2026-09-18 — Shorter Intro and project explanations (local)
+
+Intro now uses Why I built it / How it works / What changed, with the Input / Process /
+Output flow inside How. The underwriting outcome uses Herman’s approved account: about four
+hours of manual preparation becoming about thirty minutes of human review. Obsolete static
+Intro statistics are removed; the rent statistics still come from the existing JSON, with
+the required “live floor plans” label.
+
+Underwriting has six ordered points per professional audience. Supply and Rent each have
+four, retaining source limitations, human review and the rent comparison rules. The shared
+audience component gives all three pages consistent headings and numbered lists. Supply and
+Rent draft markers, the obsolete Supply chat planning note, and overbroad hero claims are
+removed. Existing sample tabs, downloads, upload, chat, MCP endpoint/tool table, dashboard,
+Blog and About are preserved.
+
+Validation: `npm run build` passed with 51 pages. Generated HTML was read back; only the four
+target pages differ from the baseline build, with all 47 other HTML pages byte-identical.
+Detailed build, content and preservation receipts are in
+`/Users/hermanchan/Documents/Codex/four-tabs-copy-review-20260918/`.
+This entry records the local editorial change; committed-diff review and publication are
+owned by the coordinating task and must be verified separately.
+
+
 ### What just changed (2026-09-16 — website copy published; session closeout)
 
 **Shipped.** Underwriting copy `9d6bcc8c2830cb45c5dc84203b94c0a8621c1f92` gives each

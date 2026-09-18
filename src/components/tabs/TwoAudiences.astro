@@ -1,22 +1,29 @@
 ---
 /**
- * The "what / how / why" block that every project tab opens with, written twice:
- * once for AI and data people, once for real-estate people. Bullets are plain
- * strings by default; named ai and re slots support richer content when needed.
+ * A concise process for each audience, using the same ordered-step presentation
+ * across all three project tabs.
  */
+interface Step {
+  title: string;
+  body: string;
+}
 interface Props {
   hash?: string;
-  ai?: string[];
-  re?: string[];
+  ai: Step[];
+  re: Step[];
+  aiFlow?: string;
+  reFlow?: string;
   aiTitle?: string;
   reTitle?: string;
 }
 const {
   hash = "§ 01",
-  ai = [],
-  re = [],
-  aiTitle = "For AI and data people",
-  reTitle = "For real-estate people",
+  ai,
+  re,
+  aiFlow,
+  reFlow,
+  aiTitle = "For AI and data professionals",
+  reTitle = "For real estate professionals",
 } = Astro.props;
 ---
 
@@ -24,26 +31,24 @@ const {
   <div class="wrap">
     <div class="section-title">
       <span class="section-title__hash">{hash}</span>
-      <span class="section-title__label">What, how, why</span>
+      <span class="section-title__label">How it works</span>
       <span class="section-title__hint">Two readers, one build</span>
     </div>
 
     <div class="aud__grid">
       <div class="aud__col">
         <h2 class="aud__h2">{aiTitle}</h2>
-        <slot name="ai">
-          <ul class="aud__list">
-            {ai.map((b) => <li>{b}</li>)}
-          </ul>
-        </slot>
+        {aiFlow && <p class="aud__flow"><strong>{aiFlow}</strong></p>}
+        <ol class="aud__list">
+          {ai.map((step) => <li><strong>{step.title}.</strong> {step.body}</li>)}
+        </ol>
       </div>
       <div class="aud__col">
         <h2 class="aud__h2">{reTitle}</h2>
-        <slot name="re">
-          <ul class="aud__list">
-            {re.map((b) => <li>{b}</li>)}
-          </ul>
-        </slot>
+        {reFlow && <p class="aud__flow"><strong>{reFlow}</strong></p>}
+        <ol class="aud__list">
+          {re.map((step) => <li><strong>{step.title}.</strong> {step.body}</li>)}
+        </ol>
       </div>
     </div>
   </div>
@@ -73,6 +78,8 @@ const {
     display: grid;
     gap: var(--s-3);
   }
+  .aud__flow { margin: 0 0 var(--s-4); }
+  .aud__flow,
   .aud__list li {
     font-family: var(--serif);
     font-size: var(--t-17);

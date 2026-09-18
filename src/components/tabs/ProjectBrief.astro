@@ -1,8 +1,7 @@
 ---
 /**
- * One system on the Intro tab: a three-box flow strip (in → runs → out), three one-line
- * points (what · why · result), and a stat row. Every number shown already lives
- * elsewhere on the site.
+ * One system on the Intro tab: why it was built, how it works, and what changed.
+ * The Input → Process → Output flow belongs inside How; verified stats are optional.
  */
 interface Stat {
   num: string;
@@ -12,11 +11,13 @@ interface Props {
   num: string;
   title: string;
   href: string;
-  points: string[];
+  why: string;
+  how: string;
+  changed: string;
   flow: { input: string; process: string; output: string };
-  stats: Stat[];
+  stats?: Stat[];
 }
-const { num, title, href, points, flow, stats } = Astro.props;
+const { num, title, href, why, how, changed, flow, stats = [] } = Astro.props;
 ---
 
 <article class="pb">
@@ -25,23 +26,35 @@ const { num, title, href, points, flow, stats } = Astro.props;
     <h2 class="pb__title"><a href={href}>{title}</a></h2>
   </header>
 
-  <div class="pb__flow" aria-label={`${title}: inputs, process, outputs`}>
-    <div class="pb__box"><span class="pb__boxlabel">In</span>{flow.input}</div>
-    <span class="pb__arrow" aria-hidden="true">→</span>
-    <div class="pb__box pb__box--core"><span class="pb__boxlabel">Runs</span>{flow.process}</div>
-    <span class="pb__arrow" aria-hidden="true">→</span>
-    <div class="pb__box"><span class="pb__boxlabel">Out</span>{flow.output}</div>
+  <div class="pb__section">
+    <h3 class="pb__label">Why I built it</h3>
+    <p class="pb__copy">{why}</p>
   </div>
 
-  <ul class="pb__points">
-    {points.map((p) => <li>{p}</li>)}
-  </ul>
+  <div class="pb__section">
+    <h3 class="pb__label">How it works</h3>
+    <div class="pb__flow" aria-label={`${title}: input, process, output`}>
+      <div class="pb__box"><span class="pb__boxlabel">Input</span>{flow.input}</div>
+      <span class="pb__arrow" aria-hidden="true">→</span>
+      <div class="pb__box pb__box--core"><span class="pb__boxlabel">Process</span>{flow.process}</div>
+      <span class="pb__arrow" aria-hidden="true">→</span>
+      <div class="pb__box"><span class="pb__boxlabel">Output</span>{flow.output}</div>
+    </div>
+    <p class="pb__copy">{how}</p>
+  </div>
 
-  <ul class="pb__stats" aria-label="At a glance">
-    {stats.map((s) => (
-      <li><b class="num">{s.num}</b><span>{s.label}</span></li>
-    ))}
-  </ul>
+  <div class="pb__section">
+    <h3 class="pb__label">What changed</h3>
+    <p class="pb__copy">{changed}</p>
+  </div>
+
+  {stats.length > 0 && (
+    <ul class="pb__stats" aria-label="At a glance">
+      {stats.map((s) => (
+        <li><b class="num">{s.num}</b><span>{s.label}</span></li>
+      ))}
+    </ul>
+  )}
 </article>
 
 <style>
@@ -78,7 +91,7 @@ const { num, title, href, points, flow, stats } = Astro.props;
     grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.2fr) auto minmax(0, 1fr);
     gap: var(--s-3);
     align-items: stretch;
-    margin: 0 0 var(--s-5);
+    margin: 0 0 var(--s-3);
   }
   .pb__box {
     border: 1px solid var(--rule);
@@ -112,21 +125,25 @@ const { num, title, href, points, flow, stats } = Astro.props;
     font-size: var(--t-17);
   }
 
-  /* ---- three points ---- */
-  .pb__points {
-    margin: 0;
-    padding-left: 1.1em;
-    display: grid;
-    gap: var(--s-2);
-    max-width: var(--measure);
+  /* ---- why, how, what changed ---- */
+  .pb__section + .pb__section { margin-top: var(--s-5); }
+  .pb__label {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin: 0 0 var(--s-2);
   }
-  .pb__points li {
+  .pb__copy {
+    margin: 0;
+    max-width: var(--measure);
     font-family: var(--serif);
     font-size: var(--t-17);
     line-height: 1.5;
     color: var(--fg-soft);
   }
-  .pb__points li::marker { color: var(--muted-2); }
 
   /* ---- stat row ---- */
   .pb__stats {

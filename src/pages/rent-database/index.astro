@@ -1,7 +1,7 @@
 ---
 /**
  * Tab 4 — Rent Database.
- *   §01 what / how / why, for two readers (draft bullets)
+ *   §01 four process steps for each professional audience
  *   §02 ask the databases — the chat box over the MCP (rents + supply + demand)
  *   §03 the current rent dashboard, unchanged — RentDashboard.astro is the same body
  *   /demo/rent-database/ renders, read at build time from src/data/rents/rent-database.json.
@@ -11,37 +11,52 @@ import TabHead from "../../components/tabs/TabHead.astro";
 import TwoAudiences from "../../components/tabs/TwoAudiences.astro";
 import RentDashboard from "../../components/rents/RentDashboard.astro";
 import AskTheData from "../../components/chat/AskTheData.astro";
-import db from "../../data/rents/rent-database.json";
-
-const h = db.headline;
-const n = (v: number) => v.toLocaleString("en-US");
-
 const forAI = [
-  `What: a weekly census of advertised rents — ${n(h.communities)} communities across ${h.markets} metros, at floor-plan level, with asking rent and net-effective rent side by side and the concession parsed into weeks.`,
-  "How: adapters first. Most communities run on one of a handful of leasing platforms, each serving floor plans from an endpoint with a stable shape, so a deterministic reader per platform runs before any model call. Only bespoke sites fall through to the language model, and that tail goes out as one overnight batch at half price.",
-  "How: a per-market cadence table (weekly, fortnightly, monthly) drives both the scrape and every staleness check, so a fortnightly market cannot be reported stale for being fortnightly. Daily assertions cover coverage rates, snapshot freshness, geocode gaps and duplicate communities.",
-  "Why: an adapter that cannot find a floor plan fails loudly; it cannot hallucinate a two-bedroom. The model's output goes through the same validation as every adapter's.",
-  "Why: tracked and scraped are different columns and are shown as such; medians over thin samples are greyed and labelled provisional. The page cannot claim a figure the database does not hold, because every number is read from it at build time.",
+  {
+    "title": "Collect advertised prices",
+    "body": "Python readers collect floor plans, rents and advertised availability from leasing websites, with a language model as fallback. Published unit prices remain distinct from ranges."
+  },
+  {
+    "title": "Standardize rents and concessions",
+    "body": "Supported free-rent offers become weeks for a standard 52-week net-effective comparison. Original offer text is retained; dollar credits are recorded separately and excluded from that calculation."
+  },
+  {
+    "title": "Validate and track freshness",
+    "body": "Checks look for missing fields, implausible rents, duplicates and stale observations against each market’s schedule. Collection dates and extraction failures remain visible for review."
+  },
+  {
+    "title": "Supply comps and market summaries",
+    "body": "Dated snapshots feed dashboards, market summaries, underwriting comps and read-only MCP tools for AI assistants. I review the pricing basis and offer terms before relying on a comp."
+  }
 ];
 const forRE = [
-  "What: what every community you would comp against is asking this week — and what it is actually giving away.",
-  "How: six weeks free on a twelve-month lease is roughly an eleven-percent haircut to the rent you will collect. The database stores the asking rent and the net-effective rent next to each other so the haircut is visible.",
-  "How: it feeds the comps tab of the underwriting pack directly. No listings-site quota, no export, no copy-paste.",
-  "Why: a concession-blind comp set is the most common way a rent assumption goes wrong, and it is always wrong in the flattering direction.",
-  "Why: the share of communities under concession, by metro, tells you which markets are buying occupancy — something a median asking rent never will.",
-  "What it is not: a signed-lease dataset, and not a rent index yet. Aggregates are public; no rent is published against a named community.",
+  {
+    "title": "Find comparable communities",
+    "body": "Tracked build-for-rent and apartment communities provide a starting set, compared by product, bedroom count and size. Published unit prices are distinguished from starting rents and ranges."
+  },
+  {
+    "title": "Compare asking and net-effective rents",
+    "body": "Asking rents appear alongside the effect of recorded free-rent offers, spread over a standard twelve-month comparison. Actual lease terms, eligibility, fees and dollar credits need separate review."
+  },
+  {
+    "title": "Assess availability and market context",
+    "body": "Listed units, move-in dates and market summaries put prices in context. These are advertised offers, not signed leases or a complete vacancy measure; coverage and collection dates affect the comparison."
+  },
+  {
+    "title": "Set underwriting assumptions",
+    "body": "Comps average the lowest five observed rents in a group, or all when fewer exist; range-only prices use the minimum. I confirm comparability and material offer terms before setting the rent assumption."
+  }
 ];
 ---
 
 <Layout
   title="Rent database"
-  description="A weekly scrape of live asking and net-effective rents across twenty metros — what it is, how it is built, and the live dashboard over it."
+  description="Advertised rents, availability and concessions from tracked rental communities, organized into asking and net-effective rent comparisons for underwriting."
 >
   <TabHead
     kicker="Tab 04 · Rent Database"
-    title="What every community is asking this week, and what it is giving away."
-    lede="A scraper walks the leasing page of every rental community I track, reads the floor plans off it, and records the asking rent alongside the concession. The dashboard below is read from the live database at build time."
-    draft
+    title="Advertised rents, with concessions in view."
+    lede="Leasing websites provide floor plans, asking rents, availability and promotional offers for the communities I track. Collection schedules vary by market; the dashboard below summarizes recorded rents, concessions and coverage."
   />
 
   <TwoAudiences hash="§ 01" ai={forAI} re={forRE} />
