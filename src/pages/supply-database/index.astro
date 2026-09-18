@@ -75,6 +75,8 @@ const tools = [
   description="Housing development activity from public filings, organized by location, product type and stage to support supply research, builder outreach and underwriting."
 >
   <TabHead
+    project="supply"
+    links={[{"href": "#how-it-works", "label": "How it works"}, {"href": "#ask", "label": "Ask the databases"}, {"href": "#mcp", "label": "MCP tools"}]}
     kicker="Tab 03 · Supply Database"
     title="Upcoming housing supply, brought together from public filings."
     lede="Environmental filings, permits and planning cases help me investigate what could be built near a property and which builders are active. Source records, development stages and labelled estimates support that research, with coverage varying by jurisdiction."
@@ -82,7 +84,7 @@ const tools = [
 
   <TwoAudiences hash="§ 01" ai={forAI} re={forRE} />
 
-  <section class="blk">
+  <section class="blk" id="ask">
     <div class="wrap">
       <div class="section-title">
         <span class="section-title__hash">§ 02</span>
@@ -121,7 +123,7 @@ const tools = [
         <dd>In claude.ai: Settings → Connectors → Add custom connector → paste the endpoint → authorise. Claude Code: <code>claude mcp add --transport http supply https://permit-pipeline-mcp-production.up.railway.app/mcp</code>.</dd>
       </dl>
 
-      <div class="tablewrap">
+      <div class="tablewrap" role="region" tabindex="0" aria-label="MCP tools">
         <table class="tools">
           <thead>
             <tr><th scope="col">Tool</th><th scope="col">What it answers</th></tr>

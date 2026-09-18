@@ -44,7 +44,7 @@ import TabHead from "../../components/tabs/TabHead.astro";
           <dt>Builds</dt><dd>Underwriting agent · supply database · rent database</dd>
           <dt>Stack</dt><dd>Python · Anthropic API · Model Context Protocol · Postgres · Railway</dd>
           <dt>Model</dt><dd>I define the workflow, make the system decisions and verify the results. AI writes the code.</dd>
-          <dt>Elsewhere</dt><dd><a href="https://www.linkedin.com/in/hermanchanai/">LinkedIn</a> · <a href="https://github.com/hermanian06">GitHub</a></dd>
+          <dt>Connect</dt><dd><a href="https://www.linkedin.com/in/hermanchanai/">LinkedIn</a> · <a href="https://github.com/hermanian06">GitHub</a></dd>
         </dl>
       </aside>
     </div>
@@ -93,4 +93,9 @@ import TabHead from "../../components/tabs/TabHead.astro";
     .about__grid { grid-template-columns: minmax(0, 1fr); gap: var(--s-6); }
     .about__aside { border-left: 0; border-top: 1px solid var(--rule); padding: var(--s-5) 0 0; position: static; }
   }
+
+  .about{padding-top:45px;padding-bottom:24px}.about__grid{grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:clamp(40px,7vw,100px)}.about__main{max-width:760px}.about__main p{font:17px/1.8 var(--sans);margin-bottom:24px}.about__main p:first-child{font:400 26px/1.45 var(--serif);letter-spacing:-.018em;color:var(--accent-ink);margin-bottom:28px}.about__main p:nth-child(3),.about__main p:nth-child(7){padding-top:30px;margin-top:35px;border-top:1px solid var(--rule)}
+  .about__aside{border:0;border-top:2px solid var(--accent);background:var(--bg-alt);padding:25px 28px;top:28px}.about__aside dl{grid-template-columns:1fr;gap:0}.about__aside dt{font:11px/1.4 var(--mono);letter-spacing:.13em;color:var(--accent-ink);padding-top:17px;border-top:1px solid #cad6e5}.about__aside dt:first-child{padding-top:0;border:0}.about__aside dd{font:15px/1.65 var(--sans);margin:6px 0 18px}.about__aside dd:last-child{margin-bottom:0}
+  @media(max-width:900px){.about__grid{grid-template-columns:1fr;gap:40px}.about__main{max-width:none}.about__aside{position:static}.about__aside dl{grid-template-columns:100px minmax(0,1fr);gap:0 22px}.about__aside dd{padding:14px 0;margin:0;border-top:1px solid #cad6e5}.about__aside dt{padding:17px 0}.about__aside dt:first-child,.about__aside dd:nth-child(2){padding-top:0;border:0}.about__aside dd:last-child,.about__aside dt:nth-last-child(2){padding-bottom:0}}
+  @media(max-width:540px){.about{padding-top:30px}.about__main p:first-child{font-size:24px}.about__main p{font-size:17px;line-height:1.75}.about__aside{padding:22px}.about__aside dl{grid-template-columns:72px minmax(0,1fr);gap:0 14px}.about__aside dd{font-size:14px}}
 </style>

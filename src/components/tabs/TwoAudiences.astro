@@ -27,7 +27,7 @@ const {
 } = Astro.props;
 ---
 
-<section class="aud">
+<section class="aud" id="how-it-works">
   <div class="wrap">
     <div class="section-title">
       <span class="section-title__hash">{hash}</span>
@@ -40,14 +40,14 @@ const {
         <h2 class="aud__h2">{aiTitle}</h2>
         {aiFlow && <p class="aud__flow"><strong>{aiFlow}</strong></p>}
         <ol class="aud__list">
-          {ai.map((step) => <li><strong>{step.title}.</strong> {step.body}</li>)}
+          {ai.map((step) => <li><strong>{step.title}.</strong><p>{step.body}</p></li>)}
         </ol>
       </div>
       <div class="aud__col">
         <h2 class="aud__h2">{reTitle}</h2>
         {reFlow && <p class="aud__flow"><strong>{reFlow}</strong></p>}
         <ol class="aud__list">
-          {re.map((step) => <li><strong>{step.title}.</strong> {step.body}</li>)}
+          {re.map((step) => <li><strong>{step.title}.</strong><p>{step.body}</p></li>)}
         </ol>
       </div>
     </div>
@@ -55,40 +55,6 @@ const {
 </section>
 
 <style>
-  .aud { padding: clamp(40px, 6vw, 64px) 0 0; }
-  .aud__grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--s-7);
-    align-items: start;
-  }
-  .aud__col { border-top: 1px solid var(--rule); padding-top: var(--s-4); }
-  .aud__h2 {
-    font-family: var(--mono);
-    font-size: var(--t-12);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-weight: 500;
-    color: var(--accent);
-    margin: 0 0 var(--s-4);
-  }
-  .aud__list {
-    margin: 0;
-    padding-left: 1.1em;
-    display: grid;
-    gap: var(--s-3);
-  }
-  .aud__flow { margin: 0 0 var(--s-4); }
-  .aud__flow,
-  .aud__list li {
-    font-family: var(--serif);
-    font-size: var(--t-17);
-    line-height: 1.5;
-    color: var(--fg-soft);
-  }
-  .aud__list li::marker { color: var(--muted-2); }
-
-  @media (max-width: 860px) {
-    .aud__grid { grid-template-columns: minmax(0, 1fr); gap: var(--s-6); }
-  }
+.aud{padding:60px 0 0;scroll-margin-top:28px}.aud__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(32px,5vw,72px);align-items:start}.aud__col{min-width:0}.aud__h2{font:400 clamp(26px,2.6vw,35px)/1.18 var(--serif);letter-spacing:-.025em;color:var(--accent-ink);margin:0 0 22px;max-width:24ch}.aud__flow{margin:0 0 26px;padding:17px 20px;background:var(--bg-alt);border-left:2px solid var(--accent);font:14px/1.65 var(--sans);min-height:105px}.aud__flow strong{font-weight:400}.aud__list{list-style:none;margin:0;padding:0;counter-reset:steps;display:grid}.aud__list li{position:relative;counter-increment:steps;padding:22px 0 22px 49px;border-top:1px solid var(--rule)}.aud__list li::before{content:counter(steps,decimal-leading-zero);position:absolute;left:0;top:23px;font:24px/1 var(--serif);color:var(--accent);letter-spacing:-.04em}.aud__list strong{font:600 17px/1.4 var(--sans);color:var(--accent-ink);display:block;margin-bottom:8px}.aud__list p{font:16px/1.7 var(--sans);margin:0;color:var(--fg-soft)}
+@media(max-width:760px){.aud{padding-top:40px}.aud__grid{grid-template-columns:1fr;gap:38px}.aud__h2{font-size:32px;max-width:none}.aud__flow{min-height:0}.aud__list li{padding:19px 0 19px 41px}}
 </style>

@@ -5,6 +5,7 @@
 const path = Astro.url.pathname;
 const current = (href: string) => {
   if (href === "/") return path === "/";
+  if (href === "/blog/") return path.startsWith("/blog/") || path.startsWith("/posts/");
   return path === href || path.startsWith(href);
 };
 const tabs = [

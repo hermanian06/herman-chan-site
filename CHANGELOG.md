@@ -8,6 +8,22 @@ This file is the record of what shipped and why — read the newest 1–3 entrie
 
 <!-- session-closeout: insert new entries directly below this line -->
 
+## 2026-09-18 — Six-tab editorial design prepared for publication
+
+Ports the approved local preview (final `e53c25f`) into the production source: locally
+bundled Source Serif 4 and DM Sans, warm white/navy/cobalt styling, project metrics,
+earlier sample navigation, Blog and About layouts, clearer “Connect” links, and keyboard
+access improvements. Rent counts still use the existing snapshot; underwriting timings
+remain approximate self-reported human effort, and Supply states scheduled collection.
+
+Production upload/chat components, request code, data, downloadable samples and post
+Markdown are preserved. The local mockup's disabled controls and preview notices are
+excluded. Publication was explicitly authorized by Herman, but this entry records
+prepared source only; the coordinating task owns review, the production push and live
+verification. Task and evidence: `/Users/hermanchan/Documents/Codex/portfolio-design-publication-task.md`
+and `/Users/hermanchan/Documents/Codex/portfolio-design-review/`.
+
+
 ### What just changed (2026-09-18 — four-tab copy published; session closeout)
 
 **Shipped.** Source `c55fc8faa9785dae37fba964e093e5f5999945dc` rewrites Intro around

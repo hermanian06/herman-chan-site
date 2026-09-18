@@ -33,9 +33,10 @@ const fullTitle = title && title !== siteTitle ? `${title} — ${siteTitle}` : s
     <title>{fullTitle}</title>
   </head>
   <body>
-    <MetaStrip />
+    <a class="skip-link" href="#main">Skip to content</a>
     <Header />
-    <main>
+    <MetaStrip />
+    <main id="main">
       <slot />
     </main>
     <Footer />

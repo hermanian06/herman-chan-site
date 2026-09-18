@@ -44,13 +44,15 @@ const pad = (number: number) => String(number).padStart(2, "0");
     kicker="Tab 05 · Blog"
     title="AI & data build notes"
     lede="Notes on how I use AI to build my underwriting agent, supply database and rent database: workflow design, document extraction, evaluations, MCP and the problems I find while running them."
-  />
-
-  <div class="blog wrap">
-    <div class="blog__intro">
+  >
+    <aside slot="aside" class="blog__intro">
       <p class="blog__count">{fullPostCount} full posts {outlineCount > 0 && <><span aria-hidden="true">·</span> {outlineCount} outlines </>}<span aria-hidden="true">·</span> {groups.length} topics</p>
       <p class="blog__instruction">Open a title to read here. Full posts also have their own page.</p>
-    </div>
+    </aside>
+  </TabHead>
+
+  <div class="blog wrap">
+
 
     <div class="blog__layout">
       <aside class="contents">
@@ -221,4 +223,11 @@ const pad = (number: number) => String(number).padStart(2, "0");
     .archive { margin-top: var(--s-8); }
     .archive__list li { grid-template-columns: 1fr; gap: var(--s-1); }
   }
+
+  .blog{padding-top:52px}.blog__intro{display:block;background:var(--accent-ink);color:var(--bg);padding:30px;margin:7px 0 0;border:0;align-self:start}.blog__count{font:400 36px/1.2 var(--serif);letter-spacing:-.035em;color:var(--bg);max-width:14ch}.blog__count span{color:#a8b9d5}.blog__instruction{font:16px/1.65 var(--sans);color:#d6e0ec;margin-top:24px!important;max-width:27ch}
+  .blog__layout{grid-template-columns:250px minmax(0,1fr);gap:clamp(40px,6vw,90px)}.contents__inner{border-top:2px solid var(--accent);padding-top:20px}.contents__list a{min-height:58px;align-items:center;font-size:15px;line-height:1.45;border-bottom:1px solid var(--rule-soft);padding:13px 0}.contents__archive{display:flex;align-items:center;min-height:44px;font-family:var(--sans);font-size:14px}
+  .note-group__head{margin-bottom:28px}.note-group__head h2,.archive__heading h2{font-size:clamp(32px,3vw,42px);letter-spacing:-.035em;color:var(--accent-ink)}.note-group__head>p{font-size:16px;line-height:1.65}.note__summary{padding:26px 0;grid-template-columns:36px minmax(0,1fr) 36px;gap:18px}.note__number{font:24px/1 var(--serif);letter-spacing:-.045em;color:var(--muted-2);padding-top:3px}.note__title{font-size:clamp(24px,2.1vw,29px);line-height:1.2;letter-spacing:-.025em}.note__description{font-size:16px;line-height:1.65;max-width:64ch}.note__toggle{width:32px;height:32px;border-radius:0;border:0;background:var(--bg-alt);margin-top:0}.note__toggle::before{width:12px;left:10px;top:15px}.note__toggle::after{height:12px;left:15px;top:10px}.note__summary:hover .note__toggle{background:#dce7f7}.note__details[open]{background:rgba(234,240,247,.42)}.note__details[open] .note__summary{padding-top:26px}.note__body{margin-left:54px;padding-right:28px;padding-bottom:35px}.note__bullets{font-size:16px}.archive__intro{font-size:16px}.archive__list a{font-size:18px;min-height:44px;display:flex;align-items:center}.note-group + .note-group{margin-top:64px}
+  @media(max-width:960px){.blog__intro{max-width:none;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:30px}.blog__instruction{margin-top:0!important}.blog__layout{grid-template-columns:210px minmax(0,1fr);gap:35px}}
+  @media(max-width:760px){.blog{padding-top:36px}.blog__layout{grid-template-columns:1fr;gap:40px}.contents{position:static}.contents__list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 20px}.contents__list a{font-size:14px;min-height:66px}.blog__intro{padding:24px}.blog__count{font-size:30px}.blog__instruction{font-size:15px}.note__summary{grid-template-columns:24px minmax(0,1fr) 32px;gap:12px}.note__number{font-size:20px}.note__title{font-size:25px}.note__body{margin-left:36px;padding-right:14px}.note__description{font-size:16px}.note__toggle::before{top:15px;left:10px}.note__toggle::after{top:10px;left:15px}}
+  @media(max-width:420px){.blog__intro{grid-template-columns:1fr;gap:16px}.blog__count{max-width:none}.note__summary{grid-template-columns:21px minmax(0,1fr) 28px;gap:9px}.note__title{font-size:24px}.note__toggle{width:28px;height:28px}.note__toggle::before{top:13px;left:8px}.note__toggle::after{top:8px;left:13px}.note__body{margin-left:0;padding:0 12px 28px}}
 </style>

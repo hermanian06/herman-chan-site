@@ -6,12 +6,7 @@
  */
 import Layout from "../layouts/Layout.astro";
 import ProjectBrief from "../components/tabs/ProjectBrief.astro";
-import db from "../data/rents/rent-database.json";
 
-const rents = db.headline;
-/* Rounded stat labels: floored to the thousand with a plus sign, so the label is always
-   true of the number the JSON actually holds (16,879 → "16,000+"). */
-const floorK = (v: number) => (Math.floor(v / 1000) * 1000).toLocaleString("en-US") + "+";
 ---
 
 <Layout description="Herman Chan — three systems I built to automate real estate workflows: deal analysis, housing supply research and rental pricing.">
@@ -41,14 +36,19 @@ const floorK = (v: number) => (Math.floor(v / 1000) * 1000).toLocaleString("en-U
     </div>
   </section>
 
-  <section class="briefs">
+  <section class="briefs" id="projects">
     <div class="wrap">
-      <div class="section-title">
-        <span class="section-title__hash">§ 01</span>
-        <span class="section-title__label">The three systems</span>
-      </div>
+      <nav class="project-index" aria-labelledby="systems-label">
+        <h2 class="kicker" id="systems-label">The three systems</h2>
+        <div class="project-index__links">
+          <a href="#system-01"><span>01</span><strong>Underwriting agent</strong><i aria-hidden="true">→</i></a>
+          <a href="#system-02"><span>02</span><strong>Supply database</strong><i aria-hidden="true">→</i></a>
+          <a href="#system-03"><span>03</span><strong>Rent database</strong><i aria-hidden="true">→</i></a>
+        </div>
+      </nav>
 
       <ProjectBrief
+        project="underwriting"
         num="01"
         title="Underwriting agent"
         href="/underwriting-agent/"
@@ -63,6 +63,7 @@ const floorK = (v: number) => (Math.floor(v / 1000) * 1000).toLocaleString("en-U
       />
 
       <ProjectBrief
+        project="supply"
         num="02"
         title="Supply database"
         href="/supply-database/"
@@ -77,6 +78,7 @@ const floorK = (v: number) => (Math.floor(v / 1000) * 1000).toLocaleString("en-U
       />
 
       <ProjectBrief
+        project="rents"
         num="03"
         title="Rent database"
         href="/rent-database/"
@@ -88,76 +90,17 @@ const floorK = (v: number) => (Math.floor(v / 1000) * 1000).toLocaleString("en-U
         }}
         how="Code reads supported leasing platforms, with AI handling pages that need interpretation. Each observation keeps its collection date and the advertised offer for review."
         changed="The database supplies rent comps to my underwriting pack, reducing manual collection and showing concessions alongside asking rents. I can focus on whether the properties are comparable and which rent assumption the evidence supports."
-        stats={[
-          { num: floorK(rents.communities), label: "communities tracked" },
-          { num: String(rents.markets), label: "metros" },
-          { num: floorK(rents.floor_plans), label: "live floor plans" },
-        ]}
       />
     </div>
   </section>
 </Layout>
 
 <style>
-  .hero {
-    padding: clamp(48px, 9vw, 96px) 0 clamp(40px, 7vw, 72px);
-    border-bottom: 1px solid var(--rule);
-  }
-  .hero__grid {
-    display: grid;
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    gap: clamp(32px, 6vw, 80px);
-    align-items: end;
-  }
-  .hero__title {
-    font-family: var(--serif);
-    font-weight: 400;
-    font-size: clamp(40px, 7.2vw, 72px);
-    line-height: 1.02;
-    letter-spacing: -0.022em;
-    margin: var(--s-3) 0 var(--s-5);
-    text-wrap: balance;
-    color: var(--fg);
-  }
-  .hero__title em { font-style: italic; font-weight: 400; color: var(--accent); }
-  .hero__lede {
-    font-family: var(--serif);
-    font-size: clamp(17px, 1.6vw, 19px);
-    line-height: 1.55;
-    color: var(--fg-soft);
-    max-width: 52ch;
-    margin: 0;
-  }
-  .hero__aside {
-    border-left: 1px solid var(--rule);
-    padding-left: var(--s-5);
-    font-family: var(--sans);
-    font-size: var(--t-14);
-    color: var(--fg-soft);
-    align-self: end;
-  }
-  .hero__aside dl {
-    margin: 0;
-    display: grid;
-    grid-template-columns: 96px 1fr;
-    row-gap: 6px;
-    column-gap: var(--s-3);
-  }
-  .hero__aside dt {
-    font-family: var(--mono);
-    font-size: var(--t-12);
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-  .hero__aside dd { margin: 0; }
-  .hero__aside dd a { color: var(--fg); border-bottom: 1px solid var(--rule); }
-  .hero__aside dd a:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
-
-  .briefs { padding: clamp(48px, 7vw, 80px) 0 var(--s-8); }
-
-  @media (max-width: 860px) {
-    .hero__grid { grid-template-columns: 1fr; gap: var(--s-6); }
-    .hero__aside { border-left: 0; border-top: 1px solid var(--rule); padding: var(--s-5) 0 0; }
-  }
+.hero{padding:56px 0 46px}.hero__grid{display:grid;grid-template-columns:minmax(0,1.98fr) minmax(0,1fr);gap:64px;align-items:start}
+.hero__title{font:400 clamp(60px,6vw,86px)/1.065 var(--serif);letter-spacing:-.055em;margin:16px 0 26px;color:var(--fg)}.hero__title em{font-style:normal;color:var(--accent-ink)}
+.hero__lede{margin:0;max-width:69ch;font:18px/1.65 var(--sans);letter-spacing:-.015em}.hero__aside dl{margin:0;display:grid;grid-template-columns:1fr}.hero__aside dt{border-top:1px solid var(--rule);padding-top:14px;font:11px/1.5 var(--mono);letter-spacing:.13em;text-transform:uppercase;color:var(--accent-ink)}.hero__aside dd{margin:6px 0 20px;font:15px/1.55 var(--sans)}
+.project-index{padding-top:15px;border-top:1px solid var(--rule);margin-bottom:44px}.project-index h2{margin:0 0 14px}.project-index__links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.project-index__links a{display:flex;align-items:center;gap:21px;padding:23px;background:var(--bg-alt);min-height:108px;color:var(--accent-ink)}.project-index__links a:hover{background:#dfe8f3;text-decoration:none}.project-index__links span{font:54px/1 var(--serif);letter-spacing:-.07em;color:var(--muted-2);padding-right:20px;border-right:1px solid #cbd6e3}.project-index__links strong{font:400 23px/1.15 var(--serif);letter-spacing:-.035em;flex:1}.project-index__links i{font:24px var(--sans);color:var(--accent)}
+@media(max-width:1100px){.hero__grid{gap:40px}.hero__title{font-size:68px}.project-index__links a{gap:14px;padding:20px 17px}.project-index__links span{font-size:44px;padding-right:14px}}
+@media(max-width:900px){.hero__grid{grid-template-columns:1fr;gap:32px}.hero__title{max-width:850px;font-size:clamp(48px,8.8vw,72px)}.hero__aside dl{grid-template-columns:110px 1fr;gap:0 24px}.hero__aside dt,.hero__aside dd{padding:12px 0;border-top:1px solid var(--rule);margin:0}.project-index__links a{gap:10px;padding:18px 12px}.project-index__links strong{font-size:22px}.project-index__links span{font-size:35px;padding-right:10px}}
+@media(max-width:540px){.hero{padding:34px 0}.hero__title{font-size:49px;letter-spacing:-.045em}.hero__lede{font-size:17px}.hero__aside dl{grid-template-columns:90px 1fr;gap:0 12px}.hero__aside dt{font-size:10px}.hero__aside dd{font-size:14px}.project-index__links{grid-template-columns:1fr;gap:8px}.project-index__links a{min-height:76px;padding:16px 19px;gap:18px}.project-index__links strong{font-size:24px}.project-index{margin-bottom:30px}}
 </style>

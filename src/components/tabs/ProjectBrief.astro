@@ -1,176 +1,46 @@
 ---
-/**
- * One system on the Intro tab: why it was built, how it works, and what changed.
- * The Input → Process → Output flow belongs inside How; verified stats are optional.
- */
-interface Stat {
-  num: string;
-  label: string;
-}
+import ProjectMetrics from './ProjectMetrics.astro';
+import type { Project } from '../../data/project-metrics';
 interface Props {
-  num: string;
-  title: string;
-  href: string;
-  why: string;
-  how: string;
-  changed: string;
+  num: string; title: string; href: string; why: string; how: string; changed: string;
   flow: { input: string; process: string; output: string };
-  stats?: Stat[];
+  project: Project;
 }
-const { num, title, href, why, how, changed, flow, stats = [] } = Astro.props;
+const { num, title, href, why, how, changed, flow, project } = Astro.props;
+const steps = [{ label: 'Input', text: flow.input }, { label: 'Process', text: flow.process }, { label: 'Output', text: flow.output }];
 ---
-
-<article class="pb">
+<article class="pb" id={`system-${num}`}>
   <header class="pb__head">
-    <span class="pb__num num">{num}</span>
-    <h2 class="pb__title"><a href={href}>{title}</a></h2>
+    <span class="pb__num" aria-hidden="true">{num}</span>
+    <h2 class="pb__title"><a href={href}>{title}<span aria-hidden="true"> ↗</span></a></h2>
   </header>
-
-  <div class="pb__section">
-    <h3 class="pb__label">Why I built it</h3>
-    <p class="pb__copy">{why}</p>
-  </div>
-
-  <div class="pb__section">
-    <h3 class="pb__label">How it works</h3>
-    <div class="pb__flow" aria-label={`${title}: input, process, output`}>
-      <div class="pb__box"><span class="pb__boxlabel">Input</span>{flow.input}</div>
-      <span class="pb__arrow" aria-hidden="true">→</span>
-      <div class="pb__box pb__box--core"><span class="pb__boxlabel">Process</span>{flow.process}</div>
-      <span class="pb__arrow" aria-hidden="true">→</span>
-      <div class="pb__box"><span class="pb__boxlabel">Output</span>{flow.output}</div>
+  <div class="pb__grid">
+    <div class="pb__copycol">
+      <div class="pb__section"><h3>Why I built it</h3><p>{why}</p></div>
+      <div class="pb__section"><h3>How it works</h3><p>{how}</p></div>
+      <div class="pb__section"><h3>What changed</h3><p>{changed}</p></div>
     </div>
-    <p class="pb__copy">{how}</p>
+    <div class="pb__flowcol">
+      <ol class="pb__flow" aria-label={`${title}: input, process, output`}>
+        {steps.map((step, index) => <li><span class="pb__stepnum" aria-hidden="true">{index + 1}</span><h3>{step.label}</h3><p>{step.text}</p></li>)}
+      </ol>
+      <ProjectMetrics project={project} />
+    </div>
   </div>
-
-  <div class="pb__section">
-    <h3 class="pb__label">What changed</h3>
-    <p class="pb__copy">{changed}</p>
-  </div>
-
-  {stats.length > 0 && (
-    <ul class="pb__stats" aria-label="At a glance">
-      {stats.map((s) => (
-        <li><b class="num">{s.num}</b><span>{s.label}</span></li>
-      ))}
-    </ul>
-  )}
 </article>
-
 <style>
-  .pb {
-    border-top: 1px solid var(--rule);
-    padding: var(--s-6) 0 var(--s-7);
-  }
-  .pb__head {
-    display: flex;
-    align-items: baseline;
-    gap: var(--s-4);
-    margin-bottom: var(--s-5);
-  }
-  .pb__num {
-    font-family: var(--mono);
-    font-size: var(--t-12);
-    color: var(--muted-2);
-    letter-spacing: 0.08em;
-  }
-  .pb__title {
-    font-family: var(--serif);
-    font-weight: 400;
-    font-size: clamp(24px, 3vw, 32px);
-    letter-spacing: -0.015em;
-    margin: 0;
-    flex: 1;
-  }
-  .pb__title a { color: var(--fg); }
-  .pb__title a:hover { color: var(--accent); text-decoration: none; }
-
-  /* ---- flow strip ---- */
-  .pb__flow {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.2fr) auto minmax(0, 1fr);
-    gap: var(--s-3);
-    align-items: stretch;
-    margin: 0 0 var(--s-3);
-  }
-  .pb__box {
-    border: 1px solid var(--rule);
-    background: var(--bg);
-    padding: var(--s-3) var(--s-4);
-    font-family: var(--sans);
-    font-size: var(--t-14);
-    line-height: 1.45;
-    color: var(--fg-soft);
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .pb__box--core {
-    border-color: var(--accent);
-    background: var(--accent-soft);
-    color: var(--fg);
-  }
-  .pb__boxlabel {
-    font-family: var(--mono);
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--muted-2);
-  }
-  .pb__box--core .pb__boxlabel { color: var(--accent); }
-  .pb__arrow {
-    align-self: center;
-    font-family: var(--mono);
-    color: var(--muted-2);
-    font-size: var(--t-17);
-  }
-
-  /* ---- why, how, what changed ---- */
-  .pb__section + .pb__section { margin-top: var(--s-5); }
-  .pb__label {
-    font-family: var(--mono);
-    font-size: var(--t-12);
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-    margin: 0 0 var(--s-2);
-  }
-  .pb__copy {
-    margin: 0;
-    max-width: var(--measure);
-    font-family: var(--serif);
-    font-size: var(--t-17);
-    line-height: 1.5;
-    color: var(--fg-soft);
-  }
-
-  /* ---- stat row ---- */
-  .pb__stats {
-    list-style: none;
-    margin: var(--s-5) 0 0;
-    padding: var(--s-4) 0 0;
-    border-top: 1px solid var(--rule-soft);
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--s-6);
-  }
-  .pb__stats li { display: flex; flex-direction: column; gap: 2px; }
-  .pb__stats b {
-    font-family: var(--mono);
-    font-size: clamp(18px, 2.2vw, 24px);
-    font-weight: 500;
-    color: var(--accent);
-  }
-  .pb__stats span {
-    font-family: var(--sans);
-    font-size: var(--t-12);
-    color: var(--muted);
-  }
-
-  @media (max-width: 860px) {
-    .pb__flow { grid-template-columns: minmax(0, 1fr); }
-    .pb__arrow { transform: rotate(90deg); justify-self: center; }
-    .pb__head { flex-wrap: wrap; }
-  }
+.pb{padding:36px 0 48px;border-top:1px solid var(--rule);scroll-margin-top:24px}
+.pb__head{display:flex;gap:27px;align-items:baseline;margin-bottom:30px}
+.pb__num{font:57px/1 var(--serif);letter-spacing:-.06em;color:var(--muted-2)}
+.pb__title{font:400 clamp(32px,4.1vw,53px)/1.12 var(--serif);letter-spacing:-.045em;margin:0}
+.pb__title a{color:var(--accent-ink)}.pb__title a:hover{color:var(--accent);text-decoration:none}.pb__title span{font:30px var(--sans);color:var(--accent);padding-left:14px}
+.pb__grid{display:grid;grid-template-columns:minmax(0,1.16fr) minmax(0,1fr);gap:48px;align-items:start}
+.pb__copycol{display:grid;gap:22px}.pb__section h3,.pb__flow h3{font:400 11px/1.5 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent-ink);margin:0 0 6px}
+.pb__section p{margin:0;font:16px/1.65 var(--sans)}.pb__section:last-child{padding-top:18px;border-top:1px solid var(--rule-soft)}.pb__section:last-child h3{color:var(--accent)}
+.pb__flowcol{border-left:1px solid var(--rule);padding-left:30px}.pb__flow{list-style:none;margin:0 0 28px;padding:0}
+.pb__flow li{position:relative;padding:2px 14px 31px 67px;min-height:106px}.pb__flow li::before{content:'';position:absolute;left:29px;top:26px;width:1px;height:100%;background:#9ba8b5}.pb__flow li:last-child::before{display:none}
+.pb__stepnum{position:absolute;left:13px;top:0;display:grid;place-items:center;width:33px;height:33px;border-radius:50%;font:18px var(--serif);color:white;background:#728191;border:1px solid var(--bg);z-index:1}
+.pb__flow p{margin:0;font:16px/1.6 var(--sans);max-width:37ch}.pb__flow li:last-child{background:var(--bg-alt);border-left:2px solid var(--accent);padding-top:17px;padding-bottom:20px;min-height:0}.pb__flow li:last-child .pb__stepnum{top:16px;left:11px;background:var(--accent)}
+@media(max-width:900px){.pb__grid{grid-template-columns:1fr;gap:28px}.pb__flowcol{border-left:0;padding-left:0}.pb__head{gap:16px}.pb__num{font-size:43px}.pb__flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.pb__flow li,.pb__flow li:last-child{padding:50px 14px 18px;min-height:0}.pb__flow li::before{display:none}.pb__stepnum,.pb__flow li:last-child .pb__stepnum{top:8px;left:12px}.pb__flow p{font-size:15px}}
+@media(max-width:540px){.pb{padding:28px 0 38px}.pb__title span{font-size:22px;padding-left:4px}.pb__head{gap:12px}.pb__num{font-size:38px}.pb__flow{grid-template-columns:1fr;gap:0}.pb__flow li{padding:2px 14px 26px 62px;min-height:88px}.pb__flow li:last-child{padding:17px 14px 20px 62px}.pb__stepnum{top:0}.pb__flow li:last-child .pb__stepnum{top:16px}.pb__flow li::before{display:block}.pb__flow p{font-size:16px}}
 </style>

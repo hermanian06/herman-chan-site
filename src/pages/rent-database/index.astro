@@ -54,6 +54,8 @@ const forRE = [
   description="Advertised rents, availability and concessions from tracked rental communities, organized into asking and net-effective rent comparisons for underwriting."
 >
   <TabHead
+    project="rents"
+    links={[{"href": "#how-it-works", "label": "How it works"}, {"href": "#ask", "label": "Ask the databases"}, {"href": "#dashboard", "label": "Dashboard"}]}
     kicker="Tab 04 · Rent Database"
     title="Advertised rents, with concessions in view."
     lede="Leasing websites provide floor plans, asking rents, availability and promotional offers for the communities I track. Collection schedules vary by market; the dashboard below summarizes recorded rents, concessions and coverage."
@@ -61,7 +63,7 @@ const forRE = [
 
   <TwoAudiences hash="§ 01" ai={forAI} re={forRE} />
 
-  <section class="dash">
+  <section class="dash" id="ask">
     <div class="wrap">
       <div class="section-title">
         <span class="section-title__hash">§ 02</span>
@@ -78,7 +80,7 @@ const forRE = [
     </div>
   </section>
 
-  <section class="dash">
+  <section class="dash" id="dashboard">
     <div class="wrap">
       <div class="section-title">
         <span class="section-title__hash">§ 03</span>
