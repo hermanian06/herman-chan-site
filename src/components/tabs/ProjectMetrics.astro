@@ -12,8 +12,9 @@ const { stats, note } = projectMetrics[project];
 </div>
 <style>
 .project-metrics__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin:0;padding:24px 0;border-top:1px solid var(--rule)}
-.project-metrics__grid dt{font-family:var(--serif);font-size:clamp(26px,2.9vw,38px);letter-spacing:-.045em;line-height:1.1;white-space:nowrap;color:var(--accent)}
+.project-metrics__grid>div{container-type:inline-size}
+.project-metrics__grid dt{font-family:var(--serif);font-size:min(38px,26cqw);letter-spacing:-.045em;line-height:1.1;white-space:nowrap;color:var(--accent)}
 .project-metrics__grid dd{margin:9px 0 0;font:13px/1.45 var(--sans);color:var(--fg-soft)}
 .project-metrics__note{margin:0;color:var(--muted);font:13px/1.6 var(--sans);max-width:68ch}
-@media(max-width:540px){.project-metrics__grid{gap:15px}.project-metrics__grid dt{font-size:26px}.project-metrics__grid dd{font-size:12px}}
+@media(max-width:540px){.project-metrics__grid{gap:15px}.project-metrics__grid dt{font-size:min(26px,26cqw)}.project-metrics__grid dd{font-size:12px}}
 </style>
