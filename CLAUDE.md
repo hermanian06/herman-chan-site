@@ -12,14 +12,16 @@ resume). This file carries rules and architecture only; closeout never appends e
 Herman is re-arranging the site into six tabs, one dedicated session per tab. **Live since
 2026-09-14** (Herman: "push the website live"; `main` fast-forwarded to `redesign/six-tabs` at
 `8ecfa75`). The September 18 copy pass shortens Intro and the three project tabs; its
-local state is recorded below. About remains Herman’s approved copy.
+verified publication is recorded below. About remains Herman’s approved copy.
 Blog is live at `4cab4fe` with twenty-four full stories and seven archive articles (31 total). Keep working on `redesign/six-tabs` and fast-forward `main`
 when he says push.
 
-Latest publication receipt recorded here: `ff0aac7` (2026-09-16). Homepage/About proof:
-`/Users/hermanchan/Documents/Codex/home-about-publication-receipt-20260916.md`.
+Latest verified copy publication: `c55fc8faa9785dae37fba964e093e5f5999945dc` (2026-09-18).
+All four updated public pages returned HTTP 200 and their full main content matched the
+reviewed source. Receipt:
+`/Users/hermanchan/Documents/Codex/four-tabs-copy-review-20260918/live-verification.json`.
 
-**September 18 editorial pass (local, publication pending):** Intro uses Why I built it →
+**September 18 editorial pass (published at `c55fc8f`):** Intro uses Why I built it →
 How it works → What changed, with Input / Process / Output inside How. Herman confirmed
 approximately four hours of manual preparation becoming thirty minutes of human review;
 this is his human-effort account, not an end-to-end runtime benchmark. Underwriting has six
@@ -27,12 +29,18 @@ points per professional audience; Supply and Rent have four each. Draft markers 
 Supply planning copy are removed. Build and generated-page receipts:
 `/Users/hermanchan/Documents/Codex/four-tabs-copy-review-20260918/`.
 
+
+Publication preserved concurrent `src/components/chat/AskTheData.astro` work in the original
+Mac checkout. The copy release was pushed independently to `main`; the concurrent chat
+change is separate from this publication. The publication receipts retain the exact Git
+state observed during the push.
+
 | Tab | Route | File | Session status |
 |---|---|---|---|
-| 1 Intro | `/` | `src/pages/index.astro` | September 18 local rewrite uses Why / How / What changed; linked project titles and JSON-backed rent stats retained, including live floor plans; no export date or new CTA |
-| 2 Underwriting Agent | `/underwriting-agent/` | `src/pages/underwriting-agent/index.astro` | September 18 local copy has six steps per professional audience; sample = a real deal perturbed at an illustrative Mesa address (published from Portfolio Demo); one downloadable pack above the tabs; upload form keeps files for review. |
-| 3 Supply Database | `/supply-database/` | `src/pages/supply-database/index.astro` | September 18 local copy has four steps per professional audience; existing live chat, MCP endpoint and tool table preserved |
-| 4 Rent Database | `/rent-database/` | `src/pages/rent-database/index.astro` + `src/components/rents/RentDashboard.astro` | September 18 local copy has four steps per professional audience; existing chat and dashboard preserved; dashboard body shared with `/demo/rent-database/` |
+| 1 Intro | `/` | `src/pages/index.astro` | September 18 published rewrite uses Why / How / What changed; linked project titles and JSON-backed rent stats retained, including live floor plans; no export date or new CTA |
+| 2 Underwriting Agent | `/underwriting-agent/` | `src/pages/underwriting-agent/index.astro` | September 18 published copy has six steps per professional audience; sample = a real deal perturbed at an illustrative Mesa address (published from Portfolio Demo); one downloadable pack above the tabs; upload form keeps files for review. |
+| 3 Supply Database | `/supply-database/` | `src/pages/supply-database/index.astro` | September 18 published copy has four steps per professional audience; existing live chat, MCP endpoint and tool table preserved |
+| 4 Rent Database | `/rent-database/` | `src/pages/rent-database/index.astro` + `src/components/rents/RentDashboard.astro` | September 18 published copy has four steps per professional audience; existing chat and dashboard preserved; dashboard body shared with `/demo/rent-database/` |
 | 5 Blog | `/blog/` | `src/pages/blog/index.astro` + `src/data/blog-outline.ts` | live at `4cab4fe`: six topics, 24 full stories and seven archive articles (31 total). `src/components/blog/BuildStory.astro` renders the same Markdown inline and at each permanent article URL. Build, independent review and live-content proof: `/Users/hermanchan/Documents/Codex/blog-complete-review/VERIFICATION.md` and `deployment.json` beside it. |
 | 6 About | `/about/` | `src/pages/about/index.astro` | live at `ff0aac7`: approved headline and eight-paragraph bio; existing aside and contact links retained; draft marker removed |
 

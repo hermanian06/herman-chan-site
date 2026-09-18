@@ -9,7 +9,7 @@ This file is the record of what shipped and why — read the newest 1–3 entrie
 <!-- session-closeout: insert new entries directly below this line -->
 
 
-## 2026-09-18 — Shorter Intro and project explanations (local)
+## 2026-09-18 — Shorter Intro and project explanations (published at `c55fc8f`)
 
 Intro now uses Why I built it / How it works / What changed, with the Input / Process /
 Output flow inside How. The underwriting outcome uses Herman’s approved account: about four
@@ -28,8 +28,19 @@ Validation: `npm run build` passed with 51 pages. Generated HTML was read back; 
 target pages differ from the baseline build, with all 47 other HTML pages byte-identical.
 Detailed build, content and preservation receipts are in
 `/Users/hermanchan/Documents/Codex/four-tabs-copy-review-20260918/`.
-This entry records the local editorial change; committed-diff review and publication are
-owned by the coordinating task and must be verified separately.
+A separate read-only AI review found no actionable issues, and the builder accepted that
+result. The coordinating task pushed exact source commit
+`c55fc8faa9785dae37fba964e093e5f5999945dc` to `main`. All four public URLs returned HTTP 200;
+their complete main content matched the reviewed source. The comparison used a UTC build
+to match the hosting environment’s existing rent-dashboard date formatting; product source
+did not change. Live proof:
+`/Users/hermanchan/Documents/Codex/four-tabs-copy-review-20260918/live-verification.json`.
+
+Concurrent `src/components/chat/AskTheData.astro` work in the original Mac checkout was
+preserved and excluded from the copy publication. Publication receipts retain the exact
+Git state observed during the push. The builder removed only its temporary dependency
+symlink, preserving its target. This follow-up changes documentation only and uses
+`[skip netlify]`.
 
 
 ### What just changed (2026-09-16 — website copy published; session closeout)
