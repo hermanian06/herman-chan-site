@@ -8,6 +8,45 @@ This file is the record of what shipped and why — read the newest 1–3 entrie
 
 <!-- session-closeout: insert new entries directly below this line -->
 
+### What just changed (2026-09-18 — four-tab copy published; session closeout)
+
+**Shipped.** Source `c55fc8faa9785dae37fba964e093e5f5999945dc` rewrites Intro around
+Why / How / What changed, including Herman’s approximate four-hour preparation to
+thirty-minute human-review account. Underwriting has six points per audience; Supply and
+Rent have four each. Draft copy and obsolete planning claims are removed, with rent stats
+and existing interactive components preserved. Publication docs `01d2aa4` are also pushed.
+
+**Verification.** The build passed with 51 pages; 47 unrelated HTML pages were unchanged,
+and all 32 protected files retained their hashes. Independent committed-diff review was
+accepted. All four public URLs returned HTTP 200 with full main content matching reviewed
+source. Evidence and final handoff:
+`/Users/hermanchan/Documents/Codex/four-tabs-copy-review-20260918/VERIFICATION.md` and
+`/Users/hermanchan/Documents/Codex/four-tabs-copy-review-20260918/CLOSEOUT.md`.
+
+**Closeout sweep.** The website ledger contained 0 open/triaged rows, 0 snoozed rows and
+0 spool files; 0 rows closed, deferred or written (`closeout-ledger.json` in the receipt
+folder). Website main/origin/main and shared claude-skills main were each 0 ahead / 0 behind
+after fetch. This builder’s worktree was clean before the documentation update. The other
+task’s chat commit, shared skills scratch work and existing worktrees were preserved;
+no concurrent changes were merged or published. No deployment queue, current-state file,
+session-owned unpublished product changes, unfinished agents, unanswered decisions or
+future watch triggers required action. No deal-skill rules changed, so a whole-skills test
+sweep was inapplicable to this website-only task.
+
+Memory index: 16,236 bytes / 89 lines, 1,274-byte headroom. All 61 topic files: 0 OVER,
+0 NEAR, 24 WARN and 37 OK. No consolidation or new memory entry was needed. No preview
+servers were started. The temporary dependency symlink was removed without its target;
+raw review/debug material was relocated to `.tmp/`, and durable proof artifacts remain.
+
+**Paid external API spend: $0**, excluding account subscription usage. The failed Claude
+CLI attempt used no tokens; the completed review came from a separate fresh agent.
+Verification covered website content and delivery, with no interactive submission,
+underlying-system runtime audit or fresh data/benchmark claim. This closeout changes only
+documentation and uses `[skip netlify]`; application source remains identical to `c55fc8f`.
+
+**Loose ends: none.**
+
+
 
 ## 2026-09-18 — Shorter Intro and project explanations (published at `c55fc8f`)
 

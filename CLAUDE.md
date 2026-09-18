@@ -16,10 +16,11 @@ verified publication is recorded below. About remains Herman’s approved copy.
 Blog is live at `4cab4fe` with twenty-four full stories and seven archive articles (31 total). Keep working on `redesign/six-tabs` and fast-forward `main`
 when he says push.
 
-Latest verified copy publication: `c55fc8faa9785dae37fba964e093e5f5999945dc` (2026-09-18).
-All four updated public pages returned HTTP 200 and their full main content matched the
-reviewed source. Receipt:
-`/Users/hermanchan/Documents/Codex/four-tabs-copy-review-20260918/live-verification.json`.
+Current state (2026-09-18): source `c55fc8faa9785dae37fba964e093e5f5999945dc` is live;
+publication docs `01d2aa4` are pushed. All four updated pages passed public content checks.
+This session has no loose ends; concurrent chat work remains a separate task. Final proof
+and handoff: `/Users/hermanchan/Documents/Codex/four-tabs-copy-review-20260918/CLOSEOUT.md`;
+the latest `CHANGELOG.md` entry records the sweep. Recheck Git state before integration.
 
 **September 18 editorial pass (published at `c55fc8f`):** Intro uses Why I built it →
 How it works → What changed, with Input / Process / Output inside How. Herman confirmed
