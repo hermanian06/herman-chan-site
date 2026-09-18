@@ -146,9 +146,7 @@ const tools = [
   .blk { padding: clamp(40px, 6vw, 64px) 0 0; }
   .blk--last { padding-bottom: var(--s-9); }
   .blk__note {
-    font-family: var(--serif);
-    font-size: var(--t-17);
-    line-height: 1.55;
+    font: var(--font-prose);
     color: var(--fg-soft);
     max-width: var(--measure);
     margin: 0 0 var(--s-5);
@@ -228,7 +226,7 @@ const tools = [
     letter-spacing: 0.08em;
     color: var(--muted);
   }
-  .mcp dd { margin: 0; font-family: var(--serif); font-size: var(--t-15); line-height: 1.55; color: var(--fg-soft); }
+  .mcp dd { margin: 0; font: var(--font-prose); color: var(--fg-soft); }
   .mcp code, .tools code {
     font-family: var(--mono);
     font-size: 0.86em;

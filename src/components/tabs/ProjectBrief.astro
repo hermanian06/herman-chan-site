@@ -32,15 +32,15 @@ const steps = [{ label: 'Input', text: flow.input }, { label: 'Process', text: f
 .pb{padding:36px 0 48px;border-top:1px solid var(--rule);scroll-margin-top:24px}
 .pb__head{display:flex;gap:27px;align-items:baseline;margin-bottom:30px}
 .pb__num{font:57px/1 var(--serif);letter-spacing:-.06em;color:var(--muted-2)}
-.pb__title{font:400 clamp(32px,4.1vw,53px)/1.12 var(--serif);letter-spacing:-.045em;margin:0}
+.pb__title{font:var(--font-section);letter-spacing:var(--track-section);margin:0}
 .pb__title a{color:var(--accent-ink)}.pb__title a:hover{color:var(--accent);text-decoration:none}.pb__title span{font:30px var(--sans);color:var(--accent);padding-left:14px}
 .pb__grid{display:grid;grid-template-columns:minmax(0,1.16fr) minmax(0,1fr);gap:48px;align-items:start}
-.pb__copycol{display:grid;gap:22px}.pb__section h3,.pb__flow h3{font:400 11px/1.5 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent-ink);margin:0 0 6px}
-.pb__section p{margin:0;font:16px/1.65 var(--sans)}.pb__section:last-child{padding-top:18px;border-top:1px solid var(--rule-soft)}.pb__section:last-child h3{color:var(--accent)}
+.pb__copycol{display:grid;gap:22px}.pb__section h3,.pb__flow h3{font:var(--font-eyebrow);letter-spacing:.12em;text-transform:uppercase;color:var(--accent-ink);margin:0 0 6px}
+.pb__section p{margin:0;font:var(--font-prose)}.pb__section:last-child{padding-top:18px;border-top:1px solid var(--rule-soft)}.pb__section:last-child h3{color:var(--accent)}
 .pb__flowcol{border-left:1px solid var(--rule);padding-left:30px}.pb__flow{list-style:none;margin:0 0 28px;padding:0}
 .pb__flow li{position:relative;padding:2px 14px 31px 67px;min-height:106px}.pb__flow li::before{content:'';position:absolute;left:29px;top:26px;width:1px;height:100%;background:#9ba8b5}.pb__flow li:last-child::before{display:none}
 .pb__stepnum{position:absolute;left:13px;top:0;display:grid;place-items:center;width:33px;height:33px;border-radius:50%;font:18px var(--serif);color:white;background:#728191;border:1px solid var(--bg);z-index:1}
-.pb__flow p{margin:0;font:16px/1.6 var(--sans);max-width:37ch}.pb__flow li:last-child{background:var(--bg-alt);border-left:2px solid var(--accent);padding-top:17px;padding-bottom:20px;min-height:0}.pb__flow li:last-child .pb__stepnum{top:16px;left:11px;background:var(--accent)}
-@media(max-width:900px){.pb__grid{grid-template-columns:1fr;gap:28px}.pb__flowcol{border-left:0;padding-left:0}.pb__head{gap:16px}.pb__num{font-size:43px}.pb__flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.pb__flow li,.pb__flow li:last-child{padding:50px 14px 18px;min-height:0}.pb__flow li::before{display:none}.pb__stepnum,.pb__flow li:last-child .pb__stepnum{top:8px;left:12px}.pb__flow p{font-size:15px}}
-@media(max-width:540px){.pb{padding:28px 0 38px}.pb__title span{font-size:22px;padding-left:4px}.pb__head{gap:12px}.pb__num{font-size:38px}.pb__flow{grid-template-columns:1fr;gap:0}.pb__flow li{padding:2px 14px 26px 62px;min-height:88px}.pb__flow li:last-child{padding:17px 14px 20px 62px}.pb__stepnum{top:0}.pb__flow li:last-child .pb__stepnum{top:16px}.pb__flow li::before{display:block}.pb__flow p{font-size:16px}}
+.pb__flow p{margin:0;font:var(--font-prose);max-width:37ch}.pb__flow li:last-child{background:var(--bg-alt);border-left:2px solid var(--accent);padding-top:17px;padding-bottom:20px;min-height:0}.pb__flow li:last-child .pb__stepnum{top:16px;left:11px;background:var(--accent)}
+@media(max-width:900px){.pb__grid{grid-template-columns:1fr;gap:28px}.pb__flowcol{border-left:0;padding-left:0}.pb__head{gap:16px}.pb__num{font-size:43px}.pb__flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.pb__flow li,.pb__flow li:last-child{padding:50px 14px 18px;min-height:0}.pb__flow li::before{display:none}.pb__stepnum,.pb__flow li:last-child .pb__stepnum{top:8px;left:12px}}
+@media(max-width:540px){.pb{padding:28px 0 38px}.pb__title span{font-size:22px;padding-left:4px}.pb__head{gap:12px}.pb__num{font-size:38px}.pb__flow{grid-template-columns:1fr;gap:0}.pb__flow li{padding:2px 14px 26px 62px;min-height:88px}.pb__flow li:last-child{padding:17px 14px 20px 62px}.pb__stepnum{top:0}.pb__flow li:last-child .pb__stepnum{top:16px}.pb__flow li::before{display:block}}
 </style>

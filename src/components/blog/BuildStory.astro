@@ -8,7 +8,9 @@ const { Content } = await render(post);
 <div class="build-story"><Content /></div>
 
 <style>
-  .build-story { min-width: 0; width: 100%; max-width: 64ch; margin: 0 auto; font-family: var(--serif); font-size: 18px; line-height: 1.65; color: var(--fg-soft); overflow-wrap: break-word; }
+  .build-story { min-width: 0; width: 100%; max-width: 64ch; margin: 0 auto; font: var(--font-prose); color: var(--fg-soft); overflow-wrap: break-word; }
+  .build-story :global(h2) { font: var(--font-card); letter-spacing: var(--track-card); }
+  .build-story :global(h3) { font: var(--font-subheading); }
   .build-story :global(:where(p)) { margin: 0; text-wrap: pretty; }
   .build-story :global(> * + *) { margin-top: var(--s-5); }
   .build-story :global(strong) { color: var(--fg); font-weight: 600; }
@@ -31,7 +33,6 @@ const { Content } = await render(post);
   .build-story :global(th), .build-story :global(td) { text-align: left; border-bottom: 1px solid var(--rule); padding: 10px 6px; overflow-wrap: anywhere; }
   .build-story :global(th) { font-weight: 600; color: var(--fg); }
   @media (max-width: 540px) {
-    .build-story { font-size: 17px; }
     .build-story :global(.story-flow ol) { grid-template-columns: 1fr; gap: var(--s-3); }
     .build-story :global(.story-flow li) { padding-left: 32px; position: relative; }
     .build-story :global(.story-flow li::before) { position: absolute; left: 0; top: 0; }
