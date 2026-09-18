@@ -9,19 +9,17 @@ const floorK = (value: number) => (Math.floor(value / 1000) * 1000).toLocaleStri
 export const projectMetrics: Record<Project, { stats: Metric[]; note?: string }> = {
   underwriting: {
     stats: [
+      { num: '100+', label: 'Deals with AI-built outputs' },
       { num: '~4 h', label: 'Previous manual preparation per deal' },
       { num: '~30 min', label: 'Current human review per deal' },
-      { num: '3', label: 'Input document types' },
     ],
-    note: 'Approximate, self-reported time per deal; human review excludes processing time. Inputs: OM, T-12 and rent roll.',
   },
   supply: {
     stats: [
       { num: '9', label: 'Metros' },
-      { num: '3', label: 'Source categories' },
-      { num: 'Weekly', label: 'Scheduled collection' },
+      { num: '250', label: 'Tracked source feeds' },
+      { num: '355,000+', label: 'Source records' },
     ],
-    note: 'Environmental filings, permits and planning cases. Coverage and freshness vary by jurisdiction.',
   },
   rents: {
     stats: [
