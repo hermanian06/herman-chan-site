@@ -7,48 +7,31 @@ resume). This file carries rules and architecture only; closeout never appends e
 
 ---
 
-## Redesign in progress — six tabs (started 2026-09-13, branch `redesign/six-tabs`)
+## Current state (2026-09-18)
 
-Herman is re-arranging the site into six tabs, one dedicated session per tab. **Live since
-2026-09-14** (Herman: "push the website live"; `main` fast-forwarded to `redesign/six-tabs` at
-`8ecfa75`). The September 18 copy pass shortens Intro and the three project tabs; its
-verified publication is recorded below. About remains Herman’s approved copy.
-Blog is live at `4cab4fe` with twenty-four full stories and seven archive articles (31 total). Keep working on `redesign/six-tabs` and fast-forward `main`
-when he says push.
+Application `4215ca2d32d0bac2179d42a4a63057b747613bc5` is published and verified live.
+The six tabs are Intro (`/`), Underwriting Agent (`/underwriting-agent/`), Supply Database
+(`/supply-database/`), Rent Database (`/rent-database/`), Blog (`/blog/`) and About (`/about/`).
+Their source lives in the matching `src/pages/` routes; shared typography uses Source Serif 4
+headings and DM Sans 17px/1.7 prose, with compact data/code/metadata roles.
 
-Current state (2026-09-18): source `c55fc8faa9785dae37fba964e093e5f5999945dc` is live;
-publication docs `01d2aa4` are pushed. All four updated pages passed public content checks.
-This session has no loose ends; concurrent chat work remains a separate task. Final proof
-and handoff: `/Users/hermanchan/Documents/Codex/four-tabs-copy-review-20260918/CLOSEOUT.md`;
-the latest `CHANGELOG.md` entry records the sweep. Recheck Git state before integration.
+Underwriting keeps one sample Excel button at the start of Section 2, above the sample tabs,
+and the linked Deal summary preview in its hero. The duplicate hero download and Supply/Rent
+intro cards are removed. Production uploads, chats, dashboards and sample files are preserved.
+Blog contains 24 full stories plus seven archive articles; `BuildStory.astro` shares story
+content between inline and permanent pages. About retains its approved biography.
 
-**September 18 editorial pass (published at `c55fc8f`):** Intro uses Why I built it →
-How it works → What changed, with Input / Process / Output inside How. Herman confirmed
-approximately four hours of manual preparation becoming thirty minutes of human review;
-this is his human-effort account, not an end-to-end runtime benchmark. Underwriting has six
-points per professional audience; Supply and Rent have four each. Draft markers and obsolete
-Supply planning copy are removed. Build and generated-page receipts:
-`/Users/hermanchan/Documents/Codex/four-tabs-copy-review-20260918/`.
+Shared metrics live in `src/data/project-metrics.ts`: underwriting ~4 h preparation /
+~30 min human review / 100+ deals with AI-built outputs; Supply 9 metros / 250 tracked feeds /
+355,000+ source records; Rent 20 metros / 16,000+ communities / 165,000+ historical priced rent
+records. These are scoped snapshots, not autonomous-run or unique-apartment counts. Rent hero
+provenance is in `src/data/rents/portfolio-headline.json`; its detailed dashboard retains the
+separate September 12 snapshot. See the newest `CHANGELOG.md` entry for proof and limitations.
 
-
-Publication preserved concurrent `src/components/chat/AskTheData.astro` work in the original
-Mac checkout. The copy release was pushed independently to `main`; the concurrent chat
-change is separate from this publication. The publication receipts retain the exact Git
-state observed during the push.
-
-| Tab | Route | File | Session status |
-|---|---|---|---|
-| 1 Intro | `/` | `src/pages/index.astro` | September 18 published rewrite uses Why / How / What changed; linked project titles and JSON-backed rent stats retained, including live floor plans; no export date or new CTA |
-| 2 Underwriting Agent | `/underwriting-agent/` | `src/pages/underwriting-agent/index.astro` | September 18 published copy has six steps per professional audience; sample = a real deal perturbed at an illustrative Mesa address (published from Portfolio Demo); one downloadable pack above the tabs; upload form keeps files for review. |
-| 3 Supply Database | `/supply-database/` | `src/pages/supply-database/index.astro` | September 18 published copy has four steps per professional audience; existing live chat, MCP endpoint and tool table preserved |
-| 4 Rent Database | `/rent-database/` | `src/pages/rent-database/index.astro` + `src/components/rents/RentDashboard.astro` | September 18 published copy has four steps per professional audience; existing chat and dashboard preserved; dashboard body shared with `/demo/rent-database/` |
-| 5 Blog | `/blog/` | `src/pages/blog/index.astro` + `src/data/blog-outline.ts` | live at `4cab4fe`: six topics, 24 full stories and seven archive articles (31 total). `src/components/blog/BuildStory.astro` renders the same Markdown inline and at each permanent article URL. Build, independent review and live-content proof: `/Users/hermanchan/Documents/Codex/blog-complete-review/VERIFICATION.md` and `deployment.json` beside it. |
-| 6 About | `/about/` | `src/pages/about/index.astro` | live at `ff0aac7`: approved headline and eight-paragraph bio; existing aside and contact links retained; draft marker removed |
-
-Kept, not deleted, until the redesign is signed off: the old landing at `/legacy/`
-(`src/pages/legacy/index.astro`), `/projects/` and `/posts/` (unlinked from the nav, still
-built). The "every published post is listed" rule below now applies to the **Blog tab**: an
-unfiled post renders under "Unfiled" there rather than vanishing.
+Start new work from fetched `origin/main` in a fresh Mac worktree. The canonical checkout's
+old `redesign/six-tabs` branch is not the current release; preserve it and other worktrees.
+Keep `/legacy/`, `/projects/` and `/posts/` available. Every published post must remain listed
+on Blog, including articles outside the core groups. No website-task loose ends remain.
 
 ---
 

@@ -8,6 +8,71 @@ This file is the record of what shipped and why — read the newest 1–3 entrie
 
 <!-- session-closeout: insert new entries directly below this line -->
 
+## What just changed (2026-09-18 — portfolio design published; session closeout)
+
+**Published.** Application `4215ca2d32d0bac2179d42a4a63057b747613bc5` is live under
+Herman's explicit approval. It includes the six-tab editorial design (`8053933`), verified
+metrics and Intro positioning (`1cb54b2`), rent-record counts and Excel discoverability
+(`3c4a86c`), and the final cleanup/typography pass (`2df9db5`, with the chat-heading follow-up
+in `4215ca2`). Source Serif 4 headings and DM Sans 17px/1.7 prose now share semantic roles
+across all six tabs and articles; tables, code and metadata keep compact roles. One explicit
+sample XLSX button remains at the start of Section 2 above the sample tabs. The duplicate
+hero download and Supply/Rent intro cards are gone; the Underwriting sample-preview card
+remains. The Intro uses industry-first Role wording, AI capabilities for Focus, and
+`Python · SQL/Postgres · LLM APIs · MCP` for Stack, with explicit Claude/Codex code authorship.
+
+**Metric scope.** Underwriting displays ~4 h previous manual preparation, ~30 min current
+human review, then 100+ deals with AI-built outputs; this is not 100 autonomous packs or a
+runtime benchmark. Supply displays 9 metros, 250 tracked source feeds and 355,000+ source
+records, not unique websites or projects. Rent displays 20 metros, 16,000+ tracked communities
+and 165,000+ historical priced floor-plan observations. Its September 18 aggregates are
+20 / 16,879 / 165,827; repeated observations count. The detailed rent dashboard retains its
+separately dated September 12 snapshot. No new measurements were taken at closeout.
+
+**Verification.** UTC builds passed with 51 pages, 31 articles, 24 full Blog stories and
+26 Underwriting sample/run tabs. Independent committed-diff review had no actionable findings;
+the builder accepted it, and the parent verified the final one-rule chat-heading adjustment.
+Computed styles matched across all six tabs at 1920px and 390px, with no horizontal overflow;
+768px metrics-only asides, an expanded Blog story and its permalink also passed. All sample
+fragments, data, production interactions and workbook bytes were preserved. No real upload
+or paid model job was executed.
+
+At **2026-09-18 22:52:57 UTC**, all six public pages plus one representative article and
+12 directly referenced assets/fonts returned HTTP 200 and matched the reviewed build byte
+for byte. The sample XLSX returned HTTP 200 with the correct MIME type, 124,236 bytes and
+valid ZIP/XLSX structure; SHA256
+`13d673859e77da6f4c97678d620387017e32f8ae2cb1699ba9c49cd0e3917880`.
+Proof: `/Users/hermanchan/Documents/Codex/portfolio-cleanup-typography-publication-20260918/live-verification.json`
+and `/Users/hermanchan/Documents/Codex/portfolio-cleanup-typography-verification-20260918.md`.
+
+**Closeout sweep.** The website ledger read returned 0 open/triaged and 0 snoozed rows;
+0 closed, 0 deferred and no ledger writes. Website `main`/`origin/main` were 0 ahead / 0 behind
+at `4215ca2` before this documentation commit. The canonical checkout remains clean on its
+old redesign branch at `1a2d11d`; new work starts from fetched `origin/main` in a fresh worktree.
+Other branches/worktrees were preserved. No deployment queue or current-state file exists.
+Shared claude-skills `main` was also 0 ahead / 0 behind; its archive branch and other sessions'
+scratch files were left alone. A whole-skills test sweep does not apply to this website work.
+
+Memory gauge: 16,846 bytes / 90 lines, 664 bytes of index headroom; 62 topics with 0 OVER,
+0 NEAR, 25 WARN and 37 OK. Latest heartbeat: 2026-09-18 15:06:40 UTC, `CHECK rc=0`,
+`HEARTBEAT ok=True`. No consolidation was needed. The parent corrected the existing
+`/Users/hermanchan/My Drive/Claude AI/_claude-memory/1-page-summary---OM/ai_sfr_site_deployment.md`
+and its `MEMORY.md` index hook: source/builds belong on the Mac in isolated worktrees, and
+approved pushes to main trigger Netlify automatically. No memory file was added; the updated
+topic was 1,749 characters and its index 2,492 bytes, with read-back gates passed. The workspace
+portfolio context index now points to `4215ca2` and its publication proof.
+
+The parent identified and stopped the session's remaining preview server on port 4354
+(PID 65880, SIGTERM); ports 4348, 4349, 4351, 4352 and 4353 had already stopped. This repository
+closeout updates only `CHANGELOG.md` and the replaced short current-state block in `CLAUDE.md`,
+with `[skip netlify]`; application source remains `4215ca2`.
+
+**Paid external API job spend: $0**, excluding ChatGPT account usage. Database work was
+read-only aggregate measurement; no production database writes occurred.
+
+**Loose ends: none for this website task.**
+
+
 ## 2026-09-18 — Six-tab editorial design prepared for publication
 
 Ports the approved local preview (final `e53c25f`) into the production source: locally
