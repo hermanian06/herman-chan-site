@@ -9,29 +9,28 @@ resume). This file carries rules and architecture only; closeout never appends e
 
 ## Current state (2026-09-18)
 
-Application `4215ca2d32d0bac2179d42a4a63057b747613bc5` is published and verified live.
+Application `700ec9a7722e67c7acf0769ca1f583e42e65d106` is published and verified live.
+Intro now leads with “I build AI and data systems for real estate investment.” Its metadata
+matches; Underwriting, Supply and Rent introductions connect source inputs to useful outcomes.
+The approved copy preserves the earlier design, metrics, attribution and production features.
+Proof and the supplementary static HTML export are in the newest `CHANGELOG.md` entry.
+
 The six tabs are Intro (`/`), Underwriting Agent (`/underwriting-agent/`), Supply Database
 (`/supply-database/`), Rent Database (`/rent-database/`), Blog (`/blog/`) and About (`/about/`).
-Their source lives in the matching `src/pages/` routes; shared typography uses Source Serif 4
-headings and DM Sans 17px/1.7 prose, with compact data/code/metadata roles.
+Shared typography uses Source Serif 4 headings and DM Sans 17px/1.7 prose, with compact data,
+code and metadata roles. Underwriting keeps one Excel button at Section 2 and its hero sample
+preview; duplicate hero download and Supply/Rent intro cards remain removed. Uploads, chats,
+dashboards and samples are preserved. Blog has 24 full stories plus seven archive articles.
 
-Underwriting keeps one sample Excel button at the start of Section 2, above the sample tabs,
-and the linked Deal summary preview in its hero. The duplicate hero download and Supply/Rent
-intro cards are removed. Production uploads, chats, dashboards and sample files are preserved.
-Blog contains 24 full stories plus seven archive articles; `BuildStory.astro` shares story
-content between inline and permanent pages. About retains its approved biography.
+`src/data/project-metrics.ts`: underwriting ~4 h preparation / ~30 min human review / 100+
+deals with AI-built outputs; Supply 9 metros / 250 feeds / 355,000+ source records; Rent 20
+metros / 16,000+ communities / 165,000+ historical priced records. These are scoped snapshots,
+not autonomous-run or unique-apartment counts. Rent hero provenance remains in
+`src/data/rents/portfolio-headline.json`; the detailed dashboard uses September 12 data.
 
-Shared metrics live in `src/data/project-metrics.ts`: underwriting ~4 h preparation /
-~30 min human review / 100+ deals with AI-built outputs; Supply 9 metros / 250 tracked feeds /
-355,000+ source records; Rent 20 metros / 16,000+ communities / 165,000+ historical priced rent
-records. These are scoped snapshots, not autonomous-run or unique-apartment counts. Rent hero
-provenance is in `src/data/rents/portfolio-headline.json`; its detailed dashboard retains the
-separate September 12 snapshot. See the newest `CHANGELOG.md` entry for proof and limitations.
-
-Start new work from fetched `origin/main` in a fresh Mac worktree. The canonical checkout's
-old `redesign/six-tabs` branch is not the current release; preserve it and other worktrees.
-Keep `/legacy/`, `/projects/` and `/posts/` available. Every published post must remain listed
-on Blog, including articles outside the core groups. No website-task loose ends remain.
+Start from fetched `origin/main` in a fresh Mac worktree. Preserve the canonical checkout's
+old `redesign/six-tabs` branch and other worktrees. Keep `/legacy/`, `/projects/` and `/posts/`
+available, with every published post listed on Blog. No website-task loose ends remain.
 
 ---
 

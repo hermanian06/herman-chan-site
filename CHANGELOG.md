@@ -8,6 +8,55 @@ This file is the record of what shipped and why — read the newest 1–3 entrie
 
 <!-- session-closeout: insert new entries directly below this line -->
 
+## What just changed (2026-09-18 — four hero introductions published; closeout)
+
+**Published.** Under Herman's explicit “publish” approval, application
+`700ec9a7722e67c7acf0769ca1f583e42e65d106` replaces `4215ca2` as the live app. Intro positions
+Herman as an AI/data systems builder for real estate; Underwriting, Supply and Rent connect
+source inputs to useful outcomes. All four headlines and paragraphs match the approved copy;
+Intro metadata matches its headline. Navigation, metrics, styles, lower sections, attribution,
+downloads and production interactions are unchanged.
+
+**Verification.** UTC build: 51 pages / 31 articles. Independent committed-diff review was
+clear and accepted by the builder. Parent browser checks at 1440px and 390px confirmed all
+four titles and paragraphs, consistent 74px/44px headings and 18px/17px leads, and no horizontal
+overflow; the longer Supply headline wraps readably on mobile.
+
+Live verification at **2026-09-19 05:34:50 UTC** (September 18 in San Francisco) found six main
+pages, one article, 12 CSS/JS/font assets and the sample workbook all HTTP 200 and byte-identical
+to the reviewed build. Excel retained its correct MIME type, 124,236 bytes and valid ZIP/XLSX
+structure; SHA256 `13d673859e77da6f4c97678d620387017e32f8ae2cb1699ba9c49cd0e3917880`.
+The first comparison differed only in the automatic header date across midnight UTC; rebuilding
+the same app SHA in UTC resolved it without a source change or second deployment. Evidence:
+`/Users/hermanchan/Documents/Codex/portfolio-four-hero-copy-verification-20260918.md` and
+`/Users/hermanchan/Documents/Codex/portfolio-four-hero-copy-publication-20260918/live-verification.json`.
+
+**Supplementary HTML.** `/Users/hermanchan/Documents/Codex/portfolio-html-preview-20260918/herman-chan-preview.html`
+embeds all four pages, styles and fonts with local navigation. Its four payloads, external-asset
+independence and JavaScript syntax were checked. Forms, chat and dashboard interactions are
+intentionally static. Browser security policy blocked automated `file://` visual inspection;
+visual QA covers the original local source build. The export is not production source.
+
+**Closeout.** Read-only website ledger: 0 closed / 0 deferred / 0 open (was 0) / 0 snoozed;
+no ledger writes. Site `main` and `origin/main` were both `700ec9a`, 0 ahead / 0 behind before
+this docs commit. The canonical checkout remains clean on retained `redesign/six-tabs` at
+`1a2d11d`; start future work from fetched `origin/main` in a fresh Mac worktree. No deployment
+queue or current-state file exists. Shared claude-skills was 0 ahead / 0 behind at `4519608`;
+other sessions' tracked changes and untracked scratch files were preserved. Whole-skills tests
+do not apply to this website-only change.
+
+Memory gauge: 17,124 bytes / 91 lines, 386 bytes headroom; 63 topics: 0 OVER / 0 NEAR /
+25 WARN / 38 OK. No consolidation trigger. Latest heartbeat: 2026-09-18 15:06:40 UTC,
+`CHECK rc=0` / `HEARTBEAT ok=True`. Deployment memory was already corrected in the prior
+closeout; these wording changes need no new memory file. Final socket readback found preview
+ports 4348, 4349, 4351, 4352, 4353, 4354 and 4355 already closed. Artifacts and worktrees remain.
+
+This closeout changes only `CHANGELOG.md` and the replaced short `CLAUDE.md` state block,
+with `[skip netlify]`; application source remains `700ec9a`. **Paid external API job spend: $0**,
+excluding ChatGPT account usage. No paid backend runs, uploads or production database writes.
+**Loose ends: none.** No new tasks or watches.
+
+
 ## What just changed (2026-09-18 — portfolio design published; session closeout)
 
 **Published.** Application `4215ca2d32d0bac2179d42a4a63057b747613bc5` is live under
