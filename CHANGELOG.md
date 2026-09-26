@@ -8,6 +8,54 @@ This file is the record of what shipped and why — read the newest 1–3 entrie
 
 <!-- session-closeout: insert new entries directly below this line -->
 
+## What just changed (2026-09-26 — Chain contracts Blog section published; closeout)
+
+**Published.** Under Herman's explicit "push", `9c49f1d047819b003f5d855661a5fba7c90a27af`
+fast-forwarded `main` from `6b890bf` and is live at https://hermanchan.ai/blog/: a seventh Blog
+section, **Chain contracts** (after Evals & reliability), with five full stories on the
+source-to-deliverable test programme (milestones M0–M5):
+`fixes-that-came-back` (the 2026-09-22 bug retro + a six-milestone table),
+`tests-that-reached-production` (M0 isolation lane), `a-missing-total-is-not-zero` (M1 T-12),
+`a-test-that-didnt-run` (M2 release record), `when-every-request-is-refused` (M3 loaders; M4/M5
+in one line). Project slugs: multi-model-build-chain ×3, underwriting-agent, permit-pipeline.
+Blog now reads 29 full posts · 7 topics · 36 published articles.
+
+**Decision.** A new Blog section rather than an existing one: the programme spans underwriting,
+supply and rent, and every other section holds four notes. No new project page — it is a testing
+discipline, not a product.
+
+**Verification.** Facts checked against `~/code/_review_artifacts/bug_retro_2026-09-22/SYNTHESIS.md`
+and the milestone PLAN/CHANGELOG/RED-GREEN records; the check corrected three draft claims before
+commit (Windows: the headless T-12 contract FAILED while the live-Excel leg PASSED; only D1/D1b of
+M3's five fail-open fixes came from the 403 variant; the bug-discovery figures cover the small
+repos only). Precise figures ranged per the 4b rule; no deal names, places, sources or dollar
+figures. 336–393 words each. `npm run build`: 56 pages. Local preview checked the section, table,
+flow figure, evidence boxes and a permanent page. Live: `/blog/` served the section ~30 s after
+push; all five `/posts/<slug>/` returned 200. Herman pushed with the manager-sign-off checklist
+item raised in chat.
+
+**Found in the sweep (not this session's work).** `1a2d11d` (2026-09-18, "Fix invisible chat
+styling and give 'Ask the databases' a real waiting state") was never pushed — it existed only on
+the canonical checkout's local `redesign/six-tabs`; live `AskTheData.astro` is unchanged since
+`8cad47b`, so JS-created chat bubbles and typing dots are still unstyled in production. Rebased
+onto `9c49f1d` as `1b9690a` on branch `fix/ask-chat-styling-20260926` (canonical checkout now sits
+on it); clean rebase, `npm run build` 56 pages, compiled CSS scopes `.ask__*` rules by the
+server-rendered `.ask` ancestor. `redesign/six-tabs` restored to `1a2d11d` untouched. NOT pushed —
+a production deploy needs Herman's go.
+
+**Ledger.** herman-chan-site: 0 rows open, 0 snoozed. The two time-dated claims in the posts ride
+existing rows as legs, not new rows: CPP watch #1419 (Mon 2026-09-28 11:00 UTC cron → rewrite the
+NOT YET PROVEN box in `when-every-request-is-refused`) and claude-skills watch #1466 (M2
+shadow→enforce decision → rewrite the STATUS box in `a-test-that-didnt-run`).
+
+Memory: this session wrote none. Fleet heartbeat `ok=False` (2 failures) is the pair already owned
+by CPP followup #1522. **Paid external API spend: $0.** This closeout is documentation only and
+carries `[skip netlify]`.
+
+**Loose ends: ACTION — you:** say "push" to ship `1b9690a` (chat styling fix, verified by build
+only; the live chat reply needs a real backend call to see). **WATCH:** #1419 Mon 2026-09-28 and
+#1466 legs above.
+
 ## What just changed (2026-09-18 — four hero introductions published; closeout)
 
 **Published.** Under Herman's explicit “publish” approval, application

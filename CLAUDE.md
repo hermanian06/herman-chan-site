@@ -7,7 +7,7 @@ resume). This file carries rules and architecture only; closeout never appends e
 
 ---
 
-## Current state (2026-09-18)
+## Current state (2026-09-26)
 
 Application `700ec9a7722e67c7acf0769ca1f583e42e65d106` is published and verified live.
 Intro now leads with “I build AI and data systems for real estate investment.” Its metadata
@@ -20,7 +20,8 @@ The six tabs are Intro (`/`), Underwriting Agent (`/underwriting-agent/`), Suppl
 Shared typography uses Source Serif 4 headings and DM Sans 17px/1.7 prose, with compact data,
 code and metadata roles. Underwriting keeps one Excel button at Section 2 and its hero sample
 preview; duplicate hero download and Supply/Rent intro cards remain removed. Uploads, chats,
-dashboards and samples are preserved. Blog has 24 full stories plus seven archive articles.
+dashboards and samples are preserved. Blog has 29 full stories in seven sections (Chain contracts added 2026-09-26, live at `9c49f1d`)
+plus seven archive articles.
 
 `src/data/project-metrics.ts`: underwriting ~4 h preparation / ~30 min human review / 100+
 deals with AI-built outputs; Supply 9 metros / 250 feeds / 355,000+ source records; Rent 20
@@ -30,7 +31,8 @@ not autonomous-run or unique-apartment counts. Rent hero provenance remains in
 
 Start from fetched `origin/main` in a fresh Mac worktree. Preserve the canonical checkout's
 old `redesign/six-tabs` branch and other worktrees. Keep `/legacy/`, `/projects/` and `/posts/`
-available, with every published post listed on Blog. No website-task loose ends remain.
+available, with every published post listed on Blog. Open: unpushed chat-styling fix `1b9690a` on
+`fix/ask-chat-styling-20260926` awaits Herman's push (newest `CHANGELOG.md` entry).
 
 ---
 
