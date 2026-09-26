@@ -18,9 +18,20 @@ Removed milestone/review-round detail in favor of the failure mechanism, indepen
 answers and dated verification limits. The watcher remains observation-only; partial source
 failure is a rule to demonstrate, not a universal implementation claim.
 
-**Validation pending.** Builder checked word counts and the scoped diff. Independent committed-
-diff review, site build, rendered-page checks and live publication verification remain with
-the parent task. No production database or workbook writes; no production code examples.
+**Prepublication validation complete.** Content commit
+`61050ca0d7d734694fa20ae204cdc2e593344714` received read-only review from a separate fresh
+Codex agent: no actionable findings; the original builder accepted that result, with no fixes
+required. Automatic approval review denied the proposed external Claude review packet; no
+export was performed. Builder word counts are 335 / 346 / 366 / 332 / 355, within the 200–400
+word limit, and `git diff --check` passed. Parent verification: `npm run build` produced 56
+pages; source/title/outline checks passed; all five rendered Blog/article bodies matched;
+the illustrative Python passed missing-value, zero and numeric cases. Browser checks covered
+all five expanded posts at 1280px and 390px: page widths stayed within the viewport, tables
+fit, and code scrolled internally.
+
+**Publication pending.** Push and live checks remain with the parent task under Herman's
+explicit authorization above. No production database or workbook writes; no production code
+examples.
 
 ## What just changed (2026-09-26 — Chain contracts Blog section published; closeout)
 
