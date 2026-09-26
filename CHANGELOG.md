@@ -10,7 +10,7 @@ This file is the record of what shipped and why — read the newest 1–3 entrie
 
 ## What just changed (2026-09-26 — Chain contracts editorial revision)
 
-**Prepared for publication.** Herman explicitly authorized these edits and deployment with
+**Published.** Herman explicitly authorized these edits and deployment with
 “you can make edit and push live.” Revised the five Chain contracts titles, descriptions and
 bodies; added labeled synthetic examples and illustrative Python; synchronized the Blog
 section blurb and outline. Existing slugs, dates, project links and unrelated pages are preserved.
@@ -29,9 +29,14 @@ the illustrative Python passed missing-value, zero and numeric cases. Browser ch
 all five expanded posts at 1280px and 390px: page widths stayed within the viewport, tables
 fit, and code scrolled internally.
 
-**Publication pending.** Push and live checks remain with the parent task under Herman's
-explicit authorization above. No production database or workbook writes; no production code
-examples.
+**Live verification complete.** Application `b24f51c47155a7d96328b401795b80ec5366fc0f`
+was pushed to `main` under that authorization. The rebased content commit `244037c` is
+byte-identical in all six application content files to reviewed commit `61050ca`.
+At `2026-09-26T21:53:16.430477+00:00`, Blog and all five article URLs returned HTTP 200 with
+HTML byte-identical to the reviewed local build. Receipt:
+`/Users/hermanchan/Documents/Codex/chain-contract-copy-review-20260926/live-verification.json`.
+No remaining task work. No production database or workbook writes; no production code
+examples. This receipt-only commit uses `[skip netlify]`.
 
 ## What just changed (2026-09-26 — Chain contracts Blog section published; closeout)
 
