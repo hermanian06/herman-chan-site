@@ -276,6 +276,68 @@ export const BLOG_OUTLINE: OutlineGroup[] = [
     ],
   },
   {
+    key: "chain-contracts",
+    title: "Chain contracts",
+    blurb: "Testing each pipeline from the real source file to the last tool that reads its output, after a month of fixes that kept coming back.",
+    notes: [
+      {
+        id: "fixes-that-came-back",
+        title: "About one in four of my bug fixes were reworking an earlier fix",
+        description: "I already wrote the failing test first. Each test was only looking at one piece of the chain.",
+        fullPostSlug: "fixes-that-came-back",
+        bullets: [
+          "A month of bug records across seven projects showed about one fix in four reworking an earlier fix. Some were caught in review, so it is a rework rate rather than a production failure count.",
+          "Failing-test-first was mostly followed. Each test checked one fragment, expectations were often copied from the code, and nothing ran a real file all the way through.",
+          "A chain contract runs a sanitized real file through the real code, saves and reopens the output, and checks every reader against the source's printed totals.",
+        ],
+      },
+      {
+        id: "tests-reaching-production",
+        title: "My tests could reach production. Now they stop before they leave.",
+        description: "A scratch test ran against the live database, and a monitor sat in an error state for 34 days.",
+        fullPostSlug: "tests-that-reached-production",
+        bullets: [
+          "Tests in several projects had reached production: a rewritten database change, a live paid scrape and fake rows in the bug queue.",
+          "A guard in every test process now blocks outside network calls, production database connections and the paid model API, and blanks credentials a settings file tries to restore.",
+          "Its first sweep exposed three tests with hidden outside dependencies. The mechanism covers Python test processes; separate programs are blocked by policy.",
+        ],
+      },
+      {
+        id: "missing-total-not-zero",
+        title: "A missing total is not a zero",
+        description: "A reader turned a missing T-12 total into 0, three checks passed and the model shipped a column of zeros.",
+        fullPostSlug: "a-missing-total-is-not-zero",
+        bullets: [
+          "Each read now returns read, unreadable or absent. A zero that was read is valid; a failed read cannot supply a number.",
+          "Four sanitized broker statements run through the real builder, the saved workbook and every reader through to the audit verdict, with expected values from the printed totals.",
+          "The contract found a readiness check that passed an uncalculated T-12 and a rebuilt model that kept the previous run's actuals.",
+        ],
+      },
+      {
+        id: "test-that-didnt-run",
+        title: "A test that never ran looked exactly like a pass",
+        description: "For twelve days my automated checks started no jobs at all, and nothing I had would have said so.",
+        fullPostSlug: "a-test-that-didnt-run",
+        bullets: [
+          "Each project keeps a required test list. A record step runs it on a fresh clone of the exact commit and stores one row per platform.",
+          "The database refuses a verified row if anything failed, was skipped or did not run, and refused attempts are stored too.",
+          "The first record was refused over one hidden skip. Enforcement in the deal-pack watcher is not switched on yet.",
+        ],
+      },
+      {
+        id: "every-request-refused",
+        title: "What my data loaders said when every request was refused",
+        description: "I blocked every source in a test, and a large share of loaders still reported success.",
+        fullPostSlug: "when-every-request-is-refused",
+        bullets: [
+          "Recorded real responses run through the real loaders into a throwaway database, and nine historical fixes are saved as mutations that must fail for their own reason.",
+          "With every request denied, a large share of sources still reported success with zero rows. Five fail-open paths were fixed.",
+          "A check on the monitors now fires on day three of the incident that once ran 34 days. The first scheduled run with the fixes is still ahead.",
+        ],
+      },
+    ],
+  },
+  {
     key: "mcp-integration",
     title: "MCP & integration",
     blurb: "Connecting an AI client to existing data and services, including access and coverage limits.",
