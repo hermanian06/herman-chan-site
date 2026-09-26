@@ -1,25 +1,38 @@
 ---
-title: A test that never ran looked exactly like a pass
+title: A skipped test counted as a pass
 pubDate: 2026-09-26
-description: For twelve days my automated checks started no jobs at all, and nothing I had would have said so.
+description: A release record now distinguishes passing checks from required checks that never ran, on each code revision and platform.
 project: multi-model-build-chain
 tag: AI
 tagClass: ai
 ---
 
-Before a new version of the deal-pack code runs on real deals, I want to know which checks ran on that exact version. In September I found out I could not answer that. For twelve days the hosted test service had refused every job before its first step because of an account billing limit. Every run failed, and nothing escalated.
+Before new deal-pack code runs on real deals, I want to know which checks ran on that version. In September I found two different gaps in that evidence.
 
-My own test runner had a quieter version of the same problem. A file that was skipped, or could not run at all, looked the same in the summary as a file that passed.
+For twelve days, the hosted test service refused every job before execution because of an account billing limit. Those runs visibly failed, but nothing escalated them. Separately, my local runner could summarize a skipped test as though it had passed. A failure without follow-up and a misleading summary both left me unable to establish what had been checked.
 
-The second milestone was a release record. Each project keeps a list of required test files. Everything is required unless an exclusion names a tracked issue that owns removing it. A record step clones the exact commit fresh, runs the list and writes one row per platform into a database table that only accepts new rows. The table itself refuses a verified row if anything failed, was skipped or did not run. Refused attempts are stored too, so a missing record cannot be mistaken for a clean one.
+I added a release record tied to an exact code revision and platform. Each project keeps a list of required tests. An exclusion must name a tracked issue that owns removing it. The record step checks out that revision fresh, runs the list and stores the result in a database table that only accepts new rows.
 
-The first real record was refused. Every required file but one had passed. The last one had printed an announcement that some of its checks were skipped, buried in its output.
+The first real record was refused. Every required file but one had passed; the last had announced a skip in its output. Now an unapproved skip leaves the revision unverified, even when every test that actually ran passed. Refused attempts are stored too.
 
-Two review rounds then argued about how to detect skips reliably in free text. When the second round circled the same rule as the first, I stopped patching. Now any skip the file announces counts as not run unless the required list explicitly allows it.
+This synthetic record shows the distinction:
+
+```text
+Revision: example-revision
+Platform: Windows
+
+Workbook reader       PASS
+Model writer          PASS
+Source-to-model test  NOT RUN — dependency missing
+
+Verdict: REFUSED
+```
+
+The platform is part of the evidence. A passing Mac result does not establish that the same check works with Windows dependencies or Excel automation. I need a record from the machine that will run the work.
 
 <aside class="story-evidence" aria-label="Current state of the release record">
 <p><strong>STATUS · SEP 26, 2026</strong></p>
-<p>Records are written and verified on the Mac. The first Windows record was refused with dozens of failures, including the underwriting contract test.<br>The deal-pack watcher logs the record but does not yet act on it; switching to enforcement has written criteria that are not met.</p>
+<p>Records are written and verified on the Mac. The first Windows record was refused with dozens of failures, including the underwriting contract test. The deal-pack watcher logs the record but does not yet block execution based on it; the written criteria for enforcement are not met.</p>
 </aside>
 
-It is a slightly odd thing to be pleased about, but the refused records are the ones I trust. Each one names exactly what did not run.
+That leaves an operational gap to close. For now, I have a record that names what failed or did not run, instead of a summary that can make missing evidence look reassuring.

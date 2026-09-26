@@ -1,38 +1,32 @@
 ---
-title: About one in four of my bug fixes were reworking an earlier fix
+title: My tests passed. The next tool still read the wrong number.
 pubDate: 2026-09-26
-description: I already wrote the failing test first. Each test was only looking at one piece of the chain.
+description: A passing parser test could not tell me whether the saved workbook supplied the right number to the next tool.
 project: multi-model-build-chain
 tag: AI
 tagClass: ai
 ---
 
-A broker's income statement passes through several of my tools before anyone prices a deal off it. One reads the file, another writes the underwriting model, and a third decides whether the pack is ready for review. A mistake anywhere in that path ends up as a wrong number in the workbook.
+A broker's income statement passes through several of my tools before anyone prices a deal off it. One reads the file, another writes the underwriting model, and a third decides whether the pack is ready for review. A test at the first step cannot tell me whether the last tool read the right number.
 
-In September I had a separate AI go through a month of bug records across seven of my projects. About one in four fixes were reworking an earlier fix or repairing something a fix had broken. The reviewer made me word that carefully: some were caught before anything shipped, so it is a rework rate, not a count of production failures. One fix took 38 review rounds.
+In my September retrospective, a separate AI reviewed a month of bug records across seven projects. About one in four fixes were reworking an earlier fix or repairing something a fix had broken. Some were caught before anything shipped, so that is a rework rate, not a count of production failures.
 
-The surprise was that my habit of writing the failing test first was being followed in most fixes, and in some projects nearly all of them. The problem was what each test could see. One checked the parser, another the readiness check, another the workbook writer. Expected answers were often copied from what the code produced that day. Nothing ran a real file all the way through. In the projects where the review counted how bugs were found, most came from the outside reviewer or from running on real data. Only a handful came from an existing test going red.
+I already asked the AI to write a failing test before fixing a bug. But those tests often stopped at the function being repaired. They did not follow the saved file into the next tool. Expected answers were also often copied from what the code produced that day.
 
-So I adopted what I call a chain contract. A sanitized real file goes through the real code, the output is saved and reopened, and every tool that reads it is checked. The expected numbers come from the source's own printed totals.
+I started calling the broader check a chain contract: a test that follows a source through the real processing code, the saved output and the tools that consume it. Its expected answer comes from evidence outside the code being tested. For an income statement, that includes the statement's own printed totals.
 
-<figure class="story-flow">
-<figcaption>What one chain contract covers</figcaption>
-<ol>
-<li><strong>Real input</strong>A scrubbed source file with its original layout.</li>
-<li><strong>Saved output</strong>Written by the real code, then reopened.</li>
-<li><strong>Every reader</strong>Checked against the source's printed totals.</li>
-</ol>
-</figure>
+This synthetic example shows the gap:
 
-I ran it as six milestones over a few days:
+```text
+Statement's printed annual income: $120,000
 
-| Milestone | What it added |
-|---|---|
-| Isolation | Tests cannot reach production |
-| Release record | Proof the required tests ran on the shipped version |
-| Underwriting | Income statement to model to audit |
-| Supply | Public-records loaders to database |
-| Rent | Weekly leasing-site run to comp selection |
-| Public demo | Upload to every file the site serves |
+Parser reads                       $120,000
+Saved analysis contains            $120,000
+Model reader returns                     $0  <- contract fails
+```
 
-Each one found bugs that were still live. The next four posts cover the ones I learned the most from.
+Checking the parser alone would miss that failure. Deriving the expected answer from the model reader's own incorrect output could also produce a passing test.
+
+The contract uses scrubbed source files that retain their layouts, runs the real code, then saves and reopens the output. It checks the named downstream readers against independently recorded expectations. Coverage stops at those selected layouts and readers; it does not establish that every possible statement works.
+
+For deal review, I want to trace an actual in the model back to the statement that supplied it. This gives me a way to test that path before using the workbook.

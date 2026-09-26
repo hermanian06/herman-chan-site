@@ -8,6 +8,20 @@ This file is the record of what shipped and why — read the newest 1–3 entrie
 
 <!-- session-closeout: insert new entries directly below this line -->
 
+## What just changed (2026-09-26 — Chain contracts editorial revision)
+
+**Prepared for publication.** Herman explicitly authorized these edits and deployment with
+“you can make edit and push live.” Revised the five Chain contracts titles, descriptions and
+bodies; added labeled synthetic examples and illustrative Python; synchronized the Blog
+section blurb and outline. Existing slugs, dates, project links and unrelated pages are preserved.
+Removed milestone/review-round detail in favor of the failure mechanism, independent expected
+answers and dated verification limits. The watcher remains observation-only; partial source
+failure is a rule to demonstrate, not a universal implementation claim.
+
+**Validation pending.** Builder checked word counts and the scoped diff. Independent committed-
+diff review, site build, rendered-page checks and live publication verification remain with
+the parent task. No production database or workbook writes; no production code examples.
+
 ## What just changed (2026-09-26 — Chain contracts Blog section published; closeout)
 
 **Published.** Under Herman's explicit "push", `9c49f1d047819b003f5d855661a5fba7c90a27af`

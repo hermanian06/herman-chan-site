@@ -1,27 +1,34 @@
 ---
-title: My tests could reach production. Now they stop before they leave.
+title: A passing test wrote to my production database
 pubDate: 2026-09-26
-description: A scratch test ran against the live database, and a monitor sat in an error state for 34 days.
+description: The test checked its result, but nothing stopped it from writing fake rows into the live bug queue.
 project: multi-model-build-chain
 tag: AI
 tagClass: ai
 ---
 
-My supply database feeds the pipeline numbers I look at before a deal call. In August, a scratch test script rewrote one of its live database changes, ran it against production and then dropped what it had created. One of the data-quality monitors sat in an error state for 34 days before anyone noticed.
+My underwriting and supply tools rely on live databases, including the queue where I track bugs. One test wrote fake rows into that production queue. It passed because its assertions checked the result, not whether it had reached a live service.
 
-It was not the only case. In other projects, a unit test started a live, paid scrape of leasing sites, and another wrote fake rows into the production queue where I track bugs. Each test passed. Nothing in the test environment stopped it from reaching the real thing.
+Other tests had crossed the same boundary: a scratch script ran a rewritten database change against production, and a unit test started a paid scrape of leasing sites. I had treated tests as a safe place to experiment without making that separation real.
 
-The first milestone was a guard loaded into every test process. It blocks outside network calls, production database connections and the paid model API. It also blanks credentials, including ones a settings file tries to restore halfway through a run. Tests that need a database get a throwaway one built from the project's own schema files.
+I added a guard that loads before the application code in Python tests. It blocks the covered network, database and model API paths and removes credentials, including ones a settings file tries to restore during a run. Tests that need a database use a disposable one built from the project's schema files.
 
-The first guarded sweep was humbling. Three tests had been quietly depending on outside services. Two looked up a real street address with a live geocoder. The third described itself as pure Python with no database, yet it could not run unless the production connection string was present.
+A guard needs its own evidence. Each project replays an old incident against a harmless stand-in for production. The unguarded run has to reach the stand-in; the guarded run has to stop before it does.
 
-A reviewer from another AI vendor found six holes in the guard. My favorite: with a proxy configured, the check for the paid API was never reached at all. Later, the rent milestone found a web library that bypassed the guard entirely. Its unguarded control run got through to the real database host before we closed it.
+This synthetic replay illustrates the two checks:
 
-Each project now replays its own worst incident as a self-test. Without the guard, the old script reaches a stand-in for production; with it, the run stops with an isolation error.
+| Controlled replay | Required result |
+|---|---|
+| Guard disabled | Stand-in receives the attempted operation |
+| Guard enabled | Isolation error; stand-in receives nothing |
+
+An error by itself would not prove the guard worked. The script might have crashed before attempting the operation. The unguarded run establishes that the test can reach the point the guard is meant to stop.
+
+Review also found a route around the guard when a proxy was configured. That was a useful reminder to check how a library connects, not just its usual path.
 
 <aside class="story-evidence" aria-label="What the guard covers">
-<p><strong>SCOPE</strong></p>
-<p>Covered: network sockets, database drivers and the model API inside Python test processes.<br>Not covered by the mechanism: separate programs such as browser automation, which are blocked by policy instead. The Windows leg had not been run when this was merged.</p>
+<p><strong>SCOPE · SEP 26, 2026</strong></p>
+<p>The mechanism covers the guarded sockets, database drivers and model API paths inside Python test processes. Separate programs, including browser automation, require additional controls and are blocked by policy instead. The Windows test path had not been run when this was merged.</p>
 </aside>
 
-Honestly, the 34 days bothered me more than the bad script. A test is supposed to be the safe place to be wrong.
+I can now replay those incidents without borrowing the live systems I depend on for deal work. The scope still matters whenever I add another way to connect.

@@ -1,25 +1,35 @@
 ---
-title: What my data loaders said when every request was refused
+title: Every source request failed. The loader reported success.
 pubDate: 2026-09-26
-description: I blocked every source in a test, and a large share of loaders still reported success.
+description: Zero rows can mean no new records, or that the loader never reached its source. My tests needed to tell those apart.
 project: permit-pipeline
 tag: AI
 tagClass: ai
 ---
 
-My supply database is fed by an automated public-records monitoring pipeline. If a source quietly stops returning data, the supply count for that market goes stale while the job still looks healthy. I had already fixed one version of that: a loader that reported success when every request failed. The fix, it turned out, had landed in a loader that no longer runs.
+My supply database feeds the market counts I use in deal review. Zero new records can be valid: perhaps no new permits were filed. But zero records after every request was denied means the loader never established what was available.
 
-For the supply milestone, recorded responses from real sources go through the real loaders into a throwaway database built from the project's own schema files, and the tools that read those tables are checked afterward. Nine historical fixes are saved as mutations. Each one puts the old behavior back into an isolated copy, and the named check has to fail for that incident's reason, not because something crashed.
+I had already fixed a loader that reported success when every request failed. The fix, it turned out, had landed in code that no longer runs.
 
-The variant that taught me the most was simple: answer every request with an access-denied response. Roughly a third of one family of sources and about a fifth of another still reported success, with zero rows. It was the largest of five fail-open paths the milestone found, and all five are fixed.
+I tested the active path with recorded source responses running through the real loaders into a disposable database. Then I replaced the responses with access-denied errors. Roughly a third of one family of sources and about a fifth of another still reported success with zero rows.
 
-The contract also covers the monitors. A new check flags any check that finishes in error twice in a row. Replayed against the real history of the 34-day monitor incident from the isolation post, it fires on day three.
+This synthetic comparison describes the distinctions I want to demonstrate:
 
-Two findings came from outside the test. A live check found a source that had been returning nothing since at least the end of August while reporting OK. And one table the loaders write to had no creation statement in any schema file; it existed only because it had been made by hand.
+| Source response | Rows | Required interpretation |
+|---|---:|---|
+| Successful response, no records | 0 | Valid empty result |
+| Every request denied | 0 | Collection failed |
+| Some requests denied | Some | Incomplete coverage; not an unqualified success |
+
+The partial-failure row is a rule to test, not a claim that every loader already implements the same behavior.
+
+The broader contract found five paths that could report success despite failure; those fixes are deployed. Nine historical fixes are also saved as mutations: tests deliberately restore an old bug in an isolated copy and require the relevant check to catch it for the right reason. A crash somewhere else does not count.
+
+The contract also checks the monitors. One had remained in an error state for 34 days. Replaying that history against a new rule, which flags two consecutive errors, raises the alert on day three. That is replay evidence, not a claim that the original incident was caught sooner.
 
 <aside class="story-evidence" aria-label="What is still unproven">
-<p><strong>NOT YET PROVEN</strong></p>
-<p>The fixes are deployed; the first scheduled weekly run with them is Monday, Sep 28. A portal that silently truncates its results could still pass, and that case is tracked as open.</p>
+<p><strong>NOT YET PROVEN · SEP 26, 2026</strong></p>
+<p>The fixes are deployed; their first scheduled weekly run is Monday, September 28. A portal that silently truncates its results could still pass, and that case remains open.</p>
 </aside>
 
-The rent tracker and the public demo went through the same recipe afterward. In each case the test that mattered most was the one that removed the input and checked what the system claimed.
+When a market shows no new supply, I need to know whether collection succeeded before interpreting the count. These checks give me evidence for that distinction, with coverage limits still to resolve.
