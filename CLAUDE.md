@@ -31,8 +31,8 @@ not autonomous-run or unique-apartment counts. Rent hero provenance remains in
 
 Start from fetched `origin/main` in a fresh Mac worktree. Preserve the canonical checkout's
 old `redesign/six-tabs` branch and other worktrees. Keep `/legacy/`, `/projects/` and `/posts/`
-available, with every published post listed on Blog. Open: unpushed chat-styling fix `1b9690a` on
-`fix/ask-chat-styling-20260926` awaits Herman's push (newest `CHANGELOG.md` entry).
+available, with every published post listed on Blog. Chat-styling fix live at `05bbb4a` (2026-09-26).
+No website-task loose ends remain.
 
 ---
 

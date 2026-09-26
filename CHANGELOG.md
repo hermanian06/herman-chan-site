@@ -52,8 +52,13 @@ Memory: this session wrote none. Fleet heartbeat `ok=False` (2 failures) is the 
 by CPP followup #1522. **Paid external API spend: $0.** This closeout is documentation only and
 carries `[skip netlify]`.
 
-**Loose ends: ACTION — you:** say "push" to ship `1b9690a` (chat styling fix, verified by build
-only; the live chat reply needs a real backend call to see). **WATCH:** #1419 Mon 2026-09-28 and
+**Chat fix shipped (same day, Herman: "push").** Rebased once more onto `033a468`, so it landed as
+`05bbb4a0a50b2ef3700566baa2619522aa0292ac` (not `1b9690a`). Live `/_astro/AskTheData.DlOEI0fd.css`
+carries the `.ask[data-astro-cid-je6uciwp] .ask__typing i` rule; one real question on live
+`/supply-database/` showed the styled user bubble, typing dots, staged line and elapsed counter,
+then a styled answer with confidence pill and evidence line.
+
+**Loose ends: WATCH:** #1419 Mon 2026-09-28 and
 #1466 legs above.
 
 ## What just changed (2026-09-18 — four hero introductions published; closeout)
