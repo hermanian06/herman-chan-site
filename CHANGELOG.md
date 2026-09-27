@@ -8,6 +8,26 @@ This file is the record of what shipped and why — read the newest 1–3 entrie
 
 <!-- session-closeout: insert new entries directly below this line -->
 
+## What just changed (2026-09-26 — Chain contracts editorial closeout)
+
+**Documentation only.** Refreshed the `CLAUDE.md` current-state block and closed this task.
+Published application `b24f51c47155a7d96328b401795b80ec5366fc0f` is unchanged. Existing proof:
+56-page build, independent committed-diff review, and desktop/mobile browser checks passed;
+at 21:53:16 UTC on September 26, all six live HTML pages exactly matched the reviewed build.
+Receipt: `/Users/hermanchan/Documents/Codex/chain-contract-copy-review-20260926/live-verification.json`.
+No application retest was needed for this documentation-only closeout.
+
+**Closeout checks.** Fresh read-only website ledger: 0 open / 0 snoozed; no new ledger rows.
+Preview port 4347 stopped, temporary dependency symlink removed, and no scratch files remain
+in the worktree. Retain the worktree and evidence. No website memory store was found; the
+default memory gauge fell back to the unrelated CPP project and was not used for this project.
+Fleet heartbeat at `2026-09-26T22:21:32+00:00`: `ok=True`.
+
+**Follow-up ownership.** Existing cross-project watches #1419 (September 28 scheduled run)
+and #1466 (release-record enforcement) remain with their existing owners; no new follow-up.
+Task loose ends: none. Paid external API spend: $0; the external Claude review was denied
+before execution. This documentation commit uses `[skip netlify]`.
+
 ## What just changed (2026-09-26 — Chain contracts editorial revision)
 
 **Published.** Herman explicitly authorized these edits and deployment with

@@ -9,30 +9,25 @@ resume). This file carries rules and architecture only; closeout never appends e
 
 ## Current state (2026-09-26)
 
-Application `700ec9a7722e67c7acf0769ca1f583e42e65d106` is published and verified live.
-Intro now leads with “I build AI and data systems for real estate investment.” Its metadata
-matches; Underwriting, Supply and Rent introductions connect source inputs to useful outcomes.
-The approved copy preserves the earlier design, metrics, attribution and production features.
-Proof and the supplementary static HTML export are in the newest `CHANGELOG.md` entry.
+Application `b24f51c47155a7d96328b401795b80ec5366fc0f` is published and verified live.
+The five Chain contracts posts now have revised titles and bodies, labeled synthetic examples,
+illustrative code and dated verification limits. Blog remains 29 main stories across seven
+topics plus seven archive articles. The chat-styling fix `05bbb4a` is included.
 
-The six tabs are Intro (`/`), Underwriting Agent (`/underwriting-agent/`), Supply Database
+The six tabs remain Intro (`/`), Underwriting Agent (`/underwriting-agent/`), Supply Database
 (`/supply-database/`), Rent Database (`/rent-database/`), Blog (`/blog/`) and About (`/about/`).
-Shared typography uses Source Serif 4 headings and DM Sans 17px/1.7 prose, with compact data,
-code and metadata roles. Underwriting keeps one Excel button at Section 2 and its hero sample
-preview; duplicate hero download and Supply/Rent intro cards remain removed. Uploads, chats,
-dashboards and samples are preserved. Blog has 29 full stories in seven sections (Chain contracts added 2026-09-26, live at `9c49f1d`)
-plus seven archive articles.
+Site design, typography, uploads, chats, dashboards, samples and other production features
+are preserved. Keep `/legacy/`, `/projects/` and `/posts/` available, with every published
+post listed on Blog.
 
-`src/data/project-metrics.ts`: underwriting ~4 h preparation / ~30 min human review / 100+
-deals with AI-built outputs; Supply 9 metros / 250 feeds / 355,000+ source records; Rent 20
-metros / 16,000+ communities / 165,000+ historical priced records. These are scoped snapshots,
-not autonomous-run or unique-apartment counts. Rent hero provenance remains in
-`src/data/rents/portfolio-headline.json`; the detailed dashboard uses September 12 data.
+Metrics in `src/data/project-metrics.ts` and rent provenance in
+`src/data/rents/portfolio-headline.json` are dated build-time snapshots, not refreshed in
+this editorial task. Recheck their sources before making new quantitative claims.
 
-Start from fetched `origin/main` in a fresh Mac worktree. Preserve the canonical checkout's
-old `redesign/six-tabs` branch and other worktrees. Keep `/legacy/`, `/projects/` and `/posts/`
-available, with every published post listed on Blog. Chat-styling fix live at `05bbb4a` (2026-09-26).
-No website-task loose ends remain.
+Live proof: `/Users/hermanchan/Documents/Codex/chain-contract-copy-review-20260926/live-verification.json`.
+Blog and all five articles matched the reviewed build at 2026-09-26 21:53:16 UTC.
+Start from fetched `origin/main` in a fresh Mac worktree; preserve the old
+`redesign/six-tabs` branch and other worktrees. No website-task loose ends remain.
 
 ---
 
