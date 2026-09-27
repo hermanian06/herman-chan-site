@@ -6,7 +6,7 @@ import type { GetStaticPaths } from "astro";
 export const getStaticPaths: GetStaticPaths = async () => {
   /* An entry carrying its own `href` lives at that URL; generating a detail page
      for it would leave an unlinked duplicate behind. */
-  const projects = (await getCollection("projects")).filter((p) => !p.data.href);
+  const projects = (await getCollection("projects", ({ data }) => !data.draft)).filter((p) => !p.data.href);
   return projects.map((project) => ({
     params: { slug: project.id },
     props: { project },
@@ -16,7 +16,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 const { project } = Astro.props;
 const { Content } = await render(project);
 
-const allProjects = (await getCollection("projects")).sort(
+/* Drafts are not published: no detail page (above), no "Other projects" or prev/next link —
+   the same filter /projects/ applies. */
+const allProjects = (await getCollection("projects", ({ data }) => !data.draft)).sort(
   (a, b) => a.data.order - b.data.order,
 );
 /* One rule for the whole file: an entry's canonical URL is its own `href` when it
