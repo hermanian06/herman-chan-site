@@ -165,8 +165,15 @@ const placeholder = page === "supply"
     }
     function groundingEl(data: any): HTMLElement | null {
       const ev = data.evidence || [], tu = data.tools_used || [];
-      if (!data.confidence && !ev.length && !tu.length) return null;
+      if (!data.confidence && !ev.length && !tu.length && !data.truncated) return null;
       const wrap = document.createElement("div"); wrap.className = "ask__ground";
+      // truncated = the model stopped on max_tokens (backend contract). Style on the
+      // field, never on status: status stays "ok" so history and quota still count it.
+      if (data.truncated) {
+        const cut = document.createElement("span"); cut.className = "ask__trunc";
+        cut.textContent = "✂ answer cut short — ask a narrower question";
+        wrap.appendChild(cut);
+      }
       if (data.confidence) {
         const pill = document.createElement("span");
         pill.className = "ask__conf ask__conf--" + data.confidence;
@@ -179,7 +186,9 @@ const placeholder = page === "supply"
         const sum = document.createElement("summary");
         const parts: string[] = [];
         if (tu.length) parts.push(tu.length + " tool call" + (tu.length > 1 ? "s" : ""));
-        if (ev.length) parts.push(ev.length + " record" + (ev.length > 1 ? "s" : ""));
+        // evidence caps at 15; evidence_total is the distinct count before the cap
+        const total = Math.max(ev.length, Number(data.evidence_total) || 0);
+        if (ev.length) parts.push((total > ev.length ? ev.length + " of " + total : ev.length) + " record" + (total > 1 ? "s" : ""));
         sum.textContent = "what it looked up · " + parts.join(" · ");
         det.appendChild(sum);
         const body = document.createElement("div"); body.className = "ask__ev-body";
@@ -312,6 +321,7 @@ const placeholder = page === "supply"
   .ask :global(.ask__conf--high) { color: var(--accent); }
   .ask :global(.ask__conf--medium) { color: var(--fg-soft); }
   .ask :global(.ask__conf--low) { color: var(--muted); }
+  .ask :global(.ask__trunc) { font-family: var(--mono); font-size: 0.66rem; padding: 2px 9px; border-radius: 999px; border: 1px dashed var(--rule); color: var(--fg-soft); }
   .ask :global(.ask__ev summary) { cursor: pointer; color: var(--muted); font-family: var(--mono); font-size: 0.7rem; list-style: none; user-select: none; }
   .ask :global(.ask__ev summary::-webkit-details-marker) { display: none; }
   .ask :global(.ask__ev summary::before) { content: "▸ "; } .ask :global(.ask__ev[open] summary::before) { content: "▾ "; }
