@@ -26,6 +26,6 @@ export const TOUR: TourItem[] = [
   { q: "Which markets does the rent database cover, and how fresh is each one?", method: "rent_coverage", kind: "rents" },
   { q: "What are the population, households and median income within 1, 3 and 5 miles of 2200 Katy Fort Bend Rd, Katy, TX?", method: "demand_rings", kind: "demand" },
   { q: "What's in the supply pipeline within 3 miles of the Centennial Ridge community in Atlanta?", method: "rent_community_lookup → permits_near", kind: "cross" },
-  { q: "For 505 W Baseline Rd, Tempe, AZ: what do 2-bed comps within 3 miles ask, and how does that compare with the ring's median household income?", method: "demand_rings → rent_comps_near", kind: "cross" },
+  { q: "For 2151 E Southern Ave, Mesa, AZ: what do 2-bed comps within 3 miles ask, and how does that compare with the ring's median household income?", method: "demand_rings → rent_comps_near", kind: "cross" },
   { q: "Screen 2201 TX-195, Georgetown, TX: household growth within 5 miles, units in the pipeline, and current 3-bed asking rents.", method: "demand_rings → permits_near + rent_comps_near", kind: "cross" },
 ];
