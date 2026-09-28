@@ -1,8 +1,8 @@
 {
   "meta": {
     "toolkit_name": "AI Underwriting Pipeline — Sample Outputs",
-    "deal_name": "505 West",
-    "deal_slug": "505-west-sample",
+    "deal_name": "Sample Mesa Apt",
+    "deal_slug": "sample-mesa-apt",
     "generated_on": "2026-09-14",
     "as_of_date": "2026-08-31",
     "illustrative_pricing": true,
@@ -32,7 +32,7 @@
       {
         "document": "Operator's own weekly rent scrape + tracked-community registry",
         "kind": "comps",
-        "note": "19 quoted plan rows in the detail tiers, 341 more communities listed nearby; product, exclusion flag and year built from the registry, read through the market-report service."
+        "note": "19 quoted plan rows in the detail tiers, and 341 more tracked communities in the radius carried with their reason in the downloadable interchange file (not shown as a table); product, exclusion flag and year built from the registry, read through the market-report service."
       },
       {
         "document": "Census ACS 5-year, 2020 Decennial, LEHD LODES, BLS",
@@ -69,7 +69,7 @@
       {
         "topic": "Comp radius is stated, and coverage inside it is measured",
         "applies_to": "Rent Comps",
-        "note": "The comp block states the radius it searched and how many tracked communities inside it carry live rents; that sentence is counted from the operator's own scrape, never written by hand. The detail tiers are the closest same-product communities within that radius, so a wide radius adds nearby candidates without letting a distant one outrank a close one. A community the scrape tracks but could not quote is listed nearby with the reason rather than dropped."
+        "note": "The comp block states the radius it searched and how many tracked communities inside it carry live rents; that sentence is counted from the operator's own scrape, never written by hand. The detail tiers are the closest same-product communities within that radius, so a wide radius adds candidates without letting a distant one outrank a close one. A community the scrape tracks but could not quote is not dropped: it is carried, with the reason it is not a comp, in the downloadable interchange file."
       },
       {
         "topic": "Comps are matched on vintage",
@@ -139,6 +139,11 @@
       {
         "topic": "About the market pull",
         "applies_to": "Rent Comps / Demand / Supply",
+        "note": "Supply: the 32 development(s) within 3 mi are listed by name, one row each, at the furthest stage the pipeline shows; beyond that radius the rings are counts only."
+      },
+      {
+        "topic": "About the market pull",
+        "applies_to": "Rent Comps / Demand / Supply",
         "note": "Supply: 214 row(s) were the same development on more than one lifecycle layer and were counted once, at the furthest stage the pipeline shows."
       },
       {
@@ -174,7 +179,7 @@
       {
         "topic": "About the market pull",
         "applies_to": "Rent Comps / Demand / Supply",
-        "note": "Rent comps: the in-radius population (351 communities) was read from the service's audit rows with the registry's product, exclusion flag and year built; the 331 beyond its 20 preselected are tiered on those but carry no quoted rent, so they are listed nearby."
+        "note": "Rent comps: the in-radius population (351 communities) was read from the service's audit rows with the registry's product, exclusion flag and year built; the 331 beyond its 20 preselected are tiered on those but carry no quoted rent, so they are carried in the interchange file without one."
       },
       {
         "topic": "About the market pull",
@@ -264,7 +269,7 @@
     }
   },
   "summary": {
-    "deal_name": "505 West",
+    "deal_name": "Sample Mesa Apt",
     "street_address": "2151 E Southern Ave",
     "city": "Mesa",
     "state": "AZ",
@@ -8332,7 +8337,7 @@
         "year_built": 1986,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -8344,7 +8349,7 @@
         "year_built": 1985,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -8368,7 +8373,7 @@
         "year_built": 1985,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -8392,7 +8397,7 @@
         "year_built": 1986,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -8404,7 +8409,7 @@
         "year_built": 1979,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -8416,7 +8421,7 @@
         "year_built": 1979,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -8428,7 +8433,7 @@
         "year_built": 1986,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -8440,7 +8445,7 @@
         "year_built": 1984,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -8452,7 +8457,7 @@
         "year_built": 1986,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -8476,7 +8481,7 @@
         "year_built": 1985,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -8488,7 +8493,7 @@
         "year_built": 1985,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -8500,7 +8505,7 @@
         "year_built": 1985,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -8560,7 +8565,7 @@
         "year_built": 1985,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -8596,7 +8601,7 @@
         "year_built": 1971,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -8668,7 +8673,7 @@
         "year_built": 1984,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -8692,7 +8697,7 @@
         "year_built": 1986,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -8716,7 +8721,7 @@
         "year_built": 1983,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -8740,7 +8745,7 @@
         "year_built": 1971,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -8752,7 +8757,7 @@
         "year_built": 1973,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -8764,7 +8769,7 @@
         "year_built": 1986,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -8812,7 +8817,7 @@
         "year_built": 1985,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -8824,7 +8829,7 @@
         "year_built": 1986,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -8860,7 +8865,7 @@
         "year_built": 1985,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -8884,7 +8889,7 @@
         "year_built": 1985,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -8908,7 +8913,7 @@
         "year_built": 1981,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -8920,7 +8925,7 @@
         "year_built": 1982,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -8944,7 +8949,7 @@
         "year_built": 1979,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -8992,7 +8997,7 @@
         "year_built": 1978,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -9016,7 +9021,7 @@
         "year_built": 1986,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -9028,7 +9033,7 @@
         "year_built": 1982,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -9040,7 +9045,7 @@
         "year_built": 1986,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -9052,7 +9057,7 @@
         "year_built": 1978,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -9064,7 +9069,7 @@
         "year_built": 1984,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -9100,7 +9105,7 @@
         "year_built": 1978,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -9124,7 +9129,7 @@
         "year_built": 1984,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -9148,7 +9153,7 @@
         "year_built": 1981,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -9160,7 +9165,7 @@
         "year_built": 1989,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -9184,7 +9189,7 @@
         "year_built": 1987,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -9208,7 +9213,7 @@
         "year_built": 1985,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -9220,7 +9225,7 @@
         "year_built": 1979,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -9244,7 +9249,7 @@
         "year_built": 1979,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -9268,7 +9273,7 @@
         "year_built": 1984,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -9280,7 +9285,7 @@
         "year_built": 1979,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -9292,7 +9297,7 @@
         "year_built": 1986,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -9304,7 +9309,7 @@
         "year_built": 1974,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -9340,7 +9345,7 @@
         "year_built": 1986,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -9376,7 +9381,7 @@
         "year_built": 1979,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -9388,7 +9393,7 @@
         "year_built": 1983,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -9400,7 +9405,7 @@
         "year_built": 1979,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -9436,7 +9441,7 @@
         "year_built": 1982,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -9448,7 +9453,7 @@
         "year_built": 1979,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -9460,7 +9465,7 @@
         "year_built": 1985,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -9484,7 +9489,7 @@
         "year_built": 1986,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -9508,7 +9513,7 @@
         "year_built": 1975,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -9520,7 +9525,7 @@
         "year_built": 1979,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -9532,7 +9537,7 @@
         "year_built": 1974,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -9556,7 +9561,7 @@
         "year_built": 1976,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -9568,7 +9573,7 @@
         "year_built": 1983,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -9628,7 +9633,7 @@
         "year_built": 1975,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -9652,7 +9657,7 @@
         "year_built": 1978,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -9724,7 +9729,7 @@
         "year_built": 1986,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -9736,7 +9741,7 @@
         "year_built": 1977,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -9808,7 +9813,7 @@
         "year_built": 1988,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -9820,7 +9825,7 @@
         "year_built": 1984,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -9916,7 +9921,7 @@
         "year_built": 1986,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -9964,7 +9969,7 @@
         "year_built": 1980,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -9976,7 +9981,7 @@
         "year_built": 1980,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -10060,7 +10065,7 @@
         "year_built": 1984,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -10084,7 +10089,7 @@
         "year_built": 1986,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -10096,7 +10101,7 @@
         "year_built": 1973,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -10132,7 +10137,7 @@
         "year_built": 1983,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -10168,7 +10173,7 @@
         "year_built": 1983,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -10240,7 +10245,7 @@
         "year_built": 1986,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -10288,7 +10293,7 @@
         "year_built": 1989,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -10300,7 +10305,7 @@
         "year_built": 1972,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -10348,7 +10353,7 @@
         "year_built": 1984,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -10444,7 +10449,7 @@
         "year_built": 1986,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -10492,7 +10497,7 @@
         "year_built": 1987,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -10516,7 +10521,7 @@
         "year_built": 1985,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -10528,7 +10533,7 @@
         "year_built": 1978,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -10552,7 +10557,7 @@
         "year_built": 1984,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -10588,7 +10593,7 @@
         "year_built": 1984,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -10648,7 +10653,7 @@
         "year_built": 1986,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -10672,7 +10677,7 @@
         "year_built": 1985,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -10732,7 +10737,7 @@
         "year_built": 1986,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -10744,7 +10749,7 @@
         "year_built": 1986,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -10780,7 +10785,7 @@
         "year_built": 1985,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -10852,7 +10857,7 @@
         "year_built": 1980,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -10876,7 +10881,7 @@
         "year_built": 1985,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -10900,7 +10905,7 @@
         "year_built": 1977,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -10924,7 +10929,7 @@
         "year_built": 1985,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -10948,7 +10953,7 @@
         "year_built": 1972,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -10960,7 +10965,7 @@
         "year_built": 1974,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -11068,7 +11073,7 @@
         "year_built": 1982,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -11080,7 +11085,7 @@
         "year_built": 1985,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -11104,7 +11109,7 @@
         "year_built": 1985,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -11236,7 +11241,7 @@
         "year_built": 1989,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -11332,7 +11337,7 @@
         "year_built": 1987,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -11416,7 +11421,7 @@
         "year_built": 1979,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -11440,7 +11445,7 @@
         "year_built": 1987,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -11476,7 +11481,7 @@
         "year_built": 1972,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -11548,7 +11553,7 @@
         "year_built": 1973,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -11560,7 +11565,7 @@
         "year_built": 1978,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -11620,7 +11625,7 @@
         "year_built": 1987,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -11644,7 +11649,7 @@
         "year_built": 1972,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -11680,7 +11685,7 @@
         "year_built": 1988,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -11764,7 +11769,7 @@
         "year_built": 1985,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -11992,7 +11997,7 @@
         "year_built": 1984,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -12064,7 +12069,7 @@
         "year_built": 1987,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -12112,7 +12117,7 @@
         "year_built": 1971,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -12148,7 +12153,7 @@
         "year_built": 1986,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -12172,7 +12177,7 @@
         "year_built": 1979,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -12220,7 +12225,7 @@
         "year_built": 1975,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -12232,7 +12237,7 @@
         "year_built": 1983,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       },
       {
@@ -12244,7 +12249,7 @@
         "year_built": 1971,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": true
       },
       {
@@ -12268,7 +12273,7 @@
         "year_built": 1982,
         "year_built_source": "vendor note on the tracked community record, via the market-report service",
         "tier": 3,
-        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is listed nearby",
+        "reason": "outside the service's preselection of 20: its rents are tracked but no unit group was quoted for it, so it is carried without one",
         "has_rent_data": false
       }
     ],
@@ -13523,6 +13528,521 @@
         "units": 15187
       }
     ],
+    "projects": [
+      {
+        "name": "Reed Park Residences",
+        "miles": 0.95,
+        "stage": "Entitlement",
+        "units": 72,
+        "product": "multifamily",
+        "address": null,
+        "city": null,
+        "acres": 3.22,
+        "developer": null,
+        "filed": "2026-07-03",
+        "latest": "2026-07-03",
+        "layers": [
+          "Entitlement"
+        ]
+      },
+      {
+        "name": "539 S WILLIAMS",
+        "miles": 0.97,
+        "stage": "Permitted",
+        "units": 36,
+        "product": "apartment_rental",
+        "address": "539 S WILLIAMS",
+        "city": "Mesa",
+        "acres": 1.03,
+        "developer": null,
+        "filed": "2023-10-30",
+        "latest": "2026-08-26",
+        "layers": [
+          "County permits"
+        ]
+      },
+      {
+        "name": "Flats At Reed Park",
+        "miles": 0.98,
+        "stage": "Entitlement",
+        "units": null,
+        "product": "multifamily",
+        "address": null,
+        "city": "MESA",
+        "acres": null,
+        "developer": null,
+        "filed": "2025-03-06",
+        "latest": null,
+        "layers": [
+          "NOI radar (Arizona DEQ)"
+        ]
+      },
+      {
+        "name": "2102 E BROADWAY RD",
+        "miles": 1.03,
+        "stage": "Permitted",
+        "units": null,
+        "product": "apartment_rental",
+        "address": "2102 E BROADWAY RD",
+        "city": "Mesa",
+        "acres": null,
+        "developer": null,
+        "filed": "2026-03-02",
+        "latest": "2026-04-02",
+        "layers": [
+          "County permits"
+        ]
+      },
+      {
+        "name": "The Groves Apartments",
+        "miles": 1.04,
+        "stage": "Permitted",
+        "units": 37,
+        "product": "apartment_rental",
+        "address": "2030 E BROADWAY RD",
+        "city": "Mesa",
+        "acres": null,
+        "developer": null,
+        "filed": "2026-05-05",
+        "latest": "2026-05-11",
+        "layers": [
+          "County permits"
+        ]
+      },
+      {
+        "name": "3 Four 5 Villas",
+        "miles": 1.11,
+        "stage": "Entitlement",
+        "units": 15,
+        "product": "multifamily",
+        "address": null,
+        "city": null,
+        "acres": 1.07,
+        "developer": null,
+        "filed": "2026-07-03",
+        "latest": "2026-07-03",
+        "layers": [
+          "Entitlement"
+        ]
+      },
+      {
+        "name": "Countryside Manor",
+        "miles": 1.29,
+        "stage": "Entitlement",
+        "units": 40,
+        "product": "multifamily",
+        "address": null,
+        "city": null,
+        "acres": 2.27,
+        "developer": null,
+        "filed": "2026-07-03",
+        "latest": "2026-07-03",
+        "layers": [
+          "Entitlement"
+        ]
+      },
+      {
+        "name": "La Jolla Villas",
+        "miles": 1.59,
+        "stage": "Entitlement",
+        "units": 15,
+        "product": "multifamily",
+        "address": null,
+        "city": null,
+        "acres": 1.07,
+        "developer": null,
+        "filed": "2026-07-03",
+        "latest": "2026-07-03",
+        "layers": [
+          "Entitlement"
+        ]
+      },
+      {
+        "name": "1424 E DANA AVE",
+        "miles": 1.61,
+        "stage": "Permitted",
+        "units": 4,
+        "product": "apartment_rental",
+        "address": "1424 E DANA AVE",
+        "city": "Mesa",
+        "acres": 0.076,
+        "developer": null,
+        "filed": "2026-02-11",
+        "latest": "2026-05-21",
+        "layers": [
+          "County permits"
+        ]
+      },
+      {
+        "name": "Dana Park Village Square",
+        "miles": 1.65,
+        "stage": "Entitlement",
+        "units": 36,
+        "product": "multifamily",
+        "address": null,
+        "city": null,
+        "acres": 4.25,
+        "developer": null,
+        "filed": "2026-07-03",
+        "latest": "2026-07-03",
+        "layers": [
+          "Entitlement"
+        ]
+      },
+      {
+        "name": "214 N GILBERT RD 111",
+        "miles": 1.79,
+        "stage": "Permitted",
+        "units": null,
+        "product": "apartment_rental",
+        "address": "214 N GILBERT RD 111",
+        "city": "Mesa",
+        "acres": null,
+        "developer": null,
+        "filed": "2023-02-23",
+        "latest": "2023-03-01",
+        "layers": [
+          "County permits"
+        ]
+      },
+      {
+        "name": "Case ID: Z08-017 - 110 S Allen Rd",
+        "miles": 1.79,
+        "stage": "Entitlement",
+        "units": 9,
+        "product": "multifamily",
+        "address": null,
+        "city": null,
+        "acres": 1.11,
+        "developer": null,
+        "filed": "2026-07-03",
+        "latest": "2026-07-03",
+        "layers": [
+          "Entitlement"
+        ]
+      },
+      {
+        "name": "Tangerine",
+        "miles": 2.09,
+        "stage": "Entitlement",
+        "units": 29,
+        "product": "multifamily",
+        "address": null,
+        "city": null,
+        "acres": 2.06,
+        "developer": null,
+        "filed": "2026-07-03",
+        "latest": "2026-07-03",
+        "layers": [
+          "Entitlement"
+        ]
+      },
+      {
+        "name": "3020 E MAIN ST",
+        "miles": 2.12,
+        "stage": "Permitted",
+        "units": null,
+        "product": "apartment_rental",
+        "address": "3020 E MAIN ST",
+        "city": "Mesa",
+        "acres": null,
+        "developer": null,
+        "filed": "2023-07-27",
+        "latest": "2023-08-03",
+        "layers": [
+          "County permits"
+        ]
+      },
+      {
+        "name": "La Mesa Village Apartments",
+        "miles": 2.22,
+        "stage": "Entitlement",
+        "units": null,
+        "product": "multifamily",
+        "address": null,
+        "city": "MESA",
+        "acres": null,
+        "developer": null,
+        "filed": "2024-10-29",
+        "latest": null,
+        "layers": [
+          "NOI radar (Arizona DEQ)"
+        ]
+      },
+      {
+        "name": "505 S LESUEUR C",
+        "miles": 2.24,
+        "stage": "Permitted",
+        "units": null,
+        "product": "apartment_rental",
+        "address": "505 S LESUEUR C",
+        "city": "Mesa",
+        "acres": null,
+        "developer": null,
+        "filed": "2020-07-01",
+        "latest": "2020-07-23",
+        "layers": [
+          "County permits"
+        ]
+      },
+      {
+        "name": "Pioneer Place",
+        "miles": 2.25,
+        "stage": "Entitlement",
+        "units": 9,
+        "product": "mixed",
+        "address": null,
+        "city": null,
+        "acres": 0.83,
+        "developer": null,
+        "filed": "2026-07-03",
+        "latest": "2026-07-03",
+        "layers": [
+          "Entitlement"
+        ]
+      },
+      {
+        "name": "PS16-006 A New Leaf Apartment Bldg",
+        "miles": 2.33,
+        "stage": "Entitlement",
+        "units": 40,
+        "product": "multifamily",
+        "address": null,
+        "city": null,
+        "acres": 1.74,
+        "developer": null,
+        "filed": "2026-07-03",
+        "latest": "2026-07-03",
+        "layers": [
+          "Entitlement"
+        ]
+      },
+      {
+        "name": "3426 E UNIVERSITY DR",
+        "miles": 2.55,
+        "stage": "Permitted",
+        "units": 36,
+        "product": "apartment_rental",
+        "address": "3426 E UNIVERSITY DR",
+        "city": "Mesa",
+        "acres": null,
+        "developer": null,
+        "filed": "2021-02-15",
+        "latest": "2021-09-27",
+        "layers": [
+          "County permits"
+        ]
+      },
+      {
+        "name": "455 E MAIN ST",
+        "miles": 2.57,
+        "stage": "Permitted",
+        "units": null,
+        "product": "apartment_rental",
+        "address": "455 E MAIN ST",
+        "city": "Mesa",
+        "acres": null,
+        "developer": null,
+        "filed": "2019-03-07",
+        "latest": "2020-12-08",
+        "layers": [
+          "County permits"
+        ]
+      },
+      {
+        "name": "Van Damme Residence",
+        "miles": 2.58,
+        "stage": "Entitlement",
+        "units": 2,
+        "product": "multifamily",
+        "address": null,
+        "city": null,
+        "acres": 0.16,
+        "developer": null,
+        "filed": "2026-07-03",
+        "latest": "2026-07-03",
+        "layers": [
+          "Entitlement"
+        ]
+      },
+      {
+        "name": "LEGACY SQUARE",
+        "miles": 2.6,
+        "stage": "Permitted",
+        "units": 110,
+        "product": "multifamily",
+        "address": "140 S POMEROY",
+        "city": "MESA",
+        "acres": null,
+        "developer": "Willow Bridge Property Company",
+        "filed": "2025-02-06",
+        "latest": "2025-07-03",
+        "layers": [
+          "County permits",
+          "NOI radar (Arizona DEQ)"
+        ]
+      },
+      {
+        "name": "Cadillac Aparments",
+        "miles": 2.64,
+        "stage": "Entitlement",
+        "units": 7,
+        "product": "multifamily",
+        "address": null,
+        "city": null,
+        "acres": 0.85,
+        "developer": null,
+        "filed": "2026-07-03",
+        "latest": "2026-07-03",
+        "layers": [
+          "Entitlement"
+        ]
+      },
+      {
+        "name": "Clare House Social",
+        "miles": 2.65,
+        "stage": "Entitlement",
+        "units": null,
+        "product": "mixed",
+        "address": null,
+        "city": null,
+        "acres": null,
+        "developer": null,
+        "filed": "2026-07-03",
+        "latest": "2026-07-03",
+        "layers": [
+          "Entitlement"
+        ]
+      },
+      {
+        "name": "The Lumberyard",
+        "miles": 2.71,
+        "stage": "Entitlement",
+        "units": null,
+        "product": "multifamily",
+        "address": null,
+        "city": null,
+        "acres": null,
+        "developer": null,
+        "filed": "2025-05-15",
+        "latest": "2025-05-15",
+        "layers": [
+          "Entitlement"
+        ]
+      },
+      {
+        "name": "The Brundrett Building",
+        "miles": 2.72,
+        "stage": "Entitlement",
+        "units": null,
+        "product": "mixed",
+        "address": null,
+        "city": null,
+        "acres": null,
+        "developer": null,
+        "filed": "2025-05-15",
+        "latest": "2026-07-03",
+        "layers": [
+          "Entitlement"
+        ]
+      },
+      {
+        "name": "233 E MAIN ST",
+        "miles": 2.76,
+        "stage": "Permitted",
+        "units": null,
+        "product": "apartment_rental",
+        "address": "233 E MAIN ST",
+        "city": "Mesa",
+        "acres": null,
+        "developer": null,
+        "filed": "2020-01-27",
+        "latest": "2022-02-16",
+        "layers": [
+          "County permits"
+        ]
+      },
+      {
+        "name": "NEC Neely St and Aviary Way",
+        "miles": 2.79,
+        "stage": "Entitlement",
+        "units": 99,
+        "product": "multifamily",
+        "address": null,
+        "city": null,
+        "acres": 11.75,
+        "developer": null,
+        "filed": "2026-07-03",
+        "latest": "2026-07-03",
+        "layers": [
+          "Entitlement"
+        ]
+      },
+      {
+        "name": "Mesa Main Street Apartments",
+        "miles": 2.81,
+        "stage": "Entitlement",
+        "units": 36,
+        "product": "multifamily",
+        "address": null,
+        "city": null,
+        "acres": 4.33,
+        "developer": null,
+        "filed": "2026-07-03",
+        "latest": "2026-07-03",
+        "layers": [
+          "Entitlement"
+        ]
+      },
+      {
+        "name": "145 E MAIN ST 1",
+        "miles": 2.89,
+        "stage": "Permitted",
+        "units": 335,
+        "product": "apartment_rental",
+        "address": "145 E MAIN ST 1",
+        "city": "Mesa",
+        "acres": null,
+        "developer": null,
+        "filed": "2021-04-01",
+        "latest": "2021-12-06",
+        "layers": [
+          "County permits"
+        ]
+      },
+      {
+        "name": "Fiesta Rose Garden",
+        "miles": 2.93,
+        "stage": "Entitlement",
+        "units": 12,
+        "product": "multifamily",
+        "address": null,
+        "city": null,
+        "acres": 1.03,
+        "developer": null,
+        "filed": "2026-07-03",
+        "latest": "2026-07-03",
+        "layers": [
+          "Entitlement"
+        ]
+      },
+      {
+        "name": "NWC Gilbert Rd and Elliot Rd",
+        "miles": 2.99,
+        "stage": "Entitlement",
+        "units": 200,
+        "product": "mixed",
+        "address": null,
+        "city": null,
+        "acres": 2.19,
+        "developer": null,
+        "filed": "2026-07-03",
+        "latest": "2026-07-03",
+        "layers": [
+          "Entitlement"
+        ]
+      }
+    ],
     "ring_stock": null,
     "absent_reason": null
   },
@@ -13552,10 +14072,10 @@
   },
   "provenance": {
     "summary.deal_name": {
-      "source_doc": "Sample Property Offering Memorandum.pdf",
-      "locator": "p.3",
+      "source_doc": "Illustrative name",
+      "locator": "—",
       "method": "read",
-      "note": "The deal name as the memorandum states it."
+      "note": "An illustrative name for the public sample. The real asset's name is withheld; the memorandum's own name for it does not appear anywhere in this set."
     },
     "summary.street_address": {
       "source_doc": "Illustrative address",
@@ -13922,7 +14442,7 @@
       "inputs": [
         "comps.rows.tier"
       ],
-      "note": "Every community the service returned that is not a detail row, with the reason."
+      "note": "Every community the service returned that is not a detail row, with the reason. Carried in the interchange file; not shown as a table."
     },
     "demand.rings": {
       "source_doc": "Public demographic data (the operator's ring engine), via the market-report service",
@@ -13941,6 +14461,15 @@
       "locator": "POST /report (format json)",
       "method": "read",
       "note": "Projects and units by cumulative ring and tracked stage, counted from the service's project rows."
+    },
+    "supply.projects": {
+      "source_doc": "Public permit and entitlement records (the operator's supply pipeline), via the market-report service",
+      "locator": "POST /report (format json)",
+      "method": "derived",
+      "inputs": [
+        "supply.rings"
+      ],
+      "note": "The developments the counts are made of, within 3 mi: one row per development, reconciled across the pipeline's lifecycle layers and shown at the furthest stage any layer carries."
     }
   },
   "om_comps": {
