@@ -7,12 +7,13 @@ resume). This file carries rules and architecture only; closeout never appends e
 
 ---
 
-## Current state (2026-09-26)
+## Current state (2026-09-29)
 
-Application `b24f51c47155a7d96328b401795b80ec5366fc0f` is published and verified live.
-The five Chain contracts posts now have revised titles and bodies, labeled synthetic examples,
-illustrative code and dated verification limits. Blog remains 29 main stories across seven
-topics plus seven archive articles. The chat-styling fix `05bbb4a` is included.
+`main` `ed585c1` is published and verified live. The Underwriting sample is "Sample Mesa Apt"
+(never the real asset's name or street), Rent comps shows Tiers 1-2 only, and Supply lists each
+project within 3 miles; the sample fragments and downloads come only from Portfolio Demo's
+`publish_to_site.py`, never hand edits. Blog remains 29 main stories across seven topics plus
+seven archive articles; Chain contracts copy and the chat-styling fix `05bbb4a` are included.
 
 The six tabs remain Intro (`/`), Underwriting Agent (`/underwriting-agent/`), Supply Database
 (`/supply-database/`), Rent Database (`/rent-database/`), Blog (`/blog/`) and About (`/about/`).

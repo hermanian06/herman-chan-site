@@ -8,6 +8,32 @@ This file is the record of what shipped and why — read the newest 1–3 entrie
 
 <!-- session-closeout: insert new entries directly below this line -->
 
+## What just changed (2026-09-28/29 — Underwriting sample: Sample Mesa Apt, comps Tiers 1-2, supply projects)
+
+Herman's three edits to `/underwriting-agent/`, made in the Portfolio Demo engine (`41123f4`) and
+republished here by its `publish_to_site.py` (scrub gate CLEAN):
+
+- **`7b5bb2c`** — the sample deal is "Sample Mesa Apt" (was the real asset's name, "505 West");
+  Rent comps shows Tier 1 and Tier 2 only (the 341-row Tier 3 "Also nearby" table is gone, page and
+  xlsx); Supply adds "Projects within 3 miles" — 32 developments with miles, stage, units, type,
+  address, city, acres, developer, first filed, latest activity and source layers, tying exactly to
+  the 1 mi and 3 mi ring rows. Changed: six `src/data/demo/*.html` fragments and the six
+  `public/downloads/underwriting-demo/*` files, nothing else.
+- **`ed585c1`** — `src/data/chat/config.ts`: the chat tour's comps-vs-income example now asks about
+  the sample's illustrative address (2151 E Southern Ave, Mesa) instead of the real asset's street.
+
+**Verification.** `npm run build` 55 pages; built page has `Tier 1 — Top comps`, `Tier 2 —
+Additional comps`, no Tier 3, "Projects within 3 miles", and 0 "505 West"; `git grep -il "505
+west"` over the tree finds nothing, including inside every sample xlsx part. Local preview checked
+in the browser. Pushed to `main` (`cac6a57..ed585c1`), Netlify live in ~20 s; live page and live
+`sample-deal-outputs.json` (`"deal_name": "Sample Mesa Apt"`) re-read after deploy; live
+`/supply-database/` carries the Mesa chat example and no "505 W Baseline". The demo API was
+redeployed the same day and a live sample run shows the same three changes (Portfolio Demo
+CHANGELOG, 2026-09-28/29 entry). Worktree `uw-sample-edits-20260928` removed; its branch never
+reached the remote.
+
+**Spend:** $0. **Loose ends: none.** This documentation commit uses `[skip netlify]`.
+
 ## What just changed (2026-09-26 — Chain contracts editorial closeout)
 
 **Documentation only.** Refreshed the `CLAUDE.md` current-state block and closed this task.
