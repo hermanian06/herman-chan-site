@@ -8,6 +8,44 @@ This file is the record of what shipped and why — read the newest 1–3 entrie
 
 <!-- session-closeout: insert new entries directly below this line -->
 
+## What just changed (2026-09-30 — Rent tab: fresh data, LLM label, sample Avg rent, 22-metro headline)
+
+**`5367cfa`** — Rent dashboard refreshed from the live DB (was Sep 11), through bfr-rent-tracker
+`67c09fc`. Changes:
+- The engine row is "LLM (Haiku / Luna)". The scraper's LLM tier moved to gpt-5.6-luna on
+  2026-09-29, and the exporter now names each model it sees.
+- The § 06 sample draws only communities that have been read and carry a priced plan. Before:
+  74 of 398 rows read "not yet read"; after: 0 of 389.
+- New **Avg rent** column: the mean of each plan's `rent_min` at the last read. Herman's call.
+  Two copy lines saying no community-level rents appear were rewritten to match.
+- Headers are centered over their cells. Cause: the sample's `<tbody>` is written by an inline
+  script, so Astro-scoped CSS never reached it. Headers were right-aligned over left-aligned
+  cells. Rules are now `:global`, pinned to `#sample-table`.
+- CHI (Chicago, IL) and GSP (Greenville, SC) were added to the exporter's METROS. Without them
+  it exited 2.
+
+**`5086e90`** — Hero re-measured so it agrees with the dashboard: 22 metros · 16,844 confirmed
+communities · 202,660 priced floor-plan records, at 2026-09-30T17:16:20Z. It displays as
+22 · 16,000+ · 202,000+. No SQL had been saved for the Sep 18 figures, so the definitions in the
+JSON were re-derived and cross-checked at the Sep 18 cutoff: 165,797 vs 165,827 recorded, and
+communities = `url_status='confirmed'` (now written into the JSON). The project blurb now says
+"twenty-two metros". Records query:
+`select count(*) from rents.weekly_snapshots ws join rents.communities c on c.id=ws.community_id,
+jsonb_array_elements(ws.units) u where ws.status='live_data' and c.market not like 'NEW-%' and
+jsonb_typeof(u->'rent_min')='number' and (u->>'rent_min')::numeric>0`.
+
+**Verification.** Local preview and the live page were both read in the browser. Live results:
+- LLM row reads `LLM (Haiku / Luna)`.
+- 389 sample rows across all metros; 0 are unread or missing a rent.
+- All six sample headers and cells are centered except Community (left).
+- At 375 px the table scrolls inside its own box and the page does not scroll sideways.
+- The live hero reads `22 Metros 16,000+ Communities tracked 202,000+ Historical rent records`
+  on `/rent-database/` and `/`.
+
+bfr-rent-tracker required lane: `140 pass / 0 FAIL / 0 NOT-RUN (140 files)`.
+
+**Spend:** $0. **Loose ends:** none. This entry uses `[skip netlify]`.
+
 ## What just changed (2026-09-30 — Supply tab: generated per-MSA dashboard)
 
 **`d4369d5`** — `/supply-database/` gets a § 03 dashboard built like the rent one:

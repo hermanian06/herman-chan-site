@@ -7,7 +7,7 @@ resume). This file carries rules and architecture only; closeout never appends e
 
 ---
 
-## Current state (2026-09-29)
+## Current state (2026-09-30)
 
 `main` `ed585c1` is published and verified live. The Underwriting sample is "Sample Mesa Apt"
 (never the real asset's name or street), Rent comps shows Tiers 1-2 only, and Supply lists each
@@ -21,9 +21,14 @@ Site design, typography, uploads, chats, dashboards, samples and other productio
 are preserved. Keep `/legacy/`, `/projects/` and `/posts/` available, with every published
 post listed on Blog.
 
-Metrics in `src/data/project-metrics.ts` and rent provenance in
-`src/data/rents/portfolio-headline.json` are dated build-time snapshots, not refreshed in
-this editorial task. Recheck their sources before making new quantitative claims.
+Metrics in `src/data/project-metrics.ts` are dated build-time snapshots; recheck their
+sources before making new quantitative claims.
+
+Rent (2026-09-30): the § 03 dashboard JSON `src/data/rents/rent-database.json` is written by
+bfr-rent-tracker `tools/export_public_stats.py` (refresh = run it, build, commit the JSON). Its
+sample shows only read communities, with an Avg rent column (Herman's call, 2026-09-30). The hero
+`src/data/rents/portfolio-headline.json` is hand-measured, with no exporter: 22 / 16,844 / 202,660
+at 2026-09-30 17:16 UTC. Re-measure all three together; the SQL is in the 2026-09-30 CHANGELOG entry.
 
 Supply (2026-09-30): `/supply-database/` § 03 is a generated dashboard,
 `src/components/supply/SupplyDashboard.astro` over `src/data/supply/supply-database.json`, and
