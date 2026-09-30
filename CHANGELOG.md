@@ -8,6 +8,27 @@ This file is the record of what shipped and why — read the newest 1–3 entrie
 
 <!-- session-closeout: insert new entries directly below this line -->
 
+## What just changed (2026-09-30 — Supply tab: generated per-MSA dashboard)
+
+**`d4369d5`** — `/supply-database/` gets a § 03 dashboard built like the rent one:
+`src/components/supply/SupplyDashboard.astro` over `src/data/supply/supply-database.json`, written
+by County Permit Pipeline `tools_local/export_public_supply_stats.py` (CPP `b491402`). Sections:
+feeds by collection method (GIS map service, permit-portal JSON, HTML scrape, PDF, browser
+automation, open-data API, spreadsheet) with one real example source each; coverage by metro
+(feeds by early/entitlement/permit stage, records, feeds active in 8 days, planning cases,
+permit-layer MF/TH projects and units); filing types and permitted product; feed freshness; a
+15-per-metro sample of named projects with stated sizes (acreage estimates flagged "est.").
+The Supply hero now reads the same JSON — 9 metros / 254 tracked feeds (retired excluded) /
+441,000+ records — replacing hand-typed 250 / 355,000+. MCP section moved to § 04. Project
+names and units on the page are Herman's call (2026-09-30), overriding the redaction checklist's
+"hide specific sources" line for this section.
+
+**Verification.** `npm run build` 55 pages; local preview checked in the browser (desktop + 375 px,
+no horizontal scroll). Pushed `5086e90..d4369d5`, live in ~20 s; live page re-read: stat row
+`254 | 441,243 | 9 | 212 | 115,834 | 2,498`, 7 method rows, 15 sample rows, no console errors.
+
+**Refresh:** run the CPP exporter, build, commit the JSON. **Spend:** $0. This entry uses `[skip netlify]`.
+
 ## What just changed (2026-09-28/29 — Underwriting sample: Sample Mesa Apt, comps Tiers 1-2, supply projects)
 
 Herman's three edits to `/underwriting-agent/`, made in the Portfolio Demo engine (`41123f4`) and
