@@ -690,6 +690,10 @@ const defaultMarket = "PHX";
   .grid thead th.c { text-align: center; }
   /* The sample's rows are written by the inline script, so they carry no Astro scope
      attribute and scoped rules never reach them — hence :global, pinned to this table. */
+  #sample-table :global(tbody th), #sample-table :global(tbody td) {
+    padding: 7px var(--s-3); border-bottom: 1px solid var(--rule-soft);
+    vertical-align: baseline; white-space: nowrap;
+  }
   #sample-table :global(tbody th) { text-align: left; font-weight: 500; color: var(--fg); }
   #sample-table :global(td.c) { text-align: center; }
   #sample-table :global(.pill) {

@@ -192,6 +192,7 @@ The site is publicly auditioning for Anthropic Forward Deployed Engineer roles. 
 - **Local dev:** `npm install && npm run dev` from this folder.
 - **`.gitignore` already covers** `node_modules/`, `dist/`, `.astro/`, `.env`, `.claude/`, `.vscode/`, `.idea/`. Don't commit any of those.
 - **No analytics.** If adding, use Plausible (privacy, no cookie banner).
+- **Rows written by an inline `<script>` get no Astro scope attribute**, so a component's scoped table rules never reach them. Style them with `:global(...)` pinned to the table or tbody id (the rent and supply dashboard sample tables both do).
 
 ---
 
