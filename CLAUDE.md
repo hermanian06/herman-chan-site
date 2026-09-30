@@ -25,6 +25,13 @@ Metrics in `src/data/project-metrics.ts` and rent provenance in
 `src/data/rents/portfolio-headline.json` are dated build-time snapshots, not refreshed in
 this editorial task. Recheck their sources before making new quantitative claims.
 
+Supply (2026-09-30): `/supply-database/` § 03 is a generated dashboard,
+`src/components/supply/SupplyDashboard.astro` over `src/data/supply/supply-database.json`, and
+the Supply hero metrics read the same JSON (no hand-typed supply numbers remain). The JSON is
+written by County Permit Pipeline `tools_local/export_public_supply_stats.py` (read-only; it
+refuses when a tracked registry source has no `access_method`). Refresh = run that exporter,
+build, commit the JSON. The MCP section moved to § 04.
+
 Live proof: `/Users/hermanchan/Documents/Codex/chain-contract-copy-review-20260926/live-verification.json`.
 Blog and all five articles matched the reviewed build at 2026-09-26 21:53:16 UTC.
 Start from fetched `origin/main` in a fresh Mac worktree; preserve the old

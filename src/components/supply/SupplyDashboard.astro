@@ -1,0 +1,533 @@
+---
+/**
+ * The supply-database dashboard, body only (stats row → §01…§05 → limits).
+ * Same shape as RentDashboard.astro. Every number comes from
+ * src/data/supply/supply-database.json, which County Permit Pipeline's
+ * tools_local/export_public_supply_stats.py regenerates from the live database.
+ * Nothing here is typed by hand.
+ */
+import db from "../../data/supply/supply-database.json";
+
+const h = db.headline;
+const metros: Record<string, string> = db.metros;
+const markets = db.markets;
+const methods = db.methods;
+
+const n = (v: number | null | undefined) =>
+  v === null || v === undefined ? "—" : v.toLocaleString("en-US");
+const asOf = new Date(db.coverage_refreshed_at).toLocaleDateString("en-US", {
+  year: "numeric", month: "long", day: "numeric", timeZone: "UTC",
+});
+
+const downloaded = methods.filter((m: any) => m.method !== "derived");
+const derived = methods.find((m: any) => m.method === "derived");
+const methodMax = Math.max(...downloaded.map((m: any) => m.feeds));
+const structured = ["arcgis", "portal_json", "open_data_api", "spreadsheet"];
+const structuredFeeds = methods
+  .filter((m: any) => structured.includes(m.method))
+  .reduce((s: number, m: any) => s + m.feeds, 0);
+const byMethod = Object.fromEntries(methods.map((m: any) => [m.method, m]));
+
+const feedsMax = Math.max(...markets.map((m: any) => m.feeds));
+
+const ent = db.entitlement_types;
+const entMax = Math.max(...ent.map((t: any) => t.cases));
+const products = db.permit_products;
+
+const fresh = db.freshness;
+const stale = fresh
+  .filter((f: any) => f.bucket === "Over 30 days" || f.bucket === "9–30 days")
+  .reduce((s: number, f: any) => s + f.feeds, 0);
+const freshMax = Math.max(...fresh.map((f: any) => f.feeds));
+
+const samples = db.samples;
+const sampleMarkets = markets.map((m: any) => m.market);
+const defaultMarket = "ATL";
+---
+
+<section class="sdb">
+  <div class="wrap">
+
+    <ul class="stats" aria-label="Pipeline at a glance">
+      <li><b class="num">{n(h.tracked_feeds)}</b><span>tracked source feeds</span></li>
+      <li><b class="num">{n(h.source_records)}</b><span>source records</span></li>
+      <li><b class="num">{h.metros}</b><span>metros</span></li>
+      <li><b class="num">{n(h.fresh_feeds)}</b><span>feeds active in the last {h.fresh_days} days</span></li>
+      <li><b class="num">{n(h.entitlement_cases)}</b><span>planning and zoning cases</span></li>
+      <li><b class="num">{n(h.mf_projects)}</b><span>active multifamily and townhome permit projects</span></li>
+    </ul>
+    <p class="sdb__asof">Coverage measured from the live database on {asOf}.</p>
+
+    <!-- ───────────────────────── 01 ───────────────────────── -->
+    <div class="section-title" id="methods">
+      <span class="section-title__hash">§ 01</span>
+      <span class="section-title__label">How the data is collected</span>
+      <span class="section-title__hint">Seven ways in, one example of each</span>
+    </div>
+
+    <div class="sdb__prose">
+      <p>
+        Every feed is one public source in one metro: a county's permit portal, a city's
+        zoning map, a state's stormwater filings. What decides how hard a feed is to keep
+        alive is not the agency but the way it publishes, so that is how I group them.
+        {" "}{n(structuredFeeds)} of the {n(h.tracked_feeds)} come from something structured
+        — a map service, a portal's own JSON, an open-data API or a spreadsheet — and a
+        reader written once for a vendor covers every jurisdiction running that software.
+        The rest are web pages, PDFs and a handful of portals that only work in a real
+        browser, which is where most of the maintenance goes.
+      </p>
+    </div>
+
+    <div class="tablewrap" role="region" tabindex="0" aria-label="Feeds by collection method">
+      <table class="grid methods">
+        <thead>
+          <tr>
+            <th scope="col">Method</th>
+            <th scope="col" class="r">Feeds</th>
+            <th scope="col" class="r">Metros</th>
+            <th scope="col" class="r">Records</th>
+            <th scope="col">One real example</th>
+          </tr>
+        </thead>
+        <tbody>
+          {downloaded.map((m: any) => (
+            <tr>
+              <th scope="row">
+                <span class="methods__name">{m.label}</span>
+                <span class="methods__note">{m.note}</span>
+              </th>
+              <td class="r num">
+                <span class="bars__mini"><i style={`width:${Math.max(3, (100 * m.feeds) / methodMax)}%`}></i></span>
+                {n(m.feeds)}
+              </td>
+              <td class="r num">{m.metros}</td>
+              <td class="r num">{n(m.records)}</td>
+              <td class="methods__ex">
+                <span class="grid__code num">{m.example.market}</span>{m.example.what}
+                <span class="methods__exn num">{n(m.example.records)} records</span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="sdb__caption">
+      Records are rows currently held from that method's feeds. {derived && (
+        <>The other {derived.feeds} feeds download nothing: they are filtered views over a
+        table another feed already loads. Example: {derived.example.what}.</>
+      )} In the PDF example a language model reads each report to pull out figures such as
+      the lot count, because they sit in prose rather than in a field.
+    </p>
+
+    <!-- ───────────────────────── 02 ───────────────────────── -->
+    <div class="section-title" id="coverage">
+      <span class="section-title__hash">§ 02</span>
+      <span class="section-title__label">Coverage by metro</span>
+      <span class="section-title__hint">Early signals, entitlements, permits</span>
+    </div>
+
+    <div class="sdb__prose">
+      <p>
+        Supply shows up in public records in a rough order. First comes the <em>early</em>
+        signal: a stormwater notice or a land-disturbance filing, usually months before
+        anything is marketed. Then the <em>entitlement</em>: a rezoning, a plat, a site
+        plan. Last comes the <em>permit</em>. A metro is only well covered when it has
+        all three, and the bar in each row shows its mix.
+      </p>
+    </div>
+
+    <div class="tablewrap" role="region" tabindex="0" aria-label="Coverage by metro">
+      <table class="grid">
+        <thead>
+          <tr>
+            <th scope="col">Metro</th>
+            <th scope="col" class="r">Feeds</th>
+            <th scope="col">Early · entitlement · permit</th>
+            <th scope="col" class="r">Records</th>
+            <th scope="col" class="r">Active, 8 days</th>
+            <th scope="col" class="r">Planning cases</th>
+            <th scope="col" class="r">MF/TH projects</th>
+            <th scope="col" class="r">Their units</th>
+          </tr>
+        </thead>
+        <tbody>
+          {markets.map((m: any) => (
+            <tr>
+              <th scope="row">
+                <span class="grid__code num">{m.market}</span>
+                <span class="grid__metro">{metros[m.market]}</span>
+              </th>
+              <td class="r num">{m.feeds}</td>
+              <td>
+                <span class="stack" style={`width:${Math.max(18, (100 * m.feeds) / feedsMax)}%`}
+                      title={`${m.early} early · ${m.entitlement} entitlement · ${m.late} permit`}>
+                  <i class="is-early" style={`flex:${m.early}`}></i>
+                  <i class="is-ent" style={`flex:${m.entitlement}`}></i>
+                  <i class="is-late" style={`flex:${m.late}`}></i>
+                </span>
+                <span class="stack__nums num">{m.early} · {m.entitlement} · {m.late}</span>
+              </td>
+              <td class="r num">{n(m.records)}</td>
+              <td class={m.fresh / m.feeds < 0.75 ? "r num is-thin" : "r num"}>{m.fresh} of {m.feeds}</td>
+              <td class="r num">{n(m.entitlement_cases)}</td>
+              <td class="r num">{n(m.mf_projects)}</td>
+              <td class="r num">{n(m.mf_units)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <ul class="key" aria-label="Legend">
+      <li><span class="dot is-early"></span> Early signal</li>
+      <li><span class="dot is-ent"></span> Entitlement</li>
+      <li><span class="dot is-late"></span> Permit</li>
+    </ul>
+    <p class="sdb__caption">
+      The last two columns cover only active multifamily and townhome projects from the
+      building-permit layer, with the unit counts the permits state. They are not a
+      metro's whole pipeline: in Houston, Nashville and Huntsville much of it is visible
+      only in plats and stormwater filings, which count toward records, not here.
+    </p>
+
+    <!-- ───────────────────────── 03 ───────────────────────── -->
+    <div class="section-title" id="composition">
+      <span class="section-title__hash">§ 03</span>
+      <span class="section-title__label">What's in it</span>
+      <span class="section-title__hint">Filing types and permitted product</span>
+    </div>
+
+    <div class="cols">
+      <div class="cols__unit">
+        <h3 class="sdb__h3">Planning and zoning cases, by type</h3>
+        <div class="bars" role="list" aria-label="Planning and zoning cases by filing type">
+          {ent.map((t: any) => (
+            <div class="bars__row" role="listitem">
+              <span class="bars__label">{t.label}</span>
+              <span class="bars__bar">
+                <i style={`width:${Math.max(1.2, (100 * t.cases) / entMax)}%`}
+                   class={t.stage === "other" ? "is-muted" : ""}></i>
+              </span>
+              <span class="bars__num num">{n(t.cases)}</span>
+            </div>
+          ))}
+        </div>
+        <p class="sdb__caption">
+          Cases, not projects: one subdivision can file a rezoning, a preliminary plat and
+          a final plat. {n(ent.reduce((s: number, t: any) => s + t.with_units, 0))} of them
+          state a unit or lot count; the rest give acreage or nothing, and I would rather
+          leave those blank than guess.
+        </p>
+      </div>
+
+      <div class="cols__unit">
+        <h3 class="sdb__h3">Active permit projects, by product</h3>
+        <div class="tablewrap" role="region" tabindex="0" aria-label="Active permit projects by product">
+          <table class="grid grid--tight">
+            <thead>
+              <tr>
+                <th scope="col">Product</th>
+                <th scope="col" class="r">Projects</th>
+                <th scope="col" class="r">Planned</th>
+                <th scope="col" class="r">Permitted</th>
+                <th scope="col" class="r">Unknown</th>
+                <th scope="col" class="r">Units</th>
+              </tr>
+            </thead>
+            <tbody>
+              {products.map((p: any) => (
+                <tr>
+                  <th scope="row">{p.product}</th>
+                  <td class="r num">{n(p.projects)}</td>
+                  <td class="r num">{n(p.planned)}</td>
+                  <td class="r num">{n(p.permitted + p.permitted_pending)}</td>
+                  <td class="r num">{n(p.unknown)}</td>
+                  <td class="r num">{n(p.units)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="sdb__caption">
+          Units are what the permits state, never an estimate from acreage. A project
+          whose permits disagree with each other is counted once, at its largest stated
+          size. "Unknown" means the permit's status field does not say how far along it is.
+        </p>
+      </div>
+    </div>
+
+    <!-- ───────────────────────── 04 ───────────────────────── -->
+    <div class="section-title" id="freshness">
+      <span class="section-title__hash">§ 04</span>
+      <span class="section-title__label">Freshness</span>
+      <span class="section-title__hint">A feed that stops is the quiet failure</span>
+    </div>
+
+    <div class="sdb__prose">
+      <p>
+        A scraper that throws an error is easy to notice. The expensive failure is the one
+        that keeps running and quietly returns nothing because a county moved its portal.
+        So every feed is judged by the last time it showed signs of life: the later of its
+        last successful load and the newest record it holds.
+        {" "}{n(h.fresh_feeds)} of {n(h.tracked_feeds)} were active in the last
+        {" "}{h.fresh_days} days. The {stale} that were not are a mix of sources frozen on
+        purpose, kept for their history, and portals that have stopped answering. The
+        daily checks flag the second kind.
+      </p>
+    </div>
+
+    <div class="bars bars--wide" role="list" aria-label="Feeds by days since last activity">
+      {fresh.map((f: any) => (
+        <div class="bars__row" role="listitem">
+          <span class="bars__label">{f.bucket}</span>
+          <span class="bars__bar stack stack--bar" style={`width:${Math.max(1.2, (100 * f.feeds) / freshMax)}%`}
+                title={`${f.early} early · ${f.entitlement} entitlement · ${f.late} permit`}>
+            <i class="is-early" style={`flex:${f.early}`}></i>
+            <i class="is-ent" style={`flex:${f.entitlement}`}></i>
+            <i class="is-late" style={`flex:${f.late}`}></i>
+          </span>
+          <span class="bars__num num">{n(f.feeds)}</span>
+        </div>
+      ))}
+    </div>
+    <p class="sdb__caption">
+      Feeds by days since their last activity, coloured by stage as in § 02. Most feeds run
+      weekly, so a healthy feed sits in the 2–8 day band. "No date to judge by" is a feed
+      that holds neither a load time nor a record date to measure.
+    </p>
+
+    <!-- ───────────────────────── 05 ───────────────────────── -->
+    <div class="section-title" id="sample">
+      <span class="section-title__hash">§ 05</span>
+      <span class="section-title__label">A sample of the pipeline</span>
+      <span class="section-title__hint">{db.sample_per_market} per metro</span>
+    </div>
+
+    <div class="sdb__prose">
+      <p>
+        Here is what the rows look like: a stable random draw of {db.sample_per_market}
+        named projects per metro with a stated size, all from public filings in the last
+        year. Where several filings have been matched to one project, the record column
+        says how many. Some metros only have single filings to draw from so far.
+      </p>
+    </div>
+
+    <div class="picker">
+      <label for="smkt">Metro</label>
+      <select id="smkt">
+        {sampleMarkets.map((m: string) => (
+          <option value={m} selected={m === defaultMarket}>{metros[m]} · {m}</option>
+        ))}
+      </select>
+    </div>
+
+    <div class="tablewrap" role="region" tabindex="0" aria-label="Sample projects">
+      <table class="grid grid--tight">
+        <thead>
+          <tr>
+            <th scope="col">Project</th>
+            <th scope="col">Where</th>
+            <th scope="col">Product</th>
+            <th scope="col">Stage</th>
+            <th scope="col" class="r">Units / lots</th>
+            <th scope="col">Record</th>
+          </tr>
+        </thead>
+        <tbody id="ssample-body"></tbody>
+      </table>
+    </div>
+    <p class="sdb__caption">
+      Units marked "est." come from acreage and are labelled as estimates wherever they
+      appear. Plats count lots. Blank cells are fields the filing does not state. Las Vegas
+      rows are built up from the individual home permits in each tract.
+    </p>
+
+    <!-- ───────────────────────── limits ───────────────────────── -->
+    <aside class="sdb__limits">
+      <h2 class="sdb__h2">What this is, and is not</h2>
+      <ul>
+        <li>
+          <b>It is a record of what has been filed, not a forecast of what will be built.</b>
+          A rezoning or a plat says someone intends to build; it does not set a delivery date.
+        </li>
+        <li>
+          <b>Coverage varies by metro and by jurisdiction.</b> No results near a site does
+          not establish no supply, only that no tracked feed has recorded any.
+        </li>
+        <li>
+          <b>Records and projects are different counts.</b> One project can appear in a
+          stormwater notice, a plat and a permit. Records count every filing; the project
+          columns count matched projects from one layer.
+        </li>
+        <li>
+          <b>Stated sizes and estimates are kept apart.</b> Every unit count here is either
+          what a filing states or an acreage estimate labelled "est."
+        </li>
+        <li>
+          <b>Names and sizes are public filings.</b> Nothing here comes from a licensed
+          dataset.
+        </li>
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<script is:inline define:vars={{ samples, defaultMarket }}>
+  const body = document.getElementById("ssample-body");
+  const select = document.getElementById("smkt");
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const cell = (v) => (v == null || v === "" ? "—" : esc(v));
+
+  function render(market) {
+    const rows = samples[market] || [];
+    body.innerHTML = rows.map((r) => `
+      <tr>
+        <th scope="row" class="sample__name">${esc(r.name)}</th>
+        <td>${cell(r.place)}</td>
+        <td>${r.product ? `<span class="pill">${esc(r.product)}</span>` : "—"}</td>
+        <td>${cell(r.stage)}</td>
+        <td class="r num">${r.units == null ? "—" : r.units.toLocaleString("en-US")}${r.estimated ? ' <span class="est">est.</span>' : ""}</td>
+        <td class="sample__rec">${cell(r.record)}</td>
+      </tr>`).join("");
+  }
+
+  select.addEventListener("change", (e) => render(e.target.value));
+  render(defaultMarket);
+</script>
+
+<style>
+  .sdb { padding: 0 0 var(--s-9); }
+
+  /* ---------- stat row ---------- */
+  .stats {
+    list-style: none;
+    margin: 26px 0 var(--s-2);
+    padding: var(--s-5) 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: var(--s-4);
+  }
+  .stats li { display: flex; flex-direction: column; gap: 4px; }
+  .stats b {
+    font-family: var(--serif);
+    font-size: 34px;
+    font-weight: 400;
+    color: var(--accent);
+    letter-spacing: -0.01em;
+  }
+  .stats span { font-family: var(--sans); font-size: 13px; color: var(--muted); line-height: 1.35; }
+  .sdb__asof { font-family: var(--sans); font-size: var(--t-12); color: var(--muted-2); margin: var(--s-2) 0 48px; }
+
+  /* ---------- prose ---------- */
+  .sdb__prose { font: var(--font-prose); max-width: 76ch; margin: 0 0 var(--s-6); }
+  .sdb__prose p { margin: 0 0 var(--s-4); line-height: 1.7; }
+  .sdb__prose p:last-child { margin-bottom: 0; }
+  .sdb__prose em { font-style: italic; color: var(--fg); }
+  .sdb__h2 { font: var(--font-section); letter-spacing: var(--track-section); margin: 0 0 var(--s-4); }
+  .sdb__h3 { font: var(--font-card); letter-spacing: var(--track-card); color: var(--accent-ink); margin: var(--s-6) 0 var(--s-4); }
+  .sdb__caption {
+    font-family: var(--sans);
+    font-size: var(--t-13);
+    color: var(--muted);
+    line-height: 1.5;
+    max-width: 68ch;
+    margin: var(--s-3) 0 var(--s-8);
+  }
+  .sdb .section-title { margin-top: 58px; }
+
+  /* ---------- bars ---------- */
+  .bars { display: grid; gap: 12px; margin: var(--s-2) 0 0; }
+  .bars__row { display: grid; grid-template-columns: 190px 1fr 64px; align-items: center; gap: var(--s-3); }
+  .bars--wide .bars__row { grid-template-columns: 200px 1fr 64px; }
+  .bars__label { font-family: var(--sans); font-size: var(--t-13); color: var(--fg-soft); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .bars__bar { display: block; height: 14px; background: var(--bg-alt); border-radius: 1px; }
+  .bars__bar i { display: block; height: 100%; background: var(--accent); border-radius: 1px; }
+  .bars__bar i.is-muted { background: var(--muted-2); }
+  .bars__num { font-size: var(--t-13); color: var(--fg); text-align: right; }
+  .bars__mini { display: inline-block; width: 46px; height: 7px; background: var(--bg-alt); margin-right: var(--s-3); vertical-align: middle; }
+  .bars__mini i { display: block; height: 100%; background: var(--accent); }
+
+  /* ---------- stage stacks ---------- */
+  .stack { display: inline-flex; height: 10px; vertical-align: middle; border-radius: 1px; overflow: hidden; background: var(--bg-alt); }
+  .stack--bar { display: flex; height: 14px; }
+  .stack i { display: block; height: 100%; }
+  .is-early, .stack i.is-early { background: var(--muted-2); }
+  .is-ent, .stack i.is-ent { background: var(--accent); }
+  .is-late, .stack i.is-late { background: var(--accent-ink); }
+  .bars__bar.stack i { border-radius: 0; }
+  .stack__nums { display: block; font-size: 11px; color: var(--muted); margin-top: 3px; }
+  td .stack { width: 100%; min-width: 60px; max-width: 160px; }
+  .key { list-style: none; display: flex; flex-wrap: wrap; gap: var(--s-5); margin: var(--s-3) 0 0; padding: 0; font-family: var(--sans); font-size: var(--t-13); color: var(--fg-soft); }
+  .key li { display: flex; align-items: center; gap: var(--s-2); }
+  .dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+
+  /* ---------- tables ---------- */
+  .tablewrap { overflow-x: auto; margin-bottom: var(--s-2); }
+  .grid { width: 100%; border-collapse: collapse; font-family: var(--sans); font-size: 14px; }
+  .grid th, .grid td { padding: 12px var(--s-3); border-bottom: 1px solid var(--rule-soft); text-align: left; vertical-align: baseline; white-space: nowrap; }
+  .grid thead th { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 500; border-bottom: 1px solid var(--rule); background: var(--bg-alt); }
+  .grid tbody th { font-weight: 500; color: var(--fg); }
+  .grid .r, .grid thead th.r { text-align: right; }
+  .grid tbody tr:hover { background: var(--accent-soft); }
+  .grid .is-thin { color: var(--muted-2); }
+  .grid--tight th, .grid--tight td { padding: 8px var(--s-3); }
+  .grid__code { font-size: var(--t-12); color: var(--muted-2); margin-right: var(--s-2); }
+  .grid__metro { color: var(--fg); }
+
+  .grid.methods tbody th { white-space: normal; vertical-align: top; min-width: 250px; width: 34%; }
+  .grid.methods tbody td { vertical-align: top; }
+  .methods__name { display: block; }
+  .methods__note { display: block; font-weight: 400; font-size: var(--t-13); color: var(--muted); line-height: 1.45; margin-top: 3px; max-width: 42ch; }
+  .grid.methods td.methods__ex { white-space: normal; font-size: var(--t-13); color: var(--fg-soft); line-height: 1.45; min-width: 220px; width: 38%; }
+  .methods__exn { display: block; font-size: var(--t-12); color: var(--muted-2); margin-top: 2px; }
+
+  /* Sample rows are rendered by the inline script, so they carry no Astro scope
+     attribute: style them globally under this component's root. */
+  :global(#ssample-body th), :global(#ssample-body td) {
+    padding: 8px var(--s-3); border-bottom: 1px solid var(--rule-soft);
+    text-align: left; vertical-align: baseline; white-space: nowrap;
+  }
+  :global(#ssample-body th) { font-weight: 500; color: var(--fg); }
+  :global(#ssample-body td.r) { text-align: right; }
+  :global(#ssample-body tr:hover) { background: var(--accent-soft); }
+  :global(#ssample-body .sample__name) { white-space: normal; min-width: 220px; }
+  :global(#ssample-body .sample__rec) { color: var(--muted); }
+  :global(.sdb .est) { font-size: 11px; color: var(--muted-2); }
+  :global(.sdb .pill) {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; padding: 2px 6px;
+    border: 1px solid var(--rule); color: var(--muted); border-radius: 2px;
+  }
+
+  /* ---------- layout ---------- */
+  .cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 44px; align-items: start; }
+  .cols__unit { min-width: 0; }
+  .cols__unit .sdb__h3:first-child { margin-top: 0; }
+
+  /* ---------- picker ---------- */
+  .picker { display: flex; align-items: center; gap: var(--s-3); margin-bottom: var(--s-4); }
+  .picker label { font-family: var(--mono); font-size: var(--t-12); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+  .picker select { font-family: var(--sans); font-size: 16px; min-height: 44px; padding: 6px 10px; background: var(--bg); color: var(--fg); border: 1px solid var(--rule); border-radius: 2px; }
+  .picker select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ---------- limits ---------- */
+  .sdb__limits { margin-top: var(--s-8); padding: var(--s-6); background: var(--bg-alt); border: 1px solid var(--rule); border-radius: 2px; font: var(--font-prose); }
+  .sdb__limits ul { margin: 0; padding-left: 1.1em; display: grid; gap: var(--s-3); max-width: var(--measure); }
+  .sdb__limits li { color: var(--fg-soft); }
+  .sdb__limits b { font-weight: 600; color: var(--fg); }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 1080px) { .cols { grid-template-columns: minmax(0, 1fr); gap: 32px; } }
+  @media (max-width: 900px) { .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-5); } }
+  @media (max-width: 760px) {
+    .stats b { font-size: 28px; }
+    .bars__row, .bars--wide .bars__row { grid-template-columns: 120px minmax(0, 1fr) 50px; gap: 8px; }
+    .bars__label { font-size: 12px; }
+  }
+  @media (max-width: 440px) {
+    .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .picker { flex-wrap: wrap; }
+    .picker select { max-width: 100%; }
+  }
+</style>

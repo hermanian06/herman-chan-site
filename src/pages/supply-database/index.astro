@@ -4,12 +4,16 @@
  *   §01 four process steps for each professional audience
  *   §02 ask the databases — the chat box over the MCP (supply + rents + demand), the
  *       public read path the old search form was waiting for
- *   §03 the MCP server: endpoint, tools, how to connect
+ *   §03 the dashboard — SupplyDashboard.astro, read at build time from
+ *       src/data/supply/supply-database.json (County Permit Pipeline's
+ *       tools_local/export_public_supply_stats.py regenerates it from the live database)
+ *   §04 the MCP server: endpoint, tools, how to connect
  */
 import Layout from "../../layouts/Layout.astro";
 import TabHead from "../../components/tabs/TabHead.astro";
 import TwoAudiences from "../../components/tabs/TwoAudiences.astro";
 import AskTheData from "../../components/chat/AskTheData.astro";
+import SupplyDashboard from "../../components/supply/SupplyDashboard.astro";
 
 const forAI = [
   {
@@ -76,7 +80,7 @@ const tools = [
 >
   <TabHead
     project="supply"
-    links={[{"href": "#how-it-works", "label": "How it works"}, {"href": "#ask", "label": "Ask the databases"}, {"href": "#mcp", "label": "MCP tools"}]}
+    links={[{"href": "#how-it-works", "label": "How it works"}, {"href": "#ask", "label": "Ask the databases"}, {"href": "#dashboard", "label": "Dashboard"}, {"href": "#mcp", "label": "MCP tools"}]}
     kicker="Tab 03 · Supply Database"
     title="From scattered public filings to a clearer view of future housing supply."
     lede="I built a data pipeline that collects environmental filings, permits and planning cases from government websites and connects them into a searchable database. It helps me investigate upcoming developments, identify builders and assess future competition around a property."
@@ -100,10 +104,26 @@ const tools = [
     </div>
   </section>
 
-  <section id="mcp" class="blk blk--last">
+  <section class="blk" id="dashboard">
     <div class="wrap">
       <div class="section-title">
         <span class="section-title__hash">§ 03</span>
+        <span class="section-title__label">The dashboard</span>
+        <span class="section-title__hint">Collection methods · coverage · composition · freshness · a sample</span>
+      </div>
+      <p class="blk__note">
+        Tracked feeds are the sources the pipeline currently collects, one public source in one
+        metro; retired sources are not counted. Records are the rows those feeds hold today, not
+        unique projects.
+      </p>
+    </div>
+  </section>
+  <SupplyDashboard />
+
+  <section id="mcp" class="blk blk--last">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="section-title__hash">§ 04</span>
         <span class="section-title__label">The MCP server</span>
         <span class="section-title__hint">Read-only · OAuth 2.1 · all nine metros</span>
       </div>
