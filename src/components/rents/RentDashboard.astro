@@ -33,7 +33,7 @@ const firstObs = new Date(h.first_observation).toLocaleDateString("en-US", {
   month: "long", year: "numeric",
 });
 
-/* Extraction split: twelve deterministic platform adapters against one LLM fallback. */
+/* Extraction split: deterministic platform adapters (counted, not typed) against one LLM fallback row. */
 const extraction = db.extraction.filter((e: any) => e.engine !== "none");
 const extractionTotal = extraction.reduce((s: number, e: any) => s + e.observations, 0);
 const llmCalls = extraction.find((e: any) => e.engine.startsWith("LLM"))?.observations ?? 0;
@@ -126,8 +126,8 @@ const defaultMarket = "PHX";
         ))}
       </div>
       <p class="rdb__caption">
-        Successful reads by engine over the last 60 days. Every name but the first is a
-        platform adapter.
+        Successful reads by engine over the last 60 days. Every row except the LLM one is a
+        platform adapter; the LLM row names each model that ran in the window.
       </p>
 
       <div class="rdb__prose">
@@ -414,16 +414,17 @@ const defaultMarket = "PHX";
       <div class="section-title" id="sample">
         <span class="section-title__hash">§ 06</span>
         <span class="section-title__label">A sample of the universe</span>
-        <span class="section-title__hint">{db.sample_per_market} per metro</span>
+        <span class="section-title__hint">Up to {db.sample_per_market} per metro</span>
       </div>
 
       <div class="rdb__prose">
         <p>
           Counts are abstract, so here is what the rows actually look like — a stable
-          random draw of {db.sample_per_market} communities per metro, weighted to
+          random draw of up to {db.sample_per_market} communities per metro, weighted to
           include the build-for-rent tail, which is small and is the part I care most
-          about. Rents are deliberately not shown against a name: the aggregates above
-          are the public artifact, and a named comp set is not.
+          about. Only communities that have been read and carry a priced floor plan are
+          drawn. Average rent is the mean advertised asking rent across a community's
+          floor plans at its last read, using the low end of each plan's range.
         </p>
       </div>
 
@@ -441,10 +442,11 @@ const defaultMarket = "PHX";
           <thead>
             <tr>
               <th scope="col">Community</th>
-              <th scope="col">Product</th>
-              <th scope="col" class="r">Units</th>
-              <th scope="col" class="r">Built</th>
-              <th scope="col" class="r">Last read</th>
+              <th scope="col" class="c">Product</th>
+              <th scope="col" class="c">Units</th>
+              <th scope="col" class="c">Built</th>
+              <th scope="col" class="c">Avg rent</th>
+              <th scope="col" class="c">Last read</th>
             </tr>
           </thead>
           <tbody id="sample-body"></tbody>
@@ -475,8 +477,8 @@ const defaultMarket = "PHX";
             gap is shown as its own bar rather than dropped from the chart.
           </li>
           <li>
-            <b>No community-level rents are published here</b> — only rollups, plus a
-            small sample of names to show what the database contains.
+            <b>Community-level rents appear only in the sample</b> — one average asking
+            rent per community, not a comp set. Everything else on this page is a rollup.
           </li>
         </ul>
       </aside>
@@ -504,10 +506,11 @@ const defaultMarket = "PHX";
     body.innerHTML = rows.map((r) => `
       <tr>
         <th scope="row">${esc(r.name)}</th>
-        <td><span class="pill${r.product === "BFR" ? " is-bfr" : ""}">${esc(r.product)}</span></td>
-        <td class="r num">${r.units == null ? "—" : r.units.toLocaleString("en-US")}</td>
-        <td class="r num">${r.year_built ?? "—"}</td>
-        <td class="r num">${r.last_seen ?? "not yet read"}</td>
+        <td class="c"><span class="pill${r.product === "BFR" ? " is-bfr" : ""}">${esc(r.product)}</span></td>
+        <td class="c num">${r.units == null ? "—" : r.units.toLocaleString("en-US")}</td>
+        <td class="c num">${r.year_built ?? "—"}</td>
+        <td class="c num">$${Math.round(r.avg_rent).toLocaleString("en-US")}</td>
+        <td class="c num">${esc(r.last_seen)}</td>
       </tr>`).join("");
   }
 
@@ -684,6 +687,16 @@ const defaultMarket = "PHX";
   }
   .grid tbody th { font-weight: 500; color: var(--fg); }
   .grid .r, .grid thead th.r { text-align: right; }
+  .grid thead th.c { text-align: center; }
+  /* The sample's rows are written by the inline script, so they carry no Astro scope
+     attribute and scoped rules never reach them — hence :global, pinned to this table. */
+  #sample-table :global(tbody th) { text-align: left; font-weight: 500; color: var(--fg); }
+  #sample-table :global(td.c) { text-align: center; }
+  #sample-table :global(.pill) {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; padding: 2px 6px;
+    border: 1px solid var(--rule); color: var(--muted); border-radius: 2px;
+  }
+  #sample-table :global(.pill.is-bfr) { color: var(--accent); border-color: var(--accent); }
   .grid tbody tr:hover { background: var(--accent-soft); }
   .grid .is-thin { color: var(--muted-2); }
   .grid--tight th, .grid--tight td { padding: 7px var(--s-3); }
