@@ -1,6 +1,6 @@
 ---
 title: The rent database
-blurb: A weekly scrape of every rental community I track across twenty metros — asking rent and net-effective rent per floor plan, with the concession detail that listings sites don't publish. Nearly seventeen thousand communities, built adapters-first so a language model only reads the sites that have nothing structured to read.
+blurb: A weekly scrape of every rental community I track across twenty-two metros — asking rent and net-effective rent per floor plan, with the concession detail that listings sites don't publish. Nearly seventeen thousand communities, built adapters-first so a language model only reads the sites that have nothing structured to read.
 href: /demo/rent-database/
 order: 1
 status: Live demo
