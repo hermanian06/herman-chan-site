@@ -65,7 +65,11 @@ names and units on the page are Herman's call (2026-09-30), overriding the redac
 no horizontal scroll). Pushed `5086e90..d4369d5`, live in ~20 s; live page re-read: stat row
 `254 | 441,243 | 9 | 212 | 115,834 | 2,498`, 7 method rows, 15 sample rows, no console errors.
 
-**Refresh:** run the CPP exporter, build, commit the JSON. **Spend:** $0. This entry uses `[skip netlify]`.
+**`f5728ed`** (closeout) — the rent tab's script-rendered sample rows had no padding or row borders
+(scoped `.grid` rules never reach script-written rows). Added them under the existing `:global`
+rules on `#sample-table`. Live probe before: `thPad 1px, tdBorder 0px`; after deploy: `12px, 1px`.
+
+**Refresh:** run the CPP exporter, build, commit the JSON. **Spend:** $0. This entry uses `[skip netlify]`. **Loose ends: none.**
 
 ## What just changed (2026-09-28/29 — Underwriting sample: Sample Mesa Apt, comps Tiers 1-2, supply projects)
 
