@@ -84,7 +84,7 @@
       {
         "topic": "Market rent is never a blend of new and renewal",
         "applies_to": "Rent Roll — Summary",
-        "note": "Market rent for the model is the new-lease average where a plan has new leases inside the lookback window, and in-place rent where it does not. It is never the average of new and renewal leases together. A blended figure reads as market rent and is not one: renewals are priced off the existing rent, so blending them in drags the number toward where rents used to be and understates the gap the underwriting is trying to measure. On an asset whose in-place rents sit above what the market is currently signing, the rule produces a market rent BELOW in-place — which is the correct and uncomfortable answer, and the one a blend would hide."
+        "note": "Market rent for the model is the new move-in rent — residents whose move-in date falls inside the lookback window, whatever their lease type — where a plan has one, and in-place rent where it does not. It is never the average of every lease signed, new and renewal together. A blended figure reads as market rent and is not one: renewals are priced off the existing rent, so blending them in drags the number toward where rents used to be and understates the gap the underwriting is trying to measure. On an asset whose in-place rents sit above what the market is currently signing, the rule produces a market rent BELOW in-place — which is the correct and uncomfortable answer, and the one a blend would hide."
       },
       {
         "topic": "Estimated values are not published as facts",
@@ -244,7 +244,7 @@
       {
         "topic": "About this run",
         "applies_to": "Notes & Disclosures",
-        "note": "The uploaded rent roll stated the PERIOD it covers rather than a day: as-of taken as 2026-08-31, the last day of the stated period 202608. Every window on this page (the new-lease lookback and annualised turnover) is measured back from that date, not from the day of the upload."
+        "note": "The uploaded rent roll stated the PERIOD it covers rather than a day: as-of taken as 2026-08-31, the last day of the stated period 202608. Every window on this page (the move-in and lease-signed lookback, and annualised turnover) is measured back from that date, not from the day of the upload."
       },
       {
         "topic": "About this run",
