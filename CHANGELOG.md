@@ -8,6 +8,27 @@ This file is the record of what shipped and why — read the newest 1–3 entrie
 
 <!-- session-closeout: insert new entries directly below this line -->
 
+## What just changed (2026-10-02 — Supply tab: How I check it, safe chat rendering, honest MCP copy)
+
+**`08728b7` + `c022c78`**, published 2026-10-02 ~23:43 PDT (main `8eb20a4..c022c78`, Netlify live ~20 s later).
+- New § 03 **How I check it** on `/supply-database/`: classifier evaluation re-run 2026-10-02
+  (County Permit Pipeline `evals.run` ids 15 and 16 — Atlanta 82.8% exact on 93 hand-labelled
+  filings, Phoenix 84.6% on 65, both equal to the June baseline); measured model use and cost
+  for 30 days to 2026-10-02 (`observability.llm_calls`); the June 3–5 frozen-analytics incident
+  and the daily `dashboard_view_freshness_not_ok` check it left. Dashboard → § 04, MCP → § 05.
+- Chat replies render through `src/components/chat/render-reply.ts`: raw HTML escaped, only
+  http(s)/mailto links, no images. Red-first `tests/render-reply.test.ts` (4 failing → 5 passing;
+  new `npm test`). Live probe on production: the injected `<img onerror>` and a `javascript:` link
+  rendered as text, `window.__pwned` stayed unset.
+- Copy: "the team queries / my team connects" → "I" on the Supply tab, the chat intro and
+  `/projects/permit-pipeline-mcp/` (token logs: no teammate MCP use since 2026-05-19); that page's
+  `since: 2025` → 2026. `debt_maturities` marked historical (data frozen 2026-09-07).
+- Chat browser timeout 120 s → 180 s; the quota line says the server also limits per hour.
+  Paired backend fix (County Permit Pipeline `ef877ae`, deployment `c37259c6`): tools requested in
+  one model turn run concurrently. Tour Q8 (Georgetown screen) timed out 2/2 before; live after
+  both deploys: answered in 60.3 s.
+- Evidence: `~/My Drive/Claude AI/County Permit Pipeline/html QA/portfolio_review_2026-10-02/`.
+
 ## What just changed (2026-09-30 — Rent tab: fresh data, LLM label, sample Avg rent, 22-metro headline)
 
 **`5367cfa`** — Rent dashboard refreshed from the live DB (was Sep 11), through bfr-rent-tracker
