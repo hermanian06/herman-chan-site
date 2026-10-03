@@ -15,8 +15,8 @@ const intro = page === "supply"
   ? "Ask the supply database — and the rent and demand databases it shares a server with."
   : "Ask the rent database — and the supply and demand databases it shares a server with.";
 const lead = page === "supply"
-  ? "This box runs the same Model Context Protocol server the team queries from claude.ai: nine metros of supply, the weekly rent scrape, and Census demand rings. Five single-database questions, then three that cross them."
-  : "This box runs the same Model Context Protocol server the team queries from claude.ai: the weekly rent scrape, nine metros of supply, and Census demand rings. Five single-database questions, then three that cross them.";
+  ? "This box runs the same Model Context Protocol server I query from claude.ai: nine metros of supply, the weekly rent scrape, and Census demand rings. Five single-database questions, then three that cross them."
+  : "This box runs the same Model Context Protocol server I query from claude.ai: the weekly rent scrape, nine metros of supply, and Census demand rings. Five single-database questions, then three that cross them.";
 const placeholder = page === "supply"
   ? "Ask about supply, rents or demand…"
   : "Ask about rents, supply or demand…";
@@ -57,7 +57,7 @@ const placeholder = page === "supply"
     <button class="ask__send" data-send type="submit">Send</button>
   </form>
   <p class="ask__foot">
-    <span data-quota>{DAILY_LIMIT} questions left today</span> · answers are grounded in live data from the three databases; verify before acting.
+    <span data-quota>{DAILY_LIMIT} questions left today</span> · the server also limits questions per hour · answers are grounded in live data from the three databases; verify before acting.
   </p>
 </div>
 
@@ -65,8 +65,7 @@ const placeholder = page === "supply"
   window.__ASK_CFG = { CHAT_API_PRODUCTION, CHAT_API_LOCAL, DAILY_LIMIT };
 </script>
 <script>
-  import { marked } from "marked";
-  marked.setOptions({ gfm: true, breaks: true });
+  import { renderReply } from "./render-reply";
 
   const cfg = (window as any).__ASK_CFG as { CHAT_API_PRODUCTION: string; CHAT_API_LOCAL: string; DAILY_LIMIT: number };
   const API = ["localhost", "127.0.0.1"].includes(location.hostname) ? cfg.CHAT_API_LOCAL : cfg.CHAT_API_PRODUCTION;
@@ -225,7 +224,7 @@ const placeholder = page === "supply"
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       row.scrollIntoView({ block: "center", behavior: reduced ? "auto" : "smooth" });
       const ctl = new AbortController();
-      const killer = window.setTimeout(() => ctl.abort(), 120000);
+      const killer = window.setTimeout(() => ctl.abort(), 180000);
       try {
         const res = await fetch(API, {
           method: "POST", headers: { "Content-Type": "application/json" },
@@ -235,7 +234,7 @@ const placeholder = page === "supply"
         if (!res.ok) throw new Error("HTTP " + res.status);
         const data = await res.json();
         stopPending();
-        bubble.innerHTML = marked.parse(data.reply || "(no answer)") as string;
+        bubble.innerHTML = renderReply(data.reply);
         bubble.querySelectorAll("table").forEach((t) => { const w = document.createElement("div"); w.className = "ask__tbl"; t.replaceWith(w); w.appendChild(t); });
         const g = groundingEl(data); if (g) bubble.appendChild(g);
         if (data.status === "ok") {
@@ -247,7 +246,7 @@ const placeholder = page === "supply"
       } catch (e) {
         stopPending();
         bubble.textContent = (e as Error)?.name === "AbortError"
-          ? "That one timed out after two minutes — try it again, or ask a narrower question."
+          ? "That one timed out after three minutes — try it again, or ask a narrower question."
           : "Couldn't reach the assistant — try again in a moment.";
       } finally {
         window.clearTimeout(killer);

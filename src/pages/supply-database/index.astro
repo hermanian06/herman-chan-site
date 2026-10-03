@@ -4,10 +4,11 @@
  *   §01 four process steps for each professional audience
  *   §02 ask the databases — the chat box over the MCP (supply + rents + demand), the
  *       public read path the old search form was waiting for
- *   §03 the dashboard — SupplyDashboard.astro, read at build time from
+ *   §03 how I check it — classifier evaluation, where models run + cost, one failure
+ *   §04 the dashboard — SupplyDashboard.astro, read at build time from
  *       src/data/supply/supply-database.json (County Permit Pipeline's
  *       tools_local/export_public_supply_stats.py regenerates it from the live database)
- *   §04 the MCP server: endpoint, tools, how to connect
+ *   §05 the MCP server: endpoint, tools, how to connect
  */
 import Layout from "../../layouts/Layout.astro";
 import TabHead from "../../components/tabs/TabHead.astro";
@@ -52,6 +53,26 @@ const forRE = [
   }
 ];
 
+/* § 03 How I check it. Numbers are dated snapshots, re-measured 2026-10-02:
+ *  - evals: County Permit Pipeline `python -m evals.run --surface epd_classify_dwelling`
+ *    (evals.run id 15) and `--surface azdeq_classify` (id 16); goldens labelled from the
+ *    filing PDF, developer site and county permits, never from model output.
+ *  - model use: observability.llm_calls, 30 days to 2026-10-02, grouped by system_name. */
+const evals = [
+  { metro: "Atlanta", n: 93, exact: "82.8%", exactN: 77, bucket: "88.2%", bucketN: 82, miss: 6 },
+  { metro: "Phoenix", n: 65, exact: "84.6%", exactN: 55, bucket: "86.2%", bucketN: 56, miss: 7 },
+];
+const modelUse = [
+  { step: "Reading filing PDFs", model: "Claude Haiku 4.5", calls: "363", usd: "$3.38",
+    why: "Stormwater notices and subdivision reports put the site, acreage and owner in forms and prose that rules cannot parse reliably." },
+  { step: "Filling gaps in multifamily permits", model: "Haiku 4.5 + web search", calls: "198", usd: "$5.23",
+    why: "Finds the developer, project name and unit count a permit leaves blank. Large backfills go through the batch API at half price." },
+  { step: "Labelling product type", model: "Claude Haiku 4.5", calls: "208", usd: "$0.18",
+    why: "The classifier scored above. It runs only on new filings that have no label yet." },
+  { step: "The chat on this page", model: "Claude Sonnet 4.6", calls: "112", usd: "$2.50",
+    why: "Chooses the tools, then writes the answer from what they return. Capped per visitor, per hour, and in dollars per day." },
+];
+
 /* The seventeen read-only tools the server exposes (all nine metros wired; rent + demand added 2026-09-15). */
 const tools = [
   { name: "find_subdivisions", what: "Search the pipeline with structured filters: metro, product, stage, size, date." },
@@ -65,7 +86,7 @@ const tools = [
   { name: "pipeline_health", what: "Ingestion freshness per metro and per source." },
   { name: "mf_projects", what: "Late-stage multifamily and attached projects from the permit layer." },
   { name: "entitlement_leads", what: "Pre-permit leads: rezonings, PUDs, site plans, plats, district formations." },
-  { name: "debt_maturities", what: "Financed multifamily with loan maturities and the permitted units within three miles." },
+  { name: "debt_maturities", what: "Financed multifamily with loan maturities and the permitted units within three miles. Historical: its loan data stopped updating on September 7, 2026." },
   { name: "rent_comps_near", what: "Rent database: floor-plan-level asking and net-effective rents within a radius of a point." },
   { name: "rent_market_summary", what: "Rent database: market medians, concession share and depth, availability — overall and by bed count." },
   { name: "rent_community_lookup", what: "Rent database: a community by name, with its coordinates and current floor plans." },
@@ -80,7 +101,7 @@ const tools = [
 >
   <TabHead
     project="supply"
-    links={[{"href": "#how-it-works", "label": "How it works"}, {"href": "#ask", "label": "Ask the databases"}, {"href": "#dashboard", "label": "Dashboard"}, {"href": "#mcp", "label": "MCP tools"}]}
+    links={[{"href": "#how-it-works", "label": "How it works"}, {"href": "#ask", "label": "Ask the databases"}, {"href": "#checks", "label": "How I check it"}, {"href": "#dashboard", "label": "Dashboard"}, {"href": "#mcp", "label": "MCP tools"}]}
     kicker="Tab 03 · Supply Database"
     title="From scattered public filings to a clearer view of future housing supply."
     lede="I built a data pipeline that collects environmental filings, permits and planning cases from government websites and connects them into a searchable database. It helps me investigate upcoming developments, identify builders and assess future competition around a property."
@@ -104,10 +125,114 @@ const tools = [
     </div>
   </section>
 
-  <section class="blk" id="dashboard">
+  <section class="blk" id="checks">
     <div class="wrap">
       <div class="section-title">
         <span class="section-title__hash">§ 03</span>
+        <span class="section-title__label">How I check it</span>
+        <span class="section-title__hint">An evaluation · where the AI runs · one failure</span>
+      </div>
+
+      <h3 class="chk__h">Does the model label filings correctly?</h3>
+      <p class="blk__note">
+        A language model reads each stormwater filing and says what will be built: single-family
+        homes, townhomes, apartments, a mix, or unknown. I score it against filings I labelled by
+        hand from the filing's PDF, the developer's website and the county's permits, never from
+        the model's own answers. Re-run on October 2, 2026 with Claude Haiku 4.5; both scores
+        match the June baseline.
+      </p>
+      <div class="tablewrap" role="region" tabindex="0" aria-label="Classifier evaluation">
+        <table class="tools chk__tbl">
+          <thead>
+            <tr>
+              <th scope="col">Metro</th>
+              <th scope="col" class="num">Labelled filings</th>
+              <th scope="col" class="num">Exact type</th>
+              <th scope="col" class="num">Right business bucket</th>
+              <th scope="col" class="num">Rent / sale errors</th>
+            </tr>
+          </thead>
+          <tbody>
+            {evals.map((e) => (
+              <tr>
+                <th scope="row">{e.metro}</th>
+                <td class="num">{e.n}</td>
+                <td class="num">{e.exact} <span class="chk__n">({e.exactN})</span></td>
+                <td class="num">{e.bucket} <span class="chk__n">({e.bucketN})</span></td>
+                <td class="num">{e.miss}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="blk__note blk__note--small">
+        Buckets are for sale (single-family and townhome), for rent (apartments), mixed and
+        unknown, plus commercial in Phoenix. A rent / sale error is the one that matters: a
+        for-sale subdivision counted as rental supply distorts a rent underwrite, so any one of
+        them fails the run and names the filing. In production, Atlanta adds a developer lookup
+        on top of the model. I don't publish its score on these filings, because the lookup was
+        built from them.
+      </p>
+
+      <h3 class="chk__h">Where the AI runs, and what it costs</h3>
+      <p class="blk__note">
+        Every model call writes a row to a log, so this is measured, not estimated: the last 30
+        days to October 2, 2026.
+      </p>
+      <div class="tablewrap" role="region" tabindex="0" aria-label="Model use">
+        <table class="tools chk__tbl">
+          <thead>
+            <tr>
+              <th scope="col">Step</th>
+              <th scope="col">Model</th>
+              <th scope="col" class="num">Calls</th>
+              <th scope="col" class="num">Cost</th>
+              <th scope="col">Why a model</th>
+            </tr>
+          </thead>
+          <tbody>
+            {modelUse.map((m) => (
+              <tr>
+                <th scope="row">{m.step}</th>
+                <td>{m.model}</td>
+                <td class="num">{m.calls}</td>
+                <td class="num">{m.usd}</td>
+                <td>{m.why}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="blk__note blk__note--small">
+        The pipeline's own model calls cost about $9 a month. Everything else is ordinary code,
+        on purpose: fetching, field mapping, address matching, linking filings into projects
+        and the freshness checks. Those steps must give the same answer every week across
+        hundreds of thousands of records, and a model would add cost and variance there without
+        adding judgment.
+      </p>
+
+      <h3 class="chk__h">One failure, and the check it left behind</h3>
+      <p class="blk__note">
+        On June 3 a migration pointed the summary view behind the Overview and Builders pages
+        at a stored copy of itself. Every refresh copied the same numbers back, so the analytics
+        showed mid-May data. Nothing errored: the weekly run reported success, and the project
+        map, which reads the source tables directly, stayed current. It was found and fixed on
+        June 5. The view was rebuilt as a live union of each metro's pipeline and checked metro
+        by metro against the frozen copy before the swap.
+      </p>
+      <p class="blk__note">
+        The lasting change is a check that compares the newest record each dashboard serves with
+        the newest record ingested beneath it, so a frozen view is flagged by the daily checks
+        instead of waiting for someone to notice. More failures and the tests they produced are
+        in the <a href="/blog/">Chain contracts section of the Blog</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="blk" id="dashboard">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="section-title__hash">§ 04</span>
         <span class="section-title__label">The dashboard</span>
         <span class="section-title__hint">Collection methods · coverage · composition · freshness · a sample</span>
       </div>
@@ -123,15 +248,15 @@ const tools = [
   <section id="mcp" class="blk blk--last">
     <div class="wrap">
       <div class="section-title">
-        <span class="section-title__hash">§ 04</span>
+        <span class="section-title__hash">§ 05</span>
         <span class="section-title__label">The MCP server</span>
         <span class="section-title__hint">Read-only · OAuth 2.1 · all nine metros</span>
       </div>
       <p class="blk__note">
-        The same database, exposed to Claude as a small set of read-only tools. My team
-        connects it to claude.ai once and then asks in plain English — "what has been filed
-        near this site in the last ninety days", "what is this builder doing in Atlanta" — and
-        the server runs the query and returns a clean answer.
+        The same database, exposed to Claude as a small set of read-only tools. I connect it
+        to claude.ai once and then ask in plain English — "what has been filed near this site
+        in the last ninety days", "what is this builder doing in Atlanta" — and the server runs
+        the query and returns a clean answer. The chat box above uses the same tools.
       </p>
 
       <dl class="mcp">
@@ -257,6 +382,18 @@ const tools = [
   }
 
   .tablewrap { overflow-x: auto; }
+  .chk__h {
+    font-family: var(--serif);
+    font-size: var(--t-22);
+    font-weight: 500;
+    color: var(--fg);
+    margin: var(--s-7, 40px) 0 var(--s-3);
+  }
+  .chk__h:first-of-type { margin-top: 0; }
+  .chk__tbl { max-width: 100ch; margin-bottom: 0; }
+  .chk__tbl .num { text-align: right; white-space: nowrap; }
+  .chk__tbl tbody th { white-space: normal; }
+  .chk__n { color: var(--muted); font-size: 0.9em; }
   .tools { width: 100%; border-collapse: collapse; font-family: var(--sans); font-size: var(--t-14); max-width: 80ch; }
   .tools th, .tools td { padding: 9px var(--s-3); border-bottom: 1px solid var(--rule-soft); text-align: left; vertical-align: baseline; }
   .tools thead th {
