@@ -8,6 +8,31 @@ This file is the record of what shipped and why — read the newest 1–3 entrie
 
 <!-- session-closeout: insert new entries directly below this line -->
 
+## What just changed (2026-10-03 — Ask the databases streams its answer)
+
+`5424c1b` (fast-forward from `07a534e`, published by Netlify; the bundle carried `chat/stream`
+~30 s after the push). The chat box on Supply and Rent now reads the backend's new
+`POST /chat/stream` (County Permit Pipeline `f4db725`, permit-demo-chat on Railway) instead of
+waiting for one JSON reply:
+
+- the pending line follows real events (which MCP methods were called, which one is still
+  running) instead of a timer; the timer remains only as a fallback before the first event;
+- the model's words appear as written; text from a turn that then asks for more tools stays as
+  a muted working note; `done` replaces the bubble with the authoritative `/chat`-shaped reply
+  (truncation marker, evidence strip, status/quota rules unchanged);
+- every partial render goes through `renderReply`, so raw HTML stays text at every prefix;
+- a 404/405 from `/chat/stream` falls back to `POST /chat`; the draft paints on a 60 ms timer
+  (requestAnimationFrame pauses in background tabs).
+
+New `src/components/chat/chat-stream.ts` + `tests/chat-stream.test.ts` (red: module missing,
+then 3 red for notes + timer paint → `npm test` 17/17 green; `tests/*.test.mjs` 8/8).
+Production, tour Q8 (Georgetown): first model words 10.9 s, final answer text 28.6 s, done 61.0 s
+(before: nothing until ~60 s; total is tool-bound and unchanged). Injected HTML in streamed
+notes, drafts and the final bubble rendered as escaped text on the live bundle. Evidence:
+County Permit Pipeline `html QA/portfolio_review_2026-10-02/evidence/chat_stream_2026-10-03.txt`.
+
+Loose ends: none.
+
 ## What just changed (2026-10-02 — Supply tab: How I check it, safe chat rendering, honest MCP copy)
 
 **`08728b7` + `c022c78`**, published 2026-10-02 ~23:43 PDT (main `8eb20a4..c022c78`, Netlify live ~20 s later).
