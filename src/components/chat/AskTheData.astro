@@ -66,9 +66,11 @@ const placeholder = page === "supply"
 </script>
 <script>
   import { renderReply } from "./render-reply";
+  import { readChatStream, createDraft, stageLabel, streamUrl, type ChatEvent } from "./chat-stream";
 
   const cfg = (window as any).__ASK_CFG as { CHAT_API_PRODUCTION: string; CHAT_API_LOCAL: string; DAILY_LIMIT: number };
   const API = ["localhost", "127.0.0.1"].includes(location.hostname) ? cfg.CHAT_API_LOCAL : cfg.CHAT_API_PRODUCTION;
+  const STREAM_API = streamUrl(API);
   const LS_KEY = "ask_the_data_usage_v1";
   const CONF_TITLES: Record<string, string> = {
     high: "A confirmed permit record, a scraped rent listing, or a Census ring backs this.",
@@ -128,17 +130,17 @@ const placeholder = page === "supply"
           '<span class="ask__typing" aria-hidden="true"><i></i><i></i><i></i></span>' +
           '<span class="ask__stage" data-stage>Sending the question to the model…</span>' +
           '<span class="ask__elapsed" data-elapsed>0s</span>' +
-        '</div>';
+        '</div>' +
+        '<div class="ask__notes" data-notes hidden></div>' +
+        '<div class="ask__draft" data-draft hidden></div>';
       row.appendChild(b); log.appendChild(row);
       return { row, bubble: b };
     }
 
     /**
-     * The backend answers in one shot after the whole tool loop finishes (15-30s for a
-     * cross-database question), so there is no event to render until the end. These stages
-     * are the real order of work — first model turn, tool selection, MCP calls, synthesis —
-     * advanced on a timer rather than on telemetry; the elapsed counter is measured.
-     * Replace both with streamed tool events if /chat ever grows an SSE sibling.
+     * Timer-driven stages, used only until the stream's first progress event arrives (and
+     * on the /chat fallback, which has no events). Once /chat/stream reports a stage, the
+     * label follows the real events; the elapsed counter is always measured.
      */
     const STAGES: [number, string][] = [
       [0, "Sending the question to the model…"],
@@ -151,16 +153,21 @@ const placeholder = page === "supply"
       const stageEl = bubble.querySelector<HTMLElement>("[data-stage]");
       const elapsedEl = bubble.querySelector<HTMLElement>("[data-elapsed]");
       const t0 = Date.now();
+      let live: string | null = null;   // set by stream events; overrides the timer
       const tick = () => {
         const secs = Math.floor((Date.now() - t0) / 1000);
         if (elapsedEl) elapsedEl.textContent = secs + "s";
         let label = STAGES[0][1];
         for (const [at, text] of STAGES) if (secs >= at) label = text;
+        if (live) label = live;
         if (stageEl && stageEl.textContent !== label) stageEl.textContent = label;
       };
       tick();
       const id = window.setInterval(tick, 1000);
-      return () => window.clearInterval(id);
+      return {
+        stop: () => window.clearInterval(id),
+        set: (label: string) => { live = label; tick(); },
+      };
     }
     function groundingEl(data: any): HTMLElement | null {
       const ev = data.evidence || [], tu = data.tools_used || [];
@@ -211,13 +218,48 @@ const placeholder = page === "supply"
       return wrap;
     }
 
+    /**
+     * Live progress + the answer as it is written. Draft and notes are re-rendered
+     * through renderReply (at most every 60 ms — a timer, because requestAnimationFrame
+     * pauses in a background tab), so partial text obeys the same no-live-markup rule as
+     * the final answer; `done` then replaces the bubble with the authoritative reply
+     * (which carries the truncation marker when there is one).
+     */
+    function streamHandler(bubble: HTMLElement, setStage: (label: string) => void) {
+      const draft = createDraft();
+      const draftEl = bubble.querySelector<HTMLElement>("[data-draft]")!;
+      const notesEl = bubble.querySelector<HTMLElement>("[data-notes]")!;
+      const waiting: string[] = [];
+      let frame = 0;
+      const paint = () => {
+        frame = 0;
+        notesEl.hidden = !draft.notes.length;
+        notesEl.innerHTML = draft.notes.map((n) => renderReply(n)).join("");
+        draftEl.hidden = !draft.text;
+        draftEl.innerHTML = draft.text ? renderReply(draft.text) : "";
+      };
+      return (ev: ChatEvent) => {
+        if (ev.type === "stage" && ev.stage === "tools") waiting.splice(0, waiting.length, ...(ev.tools || []));
+        if (ev.type === "tool_done") { const i = waiting.indexOf(ev.tool); if (i >= 0) waiting.splice(i, 1); }
+        const label = stageLabel(ev, waiting);
+        if (label) setStage(label);
+        if (ev.type === "delta" || ev.type === "reset") {
+          const before = draft.text;
+          draft.apply(ev);
+          if (ev.type === "delta" && !before) setStage("The model is writing…");
+          if (!frame) frame = window.setTimeout(paint, 60);
+        }
+      };
+    }
+
     async function send(text: string, idx: number | null, chip: HTMLButtonElement | null = null) {
       if (busy || atLimit()) return;
       busy = true; sendBtn.disabled = true; input.value = "";
       if (chip) { chip.classList.add("is-running"); chip.setAttribute("aria-busy", "true"); }
       addUser(text);
       const { row, bubble } = botRow();
-      const stopPending = startPending(bubble);
+      const pending = startPending(bubble);
+      const stopPending = pending.stop;
       // behavior:"smooth" silently no-ops where reduced motion is on, which left the
       // pending bubble ~2,000px below the chip the visitor just clicked — the whole
       // "nothing happened" report. Fall back to an instant jump in that case.
@@ -226,13 +268,23 @@ const placeholder = page === "supply"
       const ctl = new AbortController();
       const killer = window.setTimeout(() => ctl.abort(), 180000);
       try {
-        const res = await fetch(API, {
+        const post = (url: string) => fetch(url, {
           method: "POST", headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ message: text, history: history.slice(-6) }),
           signal: ctl.signal,
         });
-        if (!res.ok) throw new Error("HTTP " + res.status);
-        const data = await res.json();
+        let data: any;
+        let res = await post(STREAM_API);
+        if (res.status === 404 || res.status === 405) {
+          // Backend without /chat/stream yet: the one-shot endpoint. A 404 never reached
+          // the rate limiter, so this is not a second charge against the visitor.
+          res = await post(API);
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          data = await res.json();
+        } else {
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          data = await readChatStream(res, streamHandler(bubble, pending.set));
+        }
         stopPending();
         bubble.innerHTML = renderReply(data.reply);
         bubble.querySelectorAll("table").forEach((t) => { const w = document.createElement("div"); w.className = "ask__tbl"; t.replaceWith(w); w.appendChild(t); });
@@ -331,6 +383,9 @@ const placeholder = page === "supply"
   .ask :global(.ask__ev-list) { margin: 2px 0 0; padding-left: 15px; } .ask :global(.ask__ev-list li) { font-size: 0.78rem; margin: 2.5px 0; }
   .ask :global(.ask__ev-src) { color: var(--accent); font-weight: 500; } .ask :global(.ask__ev-id) { color: var(--muted); }
   .ask :global(.ask__pending) { display: flex; align-items: center; gap: 9px; }
+  .ask :global(.ask__draft) { margin-top: 10px; }
+  .ask :global(.ask__notes) { margin-top: 8px; font-size: 0.82rem; color: var(--muted); font-style: italic; }
+  .ask :global(.ask__notes p) { margin: 0 0 4px; }
   .ask :global(.ask__stage) { font-size: 0.86rem; color: var(--fg-soft); }
   .ask :global(.ask__elapsed) { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); margin-left: auto; padding-left: 10px; }
   .ask :global(.ask__typing) { display: inline-flex; align-items: center; flex: 0 0 auto; }
