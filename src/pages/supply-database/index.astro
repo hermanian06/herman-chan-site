@@ -57,14 +57,18 @@ const forRE = [
  *  - evals: County Permit Pipeline `python -m evals.run --surface epd_classify_dwelling`
  *    (evals.run id 15) and `--surface azdeq_classify` (id 16); goldens labelled from the
  *    filing PDF, developer site and county permits, never from model output.
- *  - Houston note: evals.tceq_houston_mf_label surface='precision' (651 filings labelled
- *    2026-06-03; production_label = the pre-fix call). 453 mf + 4 btr_sf rental, 176 sfd +
- *    5 townhome = 181 rent/sale errors. No current score is published: the June 3 rule fix
- *    was written from these goldens (a 2026-10-02 re-score of 789 = 90.6% exact is leaked).
+ *  - Houston: evals.run id 17 (2026-10-03), surface tceq_noi_classify_houston_blind. 137
+ *    fresh region-12 filings outside every earlier Houston golden set, labelled blind to the
+ *    model's labels with web search, scored on the live labels with evals.comparator (same
+ *    exact / bucket / business_miss definitions as ids 15-16). Stratified by live label.
+ *    June baseline in the note: evals.tceq_houston_mf_label surface='precision' (651; 176 sfd
+ *    + 5 townhome = 181). The June goldens are NOT re-scored: the rule fix was written from
+ *    them (a re-score of 789 = 90.6% exact is leaked). Defects filed: bug_reports #3412, #3413.
  *  - model use: observability.llm_calls, 30 days to 2026-10-02, grouped by system_name. */
 const evals = [
   { metro: "Atlanta", n: 93, exact: "82.8%", exactN: 77, bucket: "88.2%", bucketN: 82, miss: 6 },
   { metro: "Phoenix", n: 65, exact: "84.6%", exactN: 55, bucket: "86.2%", bucketN: 56, miss: 7 },
+  { metro: "Houston", n: 137, exact: "78.1%", exactN: 107, bucket: "81.8%", bucketN: 112, miss: 23 },
 ];
 const modelUse = [
   { step: "Reading filing PDFs", model: "Claude Haiku 4.5", calls: "363", usd: "$3.38",
@@ -142,8 +146,8 @@ const tools = [
         A language model reads each stormwater filing and says what will be built: single-family
         homes, townhomes, apartments, a mix, or unknown. I score it against filings I labelled by
         hand from the filing's PDF, the developer's website and the county's permits, never from
-        the model's own answers. Re-run on October 2, 2026 with Claude Haiku 4.5; both scores
-        match the June baseline.
+        the model's own answers. Atlanta and Phoenix were re-run on October 2, 2026 with Claude
+        Haiku 4.5 and match their June baselines. Houston is new, and is explained below.
       </p>
       <div class="tablewrap" role="region" tabindex="0" aria-label="Classifier evaluation">
         <table class="tools chk__tbl">
@@ -171,21 +175,24 @@ const tools = [
       </div>
       <p class="blk__note blk__note--small">
         Buckets are for sale (single-family and townhome), for rent (apartments), mixed and
-        unknown, plus commercial in Phoenix. A rent / sale error is the one that matters: a
-        for-sale subdivision counted as rental supply distorts a rent underwrite, so any one of
-        them fails the run and names the filing. In production, Atlanta adds a developer lookup
+        unknown, plus commercial in Phoenix and Houston. A rent / sale error is the one that
+        matters: a for-sale subdivision counted as rental supply distorts a rent underwrite, so
+        any one of them fails the run and names the filing. Where there is a commercial bucket,
+        the count also includes homes labelled commercial and the reverse. In production, Atlanta adds a developer lookup
         on top of the model. I don't publish its score on these filings, because the lookup was
         built from them.
       </p>
       <p class="blk__note blk__note--small">
-        Houston isn't in the table, and the reason is worth showing. Its labelling runs mostly on rules,
-        with the model handling only the filings the rules can't place. On June 3, 2026 I
-        hand-labelled the 651 Houston filings it had called apartments: 457 were rental housing,
-        and 181 were for-sale homes or townhomes, mostly large subdivisions filed as if they
-        were apartments. I rewrote the rules so other parts of a filing can overrule that.
-        Re-scored today it looks far better, but I don't publish that number: the new rules were
-        written from those same filings, so they would be graded on their own answer key. A
-        fresh blind sample of filings the rules never saw is the next check.
+        Houston is the weakest row. Its labelling runs mostly on rules, with the model handling
+        only the filings the rules can't place. In June I checked 651 Houston filings it had
+        called apartments and found 181 for-sale homes or townhomes among them, so I rewrote the
+        rules from those filings. Scoring the rules on those same filings would grade them on
+        their own answer key, so this row uses 137 filings no rule was written from, labelled on
+        October 3, 2026 without seeing the database's answers. It found two problems the June
+        check couldn't: rules from June firing on unrelated filings, such as a power line on a
+        road that shares a name with an apartment brand, and seven apartment complexes labelled
+        as townhomes. Both are logged as the next fix, and the score after it will come from
+        another fresh sample.
       </p>
 
       <h3 class="chk__h">Where the AI runs, and what it costs</h3>
