@@ -57,6 +57,10 @@ const forRE = [
  *  - evals: County Permit Pipeline `python -m evals.run --surface epd_classify_dwelling`
  *    (evals.run id 15) and `--surface azdeq_classify` (id 16); goldens labelled from the
  *    filing PDF, developer site and county permits, never from model output.
+ *  - Houston note: evals.tceq_houston_mf_label surface='precision' (651 filings labelled
+ *    2026-06-03; production_label = the pre-fix call). 453 mf + 4 btr_sf rental, 176 sfd +
+ *    5 townhome = 181 rent/sale errors. No current score is published: the June 3 rule fix
+ *    was written from these goldens (a 2026-10-02 re-score of 789 = 90.6% exact is leaked).
  *  - model use: observability.llm_calls, 30 days to 2026-10-02, grouped by system_name. */
 const evals = [
   { metro: "Atlanta", n: 93, exact: "82.8%", exactN: 77, bucket: "88.2%", bucketN: 82, miss: 6 },
@@ -172,6 +176,16 @@ const tools = [
         them fails the run and names the filing. In production, Atlanta adds a developer lookup
         on top of the model. I don't publish its score on these filings, because the lookup was
         built from them.
+      </p>
+      <p class="blk__note blk__note--small">
+        Houston isn't in the table, and the reason is worth showing. Its labelling runs mostly on rules,
+        with the model handling only the filings the rules can't place. On June 3, 2026 I
+        hand-labelled the 651 Houston filings it had called apartments: 457 were rental housing,
+        and 181 were for-sale homes or townhomes, mostly large subdivisions filed as if they
+        were apartments. I rewrote the rules so other parts of a filing can overrule that.
+        Re-scored today it looks far better, but I don't publish that number: the new rules were
+        written from those same filings, so they would be graded on their own answer key. A
+        fresh blind sample of filings the rules never saw is the next check.
       </p>
 
       <h3 class="chk__h">Where the AI runs, and what it costs</h3>
