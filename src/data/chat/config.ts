@@ -20,9 +20,9 @@ export type TourItem = { q: string; method: string; kind: "supply" | "rents" | "
  * visitor can see the tool loop do exactly what the tool table promises.
  */
 export const TOUR: TourItem[] = [
-  { q: "Which BFR or townhome subdivisions over 100 units were filed in metro Atlanta in the last 90 days?", method: "find_subdivisions", kind: "supply" },
-  { q: "List multifamily projects over 200 units permitted in metro Austin this year, with the developer.", method: "mf_projects", kind: "supply" },
-  { q: "What's the median asking rent, and the share of communities offering concessions, for 3-bed BFR in Atlanta right now?", method: "rent_market_summary", kind: "rents" },
+  { q: "Which subdivisions over 100 estimated units were filed in metro Atlanta in the last 90 days, and who is the recorded owner of each?", method: "find_subdivisions", kind: "supply" },
+  { q: "Show up to 15 active multifamily projects with at least 200 units in metro Austin's permit layer, with each project's stage.", method: "mf_projects", kind: "supply" },
+  { q: "What's the median asking rent, and the share of floor plans offering a concession, for 3-bed BFR in Atlanta right now?", method: "rent_market_summary", kind: "rents" },
   { q: "Which markets does the rent database cover, and how fresh is each one?", method: "rent_coverage", kind: "rents" },
   { q: "What are the population, households and median income within 1, 3 and 5 miles of 2200 Katy Fort Bend Rd, Katy, TX?", method: "demand_rings", kind: "demand" },
   { q: "What's in the supply pipeline within 3 miles of the Centennial Ridge community in Atlanta?", method: "rent_community_lookup → permits_near", kind: "cross" },
