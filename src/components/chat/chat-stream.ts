@@ -3,7 +3,7 @@
  *
  * Event vocabulary (permit-demo-chat `_stream_chat`):
  *   stage     {stage: "model", turn} | {stage: "tools", tools: [...]}
- *   tool_done {tool, ok, records}
+ *   tool_done {tool, ok, records, fact?}  fact = one line built by CODE from that tool's records
  *   delta     {text}   answer text as the model writes it
  *   reset     text streamed in a turn that then asked for tools is withdrawn
  *   done      the same object POST /chat returns — `reply` is authoritative
@@ -99,4 +99,40 @@ export async function readChatStream(res: Response, onEvent: (ev: ChatEvent) => 
   }
   if (!done) throw new Error("stream ended before the answer finished");
   return done;
+}
+
+const FACT_LABELS: Record<string, string> = {
+  demand_rings: "Demographics",
+  permits_near: "Supply pipeline",
+  find_subdivisions: "Filings",
+  recent_filings: "Filings",
+  mf_projects: "Multifamily permits",
+  rent_market_summary: "Rent market",
+  rent_comps_near: "Rent comps",
+  rent_community_lookup: "Community",
+  rent_coverage: "Rent coverage",
+};
+const FACT_MAX = 240;
+
+export function factLabel(tool: string): string {
+  return FACT_LABELS[tool] ?? tool;
+}
+
+/**
+ * Facts as they land: each successful `tool_done` with a non-blank string `fact` adds
+ * one line, in arrival order. The component renders them with textContent, so a fact
+ * is never markup. Pinned by tests/chat-facts.test.ts.
+ */
+export function createFacts() {
+  const items: { label: string; text: string }[] = [];
+  return {
+    apply(ev: ChatEvent): boolean {
+      if (ev.type !== "tool_done" || !ev.ok || typeof ev.fact !== "string" || !ev.fact.trim()) return false;
+      let text = ev.fact.trim();
+      if (text.length > FACT_MAX) text = text.slice(0, FACT_MAX) + "…";
+      items.push({ label: factLabel(String(ev.tool)), text });
+      return true;
+    },
+    get items() { return items; },
+  };
 }
