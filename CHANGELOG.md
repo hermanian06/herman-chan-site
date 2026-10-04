@@ -8,6 +8,23 @@ This file is the record of what shipped and why — read the newest 1–3 entrie
 
 <!-- session-closeout: insert new entries directly below this line -->
 
+## What just changed (2026-10-04 — Ask the databases: honest chips + facts as they land)
+
+- **Chips Q1–Q3 reworded** (`35bd71a`, published): each now asks only for what its MCP tool can
+  return. Q1 dropped "BFR or townhome" (find_subdivisions has no product filter; every row came back
+  single-family) and asks for the recorded owner; Q2 dropped "this year" and "the developer" (no date
+  argument; Austin's developer field is null) and asks for up to 15 active projects with stage; Q3 says
+  "share of floor plans" (the figure is a floor-plan-group share). Live-tested against the backend
+  before the edit: 12 / 15 / 1 rows, the right tool and arguments each time.
+- **Facts as they land** (`a3970c7`, published): the pending bubble lists one line per finished tool
+  from the stream's `tool_done.fact` (built by code in permit-demo-chat `badb68d`, deployed), e.g.
+  "✓ RENT MARKET ATL 3-bed BFR: median asking $2,317 (range floor)…" at 14.6 s on the live Q3 chip.
+  textContent only. Tests: `tests/chat-facts.test.ts` (RED: no `createFacts` export → GREEN 22).
+- Chat styling fix from 2026-09-18 (`1a2d11d` on `redesign/six-tabs`) reached `main` as `05bbb4a`.
+
+Answer time is now set by the model, not the tools (CPP CHANGELOG 2026-10-04; bug_reports #3425).
+Open: #3426 — no chip demonstrates a refusal.
+
 ## What just changed (2026-10-03 — Ask the databases streams its answer)
 
 `5424c1b` (fast-forward from `07a534e`, published by Netlify; the bundle carried `chat/stream`
