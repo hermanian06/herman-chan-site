@@ -31,7 +31,14 @@ test("the intro's five / three / one count matches the chips' kinds", () => {
   const single = TOUR.filter((t) => ["supply", "rents", "demand"].includes(t.kind)).length;
   const cross = TOUR.filter((t) => t.kind === "cross").length;
   const limits = TOUR.filter((t) => t.kind === "limits").length;
-  assert.deepEqual([single, cross, limits], [5, 3, 1]);
+  const WORDS: Record<string, number> = { one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9 };
+  const src = readFileSync(new URL("../src/components/chat/AskTheData.astro", import.meta.url), "utf8");
+  // Codex round 2: tie the DISPLAYED sentence (both the supply and rent intros) to TOUR.
+  const intros = [...src.matchAll(/(\w+) single-database questions, (\w+) that cross them, and (\w+) it should decline/g)];
+  assert.equal(intros.length, 2, "both page intros carry the count sentence");
+  for (const m of intros) {
+    assert.deepEqual([m[1], m[2], m[3]].map((w) => WORDS[w.toLowerCase()]), [single, cross, limits], m[0]);
+  }
 });
 
 test("the tour label does not claim every chip calls an MCP method", () => {
