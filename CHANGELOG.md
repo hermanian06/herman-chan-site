@@ -8,6 +8,16 @@ This file is the record of what shipped and why — read the newest 1–3 entrie
 
 <!-- session-closeout: insert new entries directly below this line -->
 
+## What just changed (2026-10-04 — a ninth chip the databases decline; shorter answers)
+
+- **Chip 9** (`71e3949`, published): "What's the supply pipeline in Denver, and what cap rate should
+  I underwrite there?" — kind `limits`, italic caption; intro reads "…three that cross them, and one
+  it should decline." Live: declined both halves with a low-confidence pill, no vendors named
+  (bug_reports #3426). Shipped after permit-demo-chat `6c23fc0`, whose answer budget also cut the
+  tour from 5/9 to 8/9 chips under 20 s in a live A/B (#3425; Q8, the three-database screen, still
+  ~30-39 s). Known residual: the refusal says rents cover "a similar footprint" though the rent
+  database does include Denver.
+
 ## What just changed (2026-10-04 — Ask the databases: honest chips + facts as they land)
 
 - **Chips Q1–Q3 reworded** (`35bd71a`, published): each now asks only for what its MCP tool can
