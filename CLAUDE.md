@@ -3,45 +3,48 @@
 Inherits from global `CLAUDE.md`. Read this before editing anything in this repo.
 
 **Session history → [`CHANGELOG.md`](CHANGELOG.md)** (newest first — read the top 1–3 to
-resume). This file carries rules and architecture only; closeout never appends entries here.
+resume; release receipts, live-proof files and SHAs live there, not here). This file carries
+rules and architecture only; closeout never appends entries here.
 
 ---
 
-## Current state (2026-10-03)
+## Publishing = a production deploy (Herman's go)
 
-`main` `ed585c1` is published and verified live. The Underwriting sample is "Sample Mesa Apt"
-(never the real asset's name or street), Rent comps shows Tiers 1-2 only, and Supply lists each
-project within 3 miles; the sample fragments and downloads come only from Portfolio Demo's
-`publish_to_site.py`, never hand edits. Blog remains 29 main stories across seven topics plus
-seven archive articles; Chain contracts copy and the chat-styling fix `05bbb4a` are included.
-Since `5424c1b` (2026-10-03) the chat streams from the backend's `/chat/stream`, falling back to `/chat` on 404.
+- **A push to `main` IS a Netlify production deploy** (`netlify.toml`: `npm run build` →
+  `dist/`). Merging to or pushing `main` needs Herman's explicit go every time (claude-skills
+  `_shared/AUTHORITY.md`, row `herman-chan-site`). This repo has no post-commit auto-push, and the
+  fleet "finish a bug-fix branch" carve-out does not apply here.
+- Work in a fresh Mac worktree off fetched `origin/main`
+  (`git worktree add ~/code/worktrees/<slug>-<task> -b <branch> origin/main`), commit there, and
+  hand back branch + SHA. Leave other worktrees and the old `redesign/six-tabs` branch alone.
+- Docs-only commits carry `[skip netlify]` in the message so the push does not rebuild the site.
+- **Publish only from the Mac clone `/Users/hermanchan/code/herman-chan-site`.** It has a real
+  `.git` (not a Drive gitdir pointer), so any older copy on another machine can still accept
+  commits and diverge silently — never commit or push from one.
 
-The six tabs remain Intro (`/`), Underwriting Agent (`/underwriting-agent/`), Supply Database
-(`/supply-database/`), Rent Database (`/rent-database/`), Blog (`/blog/`) and About (`/about/`).
-Site design, typography, uploads, chats, dashboards, samples and other production features
-are preserved. Keep `/legacy/`, `/projects/` and `/posts/` available, with every published
-post listed on Blog.
+## Site architecture
 
-Metrics in `src/data/project-metrics.ts` are dated build-time snapshots; recheck their
-sources before making new quantitative claims.
+Six tabs: Intro (`/`), Underwriting Agent (`/underwriting-agent/`), Supply Database
+(`/supply-database/`), Rent Database (`/rent-database/`), Blog (`/blog/`), About (`/about/`).
+Keep `/legacy/`, `/projects/` and `/posts/` resolving. Preserve existing design, typography,
+uploads, chats, dashboards and samples unless Herman asks for a change.
 
-Rent (2026-09-30): the § 03 dashboard JSON `src/data/rents/rent-database.json` is written by
-bfr-rent-tracker `tools/export_public_stats.py` (refresh = run it, build, commit the JSON). Its
-sample shows only read communities, with an Avg rent column (Herman's call, 2026-09-30). The hero
-`src/data/rents/portfolio-headline.json` is hand-measured, with no exporter: 22 / 16,844 / 202,660
-at 2026-09-30 17:16 UTC. Re-measure all three together; the SQL is in the 2026-09-30 CHANGELOG entry.
-
-Supply (2026-09-30): `/supply-database/` § 03 is a generated dashboard,
-`src/components/supply/SupplyDashboard.astro` over `src/data/supply/supply-database.json`, and
-the Supply hero metrics read the same JSON (no hand-typed supply numbers remain). The JSON is
-written by County Permit Pipeline `tools_local/export_public_supply_stats.py` (read-only; it
-refuses when a tracked registry source has no `access_method`). Refresh = run that exporter,
-build, commit the JSON. The MCP section moved to § 04.
-
-Live proof: `/Users/hermanchan/Documents/Codex/chain-contract-copy-review-20260926/live-verification.json`.
-Blog and all five articles matched the reviewed build at 2026-09-26 21:53:16 UTC.
-Start from fetched `origin/main` in a fresh Mac worktree; preserve the old
-`redesign/six-tabs` branch and other worktrees. No website-task loose ends remain.
+- **Underwriting sample** — the subject is "Sample Mesa Apt", never the real asset's name or
+  street. The sample fragments and downloads are written only by Portfolio Demo
+  `tools/publish_to_site.py`; never hand-edit them.
+- **Rent § 03 dashboard** — `src/data/rents/rent-database.json` is written by bfr-rent-tracker
+  `tools/export_public_stats.py` (refresh = run it, build, commit the JSON). The hero
+  `src/data/rents/portfolio-headline.json` is hand-measured with no exporter: re-measure all of its
+  counts together (the SQL is in the 2026-09-30 CHANGELOG entry) and update its `*measured_at` fields.
+- **Supply § 03 dashboard** — `src/components/supply/SupplyDashboard.astro` over
+  `src/data/supply/supply-database.json`; the Supply hero metrics read the same JSON (no hand-typed
+  supply numbers). Written by County Permit Pipeline `tools_local/export_public_supply_stats.py`
+  (read-only; refuses when a tracked source has no `access_method`). Refresh = run it, build,
+  commit the JSON.
+- **Ask-the-databases chat** — client in `src/components/chat/chat-stream.ts` (streams from the
+  backend's `/chat/stream`, falls back to `/chat` on 404).
+- `src/data/project-metrics.ts` holds dated build-time snapshots — recheck their sources before
+  making any new quantitative claim.
 
 ---
 
@@ -50,40 +53,15 @@ Start from fetched `origin/main` in a fresh Mac worktree; preserve the old
 | Path | What lives here |
 |---|---|
 | **`~/code/herman-chan-site/`** on the **Mac** (this repo) | The live Astro source. Builds, deploys, gets committed to git. |
-| **`~/My Drive/Claude AI/AI + SFR website/`** (Drive, both machines) | Drafts, brand/voice docs, LinkedIn revisions, planning. Never built. |
+| **`~/My Drive/Claude AI/AI + SFR website/`** (Drive) | Drafts (`post-NNN-<slug>.md`), brand/voice notes, LinkedIn revisions, planning. Never built. |
 
-The Drive folder has its own `CLAUDE.md` — same info, mirrored for whichever folder you start a session in.
-
-### The Mac is the only machine that publishes (2026-07-30)
-
-Publishing moved off Windows on 2026-07-30. **Commit and push only from the Mac clone at
-`/Users/hermanchan/code/herman-chan-site`.** Node 24.18.0 there clears Astro 6's `>=22.12` floor.
-
-Unlike Herman's Drive-synced repos, this one has a **real `.git`**, so the old Windows working
-copy still accepts commits and the two clones can silently diverge. Nothing in it needed
-importing — all 46 non-regenerable files were already git-tracked and pushed.
-
-**Open manual step (must be done on the Windows machine):** rename
-`C:\Users\herma\Claude AI Local\AI and SFR website`
-→ `C:\Users\herma\Claude AI Local\_STALE_AI and SFR website`.
-Rename only — delete nothing. Until that happens, the divergence risk above is still live.
+The Drive folder's `CLAUDE.md` is a stub pointing here; this file is canonical for both.
 
 ### Cross-machine sync = git, not Drive
 
-Remote: **`https://github.com/hermanian06/herman-chan-site.git`** on `main`. To work from another machine:
-
-```sh
-git clone https://github.com/hermanian06/herman-chan-site.git
-cd herman-chan-site
-npm ci        # NOT npm install — installs the exact tree pinned in package-lock.json
-npm run dev
-```
-
-**Never copy `node_modules/` between machines.** Rollup and esbuild ship per-OS/per-arch native
-binaries, so a Windows x64 tree fails on Apple Silicon. `npm ci` rebuilds it from the committed
-lockfile — that is the only supported path.
-
-**Do not** try to put this repo under Drive sync.
+Remote: **`https://github.com/hermanian06/herman-chan-site.git`**. Fresh checkout:
+`git clone …` then **`npm ci`** (never `npm install`, never copy `node_modules/` between
+machines — Rollup/esbuild ship per-OS native binaries) then `npm run dev`.
 
 ### Why this repo is not in Drive — don't undo the split
 
@@ -112,34 +90,37 @@ Source code with a build step belongs in git. Drafts and plans without a build s
    title: Why I split the underwriting agent into two prompts   # required
    pubDate: 2026-05-24                                          # required, ISO date
    description: One-liner shown under the title on archive + landing.  # always include
-   project: skills-suite                                        # optional — see slugs below
+   project: skills-suite                                        # optional — see "project: slugs" below
    tag: AI                                                      # optional display label
    tagClass: ai                                                 # optional — enum: ai | cre | notes
    draft: false                                                 # optional, default false
    ---
    ```
-3. Body in Markdown below.
-4. `npm run dev` → http://localhost:4321/posts/<slug>/ to preview.
-5. Commit + push. Netlify auto-deploys on push to `main`.
+3. Body in Markdown below. Run the Redaction checklist below if it touches Haven work.
+4. `npm run dev` → http://localhost:4321/posts/<slug>/ to preview; `npm run build` must pass.
+5. Commit on your worktree branch. **Publishing (merge/push to `main`) is a Netlify production
+   deploy and waits for Herman's go** — see "Publishing" above.
 
 Schema is enforced by [`src/content.config.ts`](src/content.config.ts) (Zod via Astro content collections). A bad field fails the build — check frontmatter first when `npm run build` errors.
 
-### RULE — every published post shows in § 03 Writing (Herman, 2026-06-10)
+### RULE — every published post stays listed (Herman, 2026-06-10)
 
-The landing page's **§ 03 Writing** section lists **ALL published posts, newest first — never cap, slice, or curate it** (`src/pages/index.astro` renders the full collection; the old `.slice(0, 6)` silently dropped older posts as new ones landed). When adding a post, verify it appears on the landing index before calling the publish done. If the list ever gets long enough to genuinely need a cap, that's Herman's call — don't reintroduce one unilaterally.
+Never cap, slice, or curate a post listing. `/legacy/` § 03 Writing renders every published post,
+newest first (`src/pages/legacy/index.astro`); Blog shows each post either as a story in
+`src/data/blog-outline.ts` or in its archive (`src/pages/blog/index.astro`). When adding a post,
+verify it appears on both before calling the publish done. A cap is Herman's call only.
 
-### Valid `project:` slugs
-Must match an existing file in `src/content/projects/` (list refreshed 2026-07-30 — the old list had drifted):
-- `skills-suite`
-- `underwriting-agent`
-- `permit-pipeline`
-- `permit-pipeline-mcp`
-- `evaluation-framework`
-- `deal-document-search`
-- `multi-model-build-chain`
-- `egnyte-mcp` (draft)
+### Valid `project:` slugs — derive, don't copy
 
-If `project:` matches, the post appears on that project page under "Posts about this." Otherwise archive only.
+A slug is a filename in `src/content/projects/` (minus `.md`). A post appears under that project's
+page only when the project has a detail page — not `draft: true` and no `href:`. List the slugs
+that qualify on the branch you are publishing from:
+
+```sh
+grep -L -e '^draft: true' -e '^href:' src/content/projects/*.md
+```
+
+Any other `project:` value builds fine but the post lives in the Blog archive only.
 
 ---
 
@@ -153,13 +134,14 @@ If `project:` matches, the post appears on that project page under "Posts about 
   - **Closer:** tie back to the business outcome.
 - **Title is specific.** *"Why I split the underwriting agent into two prompts"* ✓ — *"AI in BFR"* ✗
 - **"I built / I learned"** — never "Haven does / our team uses." Builder voice, not company voice.
-- **Human voice, not essay-polish (site-wide tone pass, 2026-06-10 — Herman's call).** Five rules, applied to all 7 live posts; hold every new post to them:
+- **Human voice, not essay-polish (site-wide tone pass, 2026-06-10 — Herman's call).** Hold every post to these:
   1. **No engraved aphorism closers.** End plain and personal ("two deals processed a month apart now come out looking identical"), not on a maxim ("The model itself is the easy part.").
   2. **No listicle scaffolding** ("The first was **drift**. The second was…") — write through in prose.
   3. **Break perfect parallelism.** Three identically-shaped sentences in a row reads machine-made; fold or vary them.
   4. **Jargon at Herman's level** (the persona is "I direct the build, Claude writes the code"): translate code literals and insider terms to plain words — `temperature=0` → "runs are pinned so the model answers the same way every time"; `LEAST(NULL,2000)` → describe the behavior.
   4b. **Precise scores → ranges (Herman, 2026-06-10).** Never publish exact accuracy/eval decimals (82.8%, 76%, 90.3%) — Herman won't recall them under interview questioning, and an unrecallable precise number is a liability, not evidence. Use ranges that carry the concept: "mid-seventies," "low eighties," "about two percent of rows," "roughly seven points." **Story numbers he actually remembers are fine** (the year-2879 filing, 17 checks, fifteen passed / two failed, two weeks frozen). Test: would he reproduce the number cold in an interview? If not, range it.
   5. **Allow first-person texture** ("Honestly, 76% stung a little", "Which, in hindsight, is obvious", "The other failure was mine") — and go easy on em-dashes.
+- **Evidence-backed claims only.** Every number or capability on the site must trace to a source you re-checked before publishing (an exporter JSON, a query, the code) — see the `project-metrics.ts` note above.
 
 Canonical example: [`src/content/posts/rent-comps-t12-skills.md`](src/content/posts/rent-comps-t12-skills.md).
 
@@ -171,7 +153,7 @@ The site is publicly auditioning for Anthropic Forward Deployed Engineer roles. 
 
 - [ ] **No internal screenshots with real deals, addresses, or financials.** Sample data only.
 - [ ] **County Permit Pipeline** is abstracted as *"automated public-records monitoring pipeline for off-market deal flow."* Show architecture + AI classification choices. Hide: specific sources, filter logic, keywords, thresholds, volume specifics.
-- [ ] **Agent Suite:** show orchestration pattern + per-task model routing. No internal screenshots with real data.
+- [ ] **Underwriting agent (formerly "Agent Suite"):** show orchestration pattern + per-task model routing. No internal screenshots with real data.
 - [ ] **Skills suite:** code snippets only if completely non-sensitive (no Haven-specific column names, no proprietary scoring).
 - [ ] **No mention of specific Haven deals, employees, or financial figures.**
 - [ ] **No "I'm looking for a role at X" framing.** Builder portfolio; role-targeting is operational, not visible.
@@ -181,7 +163,7 @@ The site is publicly auditioning for Anthropic Forward Deployed Engineer roles. 
 
 ## Editing project pages
 
-`src/content/projects/<slug>.md`. Body = intro paragraph for the project page. Frontmatter (`title`, `blurb`, `order`) drives the project card on landing. Optional rich sections (`stats`, `timeline`, `changelog`, `stack`, etc.) defined in [`src/content.config.ts`](src/content.config.ts) — hidden when absent.
+`src/content/projects/<slug>.md`. Body = intro paragraph for the project page. Frontmatter (`title`, `blurb`, `order`) drives the project card. An `href:` sends the card to that URL and suppresses the detail page; `draft: true` hides the entry. Optional rich sections (`stats`, `timeline`, `changelog`, `stack`, etc.) are defined in [`src/content.config.ts`](src/content.config.ts) — hidden when absent.
 
 ---
 
@@ -194,8 +176,8 @@ The site is publicly auditioning for Anthropic Forward Deployed Engineer roles. 
 
 ## Tech notes
 
-- **Stack:** Astro 6 + Tailwind + Node 22.12+. Netlify on push to `main`.
-- **Local dev:** `npm install && npm run dev` from this folder.
+- **Stack:** Astro 6 + Tailwind; Node per `package.json` `engines`.
+- **Local dev:** `npm ci && npm run dev` from this folder; `npm test` runs `tests/**/*.test.ts`.
 - **`.gitignore` already covers** `node_modules/`, `dist/`, `.astro/`, `.env`, `.claude/`, `.vscode/`, `.idea/`. Don't commit any of those.
 - **No analytics.** If adding, use Plausible (privacy, no cookie banner).
 - **Rows written by an inline `<script>` get no Astro scope attribute**, so a component's scoped table rules never reach them. Style them with `:global(...)` pinned to the table or tbody id (the rent and supply dashboard sample tables both do).
@@ -210,9 +192,6 @@ See [`BUILD_NOTES.md`](BUILD_NOTES.md) for FDE-review feedback punch list (proje
 
 ## Related planning docs (in the Drive folder)
 
-Not synced to this repo. Read directly if needed:
-- `portfolio-site-plan.md` — master plan: target role, locked decisions, four projects, distribution
-- `landing-intro.md` — hero copy variants
-- `project-blurbs.md` — project card descriptions
-- `linkedin-revisions.md` — LinkedIn profile rewrites
-- `post-NNN-<slug>.md` — drafts that haven't been promoted yet
+Not synced to this repo. Read directly if needed: `portfolio-site-plan.md` (master plan),
+`landing-intro.md`, `project-blurbs.md`, `linkedin-revisions.md`, and unpromoted
+`post-NNN-<slug>.md` drafts.
