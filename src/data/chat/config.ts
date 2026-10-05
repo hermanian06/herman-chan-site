@@ -17,8 +17,8 @@ export type TourItem = { q: string; method: string; kind: "supply" | "rents" | "
 /**
  * The guided tour: five single-database questions, three that cross databases, and one the
  * databases cannot answer — the page promises the box says so rather than guessing.
- * Each one exercises a specific MCP method — the caption on the chip says which — so a
- * visitor can see the tool loop do exactly what the tool table promises.
+ * The first eight each exercise specific MCP methods — the chip caption names them — so a
+ * visitor can see the tool loop do what the tool table promises; the ninth calls none.
  */
 export const TOUR: TourItem[] = [
   { q: "Which subdivisions over 100 estimated units were filed in metro Atlanta in the last 90 days, and who is the recorded owner of each?", method: "find_subdivisions", kind: "supply" },
