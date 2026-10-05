@@ -15,8 +15,8 @@ const intro = page === "supply"
   ? "Ask the supply database — and the rent and demand databases it shares a server with."
   : "Ask the rent database — and the supply and demand databases it shares a server with.";
 const lead = page === "supply"
-  ? "This box runs the same Model Context Protocol server I query from claude.ai: nine metros of supply, the weekly rent scrape, and Census demand rings. Five single-database questions, then three that cross them."
-  : "This box runs the same Model Context Protocol server I query from claude.ai: the weekly rent scrape, nine metros of supply, and Census demand rings. Five single-database questions, then three that cross them.";
+  ? "This box runs the same Model Context Protocol server I query from claude.ai: nine metros of supply, the weekly rent scrape, and Census demand rings. Five single-database questions, three that cross them, and one it should decline."
+  : "This box runs the same Model Context Protocol server I query from claude.ai: the weekly rent scrape, nine metros of supply, and Census demand rings. Five single-database questions, three that cross them, and one it should decline.";
 const placeholder = page === "supply"
   ? "Ask about supply, rents or demand…"
   : "Ask about rents, supply or demand…";
@@ -370,6 +370,7 @@ const placeholder = page === "supply"
   .ask__q-body { display: flex; flex-direction: column; gap: 4px; }
   .ask__method { font-family: var(--mono); font-size: 0.68rem; color: var(--muted); }
   .ask__method--cross { color: var(--accent); }
+  .ask__method--limits { color: var(--fg-soft); font-style: italic; }
   .ask__log > :global(.ask__row + .ask__row) { margin-top: 18px; }
   .ask__limit { margin: 0 0 14px 42px; border: 1px solid var(--rule); background: var(--code-bg); border-radius: 10px; padding: 12px 16px; font-size: 0.88rem; }
   .ask__limit p { margin: 0; }

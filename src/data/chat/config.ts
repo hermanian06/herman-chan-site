@@ -12,10 +12,11 @@ export const CHAT_API_LOCAL = "http://127.0.0.1:8799/chat";
 /** Per-browser soft cap (localStorage). The server's per-IP and daily-dollar caps are the backstop. */
 export const DAILY_LIMIT = 20;
 
-export type TourItem = { q: string; method: string; kind: "supply" | "rents" | "demand" | "cross" };
+export type TourItem = { q: string; method: string; kind: "supply" | "rents" | "demand" | "cross" | "limits" };
 
 /**
- * The guided tour: five single-database questions, then three that cross databases.
+ * The guided tour: five single-database questions, three that cross databases, and one the
+ * databases cannot answer — the page promises the box says so rather than guessing.
  * Each one exercises a specific MCP method — the caption on the chip says which — so a
  * visitor can see the tool loop do exactly what the tool table promises.
  */
@@ -28,4 +29,5 @@ export const TOUR: TourItem[] = [
   { q: "What's in the supply pipeline within 3 miles of the Centennial Ridge community in Atlanta?", method: "rent_community_lookup → permits_near", kind: "cross" },
   { q: "For 2151 E Southern Ave, Mesa, AZ: what do 2-bed comps within 3 miles ask, and how does that compare with the ring's median household income?", method: "demand_rings → rent_comps_near", kind: "cross" },
   { q: "Screen 2201 TX-195, Georgetown, TX: household growth within 5 miles, units in the pipeline, and current 3-bed asking rents.", method: "demand_rings → permits_near + rent_comps_near", kind: "cross" },
+  { q: "What's the supply pipeline in Denver, and what cap rate should I underwrite there?", method: "no tool call — says what it can't answer", kind: "limits" },
 ];
