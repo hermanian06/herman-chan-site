@@ -426,6 +426,12 @@ const defaultMarket = "PHX";
           drawn. Average rent is the mean advertised asking rent across a community's
           floor plans at its last read, using the low end of each plan's range.
         </p>
+        <p>
+          Unit counts and year built come from public records: the county property
+          record, a Florida apartment licence, or the City of Austin's building permits.
+          Hover a figure to see which. A dash means no public record covers that
+          community yet; build-for-rent homes sit on many separate lots and rarely have one.
+        </p>
       </div>
 
       <div class="picker">
@@ -507,8 +513,8 @@ const defaultMarket = "PHX";
       <tr>
         <th scope="row">${esc(r.name)}</th>
         <td class="c"><span class="pill${r.product === "BFR" ? " is-bfr" : ""}">${esc(r.product)}</span></td>
-        <td class="c num">${r.units == null ? "—" : r.units.toLocaleString("en-US")}</td>
-        <td class="c num">${r.year_built ?? "—"}</td>
+        <td class="c num"${r.units_source ? ` title="${esc(r.units_source)}"` : ""}>${r.units == null ? "—" : r.units.toLocaleString("en-US")}</td>
+        <td class="c num"${r.year_source ? ` title="${esc(r.year_source)}"` : ""}>${r.year_built ?? "—"}</td>
         <td class="c num">$${Math.round(r.avg_rent).toLocaleString("en-US")}</td>
         <td class="c num">${esc(r.last_seen)}</td>
       </tr>`).join("");
