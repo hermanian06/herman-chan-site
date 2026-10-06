@@ -1,5 +1,5 @@
 ---
-/* Six-tab nav (redesign, 2026-09-13). The old Index / Projects / Writing entries are
+/* Tab nav (six-tab redesign 2026-09-13; Connectors added 2026-10-06). The old Index / Projects / Writing entries are
    gone from the bar; /projects/ and /posts/ still build and are reachable by URL, and the
    old landing is kept at /legacy/ until the redesign is signed off. */
 const path = Astro.url.pathname;
@@ -13,6 +13,7 @@ const tabs = [
   { href: "/underwriting-agent/", label: "Underwriting Agent" },
   { href: "/supply-database/", label: "Supply Database" },
   { href: "/rent-database/", label: "Rent Database" },
+  { href: "/connectors/", label: "Connectors" },
   { href: "/blog/", label: "Blog" },
   { href: "/about/", label: "About" },
 ];

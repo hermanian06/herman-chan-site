@@ -1,0 +1,218 @@
+---
+/**
+ * Tab 05 — Connectors. Every way to put the databases inside Claude, in one place.
+ *   §01 Rental Market Data: Multifamily & BFR — the free public connector; the full docs
+ *       stay at /connectors/rental-market-data/ (the directory listing links that URL)
+ *   §02 the private MCP server — endpoint, auth, connect, tool table. Moved here from the
+ *       Supply tab's old §05 on 2026-10-06; Supply and Rent link to #private.
+ */
+import Layout from "../../layouts/Layout.astro";
+import TabHead from "../../components/tabs/TabHead.astro";
+
+const PUBLIC_NAME = "Rental Market Data: Multifamily & BFR";
+const PUBLIC_SERVER = "https://mcp.hermanchan.ai/mcp";
+const PUBLIC_INSTALL =
+  "https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=Rental%20Market%20Data&connectorUrl=https%3A%2F%2Fmcp.hermanchan.ai%2Fmcp";
+const PRIVATE_SERVER = "https://permit-pipeline-mcp-production.up.railway.app/mcp";
+
+const compare = [
+  { k: "Who", pub: "Anyone with Claude", priv: "By invitation" },
+  { k: "Sign-in", pub: "One consent click, no account", priv: "OAuth 2.1 or a per-person bearer token" },
+  { k: "Tools", pub: "Nine fixed tools, one address at a time", priv: "Seventeen tools, including search, builder activity and source documents" },
+  { k: "Data", pub: "Public records, operator rents, Census, Zillow ZHVI", priv: "The full supply, rent and demand databases" },
+];
+
+const tools = [
+  { name: "find_subdivisions", what: "Search the pipeline with structured filters: metro, product, stage, size, date." },
+  { name: "recent_filings", what: "What was filed across the pipeline in the last N days." },
+  { name: "lookup_subdivision", what: "Look up one project by name or by any of its record IDs." },
+  { name: "permits_near", what: "Filings within a radius of a point in the last N days." },
+  { name: "off_market_signals", what: "Projects building but not yet selling — the pre-listing pattern." },
+  { name: "builder_activity", what: "One builder's activity across every source, with alias resolution." },
+  { name: "canonical_project", what: "The full cross-source timeline for one project." },
+  { name: "get_pdf_url", what: "A signed link to the stored source document for a filing." },
+  { name: "pipeline_health", what: "Ingestion freshness per metro and per source." },
+  { name: "mf_projects", what: "Late-stage multifamily and attached projects from the permit layer." },
+  { name: "entitlement_leads", what: "Pre-permit leads: rezonings, PUDs, site plans, plats, district formations." },
+  { name: "debt_maturities", what: "Financed multifamily with loan maturities and the permitted units within three miles. Historical: its loan data stopped updating on September 7, 2026." },
+  { name: "rent_comps_near", what: "Rent database: floor-plan-level asking and net-effective rents within a radius of a point." },
+  { name: "rent_market_summary", what: "Rent database: market medians, concession share and depth, availability — overall and by bed count." },
+  { name: "rent_community_lookup", what: "Rent database: a community by name, with its coordinates and current floor plans." },
+  { name: "rent_coverage", what: "Rent database: which markets are covered and how fresh each is." },
+  { name: "demand_rings", what: "Demand: population, households, income and jobs in 1/3/5/10-mile rings around an address, from Census and LODES." },
+];
+---
+
+<Layout
+  title="Connectors"
+  description="MCP connectors that put the supply, rent and demand databases inside Claude: a free public connector anyone can add, and the full private server."
+>
+  <TabHead
+    links={[
+      { href: "#public", label: "Free public connector" },
+      { href: "#private", label: "Private MCP server" },
+    ]}
+    kicker="Tab 05 · Connectors"
+    title="The databases, inside Claude."
+    lede="The supply, rent and demand databases are exposed to Claude as read-only MCP tools. Connect once, then ask in plain English and the server runs the query. A free public connector covers site screening for anyone; the full server is what I use for underwriting."
+  />
+
+  <section class="cn" id="public">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="section-title__hash">§ 01</span>
+        <h2 class="section-title__label">{PUBLIC_NAME}</h2>
+        <span class="section-title__hint">Free · public · no account</span>
+      </div>
+      <p class="cn__note">
+        A read-only connector that screens any U.S. site for build-to-rent and multifamily: what
+        is permitted or entitled nearby, what comparable rentals are asking after concessions,
+        who lives within a few miles, and how the ZIP’s home values compare with its metro.
+      </p>
+      <div class="cn__actions">
+        <a class="cn__btn" href={PUBLIC_INSTALL}>Add to Claude <span aria-hidden="true">↗</span></a>
+        <a class="cn__link" href="/connectors/rental-market-data/">Docs, example prompts and limits <span aria-hidden="true">→</span></a>
+        <a class="cn__link" href="/connectors/rental-market-data/privacy/">Privacy policy <span aria-hidden="true">→</span></a>
+      </div>
+      <dl class="cn__dl">
+        <dt>Server URL</dt>
+        <dd><code>{PUBLIC_SERVER}</code></dd>
+      </dl>
+
+      <h3 class="cn__h">Public or private</h3>
+      <div class="tablewrap" role="region" tabindex="0" aria-label="Public and private connectors compared">
+        <table class="cn__tbl">
+          <thead>
+            <tr><th scope="col"></th><th scope="col">Public connector</th><th scope="col">Private server</th></tr>
+          </thead>
+          <tbody>
+            {compare.map((r) => (
+              <tr>
+                <th scope="row">{r.k}</th>
+                <td>{r.pub}</td>
+                <td>{r.priv}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="cn cn--last" id="private">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="section-title__hash">§ 02</span>
+        <h2 class="section-title__label">The private MCP server</h2>
+        <span class="section-title__hint">Read-only · OAuth 2.1 · all nine metros</span>
+      </div>
+      <p class="cn__note">
+        The full databases, exposed to Claude as a small set of read-only tools. I connect it
+        to claude.ai once and then ask in plain English — "what has been filed near this site
+        in the last ninety days", "what is this builder doing in Atlanta" — and the server runs
+        the query and returns a clean answer. The "Ask the databases" chat on the
+        <a href="/supply-database/#ask">Supply</a> and <a href="/rent-database/#ask">Rent</a> tabs
+        uses the same tools.
+      </p>
+
+      <dl class="cn__dl">
+        <dt>Endpoint</dt>
+        <dd><code>{PRIVATE_SERVER}</code></dd>
+        <dt>Auth</dt>
+        <dd>OAuth 2.1 (claude.ai custom connector) or a bearer token issued per person. Access is by invitation; the tools are read-only against the database.</dd>
+        <dt>Connect</dt>
+        <dd>In claude.ai: Settings → Connectors → Add custom connector → paste the endpoint → authorise. Claude Code: <code>claude mcp add --transport http supply {PRIVATE_SERVER}</code>.</dd>
+      </dl>
+
+      <div class="tablewrap" role="region" tabindex="0" aria-label="MCP tools">
+        <table class="cn__tools">
+          <thead>
+            <tr><th scope="col">Tool</th><th scope="col">What it answers</th></tr>
+          </thead>
+          <tbody>
+            {tools.map((t) => (
+              <tr>
+                <th scope="row"><code>{t.name}</code></th>
+                <td>{t.what}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .cn { padding: clamp(40px, 6vw, 64px) 0 0; }
+  .cn--last { padding-bottom: var(--s-9); }
+  .cn h2.section-title__label { margin: 0; }
+  .cn__note { font: var(--font-prose); color: var(--fg-soft); max-width: var(--measure); margin: 0 0 var(--s-5); }
+  .cn__h {
+    font-family: var(--serif);
+    font-size: var(--t-22);
+    font-weight: 500;
+    color: var(--fg);
+    margin: var(--s-7, 40px) 0 var(--s-3);
+  }
+
+  .cn__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-6); margin: 0 0 var(--s-5); }
+  .cn__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 20px;
+    background: var(--accent);
+    color: var(--bg);
+    font: 600 15px var(--sans);
+    border-radius: 2px;
+  }
+  .cn__btn:hover { text-decoration: none; opacity: 0.92; }
+  .cn__link { font: 15px var(--sans); color: var(--accent); }
+
+  .cn__dl {
+    margin: 0 0 var(--s-6);
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    row-gap: var(--s-3);
+    column-gap: var(--s-4);
+    max-width: var(--measure);
+  }
+  .cn__dl dt {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .cn__dl dd { margin: 0; font: var(--font-prose); color: var(--fg-soft); }
+  .cn__dl code, .cn__tools code {
+    font-family: var(--mono);
+    font-size: 0.86em;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 2px;
+    word-break: break-all;
+  }
+
+  .tablewrap { overflow-x: auto; }
+  .cn__tbl, .cn__tools { width: 100%; border-collapse: collapse; font-family: var(--sans); font-size: var(--t-14); max-width: 80ch; }
+  .cn__tbl th, .cn__tbl td, .cn__tools th, .cn__tools td { padding: 9px var(--s-3); border-bottom: 1px solid var(--rule-soft); text-align: left; vertical-align: baseline; }
+  .cn__tbl thead th, .cn__tools thead th {
+    font-family: var(--mono);
+    font-size: var(--t-12);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    font-weight: 500;
+    border-bottom: 1px solid var(--rule);
+  }
+  .cn__tbl tbody th, .cn__tools tbody th { font-weight: 500; white-space: nowrap; }
+  .cn__tools tbody th code { word-break: normal; }
+
+  @media (max-width: 860px) {
+    .cn__dl { grid-template-columns: 1fr; row-gap: 4px; }
+    .cn__dl dd { margin-bottom: var(--s-3); }
+  }
+</style>

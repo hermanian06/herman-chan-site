@@ -24,8 +24,11 @@ rules and architecture only; closeout never appends entries here.
 
 ## Site architecture
 
-Six tabs: Intro (`/`), Underwriting Agent (`/underwriting-agent/`), Supply Database
-(`/supply-database/`), Rent Database (`/rent-database/`), Blog (`/blog/`), About (`/about/`).
+Seven tabs: Intro (`/`), Underwriting Agent (`/underwriting-agent/`), Supply Database
+(`/supply-database/`), Rent Database (`/rent-database/`), Connectors (`/connectors/`), Blog
+(`/blog/`), About (`/about/`). Connectors holds both MCP surfaces: the public connector's summary
+(its full docs stay at `/connectors/rental-market-data/`, a URL the directory listing pins) and
+the private server's endpoint and tool table (`#private`); Supply and Rent link there.
 Keep `/legacy/`, `/projects/` and `/posts/` resolving. Preserve existing design, typography,
 uploads, chats, dashboards and samples unless Herman asks for a change.
 

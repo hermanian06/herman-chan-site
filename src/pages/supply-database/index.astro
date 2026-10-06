@@ -8,7 +8,8 @@
  *   §04 the dashboard — SupplyDashboard.astro, read at build time from
  *       src/data/supply/supply-database.json (County Permit Pipeline's
  *       tools_local/export_public_supply_stats.py regenerates it from the live database)
- *   §05 the MCP server: endpoint, tools, how to connect
+ *   The MCP server section (endpoint, tools, how to connect) moved to the Connectors tab
+ *   (/connectors/#private) on 2026-10-06.
  */
 import Layout from "../../layouts/Layout.astro";
 import TabHead from "../../components/tabs/TabHead.astro";
@@ -72,27 +73,6 @@ const modelUse = [
   { step: "The chat on this page", model: "Claude Sonnet 4.6", calls: "112", usd: "$2.50",
     why: "Chooses the tools, then writes the answer from what they return. Capped per visitor, per hour, and in dollars per day." },
 ];
-
-/* The seventeen read-only tools the server exposes (all nine metros wired; rent + demand added 2026-09-15). */
-const tools = [
-  { name: "find_subdivisions", what: "Search the pipeline with structured filters: metro, product, stage, size, date." },
-  { name: "recent_filings", what: "What was filed across the pipeline in the last N days." },
-  { name: "lookup_subdivision", what: "Look up one project by name or by any of its record IDs." },
-  { name: "permits_near", what: "Filings within a radius of a point in the last N days." },
-  { name: "off_market_signals", what: "Projects building but not yet selling — the pre-listing pattern." },
-  { name: "builder_activity", what: "One builder's activity across every source, with alias resolution." },
-  { name: "canonical_project", what: "The full cross-source timeline for one project." },
-  { name: "get_pdf_url", what: "A signed link to the stored source document for a filing." },
-  { name: "pipeline_health", what: "Ingestion freshness per metro and per source." },
-  { name: "mf_projects", what: "Late-stage multifamily and attached projects from the permit layer." },
-  { name: "entitlement_leads", what: "Pre-permit leads: rezonings, PUDs, site plans, plats, district formations." },
-  { name: "debt_maturities", what: "Financed multifamily with loan maturities and the permitted units within three miles. Historical: its loan data stopped updating on September 7, 2026." },
-  { name: "rent_comps_near", what: "Rent database: floor-plan-level asking and net-effective rents within a radius of a point." },
-  { name: "rent_market_summary", what: "Rent database: market medians, concession share and depth, availability — overall and by bed count." },
-  { name: "rent_community_lookup", what: "Rent database: a community by name, with its coordinates and current floor plans." },
-  { name: "rent_coverage", what: "Rent database: which markets are covered and how fresh each is." },
-  { name: "demand_rings", what: "Demand: population, households, income and jobs in 1/3/5/10-mile rings around an address, from Census and LODES." },
-];
 ---
 
 <Layout
@@ -101,7 +81,7 @@ const tools = [
 >
   <TabHead
     project="supply"
-    links={[{"href": "#how-it-works", "label": "How it works"}, {"href": "#ask", "label": "Ask the databases"}, {"href": "#checks", "label": "How I check it"}, {"href": "#dashboard", "label": "Dashboard"}, {"href": "#mcp", "label": "MCP tools"}]}
+    links={[{"href": "#how-it-works", "label": "How it works"}, {"href": "#ask", "label": "Ask the databases"}, {"href": "#checks", "label": "How I check it"}, {"href": "#dashboard", "label": "Dashboard"}]}
     kicker="Tab 03 · Supply Database"
     title="From scattered public filings to a clearer view of future housing supply."
     lede="I built a data pipeline that collects environmental filings, permits and planning cases from government websites and connects them into a searchable database. It helps me investigate upcoming developments, identify builders and assess future competition around a property."
@@ -117,7 +97,7 @@ const tools = [
         <span class="section-title__hint">Live · supply, rents and demand over one MCP server</span>
       </div>
       <p class="blk__note">
-        The same server the tool table below describes, behind a chat box. Every answer shows
+        The private MCP server on the <a href="/connectors/#private">Connectors tab</a>, behind a chat box. Every answer shows
         which methods it called and which records it cited; a question the databases cannot
         answer says so rather than guessing.
       </p>
@@ -245,50 +225,6 @@ const tools = [
   </section>
   <SupplyDashboard />
 
-  <section id="mcp" class="blk blk--last">
-    <div class="wrap">
-      <div class="section-title">
-        <span class="section-title__hash">§ 05</span>
-        <span class="section-title__label">The MCP server</span>
-        <span class="section-title__hint">Read-only · OAuth 2.1 · all nine metros</span>
-      </div>
-      <p class="blk__note">
-        The same database, exposed to Claude as a small set of read-only tools. I connect it
-        to claude.ai once and then ask in plain English — "what has been filed near this site
-        in the last ninety days", "what is this builder doing in Atlanta" — and the server runs
-        the query and returns a clean answer. The chat box above uses the same tools.
-      </p>
-      <p class="blk__note">
-        A free, public version anyone can add to Claude, with no account, is documented at
-        <a href="/connectors/rental-market-data/">Rental Market Data: Multifamily &amp; BFR</a>.
-      </p>
-
-      <dl class="mcp">
-        <dt>Endpoint</dt>
-        <dd><code>https://permit-pipeline-mcp-production.up.railway.app/mcp</code></dd>
-        <dt>Auth</dt>
-        <dd>OAuth 2.1 (claude.ai custom connector) or a bearer token issued per person. Access is by invitation; the tools are read-only against the database.</dd>
-        <dt>Connect</dt>
-        <dd>In claude.ai: Settings → Connectors → Add custom connector → paste the endpoint → authorise. Claude Code: <code>claude mcp add --transport http supply https://permit-pipeline-mcp-production.up.railway.app/mcp</code>.</dd>
-      </dl>
-
-      <div class="tablewrap" role="region" tabindex="0" aria-label="MCP tools">
-        <table class="tools">
-          <thead>
-            <tr><th scope="col">Tool</th><th scope="col">What it answers</th></tr>
-          </thead>
-          <tbody>
-            {tools.map((t) => (
-              <tr>
-                <th scope="row"><code>{t.name}</code></th>
-                <td>{t.what}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
 </Layout>
 
 <style>
@@ -359,24 +295,7 @@ const tools = [
   .near__btn:disabled { opacity: 0.5; cursor: not-allowed; }
   .near__hint { font-family: var(--serif); font-size: var(--t-14); color: var(--muted); max-width: 46ch; }
 
-  /* ---- MCP block ---- */
-  .mcp {
-    margin: 0 0 var(--s-6);
-    display: grid;
-    grid-template-columns: 96px 1fr;
-    row-gap: var(--s-3);
-    column-gap: var(--s-4);
-    max-width: var(--measure);
-  }
-  .mcp dt {
-    font-family: var(--mono);
-    font-size: var(--t-12);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-  }
-  .mcp dd { margin: 0; font: var(--font-prose); color: var(--fg-soft); }
-  .mcp code, .tools code {
+  .tools code {
     font-family: var(--mono);
     font-size: 0.86em;
     background: var(--code-bg);
@@ -414,7 +333,5 @@ const tools = [
 
   @media (max-width: 860px) {
     .near__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .mcp { grid-template-columns: 1fr; row-gap: 4px; }
-    .mcp dd { margin-bottom: var(--s-3); }
   }
 </style>

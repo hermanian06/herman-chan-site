@@ -17,7 +17,7 @@ import { join } from "node:path";
 const DIST = join(new URL("..", import.meta.url).pathname, "dist", "connectors", "rental-market-data");
 const DOCS = join(DIST, "index.html");
 const PRIVACY = join(DIST, "privacy", "index.html");
-const SUPPORT = "hermanchan1000@gmail.com";
+const SUPPORT = "herman@hermanchan.ai";
 const SERVER = "https://mcp.hermanchan.ai/mcp";
 const INSTALL =
   "https://claude.ai/customize/connectors?modal=add-custom-connector&amp;connectorName=Rental%20Market%20Data&amp;connectorUrl=https%3A%2F%2Fmcp.hermanchan.ai%2Fmcp";
