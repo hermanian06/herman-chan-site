@@ -1,0 +1,365 @@
+---
+/**
+ * Public docs page for the free MCP connector "Rental Market Data: Multifamily & BFR"
+ * (slug rental-market-data). The directory listing links here and to ./privacy/.
+ * Source text: County Permit Pipeline public_api/docs/connector.md; facts (name, URL,
+ * quota, support contact) mirror public_api/__init__.py — change them there first.
+ * Pinned by tests/connector-pages.test.ts.
+ */
+import Layout from "../../../layouts/Layout.astro";
+import TabHead from "../../../components/tabs/TabHead.astro";
+
+const NAME = "Rental Market Data: Multifamily & BFR";
+const SERVER_URL = "https://mcp.hermanchan.ai/mcp";
+const INSTALL_URL =
+  "https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=Rental%20Market%20Data&connectorUrl=https%3A%2F%2Fmcp.hermanchan.ai%2Fmcp";
+const SUPPORT = "hermanchan1000@gmail.com";
+const QUOTA = 50;
+
+const prompts = [
+  {
+    ask: "Screen 2200 Katy Fort Bend Rd, Katy TX for a build-to-rent site.",
+    what: "One call to site_screen returns permitted and entitled supply by stage within 1, 3 and 5 miles, the market’s rent medians and the ten nearest comps, ring demographics, and the ZIP’s home value index against its metro.",
+  },
+  {
+    ask: "What’s the rent picture for 3-bed townhomes within 3 miles of 505 W Baseline Rd, Tempe AZ?",
+    what: "demand_rings places the address, rent_comps_near returns the nearest 3-bed floor-plan groups with asking and net-effective rent, and rent_market_summary gives the Phoenix median to read them against.",
+  },
+  {
+    ask: "How much multifamily supply is permitted within 5 miles of 1100 Peachtree St, Atlanta, and what stage is it at?",
+    what: "supply_near groups nearby projects by stage (entitlement case, stormwater notice, site plan, issued permit) and names the nearest ones.",
+  },
+  {
+    ask: "Which builders have the most late-stage townhome projects in the Nashville metro?",
+    what: "supply_search searches the same pipeline by name, metro, stage and size instead of by location.",
+  },
+  {
+    ask: "Is there any rent coverage in Huntsville, and how fresh is it?",
+    what: "data_coverage answers from the data itself: which metros hold rows, every rent market with its collection date, and the fields the connector leaves out.",
+  },
+];
+
+const tools = [
+  { name: "site_screen", what: "One address in, every layer out: supply by stage at 1, 3 and 5 miles, rents, demographics and home values, with a note wherever a layer has no data." },
+  { name: "demand_rings", what: "Population, households, income, jobs and labor force in 1, 3, 5 and 10-mile rings, apportioned over 2020 census blocks." },
+  { name: "supply_near", what: "Permitted and entitled residential supply within a radius, grouped by stage; only issued permits are marked committed." },
+  { name: "supply_search", what: "The same supply data searched by project or builder name, metro, stage or size." },
+  { name: "rent_comps_near", what: "Nearest rental comps to a point, one row per floor-plan group, with asking range, net-effective range, concession weeks and the operator’s own wording." },
+  { name: "rent_market_summary", what: "Median asking and net-effective rent for a whole market by bed count, with the denominators named." },
+  { name: "rent_community_lookup", what: "Turns a community name into an address and coordinates." },
+  { name: "home_values", what: "Zillow Home Value Index (ZHVI) trend for a ZIP against its metro, with the ratio between them." },
+  { name: "data_coverage", what: "What the connector can and cannot answer, read from the data." },
+];
+---
+
+<Layout
+  title={NAME}
+  description="A free, read-only MCP connector for Claude: housing supply pipeline, rent comps with concessions, ring demographics and home value trends for any U.S. site."
+>
+  <TabHead
+    links={[
+      { href: "#add", label: "Add it to Claude" },
+      { href: "#prompts", label: "Example prompts" },
+      { href: "#data", label: "The data" },
+      { href: "#limits", label: "Limits" },
+      { href: "#support", label: "Sources and support" },
+    ]}
+    kicker="Connector · free MCP for Claude"
+    title={NAME}
+    lede="I built a read-only connector that lets Claude screen a U.S. site for build-to-rent and multifamily: what is permitted or entitled nearby, what comparable rentals are asking after concessions, who lives within a few miles, and how the ZIP’s home values compare with its metro. There is no account and nothing to pay for."
+  />
+
+  <section class="cx" id="add">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="section-title__hash">§ 01</span>
+        <h2 class="section-title__label">Add it to Claude</h2>
+        <span class="section-title__hint">OAuth · one consent click · no account</span>
+      </div>
+      <div class="cx__install">
+        <a class="cx__btn" href={INSTALL_URL}>Add to Claude <span aria-hidden="true">↗</span></a>
+        <p class="cx__note">
+          The button opens Claude’s custom-connector dialog with the name and URL filled in. To
+          add it by hand: Settings → Connectors → Add custom connector, then paste the server URL.
+        </p>
+      </div>
+      <dl class="cx__dl">
+        <dt>Server URL</dt>
+        <dd><code>{SERVER_URL}</code></dd>
+        <dt>Sign-in</dt>
+        <dd>
+          After you add it, Claude opens a consent page. Approve it and clear a quick Cloudflare
+          Turnstile check. That creates an anonymous connection, identified only by a random id.
+          No email, no password, no profile.
+        </dd>
+        <dt>Access</dt>
+        <dd>Read-only. All nine tools look data up; none of them write anything.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section class="cx" id="prompts">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="section-title__hash">§ 02</span>
+        <h2 class="section-title__label">Example prompts</h2>
+        <span class="section-title__hint">Paste one into a chat with the connector on</span>
+      </div>
+      <ol class="cx__prompts">
+        {prompts.map((p, i) => (
+          <li data-prompt>
+            <span class="cx__pnum" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+            <div>
+              <p class="cx__ask">“{p.ask}”</p>
+              <p class="cx__what">{p.what}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="cx" id="data">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="section-title__hash">§ 03</span>
+        <h2 class="section-title__label">The data, and where it covers</h2>
+        <span class="section-title__hint">Four layers · nine tools</span>
+      </div>
+      <div class="cx__layers">
+        <div>
+          <h3>Supply pipeline</h3>
+          <p>
+            Residential projects by stage, from entitlement cases and stormwater notices to issued
+            permits, across nine metros: Atlanta, Austin, Charlotte, Houston, Huntsville, Las Vegas,
+            Nashville, Phoenix and Tampa. Outside them the supply layer says so instead of returning
+            an empty answer.
+          </p>
+        </div>
+        <div>
+          <h3>Rents</h3>
+          <p>
+            Asking and net-effective rents with concessions, collected weekly from operators’ own
+            websites in 22 rent markets. Every row carries its collection date and the offer as the
+            operator wrote it.
+          </p>
+        </div>
+        <div>
+          <h3>Demographics</h3>
+          <p>
+            Population, households, income, jobs and labor force in rings around any U.S. address,
+            from the Census Bureau (ACS 5-year, 2020 Census, LEHD LODES) and the Bureau of Labor
+            Statistics. The nine metros answer in about a second; elsewhere a call can take tens of
+            seconds.
+          </p>
+        </div>
+        <div>
+          <h3>Home values</h3>
+          <p>
+            The Zillow Home Value Index for a ZIP against its metro, for any U.S. ZIP the index
+            covers. It is an index level for the area, not an appraisal and not a price for any
+            one property.
+          </p>
+        </div>
+      </div>
+
+      <h3 class="cx__h">How to read the numbers</h3>
+      <ul class="cx__list">
+        <li><strong>Supply stages are views of the same market, not a funnel to add up.</strong> One project can appear as an entitlement case, then a stormwater notice, then a permit. Only issued permits are marked committed.</li>
+        <li><strong>Early-stage sizes are estimates.</strong> Where a filing gives only acreage, the size is estimated from it and labelled that way. Entitlement cases sit one to four years ahead of construction, and many never build.</li>
+        <li><strong>Asking and net-effective rent are different numbers.</strong> Each comp carries both, plus the concession in weeks. A “starting at” price is flagged as a floor.</li>
+        <li><strong>A rent row is a floor-plan group</strong> (community, bed count and plan), not a whole community.</li>
+      </ul>
+
+      <h3 class="cx__h">The nine tools</h3>
+      <div class="tablewrap" role="region" tabindex="0" aria-label="Connector tools">
+        <table class="cx__tools">
+          <thead>
+            <tr><th scope="col">Tool</th><th scope="col">What it answers</th></tr>
+          </thead>
+          <tbody>
+            {tools.map((t) => (
+              <tr>
+                <th scope="row"><code>{t.name}</code></th>
+                <td>{t.what}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="cx__h">What is left out, and why</h3>
+      <p class="cx__note">
+        Rental-community unit counts and owner and property-manager names come from sources I
+        can’t republish, so they are absent from everything the public service can read rather
+        than filtered out afterwards. Sale comps are not part of the connector at all: it sticks
+        to public records, operators’ own listing pages and public statistics.
+      </p>
+    </div>
+  </section>
+
+  <section class="cx" id="limits">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="section-title__hash">§ 04</span>
+        <h2 class="section-title__label">Limits</h2>
+        <span class="section-title__hint">Free tier</span>
+      </div>
+      <dl class="cx__dl">
+        <dt>Monthly</dt>
+        <dd>{QUOTA} tool calls per connection per calendar month (UTC). Only successful calls count; invalid input and listing the tools are free.</dd>
+        <dt>Remaining</dt>
+        <dd>Every answer reports how many calls the connection has left this month.</dd>
+        <dt>Pace</dt>
+        <dd>Up to 10 calls a minute per connection, under a service-wide daily cap.</dd>
+        <dt>Size</dt>
+        <dd>Answers return 25 rows by default and 50 at most, and say when a list was trimmed.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section class="cx cx--last" id="support">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="section-title__hash">§ 05</span>
+        <h2 class="section-title__label">Sources and support</h2>
+      </div>
+      <ul class="cx__list">
+        <li><strong>Supply:</strong> public county and state records: building permits, subdivision and rezoning cases, plats, and construction stormwater notices filed with state environmental agencies.</li>
+        <li><strong>Rents:</strong> my own weekly collection from operators’ public listing pages, dated on every row.</li>
+        <li><strong>Demographics:</strong> U.S. Census Bureau (American Community Survey 5-year, 2020 Census PL 94-171, LEHD LODES, TIGER) and the U.S. Bureau of Labor Statistics.</li>
+        <li><strong>Home values:</strong> Zillow Home Value Index (ZHVI), Zillow Group, <a href="https://www.zillow.com/research/data/">zillow.com/research/data</a>. A static snapshot; when the source files carry no date, answers say the as-of date is unknown.</li>
+      </ul>
+      <p class="cx__note cx__note--small">
+        Neither Zillow, the Census Bureau, BLS nor any permitting agency endorses this connector.
+      </p>
+      <dl class="cx__dl">
+        <dt>Support</dt>
+        <dd>
+          Questions, corrections or a request to switch a connection off:
+          <a href={`mailto:${SUPPORT}`}>{SUPPORT}</a>
+        </dd>
+        <dt>Privacy</dt>
+        <dd>
+          What the service records and for how long:
+          <a href="/connectors/rental-market-data/privacy/">privacy policy</a>.
+        </dd>
+      </dl>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .cx { padding: clamp(40px, 6vw, 64px) 0 0; }
+  .cx--last { padding-bottom: var(--s-8); }
+  .cx h2.section-title__label { margin: 0; }
+  .cx__note { font: var(--font-prose); color: var(--fg-soft); max-width: var(--measure); margin: 0 0 var(--s-5); }
+  .cx__note--small { font: var(--font-caption); color: var(--muted); }
+
+  .cx__install {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--s-5);
+    align-items: center;
+    background: var(--bg-alt);
+    border-left: 2px solid var(--accent);
+    padding: 24px 28px;
+    margin: 0 0 var(--s-6);
+    max-width: 960px;
+  }
+  .cx__install .cx__note { margin: 0; font: var(--font-ui); }
+  .cx__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 48px;
+    padding: 0 22px;
+    background: var(--accent);
+    color: var(--bg);
+    font: 600 16px/1 var(--sans);
+    white-space: nowrap;
+  }
+  .cx__btn:hover { background: var(--accent-ink); text-decoration: none; }
+
+  .cx__dl {
+    margin: 0 0 var(--s-5);
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr);
+    row-gap: var(--s-3);
+    column-gap: var(--s-4);
+    max-width: var(--measure);
+  }
+  .cx__dl dt {
+    font: var(--font-eyebrow);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent-ink);
+    padding-top: 5px;
+  }
+  .cx__dl dd { margin: 0; font: var(--font-prose); color: var(--fg-soft); min-width: 0; overflow-wrap: anywhere; }
+  .cx code {
+    font-family: var(--mono);
+    font-size: 0.86em;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 2px;
+  }
+
+  .cx__prompts { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; max-width: 960px; }
+  .cx__prompts li {
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: 18px;
+    padding: 20px 24px;
+    background: var(--bg-alt);
+  }
+  .cx__pnum { font: 34px/1 var(--serif); letter-spacing: -0.06em; color: var(--muted-2); }
+  .cx__ask { margin: 0 0 8px; font: var(--font-card); font-size: clamp(19px, 1.7vw, 23px); letter-spacing: var(--track-card); color: var(--accent-ink); }
+  .cx__what { margin: 0; font: var(--font-ui); color: var(--fg-soft); max-width: 78ch; }
+
+  .cx__layers {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 48px;
+    max-width: 1100px;
+  }
+  .cx__layers > div { border-top: 1px solid var(--rule); padding: 18px 0 8px; }
+  .cx__layers h3, .cx__h {
+    font: var(--font-subheading);
+    color: var(--accent-ink);
+    margin: 0 0 6px;
+  }
+  .cx__h { margin: var(--s-7) 0 var(--s-3); }
+  .cx__layers p { margin: 0 0 var(--s-3); font: var(--font-prose); color: var(--fg-soft); }
+
+  .cx__list { margin: 0 0 var(--s-5); padding-left: 1.2em; max-width: var(--measure); display: grid; gap: 10px; }
+  .cx__list li { font: var(--font-prose); color: var(--fg-soft); }
+  .cx__list strong { color: var(--fg); font-weight: 600; }
+
+  .cx__tools { width: 100%; max-width: 100ch; border-collapse: collapse; font: var(--font-ui); }
+  .cx__tools th, .cx__tools td { padding: 12px var(--s-3); border-bottom: 1px solid var(--rule-soft); text-align: left; vertical-align: baseline; }
+  .cx__tools thead th {
+    font: var(--font-eyebrow);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    border-bottom: 1px solid var(--rule);
+  }
+  .cx__tools tbody th { font-weight: 500; white-space: nowrap; }
+
+  @media (max-width: 860px) {
+    .cx__install { grid-template-columns: 1fr; padding: 22px; }
+    .cx__btn { justify-self: start; }
+    .cx__dl { grid-template-columns: 1fr; row-gap: 4px; }
+    .cx__dl dd { margin-bottom: var(--s-3); }
+    .cx__layers { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 540px) {
+    .cx__prompts li { grid-template-columns: 1fr; gap: 8px; padding: 18px; }
+    .cx__pnum { font-size: 26px; }
+    .cx__tools thead { display: none; }
+    .cx__tools tr, .cx__tools th, .cx__tools td { display: block; }
+    .cx__tools tbody th { padding: 14px 0 4px; border-bottom: 0; }
+    .cx__tools tbody td { padding: 0 0 14px; }
+  }
+</style>

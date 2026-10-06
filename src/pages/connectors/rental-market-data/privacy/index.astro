@@ -1,0 +1,211 @@
+---
+/**
+ * Privacy policy for the public MCP connector "Rental Market Data: Multifamily & BFR".
+ * Source text: County Permit Pipeline public_api/docs/privacy.md, which names the column
+ * behind every field listed here (public_api/migrations/2026-10-05_public_api_auth_tables.sql).
+ * Pinned by tests/connector-pages.test.ts.
+ */
+import Layout from "../../../../layouts/Layout.astro";
+import TabHead from "../../../../components/tabs/TabHead.astro";
+
+/* Set to the day this version goes live. A material change gets a new date (section 7). */
+const EFFECTIVE_DATE = "2026-10-05";
+
+const NAME = "Rental Market Data: Multifamily & BFR";
+const SUPPORT = "hermanchan1000@gmail.com";
+const effective = new Date(`${EFFECTIVE_DATE}T00:00:00Z`).toLocaleDateString("en-US", {
+  month: "long", day: "numeric", year: "numeric", timeZone: "UTC",
+});
+
+const atConnect = [
+  ["A random connection id", "A UUID. It is not derived from anything about you."],
+  ["A hash of your IP address", "sha256 of the IP plus a salt that changes daily. It limits how many connections one address can create per day. Because the salt changes daily, visits on different days cannot be linked by it, and the hash cannot be turned back into an IP address."],
+  ["A short user-agent hint", "The first 120 characters of the browser’s user-agent string, for diagnosing a failed connection."],
+  ["Your Turnstile result", "The consent page uses Cloudflare Turnstile to keep bots out. Cloudflare receives the challenge token and your IP address under its own privacy policy; this service receives only pass or fail."],
+];
+const atCall = [
+  ["Timestamp", "When the call arrived."],
+  ["Connection id", "The same random id. Never a name, email or IP address."],
+  ["Tool name", "For example site_screen."],
+  ["The inputs you sent", "Stored as given. This includes addresses, place names, coordinates and ZIP codes that you or Claude put into a tool call. If you would not want an address in a log for 90 days, do not send it."],
+  ["Latency, status, error", "How long the call took, whether it succeeded, and the error text if it did not."],
+  ["Whether it counted", "Whether the call used one of the month’s 50."],
+];
+const retention = [
+  ["Tool-call log (timestamps, tool, inputs, latency, status)", "90 days, then deleted."],
+  ["Authorization codes", "Deleted 1 day after they expire. They are single-use and live for minutes."],
+  ["Access and refresh tokens", "Deleted 30 days after they expire."],
+  ["A registered client that stops being used", "Deleted after 90 days idle."],
+  ["The connection row (random id, IP hash, counters)", "Kept while the connection exists, so the monthly quota means something."],
+];
+---
+
+<Layout
+  title={`Privacy · ${NAME}`}
+  description="What the Rental Market Data connector records, how it is used and stored, who sees it, how long it is kept, and how to reach me."
+>
+  <TabHead
+    kicker="Connector · privacy policy"
+    title="Privacy policy"
+    lede="This connector has no accounts. There is no sign-up, email address, password or profile. Approving the consent page creates one record holding a random identifier, and that identifier is the whole of your identity here."
+  />
+
+  <section class="pv">
+    <div class="wrap">
+      <p class="pv__meta">
+        <span><b>Connector</b> <a href="/connectors/rental-market-data/">{NAME}</a></span>
+        <span><b>Effective date</b> <time datetime={EFFECTIVE_DATE}>{effective}</time></span>
+        <span><b>Contact</b> <a href={`mailto:${SUPPORT}`}>{SUPPORT}</a></span>
+      </p>
+
+      <article class="pv__body">
+        <h2 id="collected"><span>1</span>What is collected</h2>
+        <h3>When you connect (the consent page)</h3>
+        <dl class="pv__dl">
+          {atConnect.map(([k, v]) => (<><dt>{k}</dt><dd>{v}</dd></>))}
+        </dl>
+        <h3>When you use a tool</h3>
+        <dl class="pv__dl">
+          {atCall.map(([k, v]) => (<><dt>{k}</dt><dd>{v}</dd></>))}
+        </dl>
+        <h3>What is never collected</h3>
+        <ul>
+          <li><strong>Your conversation.</strong> The service sees only the arguments of a tool call it is asked to run, not the prompt around it, not the answer Claude writes, and not any other message.</li>
+          <li><strong>Your name, email address, phone number or any platform account.</strong> None is asked for, and there is nowhere to enter one.</li>
+          <li><strong>Your raw IP address.</strong> It is hashed with a daily salt on the consent page and is not stored with any tool call.</li>
+          <li><strong>Cookies and trackers.</strong> The consent page sets none and loads no analytics. Its only third-party resource is the Cloudflare Turnstile widget.</li>
+        </ul>
+
+        <h2 id="use"><span>2</span>How it is used, and where it is stored</h2>
+        <p>
+          The records above are used for four things only: enforcing the monthly quota and the
+          per-minute limit for each connection, keeping bots and abuse off a free service,
+          debugging a failed or slow call, and counting usage in aggregate (calls per tool, error
+          rates). They are not used to build a profile, to train a model, or for advertising.
+        </p>
+        <p>
+          Storage is a single PostgreSQL database hosted on Supabase (AWS, US West), in a schema
+          the public service can read and add to but cannot delete from, so the service cannot
+          erase its own audit trail. The connector itself runs on Railway. Both providers hold the
+          data under their own security terms as the service’s infrastructure.
+        </p>
+
+        <h2 id="sharing"><span>3</span>Sharing</h2>
+        <p>
+          Nothing is sold, rented or shared for advertising. There is no data broker, affiliate
+          or marketing list. The only third parties that see anything are the infrastructure
+          providers needed to run the service:
+        </p>
+        <ul>
+          <li><strong>Cloudflare</strong>: the Turnstile check on the consent page (your IP address and the challenge token, under Cloudflare’s own privacy policy).</li>
+          <li><strong>Supabase</strong> and <strong>Railway</strong>: the database and the server that hold and run what section 1 describes.</li>
+        </ul>
+        <p>
+          To answer a question about an address outside the precomputed metros, a tool may send
+          that address to a public data source: the U.S. Census Bureau geocoder, Census TIGERweb,
+          or the Bureau of Labor Statistics. Those requests carry the address and nothing about
+          you. Beyond that, data is disclosed only if a law or valid legal process requires it.
+        </p>
+
+        <h2 id="retention"><span>4</span>Retention</h2>
+        <p>A scheduled job runs daily and enforces these limits:</p>
+        <dl class="pv__dl">
+          {retention.map(([k, v]) => (<><dt>{k}</dt><dd>{v}</dd></>))}
+        </dl>
+        <p>
+          Removing the connector in Claude stops it being usable. To have a connection switched off
+          or its record deleted, email <a href={`mailto:${SUPPORT}`}>{SUPPORT}</a> with the
+          connection id (every tool answer includes it) and it will be revoked or deleted.
+        </p>
+
+        <h2 id="security"><span>5</span>Security</h2>
+        <p>
+          Traffic is HTTPS only. The service reads the database through a narrow, read-only role
+          that can see a published subset of columns and nothing else: owner and property-manager
+          names, rental-community unit counts and internal processing metadata are absent from
+          what it can read, not filtered out afterwards. Access tokens are short-lived; refresh
+          tokens are stored only as a hash and replaced on every use.
+        </p>
+
+        <h2 id="children"><span>6</span>Children</h2>
+        <p>
+          The service is for commercial real estate research and is not directed at children. No
+          age-related data is collected.
+        </p>
+
+        <h2 id="changes"><span>7</span>Changes</h2>
+        <p>
+          Material changes will be posted on this page with a new effective date. The connector’s
+          directory listing links here, so the current version is always one click away.
+        </p>
+
+        <h2 id="contact"><span>8</span>Contact</h2>
+        <p>
+          <a href={`mailto:${SUPPORT}`}>{SUPPORT}</a> for privacy questions, corrections, and
+          requests to revoke or delete a connection.
+        </p>
+      </article>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .pv { padding: clamp(32px, 5vw, 52px) 0 var(--s-8); }
+  .pv__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 36px;
+    margin: 0 0 var(--s-6);
+    padding: 14px 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    font: var(--font-ui);
+    max-width: 960px;
+  }
+  .pv__meta span { min-width: 0; overflow-wrap: anywhere; }
+  .pv__meta b {
+    font: var(--font-eyebrow);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent-ink);
+    margin-right: 8px;
+  }
+  .pv__body { max-width: var(--measure); }
+  .pv__body h2 {
+    font: var(--font-card);
+    letter-spacing: var(--track-card);
+    color: var(--accent-ink);
+    margin: var(--s-7) 0 var(--s-4);
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--rule);
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+    scroll-margin-top: 24px;
+  }
+  .pv__body h2:first-child { margin-top: 0; }
+  .pv__body h2 span { font: var(--font-eyebrow); font-size: 13px; color: var(--accent); }
+  .pv__body h3 { font: var(--font-subheading); color: var(--fg); margin: var(--s-5) 0 var(--s-3); }
+  .pv__body p, .pv__body li { font: var(--font-prose); color: var(--fg-soft); }
+  .pv__body p { margin: 0 0 var(--s-4); }
+  .pv__body ul { margin: 0 0 var(--s-4); padding-left: 1.2em; display: grid; gap: 8px; }
+  .pv__body strong { color: var(--fg); font-weight: 600; }
+  .pv__dl {
+    display: grid;
+    grid-template-columns: minmax(150px, 0.8fr) minmax(0, 2fr);
+    margin: 0 0 var(--s-4);
+    background: var(--bg-alt);
+    padding: 6px 22px;
+  }
+  .pv__dl dt, .pv__dl dd { padding: 12px 0; border-top: 1px solid var(--rule-soft); }
+  .pv__dl dt:first-of-type, .pv__dl dt:first-of-type + dd { border-top: 0; }
+  .pv__dl dt { font: 600 15px/1.55 var(--sans); color: var(--accent-ink); padding-right: 20px; }
+  .pv__dl dd { margin: 0; font: var(--font-ui); color: var(--fg-soft); min-width: 0; overflow-wrap: anywhere; }
+
+  @media (max-width: 640px) {
+    .pv__dl { grid-template-columns: 1fr; padding: 4px 18px; }
+    .pv__dl dt { padding-bottom: 2px; }
+    .pv__dl dd { border-top: 0; padding-top: 0; }
+    .pv__dl dt:first-of-type { border-top: 0; }
+  }
+</style>
