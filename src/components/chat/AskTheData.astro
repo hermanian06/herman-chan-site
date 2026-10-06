@@ -1,6 +1,7 @@
 ---
 /**
- * AskTheData — the "Ask the databases" chat box (Supply + Rent tabs).
+ * AskTheData — the "Ask the databases" chat box (Connectors tab § 02; it sat on both the
+ * Supply and Rent tabs until 2026-10-06).
  * Same shape as the countypermit public demo's Ask-the-pipeline page: an intro bubble,
  * a numbered guided tour (click to ask, one at a time), the conversation, the input,
  * and under every answer an evidence strip built from the tool loop's recorded records
@@ -8,21 +9,12 @@
  */
 import { CHAT_API_PRODUCTION, CHAT_API_LOCAL, DAILY_LIMIT, TOUR } from "../../data/chat/config.ts";
 
-interface Props { page: "supply" | "rents"; }
-const { page } = Astro.props;
-
-const intro = page === "supply"
-  ? "Ask the supply database — and the rent and demand databases it shares a server with."
-  : "Ask the rent database — and the supply and demand databases it shares a server with.";
-const lead = page === "supply"
-  ? "This box runs the same Model Context Protocol server I query from claude.ai: nine metros of supply, the weekly rent scrape, and Census demand rings. Five single-database questions, three that cross them, and one it should decline."
-  : "This box runs the same Model Context Protocol server I query from claude.ai: the weekly rent scrape, nine metros of supply, and Census demand rings. Five single-database questions, three that cross them, and one it should decline.";
-const placeholder = page === "supply"
-  ? "Ask about supply, rents or demand…"
-  : "Ask about rents, supply or demand…";
+const intro = "Ask the supply, rent and demand databases — one server holds all three.";
+const lead = "This box runs the same Model Context Protocol server I query from claude.ai: nine metros of supply, the weekly rent scrape, and Census demand rings. Five single-database questions, three that cross them, and one it should decline.";
+const placeholder = "Ask about supply, rents or demand…";
 ---
 
-<div class="ask" data-ask data-page={page}>
+<div class="ask" data-ask>
   <div class="ask__intro">
     <div class="ask__avatar" aria-hidden="true">✦</div>
     <div class="ask__bot">

@@ -33,9 +33,10 @@ test("the intro's five / three / one count matches the chips' kinds", () => {
   const limits = TOUR.filter((t) => t.kind === "limits").length;
   const WORDS: Record<string, number> = { one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9 };
   const src = readFileSync(new URL("../src/components/chat/AskTheData.astro", import.meta.url), "utf8");
-  // Codex round 2: tie the DISPLAYED sentence (both the supply and rent intros) to TOUR.
+  // Codex round 2: tie the DISPLAYED sentence to TOUR. One intro since the box moved to
+  // the Connectors tab (2026-10-06); it used to carry a supply and a rent variant.
   const intros = [...src.matchAll(/(\w+) single-database questions, (\w+) that cross them, and (\w+) it should decline/g)];
-  assert.equal(intros.length, 2, "both page intros carry the count sentence");
+  assert.equal(intros.length, 1, "the intro carries the count sentence");
   for (const m of intros) {
     assert.deepEqual([m[1], m[2], m[3]].map((w) => WORDS[w.toLowerCase()]), [single, cross, limits], m[0]);
   }

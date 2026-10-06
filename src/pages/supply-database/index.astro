@@ -2,8 +2,8 @@
 /**
  * Tab 3 — Supply Database.
  *   §01 four process steps for each professional audience
- *   §02 ask the databases — the chat box over the MCP (supply + rents + demand), the
- *       public read path the old search form was waiting for
+ *   §02 ask the databases — a pointer; the chat box itself moved to the Connectors tab
+ *       (/connectors/#ask) on 2026-10-06
  *   §03 how I check it — classifier evaluation, where models run + cost, one failure
  *   §04 the dashboard — SupplyDashboard.astro, read at build time from
  *       src/data/supply/supply-database.json (County Permit Pipeline's
@@ -14,7 +14,6 @@
 import Layout from "../../layouts/Layout.astro";
 import TabHead from "../../components/tabs/TabHead.astro";
 import TwoAudiences from "../../components/tabs/TwoAudiences.astro";
-import AskTheData from "../../components/chat/AskTheData.astro";
 import SupplyDashboard from "../../components/supply/SupplyDashboard.astro";
 
 const forAI = [
@@ -70,7 +69,7 @@ const modelUse = [
     why: "Finds the developer, project name and unit count a permit leaves blank. Large backfills go through the batch API at half price." },
   { step: "Labelling product type", model: "Claude Haiku 4.5", calls: "208", usd: "$0.18",
     why: "The classifier scored above. It runs only on new filings that have no label yet." },
-  { step: "The chat on this page", model: "Claude Sonnet 4.6", calls: "112", usd: "$2.50",
+  { step: "The “Ask the databases” chat (Connectors tab)", model: "Claude Sonnet 4.6", calls: "112", usd: "$2.50",
     why: "Chooses the tools, then writes the answer from what they return. Capped per visitor, per hour, and in dollars per day." },
 ];
 ---
@@ -97,11 +96,11 @@ const modelUse = [
         <span class="section-title__hint">Live · supply, rents and demand over one MCP server</span>
       </div>
       <p class="blk__note">
-        The private MCP server on the <a href="/connectors/#private">Connectors tab</a>, behind a chat box. Every answer shows
-        which methods it called and which records it cited; a question the databases cannot
-        answer says so rather than guessing.
+        Ask the supply database a question in plain English — alongside the rent and demand
+        databases it shares an MCP server with. The chat box lives on the Connectors tab, next
+        to the <a href="/connectors/#private">server and its tools</a>.
       </p>
-      <AskTheData page="supply" />
+      <a class="try" href="/connectors/#ask">Try it on the Connectors tab <span aria-hidden="true">→</span></a>
     </div>
   </section>
 
@@ -236,6 +235,18 @@ const modelUse = [
     max-width: var(--measure);
     margin: 0 0 var(--s-5);
   }
+  .try {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 20px;
+    background: var(--accent);
+    color: var(--bg);
+    font: 600 15px var(--sans);
+    border-radius: 2px;
+  }
+  .try:hover { text-decoration: none; opacity: 0.92; }
   .blk__note--small { font-size: var(--t-15); color: var(--muted); margin: var(--s-5) 0 0; }
 
   /* ---- search form ---- */

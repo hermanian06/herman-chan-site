@@ -3,11 +3,14 @@
  * Tab 05 — Connectors. Every way to put the databases inside Claude, in one place.
  *   §01 Rental Market Data: Multifamily & BFR — the free public connector; the full docs
  *       stay at /connectors/rental-market-data/ (the directory listing links that URL)
- *   §02 the private MCP server — endpoint, auth, connect, tool table. Moved here from the
+ *   §02 ask the databases — the AskTheData chat box over the private server, moved here
+ *       from the Supply and Rent tabs' §02 on 2026-10-06; both now point to #ask
+ *   §03 the private MCP server — endpoint, auth, connect, tool table. Moved here from the
  *       Supply tab's old §05 on 2026-10-06; Supply and Rent link to #private.
  */
 import Layout from "../../layouts/Layout.astro";
 import TabHead from "../../components/tabs/TabHead.astro";
+import AskTheData from "../../components/chat/AskTheData.astro";
 
 const PUBLIC_NAME = "Rental Market Data: Multifamily & BFR";
 const PUBLIC_SERVER = "https://mcp.hermanchan.ai/mcp";
@@ -50,6 +53,7 @@ const tools = [
   <TabHead
     links={[
       { href: "#public", label: "Free public connector" },
+      { href: "#ask", label: "Ask the databases" },
       { href: "#private", label: "Private MCP server" },
     ]}
     kicker="Tab 05 · Connectors"
@@ -99,10 +103,26 @@ const tools = [
     </div>
   </section>
 
-  <section class="cn cn--last" id="private">
+  <section class="cn" id="ask">
     <div class="wrap">
       <div class="section-title">
         <span class="section-title__hash">§ 02</span>
+        <h2 class="section-title__label">Ask the databases</h2>
+        <span class="section-title__hint">Live · try it here, nothing to install</span>
+      </div>
+      <p class="cn__note">
+        The private server below, with Claude in front of it. Every answer shows which methods
+        it called and which records it cited; a question the databases cannot answer says so
+        rather than guessing.
+      </p>
+      <AskTheData />
+    </div>
+  </section>
+
+  <section class="cn cn--last" id="private">
+    <div class="wrap">
+      <div class="section-title">
+        <span class="section-title__hash">§ 03</span>
         <h2 class="section-title__label">The private MCP server</h2>
         <span class="section-title__hint">Read-only · OAuth 2.1 · all nine metros</span>
       </div>
@@ -110,9 +130,8 @@ const tools = [
         The full databases, exposed to Claude as a small set of read-only tools. I connect it
         to claude.ai once and then ask in plain English — "what has been filed near this site
         in the last ninety days", "what is this builder doing in Atlanta" — and the server runs
-        the query and returns a clean answer. The "Ask the databases" chat on the
-        <a href="/supply-database/#ask">Supply</a> and <a href="/rent-database/#ask">Rent</a> tabs
-        uses the same tools.
+        the query and returns a clean answer. The <a href="#ask">chat box above</a> uses the
+        same tools.
       </p>
 
       <dl class="cn__dl">

@@ -2,7 +2,8 @@
 /**
  * Tab 4 — Rent Database.
  *   §01 four process steps for each professional audience
- *   §02 ask the databases — the chat box over the MCP (rents + supply + demand)
+ *   §02 ask the databases — a pointer; the chat box itself moved to the Connectors tab
+ *       (/connectors/#ask) on 2026-10-06
  *   §03 the current rent dashboard, unchanged — RentDashboard.astro is the same body
  *   /demo/rent-database/ renders, read at build time from src/data/rents/rent-database.json.
  */
@@ -10,7 +11,6 @@ import Layout from "../../layouts/Layout.astro";
 import TabHead from "../../components/tabs/TabHead.astro";
 import TwoAudiences from "../../components/tabs/TwoAudiences.astro";
 import RentDashboard from "../../components/rents/RentDashboard.astro";
-import AskTheData from "../../components/chat/AskTheData.astro";
 import rentHeadline from "../../data/rents/portfolio-headline.json";
 const rentHeadlineDate = new Date(rentHeadline.measured_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
 const forAI = [
@@ -76,9 +76,10 @@ const forRE = [
         Four rent methods sit on the same MCP server as the supply and demand tools —
         <code>rent_market_summary</code>, <code>rent_comps_near</code>, <code>rent_community_lookup</code>,
         <code>rent_coverage</code> — so a rent question can be chained with what is being built nearby.
-        The full tool table and connect instructions are on the <a href="/connectors/#private">Connectors tab</a>.
+        The chat box, the full tool table and connect instructions are on the
+        <a href="/connectors/#private">Connectors tab</a>.
       </p>
-      <AskTheData page="rents" />
+      <a class="try" href="/connectors/#ask">Try it on the Connectors tab <span aria-hidden="true">→</span></a>
     </div>
   </section>
 
@@ -101,6 +102,18 @@ const forRE = [
 
 <style>
   .dash { padding: clamp(40px, 6vw, 64px) 0 0; }
+  .try {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 20px;
+    background: var(--accent);
+    color: var(--bg);
+    font: 600 15px var(--sans);
+    border-radius: 2px;
+  }
+  .try:hover { text-decoration: none; opacity: 0.92; }
   .dash__note { font: var(--font-prose); max-width: var(--measure, 72ch); color: var(--fg-soft); margin: 0 0 20px; }
   .dash__note code { font-family: var(--mono); font-size: 0.85em; }
 </style>

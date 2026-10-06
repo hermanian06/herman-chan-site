@@ -3,7 +3,8 @@
  *   - every page's nav carries a "Connectors" tab pointing at /connectors/;
  *   - /connectors/ links the public connector's docs (whose URL the directory listing pins)
  *     and carries the private server's endpoint and tool table under #private;
- *   - the Supply tab no longer carries its own MCP section, and Supply/Rent point here.
+ *   - the Supply tab no longer carries its own MCP section, and Supply/Rent point here;
+ *   - the "Ask the databases" chat box renders once, on /connectors/#ask, not on Supply/Rent.
  * Reads the BUILT pages. Run: npm run build && npm test
  */
 import { test } from "node:test";
@@ -47,4 +48,15 @@ test("Supply no longer has its own MCP section; Supply and Rent point to /connec
   assert.ok(supply.includes('href="/connectors/#private"'));
   assert.ok(read("rent-database").includes('href="/connectors/#private"'));
   for (const p of [["supply-database"], ["rent-database"]]) assert.ok(!read(...p).includes("/supply-database/#mcp"));
+});
+
+test("the chat box renders once, on /connectors/#ask, and Supply/Rent link to it", () => {
+  const html = read("connectors");
+  assert.equal((html.match(/data-ask\b/g) ?? []).length, 1, "expected exactly one chat box on /connectors/");
+  assert.match(html, /id="ask"/);
+  for (const p of ["supply-database", "rent-database"]) {
+    const page = read(p);
+    assert.doesNotMatch(page, /data-ask\b/, `${p} still renders the chat box`);
+    assert.ok(page.includes('href="/connectors/#ask"'), `${p} has no link to the chat box`);
+  }
 });

@@ -28,7 +28,8 @@ Seven tabs: Intro (`/`), Underwriting Agent (`/underwriting-agent/`), Supply Dat
 (`/supply-database/`), Rent Database (`/rent-database/`), Connectors (`/connectors/`), Blog
 (`/blog/`), About (`/about/`). Connectors holds both MCP surfaces: the public connector's summary
 (its full docs stay at `/connectors/rental-market-data/`, a URL the directory listing pins) and
-the private server's endpoint and tool table (`#private`); Supply and Rent link there.
+the "Ask the databases" chat box (`#ask`, its only home since 2026-10-06), and the private
+server's endpoint and tool table (`#private`); Supply and Rent § 02 link there.
 Keep `/legacy/`, `/projects/` and `/posts/` resolving. Preserve existing design, typography,
 uploads, chats, dashboards and samples unless Herman asks for a change.
 
