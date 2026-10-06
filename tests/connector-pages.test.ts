@@ -6,7 +6,10 @@
  *   - docs has at least three example prompts, the server URL, the one-click install
  *     link, the quota and the support email, and links to privacy;
  *   - neither page calls a home-value index "fair market value", and neither carries
- *     an employer brand.
+ *     an employer brand;
+ *   - what is withheld (Herman, 2026-10-06): licensed unit counts, owner and property-manager
+ *     names stay out; unit counts and year built from PUBLIC records are shown, each with its
+ *     source (county property records, Florida DBPR apartment licences, City of Austin permits).
  * Reads the BUILT pages. Run: npm run build && npm test
  */
 import { test } from "node:test";
@@ -63,3 +66,29 @@ for (const [name, path] of [["docs", DOCS], ["privacy", PRIVACY]] as const) {
     assert.doesNotMatch(html, /\bhaven\b(?!['’])/i);
   });
 }
+
+const text = (html: string) => html.replace(/<[^>]+>/g, " ").replace(/&#39;|&rsquo;|’/g, "'").replace(/\s+/g, " ");
+
+test("docs page: licensed unit counts, owner and property manager stay withheld", () => {
+  const t = text(read(DOCS));
+  assert.match(t, /licensed[^.]*unit counts?/i, "the licensed unit counts are not named as withheld");
+  assert.match(t, /owner and property-manager names/i);
+  assert.match(t, /absent from everything the public service can read/i);
+});
+
+test("docs page: public-record unit counts and year built are shown, with their sources", () => {
+  const t = text(read(DOCS));
+  assert.match(t, /unit counts and year built from public records/i, "public-record units / year built not stated as shown");
+  for (const src of ["county property records", "Florida DBPR apartment licences", "City of Austin permits"]) {
+    assert.ok(t.includes(src), `source "${src}" missing`);
+  }
+  assert.match(t, /as-of date/i, "the as-of date is not mentioned");
+  assert.match(t, /third-party market data/i, "the year-built fallback label is not named");
+  assert.doesNotMatch(t, /Rental-community unit counts and owner/i, "the old blanket 'unit counts withheld' sentence is still there");
+});
+
+test("privacy page: only the licensed unit counts are absent; public-record counts are readable", () => {
+  const t = text(read(PRIVACY));
+  assert.match(t, /licensed rental-community unit counts/i);
+  assert.match(t, /public-record unit counts and year built/i);
+});

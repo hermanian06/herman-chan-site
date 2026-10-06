@@ -122,8 +122,9 @@ const retention = [
         <p>
           Traffic is HTTPS only. The service reads the database through a narrow, read-only role
           that can see a published subset of columns and nothing else: owner and property-manager
-          names, rental-community unit counts and internal processing metadata are absent from
-          what it can read, not filtered out afterwards. Access tokens are short-lived; refresh
+          names, the licensed rental-community unit counts and internal processing metadata are
+          absent from what it can read, not filtered out afterwards (public-record unit counts and
+          year built are readable, each with its source). Access tokens are short-lived; refresh
           tokens are stored only as a hash and replaced on every use.
         </p>
 
