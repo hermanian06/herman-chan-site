@@ -8,6 +8,31 @@ This file is the record of what shipped and why — read the newest 1–3 entrie
 
 <!-- session-closeout: insert new entries directly below this line -->
 
+## What just changed (2026-10-06 — Connectors tab; Ask the databases moves there; support email)
+
+- **Connectors tab** (`4e41781`, published): new top-level `/connectors/` between Rent Database and
+  Blog (Blog/About kickers → Tab 06/07). §01 the public Rental Market Data connector (Add to Claude,
+  docs + privacy links, public-vs-private table); the private MCP server section (endpoint, auth,
+  connect, 17-tool table) moved off Supply's old §05. `/connectors/rental-market-data/` is unchanged
+  (the directory listing pins it) and lights the Connectors tab. A "Limit: None" row for the private
+  server was dropped as unverified.
+- **Support email** (`4e41781`): connector docs + privacy pages → `herman@hermanchan.ai`; the server's
+  consent page followed in CPP `78ce3b6`, deployed `c6fe8193`. hermanchan.ai MX is ImprovMX; the
+  `herman@` alias itself was not checked.
+- **Ask the databases → Connectors §02** (`a77d46d`, published): the chat box was one widget twice
+  (same backend, same tour). It renders once on Connectors (private server now §03); Supply and Rent
+  §02 are pointers with a "Try it on the Connectors tab" button. `AskTheData` lost its `page` prop
+  (one intro); `tour-refusal.test.ts` now pins one count sentence. Supply §03's cost row "The chat on
+  this page" → "The “Ask the databases” chat (Connectors tab)".
+- **Verified:** `npm test` 37/37 (new `tests/connectors-tab.test.ts`: nav tab + aria-current, 17-tool
+  table, one `data-ask` only on `/connectors/`, Supply/Rent link `/connectors/#ask` + `#private`);
+  local desktop + 375 px checks (no horizontal scroll); live curl of all four pages; a live tour
+  question on `/connectors/#ask` answered ("1 tool call · 22 records").
+- **Spend:** cents (one demo chat question).
+- **Loose ends: ACTION — you:** send one test mail to herman@hermanchan.ai to prove the ImprovMX
+  alias delivers. (Consent-page render of the new address rides on the planned claude.ai connector
+  test — recorded in CPP's CHANGELOG.)
+
 ## What just changed (2026-10-04 — a ninth chip the databases decline; shorter answers)
 
 - **Chip 9** (`71e3949`, published): "What's the supply pipeline in Denver, and what cap rate should
