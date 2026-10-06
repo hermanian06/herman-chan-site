@@ -3,13 +3,13 @@
     "communities": 16843,
     "units": 4663436,
     "markets": 22,
-    "floor_plans": 66115,
-    "communities_with_rents": 12832,
-    "with_net_effective": 53082,
-    "under_concession": 32487,
-    "observations_all": 66449,
-    "observations_30d": 25760,
-    "last_observation": "2026-10-06T20:25:48+00:00",
+    "floor_plans": 66124,
+    "communities_with_rents": 12838,
+    "with_net_effective": 53107,
+    "under_concession": 32460,
+    "observations_all": 66572,
+    "observations_30d": 25801,
+    "last_observation": "2026-10-06T21:44:27+00:00",
     "first_observation": "2026-05-18T05:26:02+00:00"
   },
   "markets": [
@@ -89,13 +89,13 @@
       "bfr": 54,
       "mf": 1186,
       "units": 344735,
-      "with_rents": 972,
-      "floor_plans": 5399,
+      "with_rents": 978,
+      "floor_plans": 5408,
       "median_rent": 1495.0,
       "median_psf": 1.67,
-      "pct_concession": 59.4,
-      "avg_discount_pct": 14.3,
-      "last_scraped": "2026-10-06T20:25:48+00:00"
+      "pct_concession": 58.8,
+      "avg_discount_pct": 14.4,
+      "last_scraped": "2026-10-06T21:44:27+00:00"
     },
     {
       "market": "CLT",
@@ -332,23 +332,23 @@
     },
     {
       "decade": "1970s",
-      "communities": 1414,
+      "communities": 1415,
       "bfr": 0,
-      "mf": 1414,
+      "mf": 1415,
       "median_psf": 1.46
     },
     {
       "decade": "1980s",
-      "communities": 2122,
+      "communities": 2123,
       "bfr": 2,
-      "mf": 2120,
+      "mf": 2121,
       "median_psf": 1.53
     },
     {
       "decade": "1990s",
-      "communities": 1174,
+      "communities": 1175,
       "bfr": 6,
-      "mf": 1168,
+      "mf": 1169,
       "median_psf": 1.58
     },
     {
@@ -360,16 +360,16 @@
     },
     {
       "decade": "2010s",
-      "communities": 2215,
+      "communities": 2217,
       "bfr": 4,
-      "mf": 2211,
+      "mf": 2213,
       "median_psf": 1.9
     },
     {
       "decade": "2020s",
-      "communities": 2878,
+      "communities": 2879,
       "bfr": 30,
-      "mf": 2848,
+      "mf": 2849,
       "median_psf": 1.94
     },
     {
@@ -383,17 +383,17 @@
   "beds": [
     {
       "beds": 0,
-      "floor_plans": 4169,
-      "communities": 3122,
-      "median_rent": 1415,
+      "floor_plans": 4168,
+      "communities": 3123,
+      "median_rent": 1414,
       "median_sf": 553,
       "median_psf": 2.55,
       "pct_concession": 53.8
     },
     {
       "beds": 1,
-      "floor_plans": 25640,
-      "communities": 11705,
+      "floor_plans": 25637,
+      "communities": 11711,
       "median_rent": 1410,
       "median_sf": 746,
       "median_psf": 1.89,
@@ -401,17 +401,17 @@
     },
     {
       "beds": 2,
-      "floor_plans": 25647,
-      "communities": 11753,
-      "median_rent": 1759,
+      "floor_plans": 25658,
+      "communities": 11759,
+      "median_rent": 1758,
       "median_sf": 1098,
       "median_psf": 1.6,
-      "pct_concession": 48.3
+      "pct_concession": 48.2
     },
     {
       "beds": 3,
-      "floor_plans": 9495,
-      "communities": 7294,
+      "floor_plans": 9497,
+      "communities": 7296,
       "median_rent": 2168,
       "median_sf": 1390,
       "median_psf": 1.54,
@@ -449,18 +449,18 @@
     {
       "product": "mf",
       "structure": "unspecified",
-      "floor_plans": 47411,
-      "communities": 8839,
+      "floor_plans": 47473,
+      "communities": 8859,
       "median_rent": 1625,
       "median_sf": 960
     },
     {
       "product": "mf",
       "structure": "mf",
-      "floor_plans": 15206,
-      "communities": 3605,
-      "median_rent": 1561,
-      "median_sf": 903
+      "floor_plans": 15149,
+      "communities": 3587,
+      "median_rent": 1563,
+      "median_sf": 905
     },
     {
       "product": "bfr",
@@ -473,10 +473,10 @@
     {
       "product": "mf",
       "structure": "th",
-      "floor_plans": 549,
+      "floor_plans": 553,
       "communities": 306,
-      "median_rent": 1995,
-      "median_sf": 1276
+      "median_rent": 1976,
+      "median_sf": 1269
     },
     {
       "product": "bfr",
@@ -514,31 +514,31 @@
   "extraction": [
     {
       "engine": "LLM (Haiku / Luna)",
-      "observations": 13427
+      "observations": 13456
     },
     {
       "engine": "rentcafe",
-      "observations": 11486
+      "observations": 11510
     },
     {
       "engine": "sightmap",
-      "observations": 9336
+      "observations": 9348
     },
     {
       "engine": "knock",
-      "observations": 6199
+      "observations": 6203
     },
     {
       "engine": "entrata",
-      "observations": 3254
+      "observations": 3264
     },
     {
       "engine": "realpage",
-      "observations": 868
+      "observations": 871
     },
     {
       "engine": "razz",
-      "observations": 775
+      "observations": 782
     },
     {
       "engine": "amh",
@@ -546,19 +546,19 @@
     },
     {
       "engine": "apartments247",
-      "observations": 373
+      "observations": 380
     },
     {
       "engine": "repli360",
-      "observations": 285
+      "observations": 288
+    },
+    {
+      "engine": "appfolio",
+      "observations": 126
     },
     {
       "engine": "avalon",
       "observations": 123
-    },
-    {
-      "engine": "appfolio",
-      "observations": 122
     },
     {
       "engine": "ark",
@@ -566,7 +566,7 @@
     },
     {
       "engine": "rently",
-      "observations": 45
+      "observations": 46
     },
     {
       "engine": "rentcafe_marketplace",
@@ -578,7 +578,7 @@
     },
     {
       "engine": "resman",
-      "observations": 2
+      "observations": 3
     },
     {
       "engine": "gounion",
@@ -674,22 +674,22 @@
     },
     {
       "week": "2026-10-05",
-      "observations": 1445,
-      "communities": 1443,
+      "observations": 1550,
+      "communities": 1548,
       "markets": 8
     }
   ],
   "revisit": {
-    "observed": 13081,
-    "twice_plus": 8214,
-    "thrice_plus": 7601,
+    "observed": 13086,
+    "twice_plus": 8215,
+    "thrice_plus": 7609,
     "avg_observations": 4
   },
   "rent_moves": {
     "communities": 7481,
-    "moved_up": 3101,
-    "moved_down": 3553,
-    "unchanged": 827,
+    "moved_up": 3110,
+    "moved_down": 3549,
+    "unchanged": 822,
     "avg_span_days": 40
   },
   "samples": {
@@ -952,7 +952,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2024,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-20",
         "avg_rent": 1709
       },
@@ -1306,7 +1306,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2015,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-10",
         "avg_rent": 2970
       },
@@ -1316,7 +1316,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2019,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-10",
         "avg_rent": 3417
       },
@@ -1326,7 +1326,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2008,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-10",
         "avg_rent": 3129
       },
@@ -1346,7 +1346,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2017,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-11",
         "avg_rent": 3360
       },
@@ -1356,7 +1356,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2025,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-10",
         "avg_rent": 5257
       },
@@ -1376,7 +1376,7 @@
         "units": null,
         "units_source": null,
         "year_built": 1990,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-11",
         "avg_rent": 2320
       },
@@ -1386,7 +1386,7 @@
         "units": null,
         "units_source": null,
         "year_built": 1976,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-11",
         "avg_rent": 2428
       },
@@ -1396,7 +1396,7 @@
         "units": null,
         "units_source": null,
         "year_built": 1978,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-10",
         "avg_rent": 3242
       },
@@ -1406,7 +1406,7 @@
         "units": null,
         "units_source": null,
         "year_built": 1988,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-10",
         "avg_rent": 1632
       },
@@ -1416,7 +1416,7 @@
         "units": null,
         "units_source": null,
         "year_built": 1977,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-10",
         "avg_rent": 2549
       },
@@ -1426,7 +1426,7 @@
         "units": null,
         "units_source": null,
         "year_built": 1973,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-10",
         "avg_rent": 2297
       },
@@ -1436,7 +1436,7 @@
         "units": null,
         "units_source": null,
         "year_built": 1975,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-10",
         "avg_rent": 2504
       },
@@ -1476,7 +1476,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2019,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-10",
         "avg_rent": 2660
       },
@@ -1618,7 +1618,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2012,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-30",
         "avg_rent": 1579
       },
@@ -1678,7 +1678,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2001,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-30",
         "avg_rent": 1510
       },
@@ -1761,8 +1761,8 @@
         "units_source": "City of Austin building permits",
         "year_built": 2007,
         "year_source": "Travis County, TX property record",
-        "last_seen": "2026-09-21",
-        "avg_rent": 2350
+        "last_seen": "2026-10-06",
+        "avg_rent": 2386
       },
       {
         "name": "Aria Grand",
@@ -1972,7 +1972,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2009,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-23",
         "avg_rent": 1420
       },
@@ -2032,7 +2032,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2025,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-23",
         "avg_rent": 2954
       },
@@ -2062,7 +2062,7 @@
         "units": null,
         "units_source": null,
         "year_built": 1986,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-09",
         "avg_rent": 1423
       },
@@ -2082,7 +2082,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2007,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-09",
         "avg_rent": 1387
       },
@@ -2092,7 +2092,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2013,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-23",
         "avg_rent": 1480
       },
@@ -2144,7 +2144,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2019,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-12",
         "avg_rent": 2177
       },
@@ -2204,7 +2204,7 @@
         "units": null,
         "units_source": null,
         "year_built": 1970,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-11",
         "avg_rent": 1005
       },
@@ -2284,7 +2284,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2024,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-12",
         "avg_rent": 2686
       },
@@ -2376,7 +2376,7 @@
         "units": 171,
         "units_source": "Florida DBPR apartment licence",
         "year_built": 1984,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-13",
         "avg_rent": 1911
       },
@@ -2436,7 +2436,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2024,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-12",
         "avg_rent": 2150
       },
@@ -2506,7 +2506,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2026,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-12",
         "avg_rent": 2372
       }
@@ -2598,7 +2598,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2026,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-01",
         "avg_rent": 3134
       },
@@ -2608,7 +2608,7 @@
         "units": null,
         "units_source": null,
         "year_built": 1987,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-01",
         "avg_rent": 1753
       },
@@ -2618,7 +2618,7 @@
         "units": 250,
         "units_source": "Florida DBPR apartment licence",
         "year_built": 1988,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-02",
         "avg_rent": 2082
       },
@@ -2770,7 +2770,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2012,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-02",
         "avg_rent": 1376
       },
@@ -2800,7 +2800,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2026,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-01",
         "avg_rent": 3554
       },
@@ -2820,7 +2820,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2013,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-02",
         "avg_rent": 1570
       },
@@ -2840,7 +2840,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2000,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-02",
         "avg_rent": 1440
       },
@@ -2880,7 +2880,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2023,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-02",
         "avg_rent": 1606
       },
@@ -2910,7 +2910,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2020,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-02",
         "avg_rent": 3563
       }
@@ -3002,7 +3002,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2002,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-25",
         "avg_rent": 1627
       },
@@ -3022,7 +3022,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2011,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-25",
         "avg_rent": 1645
       },
@@ -3042,7 +3042,7 @@
         "units": null,
         "units_source": null,
         "year_built": 1982,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-25",
         "avg_rent": 1426
       },
@@ -3284,7 +3284,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2022,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-26",
         "avg_rent": 1833
       },
@@ -3314,7 +3314,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2023,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-26",
         "avg_rent": 1833
       }
@@ -3386,7 +3386,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2023,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-28",
         "avg_rent": 1731
       },
@@ -3406,7 +3406,7 @@
         "units": 188,
         "units_source": "Florida DBPR apartment licence",
         "year_built": 2021,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-28",
         "avg_rent": 1803
       },
@@ -3568,7 +3568,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2025,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-25",
         "avg_rent": 1656
       },
@@ -3578,7 +3578,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2009,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-25",
         "avg_rent": 1036
       },
@@ -3588,7 +3588,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2022,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-25",
         "avg_rent": 1084
       },
@@ -3598,7 +3598,7 @@
         "units": null,
         "units_source": null,
         "year_built": 1982,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-25",
         "avg_rent": 775
       },
@@ -3608,7 +3608,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2023,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-25",
         "avg_rent": 1576
       },
@@ -3618,7 +3618,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2002,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-25",
         "avg_rent": 1213
       },
@@ -3628,7 +3628,7 @@
         "units": null,
         "units_source": null,
         "year_built": 1983,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-25",
         "avg_rent": 762
       },
@@ -3638,7 +3638,7 @@
         "units": null,
         "units_source": null,
         "year_built": 1984,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-25",
         "avg_rent": 750
       },
@@ -3648,7 +3648,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2019,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-25",
         "avg_rent": 1489
       },
@@ -3658,7 +3658,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2024,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-25",
         "avg_rent": 1156
       },
@@ -3668,7 +3668,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2019,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-25",
         "avg_rent": 1247
       },
@@ -3678,7 +3678,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2021,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-25",
         "avg_rent": 1120
       },
@@ -3688,7 +3688,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2023,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-25",
         "avg_rent": 1372
       },
@@ -3698,7 +3698,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2019,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-25",
         "avg_rent": 1352
       },
@@ -3708,7 +3708,7 @@
         "units": null,
         "units_source": null,
         "year_built": 1970,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-25",
         "avg_rent": 1096
       },
@@ -3718,7 +3718,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2020,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-25",
         "avg_rent": 1275
       }
@@ -3780,7 +3780,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2025,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-02",
         "avg_rent": 2084
       },
@@ -3790,7 +3790,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2025,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-02",
         "avg_rent": 1573
       },
@@ -3840,7 +3840,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2025,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-02",
         "avg_rent": 1725
       },
@@ -3860,7 +3860,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2026,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-02",
         "avg_rent": 2394
       },
@@ -3880,7 +3880,7 @@
         "units": 21,
         "units_source": "Florida DBPR apartment licence",
         "year_built": 2022,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-02",
         "avg_rent": 2208
       },
@@ -3900,7 +3900,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2026,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-02",
         "avg_rent": 1844
       },
@@ -3910,7 +3910,7 @@
         "units": 324,
         "units_source": "Florida DBPR apartment licence",
         "year_built": 2020,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-02",
         "avg_rent": 1878
       },
@@ -4204,7 +4204,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2009,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-02",
         "avg_rent": 1779
       },
@@ -4214,7 +4214,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2021,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-02",
         "avg_rent": 1768
       },
@@ -4224,7 +4224,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2023,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-02",
         "avg_rent": 2033
       },
@@ -4234,7 +4234,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2024,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-02",
         "avg_rent": 1939
       }
@@ -4286,7 +4286,7 @@
         "units": null,
         "units_source": null,
         "year_built": 1996,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-26",
         "avg_rent": 1110
       },
@@ -4326,7 +4326,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2023,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-26",
         "avg_rent": 2231
       },
@@ -4348,7 +4348,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2016,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-26",
         "avg_rent": 3033
       },
@@ -4358,7 +4358,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2023,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-26",
         "avg_rent": 3177
       },
@@ -4368,7 +4368,7 @@
         "units": null,
         "units_source": null,
         "year_built": 1946,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-26",
         "avg_rent": 2019
       },
@@ -4378,7 +4378,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2023,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-26",
         "avg_rent": 1964
       },
@@ -4388,7 +4388,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2013,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-26",
         "avg_rent": 2231
       },
@@ -4398,7 +4398,7 @@
         "units": null,
         "units_source": null,
         "year_built": 1989,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-26",
         "avg_rent": 1992
       },
@@ -4408,7 +4408,7 @@
         "units": null,
         "units_source": null,
         "year_built": 1969,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-26",
         "avg_rent": 2013
       },
@@ -4418,7 +4418,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2023,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-26",
         "avg_rent": 2359
       },
@@ -4428,7 +4428,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2024,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-09-26",
         "avg_rent": 3113
       }
@@ -4440,7 +4440,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2024,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-02",
         "avg_rent": 2515
       },
@@ -4450,7 +4450,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2021,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-02",
         "avg_rent": 1793
       },
@@ -4460,7 +4460,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2022,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-02",
         "avg_rent": 2216
       },
@@ -4470,7 +4470,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2024,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-02",
         "avg_rent": 2232
       },
@@ -4480,7 +4480,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2021,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-02",
         "avg_rent": 2067
       },
@@ -4490,7 +4490,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2021,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-02",
         "avg_rent": 1795
       },
@@ -4500,7 +4500,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2021,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-02",
         "avg_rent": 2252
       },
@@ -4510,7 +4510,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2024,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-02",
         "avg_rent": 2085
       },
@@ -4520,7 +4520,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2022,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-02",
         "avg_rent": 2181
       },
@@ -4530,7 +4530,7 @@
         "units": null,
         "units_source": null,
         "year_built": 2022,
-        "year_source": null,
+        "year_source": "community registry (third-party market data)",
         "last_seen": "2026-10-02",
         "avg_rent": 1675
       }
@@ -4652,6 +4652,6 @@
     "TPA": "Tampa, FL",
     "TYS": "Knoxville, TN"
   },
-  "generated_at": "2026-10-06T20:26:06+00:00",
+  "generated_at": "2026-10-06T21:45:11+00:00",
   "sample_per_market": 20
 }
