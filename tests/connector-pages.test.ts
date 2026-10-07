@@ -104,3 +104,12 @@ test("docs page has an Add to Codex button with the Codex steps, and no CLI comm
     assert.ok(!docs.includes(cli), `CLI command still on the page: ${cli}`);
   }
 });
+
+test("install buttons open new tabs: Add to Claude to claude.ai, Add to Codex to OpenAI's Codex MCP guide (Herman, 2026-10-07)", () => {
+  for (const html of [read(DOCS), read(join(DIST, "..", "index.html"))]) {
+    assert.ok(/<a[^>]*href="https:\/\/claude\.ai\/customize\/connectors[^"]*"[^>]*target="_blank"[^>]*rel="noopener[^"]*"[^>]*>\s*Add to Claude/.test(html),
+      "Add to Claude does not open a new tab");
+    assert.ok(/<button[^>]*data-copy="https:\/\/mcp\.hermanchan\.ai\/mcp"[^>]*data-open="https:\/\/learn\.chatgpt\.com\/docs\/extend\/mcp[^"]*"[^>]*>\s*Add to Codex/.test(html),
+      "Add to Codex does not carry the Codex guide to open");
+  }
+});

@@ -78,8 +78,8 @@ const tools = [
       </div>
       <div class="cx__install">
         <div class="cx__btns">
-          <a class="cx__btn" href={INSTALL_URL}>Add to Claude <span aria-hidden="true">↗</span></a>
-          <button class="cx__btn cx__btn--alt" type="button" data-copy={SERVER_URL} id="codex-btn">
+          <a class="cx__btn" href={INSTALL_URL} target="_blank" rel="noopener noreferrer">Add to Claude <span aria-hidden="true">↗</span></a>
+          <button class="cx__btn cx__btn--alt" type="button" data-copy={SERVER_URL} id="codex-btn" data-open="https://learn.chatgpt.com/docs/extend/mcp?surface=app">
             Add to Codex <span aria-hidden="true">⧉</span>
           </button>
         </div>
@@ -88,7 +88,7 @@ const tools = [
           add it by hand: Settings → Connectors → Add custom connector, then paste the server URL.
         </p>
         <p class="cx__note cx__codex" id="codex-steps">
-          <strong>Codex:</strong> the button copies the server URL.
+          <strong>Codex:</strong> the button copies the server URL and opens OpenAI’s Codex setup guide in a new tab.
           In Codex open Settings → MCP servers → Add server,
           choose Streamable HTTP, paste the URL and save, then select Authenticate.
           <span class="cx__copied" id="codex-copied" hidden>URL copied.</span>
@@ -269,6 +269,8 @@ const tools = [
   const done = document.getElementById("codex-copied");
   btn?.addEventListener("click", async () => {
     const url = btn.dataset.copy ?? "";
+    const guide = btn.dataset.open;
+    if (guide) window.open(guide, "_blank", "noopener");
     try { await navigator.clipboard.writeText(url); }
     catch { window.prompt("Copy the server URL:", url); return; }
     if (done) { done.hidden = false; setTimeout(() => { done.hidden = true; }, 2500); }

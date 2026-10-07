@@ -74,13 +74,13 @@ const tools = [
         who lives within a few miles, and how the ZIP’s home values compare with its metro.
       </p>
       <div class="cn__actions">
-        <a class="cn__btn" href={PUBLIC_INSTALL}>Add to Claude <span aria-hidden="true">↗</span></a>
-        <button class="cn__btn cn__btn--alt" type="button" data-copy={PUBLIC_SERVER} id="cn-codex-btn">Add to Codex <span aria-hidden="true">⧉</span></button>
+        <a class="cn__btn" href={PUBLIC_INSTALL} target="_blank" rel="noopener noreferrer">Add to Claude <span aria-hidden="true">↗</span></a>
+        <button class="cn__btn cn__btn--alt" type="button" data-copy={PUBLIC_SERVER} id="cn-codex-btn" data-open="https://learn.chatgpt.com/docs/extend/mcp?surface=app">Add to Codex <span aria-hidden="true">⧉</span></button>
         <a class="cn__link" href="/connectors/rental-market-data/">Docs, example prompts and limits <span aria-hidden="true">→</span></a>
         <a class="cn__link" href="/connectors/rental-market-data/privacy/">Privacy policy <span aria-hidden="true">→</span></a>
       </div>
       <p class="cn__note cn__codex" id="cn-codex-steps">
-        <strong>Codex:</strong> the button copies the server URL.
+        <strong>Codex:</strong> the button copies the server URL and opens OpenAI’s Codex setup guide in a new tab.
         In Codex open Settings → MCP servers → Add server,
         choose Streamable HTTP, paste the URL and save, then select Authenticate.
         <span class="cn__copied" id="cn-codex-copied" hidden>URL copied.</span>
@@ -174,6 +174,8 @@ const tools = [
   const cnDone = document.getElementById("cn-codex-copied");
   cnBtn?.addEventListener("click", async () => {
     const url = cnBtn.dataset.copy ?? "";
+    const guide = cnBtn.dataset.open;
+    if (guide) window.open(guide, "_blank", "noopener");
     try { await navigator.clipboard.writeText(url); }
     catch { window.prompt("Copy the server URL:", url); return; }
     if (cnDone) { cnDone.hidden = false; setTimeout(() => { cnDone.hidden = true; }, 2500); }
