@@ -29,7 +29,7 @@ const prompts = [
   },
   {
     ask: "How much multifamily supply is permitted within 5 miles of 1100 Peachtree St, Atlanta, and what stage is it at?",
-    what: "supply_near groups nearby projects by stage (entitlement case, stormwater notice, site plan, issued permit) and names the nearest ones.",
+    what: "supply_near groups nearby projects by stage (entitlement case, stormwater notice, site plan, issued permit, built) and names the nearest ones.",
   },
   {
     ask: "Which builders have the most late-stage townhome projects in the Nashville metro?",
@@ -44,7 +44,7 @@ const prompts = [
 const tools = [
   { name: "site_screen", what: "One address in, every layer out: supply by stage at 1, 3 and 5 miles, rents, demographics and home values, with a note wherever a layer has no data." },
   { name: "demand_rings", what: "Population, households, income, jobs and labor force in 1, 3, 5 and 10-mile rings, apportioned over 2020 census blocks." },
-  { name: "supply_near", what: "Permitted and entitled residential supply within a radius, grouped by stage; only issued permits are marked committed." },
+  { name: "supply_near", what: "Permitted and entitled residential supply within a radius, grouped by stage; only issued permits not yet built are marked committed, and built projects show as existing stock." },
   { name: "supply_search", what: "The same supply data searched by project or builder name, metro, stage or size." },
   { name: "rent_comps_near", what: "Nearest rental comps to a point, one row per floor-plan group, with asking range, net-effective range, concession weeks and the operator’s own wording." },
   { name: "rent_market_summary", what: "Median asking and net-effective rent for a whole market by bed count, with the denominators named." },
@@ -178,7 +178,7 @@ const tools = [
 
       <h3 class="cx__h">How to read the numbers</h3>
       <ul class="cx__list">
-        <li><strong>Supply stages are views of the same market, not a funnel to add up.</strong> One project can appear as an entitlement case, then a stormwater notice, then a permit. Only issued permits are marked committed.</li>
+        <li><strong>Supply stages are views of the same market, not a funnel to add up.</strong> One project can appear as an entitlement case, then a stormwater notice, then a permit. Only issued permits not yet built are marked committed; a permit that is already built shows as “Built — delivered”, existing stock rather than pipeline.</li>
         <li><strong>Early-stage sizes are estimates.</strong> Where a filing gives only acreage, the size is estimated from it and labelled that way. Entitlement cases sit one to four years ahead of construction, and many never build.</li>
         <li><strong>Asking and net-effective rent are different numbers.</strong> Each comp carries both, plus the concession in weeks. A “starting at” price is flagged as a floor.</li>
         <li><strong>A rent row is a floor-plan group</strong> (community, bed count and plan), not a whole community.</li>
@@ -230,7 +230,7 @@ const tools = [
         <dt>Pace</dt>
         <dd>Up to 10 calls a minute per connection, under a service-wide daily cap.</dd>
         <dt>Size</dt>
-        <dd>Answers return 25 rows by default and 50 at most, and say when a list was trimmed.</dd>
+        <dd>Answers return 25 rows by default (15 for rent comps) and 50 at most, and say when a list was trimmed.</dd>
       </dl>
     </div>
   </section>
