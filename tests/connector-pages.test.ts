@@ -92,3 +92,14 @@ test("privacy page: only the licensed unit counts are absent; public-record coun
   assert.match(t, /licensed rental-community unit counts/i);
   assert.match(t, /public-record unit counts and year built/i);
 });
+
+test("docs page shows how to add the connector in Codex and Claude Code (Herman, 2026-10-07)", () => {
+  const docs = read(DOCS);
+  for (const cmd of [
+    "codex mcp add rental-market-data --url https://mcp.hermanchan.ai/mcp",
+    "codex mcp login rental-market-data",
+    "claude mcp add --transport http rental-market-data https://mcp.hermanchan.ai/mcp",
+  ]) {
+    assert.ok(docs.includes(cmd), `docs page lacks the command: ${cmd}`);
+  }
+});

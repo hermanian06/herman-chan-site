@@ -58,13 +58,13 @@ const tools = [
 >
   <TabHead
     links={[
-      { href: "#add", label: "Add it to Claude" },
+      { href: "#add", label: "Add it to Claude or Codex" },
       { href: "#prompts", label: "Example prompts" },
       { href: "#data", label: "The data" },
       { href: "#limits", label: "Limits" },
       { href: "#support", label: "Sources and support" },
     ]}
-    kicker="Connector · free MCP for Claude"
+    kicker="Connector · free MCP for Claude and Codex"
     title={NAME}
     lede="I built a read-only connector that lets Claude screen a U.S. site for build-to-rent and multifamily: what is permitted or entitled nearby, what comparable rentals are asking after concessions, who lives within a few miles, and how the ZIP’s home values compare with its metro. There is no account and nothing to pay for."
   />
@@ -73,7 +73,7 @@ const tools = [
     <div class="wrap">
       <div class="section-title">
         <span class="section-title__hash">§ 01</span>
-        <h2 class="section-title__label">Add it to Claude</h2>
+        <h2 class="section-title__label">Add it to Claude or Codex</h2>
         <span class="section-title__hint">OAuth · one consent click · no account</span>
       </div>
       <div class="cx__install">
@@ -82,6 +82,18 @@ const tools = [
           The button opens Claude’s custom-connector dialog with the name and URL filled in. To
           add it by hand: Settings → Connectors → Add custom connector, then paste the server URL.
         </p>
+      </div>
+      <div class="cx__cli">
+        <p class="cx__note">
+          <strong>Codex</strong> (CLI). The second command opens the same consent page in your
+          browser:
+        </p>
+        <pre class="cx__cmd"><code>codex mcp add rental-market-data --url https://mcp.hermanchan.ai/mcp
+codex mcp login rental-market-data</code></pre>
+        <p class="cx__note">
+          <strong>Claude Code</strong>. Then run <code>/mcp</code> inside Claude Code to sign in:
+        </p>
+        <pre class="cx__cmd"><code>claude mcp add --transport http rental-market-data https://mcp.hermanchan.ai/mcp</code></pre>
       </div>
       <dl class="cx__dl">
         <dt>Server URL</dt>
@@ -282,6 +294,15 @@ const tools = [
     color: var(--bg);
     font: 600 16px/1 var(--sans);
     white-space: nowrap;
+  }
+  .cx__cli { max-width: 960px; margin: 0 0 var(--s-6); }
+  .cx__cli .cx__note { margin: 0 0 var(--s-2); }
+  .cx__cmd {
+    margin: 0 0 var(--s-4);
+    padding: 14px 18px;
+    background: var(--bg-alt);
+    overflow-x: auto;
+    font: 14px/1.6 var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
   }
   .cx__btn:hover { background: var(--accent-ink); text-decoration: none; }
 
