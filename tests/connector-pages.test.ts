@@ -113,3 +113,10 @@ test("install buttons open new tabs: Add to Claude to claude.ai, Add to Codex to
       "Add to Codex does not carry the Codex guide to open");
   }
 });
+
+test("home values are described as an index level, never a trend (Herman, 2026-10-07)", () => {
+  for (const html of [read(DOCS), read(join(DIST, "..", "index.html"))]) {
+    const text = html.replace(/<[^>]+>/g, " ");
+    assert.ok(!/home value trend|ZHVI\)?\s+trend/i.test(text), "a page calls the Zillow index a trend");
+  }
+});

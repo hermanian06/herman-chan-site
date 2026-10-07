@@ -47,14 +47,14 @@ const tools = [
   { name: "rent_comps_near", what: "Nearest rental comps to a point, one row per floor-plan group, with asking range, net-effective range, concession weeks and the operator’s own wording." },
   { name: "rent_market_summary", what: "Median asking and net-effective rent for a whole market by bed count, with the denominators named." },
   { name: "rent_community_lookup", what: "Turns a community name into an address and coordinates." },
-  { name: "home_values", what: "Zillow Home Value Index (ZHVI) trend for a ZIP against its metro, with the ratio between them." },
+  { name: "home_values", what: "Zillow Home Value Index (ZHVI) level for a ZIP against its metro, with the ratio between them." },
   { name: "data_coverage", what: "What the connector can and cannot answer, read from the data." },
 ];
 ---
 
 <Layout
   title={NAME}
-  description="A free, read-only MCP connector for Claude: housing supply pipeline, rent comps with concessions, ring demographics and home value trends for any U.S. site."
+  description="A free, read-only MCP connector for Claude: housing supply pipeline, rent comps with concessions, ring demographics and the Zillow home value index for any U.S. site."
 >
   <TabHead
     links={[
