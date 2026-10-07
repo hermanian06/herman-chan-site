@@ -77,23 +77,22 @@ const tools = [
         <span class="section-title__hint">OAuth · one consent click · no account</span>
       </div>
       <div class="cx__install">
-        <a class="cx__btn" href={INSTALL_URL}>Add to Claude <span aria-hidden="true">↗</span></a>
+        <div class="cx__btns">
+          <a class="cx__btn" href={INSTALL_URL}>Add to Claude <span aria-hidden="true">↗</span></a>
+          <button class="cx__btn cx__btn--alt" type="button" data-copy={SERVER_URL} id="codex-btn">
+            Add to Codex <span aria-hidden="true">⧉</span>
+          </button>
+        </div>
         <p class="cx__note">
           The button opens Claude’s custom-connector dialog with the name and URL filled in. To
           add it by hand: Settings → Connectors → Add custom connector, then paste the server URL.
         </p>
-      </div>
-      <div class="cx__cli">
-        <p class="cx__note">
-          <strong>Codex</strong> (CLI). The second command opens the same consent page in your
-          browser:
+        <p class="cx__note cx__codex" id="codex-steps">
+          <strong>Codex:</strong> the button copies the server URL.
+          In Codex open Settings → MCP servers → Add server,
+          choose Streamable HTTP, paste the URL and save, then select Authenticate.
+          <span class="cx__copied" id="codex-copied" hidden>URL copied.</span>
         </p>
-        <pre class="cx__cmd"><code>codex mcp add rental-market-data --url https://mcp.hermanchan.ai/mcp
-codex mcp login rental-market-data</code></pre>
-        <p class="cx__note">
-          <strong>Claude Code</strong>. Then run <code>/mcp</code> inside Claude Code to sign in:
-        </p>
-        <pre class="cx__cmd"><code>claude mcp add --transport http rental-market-data https://mcp.hermanchan.ai/mcp</code></pre>
       </div>
       <dl class="cx__dl">
         <dt>Server URL</dt>
@@ -265,6 +264,18 @@ codex mcp login rental-market-data</code></pre>
   </section>
 </Layout>
 
+<script>
+  const btn = document.getElementById("codex-btn");
+  const done = document.getElementById("codex-copied");
+  btn?.addEventListener("click", async () => {
+    const url = btn.dataset.copy ?? "";
+    try { await navigator.clipboard.writeText(url); }
+    catch { window.prompt("Copy the server URL:", url); return; }
+    if (done) { done.hidden = false; setTimeout(() => { done.hidden = true; }, 2500); }
+    document.getElementById("codex-steps")?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  });
+</script>
+
 <style>
   .cx { padding: clamp(40px, 6vw, 64px) 0 0; }
   .cx--last { padding-bottom: var(--s-8); }
@@ -295,15 +306,11 @@ codex mcp login rental-market-data</code></pre>
     font: 600 16px/1 var(--sans);
     white-space: nowrap;
   }
-  .cx__cli { max-width: 960px; margin: 0 0 var(--s-6); }
-  .cx__cli .cx__note { margin: 0 0 var(--s-2); }
-  .cx__cmd {
-    margin: 0 0 var(--s-4);
-    padding: 14px 18px;
-    background: var(--bg-alt);
-    overflow-x: auto;
-    font: 14px/1.6 var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
-  }
+  .cx__btns { display: flex; flex-direction: column; gap: 10px; }
+  .cx__btn--alt { background: var(--bg); color: var(--accent-ink); border: 1px solid var(--accent); cursor: pointer; }
+  .cx__btn--alt:hover { background: var(--bg-alt); color: var(--accent-ink); }
+  .cx__codex { grid-column: 1 / -1; }
+  .cx__copied { color: var(--accent-ink); font-weight: 600; margin-left: 6px; }
   .cx__btn:hover { background: var(--accent-ink); text-decoration: none; }
 
   .cx__dl {
