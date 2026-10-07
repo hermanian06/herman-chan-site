@@ -1,0 +1,143 @@
+---
+/**
+ * Support page for the public MCP connector "Rental Market Data" (Multifamily & BFR).
+ * OpenAI's plugin directory requires an HTTPS support URL; the Anthropic listing links it too.
+ * Repo copy: County Permit Pipeline public_api/docs/support.md. Facts (quota, coverage,
+ * contact) mirror public_api/__init__.py and the docs page.
+ * Pinned by tests/connector-shared-listing.test.ts.
+ */
+import Layout from "../../../../layouts/Layout.astro";
+import TabHead from "../../../../components/tabs/TabHead.astro";
+
+const NAME = "Rental Market Data";
+const SUPPORT = "herman@hermanchan.ai";
+const QUOTA = 50;
+---
+
+<Layout
+  title={`Support · ${NAME}`}
+  description="How to get help with the Rental Market Data connector: what to send, when to expect a reply, and the known limits and coverage."
+>
+  <TabHead
+    kicker="Connector · support"
+    title="Support"
+    lede="One person runs this connector, so support is by email. A good report gets a fix fastest."
+  />
+
+  <section class="pv">
+    <div class="wrap">
+      <p class="pv__meta">
+        <span><b>Connector</b> <a href="/connectors/rental-market-data/">{NAME}</a></span>
+        <span><b>Email</b> <a href={`mailto:${SUPPORT}`}>{SUPPORT}</a></span>
+      </p>
+
+      <article class="pv__body">
+        <h2 id="contact"><span>1</span>Contact</h2>
+        <p>
+          Email <a href={`mailto:${SUPPORT}`}>{SUPPORT}</a> for a wrong or missing answer, a
+          connection that will not authorize, a request for more calls, or a request to switch a
+          connection off or delete its record.
+        </p>
+
+        <h2 id="include"><span>2</span>What to include</h2>
+        <ul>
+          <li><strong>Your connection id.</strong> Ask your AI assistant (Claude, ChatGPT or Codex) to run the connector’s data_coverage tool; its answer includes your connection_id. Every error message carries it too. It is an anonymous random id, not anything about you.</li>
+          <li><strong>The tool</strong> that answered (for example site_screen or rent_comps_near), and roughly when, in your time zone.</li>
+          <li><strong>The address</strong>, ZIP, market or name you asked about, and what you expected instead.</li>
+          <li>The error text, if there was one.</li>
+        </ul>
+
+        <h2 id="response"><span>3</span>What to expect</h2>
+        <p>
+          You should get a reply within two business days, usually sooner. A data correction
+          shows up in the next refresh of that layer; a service fault is fixed as soon as it is
+          found. There is no phone or chat support.
+        </p>
+
+        <h2 id="limits"><span>4</span>Known limits and coverage</h2>
+        <ul>
+          <li><strong>Calls:</strong> {QUOTA} successful tool calls per connection per calendar month (UTC), up to 10 a minute. Invalid input is free. Every answer shows calls_remaining_this_month.</li>
+          <li><strong>Supply:</strong> nine metros (Atlanta, Austin, Charlotte, Houston, Huntsville, Las Vegas, Nashville, Phoenix, Tampa). Elsewhere the supply layer says it is not covered.</li>
+          <li><strong>Rents:</strong> 22 rent markets, collected weekly from operators’ public listing pages, each row dated.</li>
+          <li><strong>Demographics and home values:</strong> any U.S. address. Outside the nine metros a demographics call can take tens of seconds.</li>
+          <li><strong>Not included:</strong> licensed unit counts, owner and property-manager names, and sale comps.</li>
+        </ul>
+
+        <h2 id="status"><span>5</span>Status of the data</h2>
+        <p>
+          The data_coverage tool is the live status of the data: it reports which metros hold
+          supply rows and, for every rent market, how fresh the collection is. Ask your AI
+          assistant to run it before trusting a thin market.
+        </p>
+
+        <h2 id="links"><span>6</span>Docs and policies</h2>
+        <ul>
+          <li><a href="/connectors/rental-market-data/">Docs, example prompts and limits</a></li>
+          <li><a href="/connectors/rental-market-data/privacy/">Privacy policy</a></li>
+          <li><a href="/connectors/rental-market-data/terms/">Terms of service</a></li>
+        </ul>
+      </article>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .pv { padding: clamp(32px, 5vw, 52px) 0 var(--s-8); }
+  .pv__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 36px;
+    margin: 0 0 var(--s-6);
+    padding: 14px 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    font: var(--font-ui);
+    max-width: 960px;
+  }
+  .pv__meta span { min-width: 0; overflow-wrap: anywhere; }
+  .pv__meta b {
+    font: var(--font-eyebrow);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent-ink);
+    margin-right: 8px;
+  }
+  .pv__body { max-width: var(--measure); }
+  .pv__body h2 {
+    font: var(--font-card);
+    letter-spacing: var(--track-card);
+    color: var(--accent-ink);
+    margin: var(--s-7) 0 var(--s-4);
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--rule);
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+    scroll-margin-top: 24px;
+  }
+  .pv__body h2:first-child { margin-top: 0; }
+  .pv__body h2 span { font: var(--font-eyebrow); font-size: 13px; color: var(--accent); }
+  .pv__body h3 { font: var(--font-subheading); color: var(--fg); margin: var(--s-5) 0 var(--s-3); }
+  .pv__body p, .pv__body li { font: var(--font-prose); color: var(--fg-soft); }
+  .pv__body p { margin: 0 0 var(--s-4); }
+  .pv__body ul { margin: 0 0 var(--s-4); padding-left: 1.2em; display: grid; gap: 8px; }
+  .pv__body strong { color: var(--fg); font-weight: 600; }
+  .pv__dl {
+    display: grid;
+    grid-template-columns: minmax(150px, 0.8fr) minmax(0, 2fr);
+    margin: 0 0 var(--s-4);
+    background: var(--bg-alt);
+    padding: 6px 22px;
+  }
+  .pv__dl dt, .pv__dl dd { padding: 12px 0; border-top: 1px solid var(--rule-soft); }
+  .pv__dl dt:first-of-type, .pv__dl dt:first-of-type + dd { border-top: 0; }
+  .pv__dl dt { font: 600 15px/1.55 var(--sans); color: var(--accent-ink); padding-right: 20px; }
+  .pv__dl dd { margin: 0; font: var(--font-ui); color: var(--fg-soft); min-width: 0; overflow-wrap: anywhere; }
+
+  @media (max-width: 640px) {
+    .pv__dl { grid-template-columns: 1fr; padding: 4px 18px; }
+    .pv__dl dt { padding-bottom: 2px; }
+    .pv__dl dd { border-top: 0; padding-top: 0; }
+    .pv__dl dt:first-of-type { border-top: 0; }
+  }
+</style>

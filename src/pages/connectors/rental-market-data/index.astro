@@ -1,7 +1,8 @@
 ---
 /**
- * Public docs page for the free MCP connector "Rental Market Data: Multifamily & BFR"
- * (slug rental-market-data). The directory listing links here and to ./privacy/.
+ * Public docs page for the free MCP connector "Rental Market Data" (subtitle "Multifamily &
+ * BFR"; slug rental-market-data). The directory listings (Anthropic and OpenAI) link here
+ * and to ./privacy/, ./terms/ and ./support/.
  * Source text: County Permit Pipeline public_api/docs/connector.md; facts (name, URL,
  * quota, support contact) mirror public_api/__init__.py — change them there first.
  * Pinned by tests/connector-pages.test.ts.
@@ -9,7 +10,8 @@
 import Layout from "../../../layouts/Layout.astro";
 import TabHead from "../../../components/tabs/TabHead.astro";
 
-const NAME = "Rental Market Data: Multifamily & BFR";
+const NAME = "Rental Market Data";
+const SUBTITLE = "Multifamily & BFR";
 const SERVER_URL = "https://mcp.hermanchan.ai/mcp";
 const INSTALL_URL =
   "https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=Rental%20Market%20Data&connectorUrl=https%3A%2F%2Fmcp.hermanchan.ai%2Fmcp";
@@ -53,8 +55,8 @@ const tools = [
 ---
 
 <Layout
-  title={NAME}
-  description="A free, read-only MCP connector for Claude: housing supply pipeline, rent comps with concessions, ring demographics and the Zillow home value index for any U.S. site."
+  title={`${NAME} · ${SUBTITLE} site screening`}
+  description="A free, read-only MCP connector for multifamily and BFR site screening, for Claude, ChatGPT or Codex: housing supply pipeline, rent comps with concessions, ring demographics and the Zillow home value index for any U.S. site."
 >
   <TabHead
     links={[
@@ -64,9 +66,9 @@ const tools = [
       { href: "#limits", label: "Limits" },
       { href: "#support", label: "Sources and support" },
     ]}
-    kicker="Connector · free MCP for Claude and Codex"
+    kicker={`Connector · ${SUBTITLE} · free MCP for Claude and Codex`}
     title={NAME}
-    lede="I built a read-only connector that lets Claude screen a U.S. site for build-to-rent and multifamily: what is permitted or entitled nearby, what comparable rentals are asking after concessions, who lives within a few miles, and how the ZIP’s home values compare with its metro. There is no account and nothing to pay for."
+    lede="I built a read-only connector that lets your AI assistant (Claude, ChatGPT or Codex) screen a U.S. site for build-to-rent and multifamily: what is permitted or entitled nearby, what comparable rentals are asking after concessions, who lives within a few miles, and how the ZIP’s home values compare with its metro. There is no account and nothing to pay for."
   />
 
   <section class="cx" id="add">
@@ -99,7 +101,7 @@ const tools = [
         <dd><code>{SERVER_URL}</code></dd>
         <dt>Sign-in</dt>
         <dd>
-          After you add it, Claude opens a consent page. Approve it and clear a quick Cloudflare
+          After you add it, your AI assistant opens a consent page. Approve it and clear a quick Cloudflare
           Turnstile check. That creates an anonymous connection, identified only by a random id.
           No email, no password, no profile.
         </dd>
@@ -252,12 +254,18 @@ const tools = [
         <dt>Support</dt>
         <dd>
           Questions, corrections or a request to switch a connection off:
-          <a href={`mailto:${SUPPORT}`}>{SUPPORT}</a>
+          <a href={`mailto:${SUPPORT}`}>{SUPPORT}</a>. What to include and what to expect:
+          <a href="/connectors/rental-market-data/support/">support</a>.
         </dd>
         <dt>Privacy</dt>
         <dd>
           What the service records and for how long:
           <a href="/connectors/rental-market-data/privacy/">privacy policy</a>.
+        </dd>
+        <dt>Terms</dt>
+        <dd>
+          The rules of use, in plain words:
+          <a href="/connectors/rental-market-data/terms/">terms of service</a>.
         </dd>
       </dl>
     </div>

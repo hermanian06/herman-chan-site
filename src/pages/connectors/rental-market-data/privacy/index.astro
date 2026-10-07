@@ -1,6 +1,6 @@
 ---
 /**
- * Privacy policy for the public MCP connector "Rental Market Data: Multifamily & BFR".
+ * Privacy policy for the public MCP connector "Rental Market Data" (Multifamily & BFR).
  * Source text: County Permit Pipeline public_api/docs/privacy.md, which names the column
  * behind every field listed here (public_api/migrations/2026-10-05_public_api_auth_tables.sql).
  * Pinned by tests/connector-pages.test.ts.
@@ -11,7 +11,7 @@ import TabHead from "../../../../components/tabs/TabHead.astro";
 /* Set to the day this version goes live. A material change gets a new date (section 7). */
 const EFFECTIVE_DATE = "2026-10-05";
 
-const NAME = "Rental Market Data: Multifamily & BFR";
+const NAME = "Rental Market Data";
 const SUPPORT = "herman@hermanchan.ai";
 const effective = new Date(`${EFFECTIVE_DATE}T00:00:00Z`).toLocaleDateString("en-US", {
   month: "long", day: "numeric", year: "numeric", timeZone: "UTC",
@@ -27,7 +27,7 @@ const atCall = [
   ["Timestamp", "When the call arrived."],
   ["Connection id", "The same random id. Never a name, email or IP address."],
   ["Tool name", "For example site_screen."],
-  ["The inputs you sent", "Stored as given. This includes addresses, place names, coordinates and ZIP codes that you or Claude put into a tool call. If you would not want an address in a log for 90 days, do not send it."],
+  ["The inputs you sent", "Stored as given. This includes addresses, place names, coordinates and ZIP codes that you or your AI assistant (Claude, ChatGPT or Codex) put into a tool call. If you would not want an address in a log for 90 days, do not send it."],
   ["Latency, status, error", "How long the call took, whether it succeeded, and the error text if it did not."],
   ["Whether it counted", "Whether the call used one of the month’s 50."],
 ];
@@ -70,7 +70,7 @@ const retention = [
         </dl>
         <h3>What is never collected</h3>
         <ul>
-          <li><strong>Your conversation.</strong> The service sees only the arguments of a tool call it is asked to run, not the prompt around it, not the answer Claude writes, and not any other message.</li>
+          <li><strong>Your conversation.</strong> The service sees only the arguments of a tool call it is asked to run, not the prompt around it, not the answer your AI assistant writes, and not any other message.</li>
           <li><strong>Your name, email address, phone number or any platform account.</strong> None is asked for, and there is nowhere to enter one.</li>
           <li><strong>Your raw IP address.</strong> It is hashed with a daily salt on the consent page and is not stored with any tool call.</li>
           <li><strong>Cookies and trackers.</strong> The consent page sets none and loads no analytics. Its only third-party resource is the Cloudflare Turnstile widget.</li>
@@ -113,9 +113,11 @@ const retention = [
           {retention.map(([k, v]) => (<><dt>{k}</dt><dd>{v}</dd></>))}
         </dl>
         <p>
-          Removing the connector in Claude stops it being usable. To have a connection switched off
-          or its record deleted, email <a href={`mailto:${SUPPORT}`}>{SUPPORT}</a> with the
-          connection id (every tool answer includes it) and it will be revoked or deleted.
+          Removing the connector in your AI assistant (Claude, ChatGPT or Codex) stops it being
+          usable. To have a connection switched off or its record deleted, email
+          <a href={`mailto:${SUPPORT}`}>{SUPPORT}</a> with the connection id (ask the connector’s
+          data_coverage tool for it; every error message also includes it) and it will be
+          revoked or deleted.
         </p>
 
         <h2 id="security"><span>5</span>Security</h2>
@@ -143,7 +145,9 @@ const retention = [
         <h2 id="contact"><span>8</span>Contact</h2>
         <p>
           <a href={`mailto:${SUPPORT}`}>{SUPPORT}</a> for privacy questions, corrections, and
-          requests to revoke or delete a connection.
+          requests to revoke or delete a connection. See also the
+          <a href="/connectors/rental-market-data/terms/">terms of service</a> and the
+          <a href="/connectors/rental-market-data/support/">support page</a>.
         </p>
       </article>
     </div>

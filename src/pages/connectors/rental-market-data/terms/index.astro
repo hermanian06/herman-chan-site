@@ -1,0 +1,178 @@
+---
+/**
+ * Terms of service for the public MCP connector "Rental Market Data" (Multifamily & BFR).
+ * OpenAI's plugin directory requires an HTTPS terms URL; the Anthropic listing links it too.
+ * Repo copy: County Permit Pipeline public_api/docs/terms.md. Facts (quota, burst limit,
+ * contact) mirror public_api/__init__.py and the docs page.
+ * Pinned by tests/connector-shared-listing.test.ts.
+ */
+import Layout from "../../../../layouts/Layout.astro";
+import TabHead from "../../../../components/tabs/TabHead.astro";
+
+/* Set to the day this version goes live. A material change gets a new date (section 8). */
+const EFFECTIVE_DATE = "2026-10-07";
+
+const NAME = "Rental Market Data";
+const SUPPORT = "herman@hermanchan.ai";
+const QUOTA = 50;
+const effective = new Date(`${EFFECTIVE_DATE}T00:00:00Z`).toLocaleDateString("en-US", {
+  month: "long", day: "numeric", year: "numeric", timeZone: "UTC",
+});
+---
+
+<Layout
+  title={`Terms · ${NAME}`}
+  description="The terms of use for the Rental Market Data connector: a read-only data service, provided as is, with fair-use limits and attributed public sources."
+>
+  <TabHead
+    kicker="Connector · terms of service"
+    title="Terms of service"
+    lede="Short and plain: what the connector is, what it is not, and the few rules for using it. By connecting it to your AI assistant (Claude, ChatGPT or Codex) and calling its tools, you agree to these terms."
+  />
+
+  <section class="pv">
+    <div class="wrap">
+      <p class="pv__meta">
+        <span><b>Connector</b> <a href="/connectors/rental-market-data/">{NAME}</a></span>
+        <span><b>Effective date</b> <time datetime={EFFECTIVE_DATE}>{effective}</time></span>
+        <span><b>Publisher</b> Herman Chan</span>
+        <span><b>Contact</b> <a href={`mailto:${SUPPORT}`}>{SUPPORT}</a></span>
+      </p>
+
+      <article class="pv__body">
+        <h2 id="service"><span>1</span>The service</h2>
+        <p>
+          {NAME} is a read-only data service for multifamily and build-to-rent site screening,
+          published by Herman Chan as an individual. It answers lookups about housing supply,
+          rents, demographics and home values through nine tools. None of the tools writes,
+          changes or deletes anything. There is no account; a connection is an anonymous random
+          id, as the <a href="/connectors/rental-market-data/privacy/">privacy policy</a> describes.
+        </p>
+
+        <h2 id="warranty"><span>2</span>No warranty</h2>
+        <p>
+          The service and its data are provided as is and as available, without warranty of any
+          kind, express or implied, including accuracy, completeness, timeliness, fitness for a
+          particular purpose or uninterrupted availability. Public records lag, operators change
+          their prices, and filings are sometimes wrong. To the extent the law allows, the
+          publisher is not liable for any loss or damage that comes from using the service or
+          relying on its answers.
+        </p>
+
+        <h2 id="advice"><span>3</span>Not advice</h2>
+        <p>
+          Answers are market research, not investment, appraisal, financial, tax or legal advice.
+          A home value index is an area level, not a valuation of any property, and a rent comp
+          is one operator’s published offer. Check anything that matters against primary sources
+          and qualified professionals before you act on it.
+        </p>
+
+        <h2 id="fair-use"><span>4</span>Fair use and limits</h2>
+        <ul>
+          <li>Each connection gets {QUOTA} successful tool calls per calendar month (UTC). Invalid input and listing the tools do not count.</li>
+          <li>Up to 10 calls a minute per connection, under a service-wide daily cap.</li>
+          <li>Answers return at most 50 rows.</li>
+        </ul>
+        <p>Limits can change to keep the service available for everyone; the docs page always shows the current ones.</p>
+
+        <h2 id="prohibited"><span>5</span>Prohibited use</h2>
+        <ul>
+          <li>Abuse: attacks, load testing, probing for vulnerabilities outside a good-faith report to the contact below, or anything that degrades the service for others.</li>
+          <li>Scraping the service: bulk extraction or systematic downloading of the data, or rebuilding the dataset from its answers.</li>
+          <li>Circumventing limits: creating many connections, rotating identities or automating consent to get around the quota, the per-minute limit or the bot check.</li>
+          <li>Unlawful use, or using the answers to make decisions about individual people (for example tenant screening).</li>
+        </ul>
+        <p>A connection that breaks these rules may be revoked without notice.</p>
+
+        <h2 id="sources"><span>6</span>Sources and attribution</h2>
+        <p>
+          The data comes from public sources, credited in every answer: the U.S. Census Bureau
+          (American Community Survey, 2020 Census, LEHD LODES), the U.S. Bureau of Labor
+          Statistics (BLS), the Zillow Home Value Index (ZHVI) from Zillow Group, public county,
+          city and state permit and entitlement records, and operators’ own public listing pages.
+          None of these sources endorses this service. Keep the attribution when you reuse an
+          answer.
+        </p>
+
+        <h2 id="changes"><span>7</span>Changes to the service</h2>
+        <p>
+          The publisher may change, limit, suspend or discontinue the service, or any tool or
+          data layer in it, at any time.
+        </p>
+
+        <h2 id="terms-changes"><span>8</span>Changes to these terms</h2>
+        <p>
+          Material changes will be posted on this page with a new effective date. Using the
+          service after a change means you accept the new terms.
+        </p>
+
+        <h2 id="contact"><span>9</span>Contact</h2>
+        <p>
+          <a href={`mailto:${SUPPORT}`}>{SUPPORT}</a> for questions about these terms. For help
+          with the connector, see the <a href="/connectors/rental-market-data/support/">support page</a>.
+        </p>
+      </article>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .pv { padding: clamp(32px, 5vw, 52px) 0 var(--s-8); }
+  .pv__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 36px;
+    margin: 0 0 var(--s-6);
+    padding: 14px 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    font: var(--font-ui);
+    max-width: 960px;
+  }
+  .pv__meta span { min-width: 0; overflow-wrap: anywhere; }
+  .pv__meta b {
+    font: var(--font-eyebrow);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent-ink);
+    margin-right: 8px;
+  }
+  .pv__body { max-width: var(--measure); }
+  .pv__body h2 {
+    font: var(--font-card);
+    letter-spacing: var(--track-card);
+    color: var(--accent-ink);
+    margin: var(--s-7) 0 var(--s-4);
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--rule);
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+    scroll-margin-top: 24px;
+  }
+  .pv__body h2:first-child { margin-top: 0; }
+  .pv__body h2 span { font: var(--font-eyebrow); font-size: 13px; color: var(--accent); }
+  .pv__body h3 { font: var(--font-subheading); color: var(--fg); margin: var(--s-5) 0 var(--s-3); }
+  .pv__body p, .pv__body li { font: var(--font-prose); color: var(--fg-soft); }
+  .pv__body p { margin: 0 0 var(--s-4); }
+  .pv__body ul { margin: 0 0 var(--s-4); padding-left: 1.2em; display: grid; gap: 8px; }
+  .pv__body strong { color: var(--fg); font-weight: 600; }
+  .pv__dl {
+    display: grid;
+    grid-template-columns: minmax(150px, 0.8fr) minmax(0, 2fr);
+    margin: 0 0 var(--s-4);
+    background: var(--bg-alt);
+    padding: 6px 22px;
+  }
+  .pv__dl dt, .pv__dl dd { padding: 12px 0; border-top: 1px solid var(--rule-soft); }
+  .pv__dl dt:first-of-type, .pv__dl dt:first-of-type + dd { border-top: 0; }
+  .pv__dl dt { font: 600 15px/1.55 var(--sans); color: var(--accent-ink); padding-right: 20px; }
+  .pv__dl dd { margin: 0; font: var(--font-ui); color: var(--fg-soft); min-width: 0; overflow-wrap: anywhere; }
+
+  @media (max-width: 640px) {
+    .pv__dl { grid-template-columns: 1fr; padding: 4px 18px; }
+    .pv__dl dt { padding-bottom: 2px; }
+    .pv__dl dd { border-top: 0; padding-top: 0; }
+    .pv__dl dt:first-of-type { border-top: 0; }
+  }
+</style>
