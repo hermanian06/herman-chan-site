@@ -60,3 +60,12 @@ test("the chat box renders once, on /connectors/#ask, and Supply/Rent link to it
     assert.ok(page.includes('href="/connectors/#ask"'), `${p} has no link to the chat box`);
   }
 });
+
+test("Connectors tab has an Add to Codex button next to Add to Claude (Herman, 2026-10-07)", () => {
+  const html = read("connectors");
+  assert.ok(/<button[^>]*data-copy="https:\/\/mcp\.hermanchan\.ai\/mcp"[^>]*>[\s\S]*?Add to Codex/.test(html),
+    "no Add to Codex button that copies the public server URL");
+  for (const step of ["MCP servers", "Add server", "Streamable HTTP", "Authenticate"]) {
+    assert.ok(html.includes(step), `Codex steps lack "${step}"`);
+  }
+});

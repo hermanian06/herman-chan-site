@@ -75,9 +75,16 @@ const tools = [
       </p>
       <div class="cn__actions">
         <a class="cn__btn" href={PUBLIC_INSTALL}>Add to Claude <span aria-hidden="true">↗</span></a>
+        <button class="cn__btn cn__btn--alt" type="button" data-copy={PUBLIC_SERVER} id="cn-codex-btn">Add to Codex <span aria-hidden="true">⧉</span></button>
         <a class="cn__link" href="/connectors/rental-market-data/">Docs, example prompts and limits <span aria-hidden="true">→</span></a>
         <a class="cn__link" href="/connectors/rental-market-data/privacy/">Privacy policy <span aria-hidden="true">→</span></a>
       </div>
+      <p class="cn__note cn__codex" id="cn-codex-steps">
+        <strong>Codex:</strong> the button copies the server URL.
+        In Codex open Settings → MCP servers → Add server,
+        choose Streamable HTTP, paste the URL and save, then select Authenticate.
+        <span class="cn__copied" id="cn-codex-copied" hidden>URL copied.</span>
+      </p>
       <dl class="cn__dl">
         <dt>Server URL</dt>
         <dd><code>{PUBLIC_SERVER}</code></dd>
@@ -162,6 +169,17 @@ const tools = [
   </section>
 </Layout>
 
+<script>
+  const cnBtn = document.getElementById("cn-codex-btn");
+  const cnDone = document.getElementById("cn-codex-copied");
+  cnBtn?.addEventListener("click", async () => {
+    const url = cnBtn.dataset.copy ?? "";
+    try { await navigator.clipboard.writeText(url); }
+    catch { window.prompt("Copy the server URL:", url); return; }
+    if (cnDone) { cnDone.hidden = false; setTimeout(() => { cnDone.hidden = true; }, 2500); }
+  });
+</script>
+
 <style>
   .cn { padding: clamp(40px, 6vw, 64px) 0 0; }
   .cn--last { padding-bottom: var(--s-9); }
@@ -187,6 +205,9 @@ const tools = [
     font: 600 15px var(--sans);
     border-radius: 2px;
   }
+  .cn__btn--alt { background: var(--bg); color: var(--accent-ink); border: 1px solid var(--accent); cursor: pointer; }
+  .cn__btn--alt:hover { background: var(--bg-alt); }
+  .cn__copied { color: var(--accent-ink); font-weight: 600; margin-left: 6px; }
   .cn__btn:hover { text-decoration: none; opacity: 0.92; }
   .cn__link { font: 15px var(--sans); color: var(--accent); }
 
